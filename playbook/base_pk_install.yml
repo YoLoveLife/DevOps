@@ -1,0 +1,21 @@
+- name: install base soft
+  hosts: nginx-server
+  user: root
+  gather_facts: false
+  vars:
+  - yum_repo: "/etc/yum.repos.d"
+    md5sum: "ccd96d70ecfe3b1655c98d8dabd8dcb5"
+    url: "http://192.168.83.128/repos/Zbjt.repo"
+  tasks:
+  - name: repo bk
+    shell: "tar -cvzf {{yum_repo}}/bk.tar.gz {{yum_repo}}/* --remove-files"
+  - name: repo get
+    get_url: "checksum=md5:{{md5sum}} url={{url}} dest={{yum_repo}}/"
+  - name: repo cache
+    shell: "yum clean all;yum makecache;"
+  - name: libaio    
+    yum: "name=libaio state=present"
+  - name: libselinux-python
+    yum: "name=libselinux-python state=present"
+  - name: expect
+    yum: "name=expect state=present"

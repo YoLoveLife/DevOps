@@ -1,0 +1,19 @@
+- name: install redis
+  hosts: redis-server
+  user: root
+  gather_facts: true
+  vars:
+  - version: "3.2.4"
+    prefix: "/usr/local"
+    basedir: "{{prefix}}/redis"
+    user: "redis"
+    file: "redis-{{version}}.tar.gz"
+    fro: "http://192.168.254.128/package/redis/{{file}}"
+    checksum: "2f8b49e8004fbbfc807ca7f5faeabec8"
+  tasks:
+  - name: get_soft
+    get_url: "url={{fro}} checksum='md5:{{checksum}}' dest=~"
+  - name: install_soft
+    script: "../script/redis_install -v {{version}} -f {{prefix}} -u {{user}}"
+  - name: clean_all
+    file: "dest=~/{{file}} state=absent"
