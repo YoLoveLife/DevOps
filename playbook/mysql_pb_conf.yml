@@ -1,0 +1,17 @@
+- name: conf mysql
+  hosts: mysql-server
+  user: root
+  gather_facts: false
+  vars:
+  - prefix: "/usr/local"
+    basedir: "{{prefix}}/mysql"
+    datadir: "/usr/local/mysql/data"
+    port: "3306"
+    thread_cache_size: "64"
+    server_id: "1"
+    extend: ""
+  tasks:
+  - name: config
+    template: "dest=/etc/my.cnf src=../template/my.j2 owner=mysql group=mysql mode=644"
+  - name: mysql restart
+    service: "name=mysqld state=restarted"

@@ -1,0 +1,23 @@
+- name: conf redis
+  hosts: redis-server
+  user: root
+  gather_facts: false
+  vars:
+  - prefix: "/usr/local"
+    basedir: "{{prefix}}/redis"
+    bind: "0.0.0.0"
+    port: "8081"
+    appendonly: "yes"
+    noonrewrite: "no"
+    logfile: "{{basedir}}/log/redis.log"
+    saveoptions: "save 900 300\nsave 30 10\nsave 2000 1"
+    dbfilename: "{{port}}.rdb"
+    dir: "{{basedir}}/data"
+    slaveof: "slaveof mip mport"
+    masterauth: "masterauth Redis"
+    cluster_enabled: "cluster-enabled yes"
+    cluster_config_file: "cluster-config-file nodes-{{port}}.conf"
+    extend: "1"
+  tasks:
+  - name: config
+    template: "dest={{basedir}}/redis.conf src=../template/redis.j2 owner=redis group=redis mode=644"

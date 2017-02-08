@@ -1,0 +1,32 @@
+- name: install mysql
+  hosts: mysql-server
+  user: root
+  gather_facts: true
+  vars:
+  - version: "10.1.12"
+    prefix: "/usr/local"
+    basedir: "{{prefix}}/mysql"
+    datadir: "{{basedir}}/data"
+    user: "mysql"
+    file: "mariadb-{{version}}-linux-{{ansible_architecture}}.tar.gz"
+    fro: "http://192.168.83.128/package/mysql/{{file}}"
+    checksum: "30a86202c8fe30ad3548988a7ddbf5a3"
+    port: "3306"
+    thread_cache_size: "8"
+    server_id: "1"
+    extend: ""
+  tasks:
+  - name: base-env
+    yum: "name=gcc state=present"
+  - name: get_soft
+    get_url: "url={{fro}} checksum='md5:{{checksum}}' dest=~"
+  - name: install_soft
+    script: "../script/mysql_install.sh -v {{version}} -f {{prefix}} -u {{user}} -d {{datadir}} >> ~/a.txt"
+  - name: clean_all
+    file: "dest=~/{{file}} state=absent"
+  - name: config
+    template: "dest=/etc/my.cnf src=../template/my.j2 owner=mysql group=mysql mode=644"
+  - name: start mysql
+    shell: "/usr/local/mysql/support-files/mysql.server start"
+  - name: secure_install
+    script: "../script/mysql_answer.exp"
