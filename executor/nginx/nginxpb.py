@@ -52,7 +52,6 @@ def nginx_controlplaybook(server='other',control='start',pid='/usr/local/nginx/l
         'control':control,
         'pid':pid
     }
-
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control nginx", server, 'no')
