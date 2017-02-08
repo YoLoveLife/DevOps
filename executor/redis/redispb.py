@@ -6,7 +6,7 @@ from util import FTP
 from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
-def redis_installplaybook(server='redis-server',version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8'):
+def redis_installplaybook(server='other',version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8'):
     _ext_vars = {
         'version':version,
         'prefix':prefix,
@@ -28,7 +28,7 @@ def redis_installplaybook(server='redis-server',version='3.2.4',prefix='/usr/loc
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def redis_removeplaybook(server='redis-server',prefix='/usr/local'):
+def redis_removeplaybook(server='other',prefix='/usr/local'):
     _ext_vars={
         'prefix':prefix,
         'user': 'redis'
@@ -41,7 +41,7 @@ def redis_removeplaybook(server='redis-server',prefix='/usr/local'):
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def redis_controlplaybook(server='redis-server',control='start'):
+def redis_controlplaybook(server='other',control='start'):
     _ext_vars={
         'control':control
     }
@@ -54,7 +54,7 @@ def redis_controlplaybook(server='redis-server',control='start'):
     personblock.run_block()
 
 
-def redis_configureplaybook(server='redis-server',prefix='/usr/local',bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend=''):
+def redis_configureplaybook(server='other',prefix='/usr/local',bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend=''):
     _ext_vars={
         'prefix':   prefix,
         'basedir':  '{{prefix}}/redis',
