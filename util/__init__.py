@@ -4,3 +4,4 @@
 # Email YoLoveLife@outlook.com
 
 FTP='192.168.254.128'
+CHECKSUM=1
