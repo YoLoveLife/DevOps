@@ -7,12 +7,12 @@ from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 
-def iptables_configureplaybook():
+def iptables_configureplaybook(dport="80",protocol="tcp",jump="ACCEPT"):
     _ext_vars={'chain':"INPUT",
-               'dport':'80',
+               'dport':dport,
                'ctstate':'NEW',
-               'protocol':'tcp',
-               'jump':'ACCEPT',
+               'protocol':protocol,
+               'jump':jump,
                }
     personblock=PersonBlock()
     personblock.add_extendvars(_ext_vars)
@@ -22,8 +22,8 @@ def iptables_configureplaybook():
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def iptables_controlplaybook():
-    _ext_vars={'control':'save'
+def iptables_controlplaybook(control='save'):
+    _ext_vars={'control':control
                }
     personblock=PersonBlock()
     personblock.add_extendvars(_ext_vars)
@@ -33,5 +33,6 @@ def iptables_controlplaybook():
     personblock.set_playbook(pb)
     personblock.run_block()
 
-iptables_configureplaybook()
-iptables_controlplaybook()
+if __name__ == "__main__":
+    iptables_configureplaybook()
+    iptables_controlplaybook()
