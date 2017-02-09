@@ -6,6 +6,7 @@ from util import FTP
 from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+import django
 def base_personplaybook(server='other'):
     _ext_vars={'yum_repo':'/etc/yum.repos.d',
                'md5sum':'ccd96d70ecfe3b1655c98d8dabd8dcb5',
