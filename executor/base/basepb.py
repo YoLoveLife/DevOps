@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# !/usr/bin/env python
+# !/usr/bin/python2.6
 # Author Yo
 # Email YoLoveLife@outlook.com
 from util import FTP
@@ -33,4 +33,4 @@ def base_personplaybook(server='other'):
     personblock.set_playbook(pb)
     personblock.run_block()
 if __name__ == '__main__':
-    base_personplaybook(server='nginx-server')
+    base_personplaybook(server='ansibleapi-server')
