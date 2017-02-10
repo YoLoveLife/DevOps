@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="133" promptOnLocalOverwrite="false" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="134" promptOnLocalOverwrite="false" autoUploadExternalChanges="true">
     <serverData>
       <paths name="133">
         <serverdata>
           <mappings>
             <mapping deploy="/root/devEops" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="134">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/devEops" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
