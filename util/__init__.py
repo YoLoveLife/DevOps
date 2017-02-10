@@ -3,5 +3,5 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 
-FTP='192.168.254.128'
+FTP='192.168.254.134'
 CHECKSUM=1
