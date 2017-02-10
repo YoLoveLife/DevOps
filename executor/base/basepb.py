@@ -37,5 +37,5 @@ def base_personplaybook(server='other'):
     pb.add_task(task8)
     personblock.set_playbook(pb)
     personblock.run_block()
-if __name__ == '__main__':
-    base_personplaybook(server='ansibleapi-server')
+
+base_personplaybook(server='test-server')

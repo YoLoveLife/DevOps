@@ -16,7 +16,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
+import django.db.backends.mysql
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'anweb',
 ]
 
 MIDDLEWARE = [
@@ -77,14 +78,24 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+'''
+DATABASES={
+    'default':{
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':'devEops',
+        'USER':'root',
+        'PASSWORD':'000000',
+        'HOST':'',
+        'PORT':'3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

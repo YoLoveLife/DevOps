@@ -100,10 +100,5 @@ def mysql_configureplaybook(server='other',port='3306',socket='/tmp/mysql.sock',
     personblock.set_playbook(pb)
     personblock.run_block()
 
-if __name__=='__main__':
-    mysql_removeplaybook(server='mysql-server')
-    mysql_installplaybook(server='mysql-server')
-    mysql_removeplaybook(server='mysql-server')
-    mysql_controlplaybook(server='mysql-server',control='start')
-    mysql_initializationplaybook(server='mysql-server',mysqlpasswd='000000')
-    mysql_configureplaybook(server='mysql-server')
+mysql_installplaybook(server='test-server')
+
