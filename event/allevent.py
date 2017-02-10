@@ -9,6 +9,7 @@ from executor.java import javapb
 from executor.nginx import nginxpb
 from executor.tomcat import tomcatpb
 from executor.redis import redispb
+from executor.base import shellpb
 '''
     info:基础配置 包含gcc make libio libselinux except
 '''
@@ -95,5 +96,7 @@ def evt_redis_reconfigure(server='other',bind='0.0.0.0',port='6379',appendonly='
     redispb.redis_controlplaybook(server=server,control='start')
 
 def evt_redis_control(server='other',control='help'):
-    redispb.redis_controlplaybook(server='redis-server',control=control)
+    redispb.redis_controlplaybook(server=server,control=control)
 
+def evt_shell_control(server='other',control='hostname'):
+    shellpb.shell_book(server,control)
