@@ -85,6 +85,3 @@ def nginx_configureplaybook(server='other',prefix='/usr/local',workproc='1',pid=
     personblock.set_playbook(pb)
     personblock.run_block()
 
-nginx_removeplaybook(server='ansibleapi-server')
-nginx_installplaybook(server='ansibleapi-server')
-
