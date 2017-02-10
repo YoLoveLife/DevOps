@@ -37,5 +37,3 @@ def base_personplaybook(server='other'):
     pb.add_task(task8)
     personblock.set_playbook(pb)
     personblock.run_block()
-
-base_personplaybook(server='test-server')

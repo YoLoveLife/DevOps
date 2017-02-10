@@ -84,5 +84,3 @@ def redis_configureplaybook(server='other',prefix='/usr/local',bind='0.0.0.0',po
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
-
-redis_configureplaybook(server='redis-server')

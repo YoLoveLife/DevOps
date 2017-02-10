@@ -100,5 +100,3 @@ def mysql_configureplaybook(server='other',port='3306',socket='/tmp/mysql.sock',
     personblock.set_playbook(pb)
     personblock.run_block()
 
-mysql_installplaybook(server='test-server')
-
