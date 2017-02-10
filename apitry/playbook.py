@@ -27,6 +27,7 @@ class ResultCallback(CallbackBase):
         host = result._host.get_name()
         print "aaa"
 
+
     def v2_runner_on_failed(self, result, ignore_errors=False):
         host = result._host.get_name()
         print "bbb"
@@ -52,10 +53,10 @@ variable_manager.set_inventory(inventory)
 # create play with tasks
 play_source =  dict(
         name = "Ansible Play",
-        hosts = 'redis-server',
+        hosts = 'test-server',
         gather_facts = 'no',
         tasks = [
-            dict(action=dict(module='ping', args=''), register='shell_out'),
+            dict(action=dict(module='shell', args='hostname'), register='shell_out'),
             #dict(action=dict(module='shell', args='hostname'), register='shell_out'),
             #dict(action=dict(module='debug', args=dict(msg='{{shell_out.stdout}}')))
          ]
