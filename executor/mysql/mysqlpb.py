@@ -74,7 +74,7 @@ def mysql_initializationplaybook(server='other',mysqlpasswd='000000'):
     personblock.run_block()
 
 def mysql_configureplaybook(server='other',port='3306',socket='/tmp/mysql.sock',prefix='/usr/local',datadir='/usr/local/mysql/data',
-                            key_buffer_size='256M',table_open_cache='256',sort_buffer_size='1M',read_buffer_size='1M',read_rnd_buffer_size='4M',
+                                    key_buffer_size='256M',table_open_cache='256',sort_buffer_size='1M',read_buffer_size='1M',read_rnd_buffer_size='4M',
                             query_cache_size='16M',thread_cache_size='8',server_id='1',extend=''):
     _ext_vars={
         'port':port,
