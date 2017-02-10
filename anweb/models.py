@@ -7,8 +7,9 @@ from django.db import models
 class Soft(models.Model):
     id=models.IntegerField(primary_key=True)
     soft_name=models.CharField(max_length=100)
+
 class Softlib(models.Model):
-    id=models.IntegerField(primary_key=True,max_length=10)
+    id=models.IntegerField(primary_key=True)
     soft_type=models.ForeignKey(Soft)
     soft_version=models.CharField(max_length=10)
     soft_md5=models.CharField(max_length=100)
@@ -33,7 +34,7 @@ class MySQL(models.Model):
     group_id=models.ForeignKey(Group)
     prefix=models.CharField(max_length=100)
     mysqlpasswd=models.CharField(max_length=100)
-    port=models.IntegerField(max_length=10)
+    port=models.IntegerField()
     socket=models.CharField(max_length=100)
     datadir=models.CharField(max_length=100)
     key_buffer_size=models.CharField(max_length=100)
@@ -43,10 +44,39 @@ class MySQL(models.Model):
     read_rnd_buffer_size=models.CharField(max_length=100)
     query_cache_size=models.CharField(max_length=100)
     thread_cache_size=models.CharField(max_length=100)
-    server_id=models.IntegerField(max_length=10)
+    server_id=models.IntegerField()
     extend=models.CharField(max_length=100)
-'''
-port='3306',socket='/tmp/mysql.sock',prefix='/usr/local',datadir='/usr/local/mysql/data',
-                            key_buffer_size='256M',table_open_cache='256',sort_buffer_size='1M',read_buffer_size='1M',read_rnd_buffer_size='4M',
-                            query_cache_size='16M',thread_cache_size='8',server_id='1',extend=''
-'''
+
+class Nginx(models.Model):
+    id=models.IntegerField(primary_key=True)
+    group_id=models.ForeignKey(Group)
+    prefix=models.CharField(max_length=100)
+    workproc=models.CharField(max_length=100)
+    pid=models.CharField(max_length=100)
+    workconn=models.CharField(max_length=100)
+    port=models.CharField(max_length=100)
+    servername=models.CharField(max_length=100)
+    locations=models.CharField(max_length=100)
+
+class Redis(models.Model):
+    id=models.IntegerField(primary_key=True)
+    group_id=models.ForeignKey(Group)
+    prefix=models.CharField(max_length=100)
+    bind=models.CharField(max_length=100)
+    port=models.CharField(max_length=100)
+    appendonly=models.CharField(max_length=100)
+    noonrewrite=models.CharField(max_length=100)
+    saveoptions=models.CharField(max_length=100)
+    datadir=models.CharField(max_length=100)
+    requirepass=models.CharField(max_length=100)
+    slaveof=models.CharField(max_length=100)
+    masterauth=models.CharField(max_length=100)
+    cluster_enabled=models.CharField(max_length=100)
+    cluster_config_file=models.CharField(max_length=100)
+    extend=models.CharField(max_length=100)
+
+class Tomcat(models.Model):
+    id=models.IntegerField(primary_key=True)
+    group_id=models.ForeignKey(Group)
+    prefix=models.CharField(max_length=100)
+    java_opts=models.CharField(max_length=100)
