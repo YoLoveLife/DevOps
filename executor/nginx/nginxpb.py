@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# !/usr/bin/env python
+# !/usr/bin/python
 # Time 07 14:41
 # Author Yo
 # Email YoLoveLife@outlook.com
@@ -9,8 +9,8 @@ from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',checksum='088292d9caf6059ef328aa7dda332e44'):
     _ext_vars = {
-        'version': checksum,
-        'prefix': checksum,
+        'version': version,
+        'prefix': prefix,
         'basedir': '{{prefix}}/nginx',
         'file': 'nginx-{{version}}.tar.gz',
         'fro': 'http://%s/package/nginx/{{file}}' % FTP,
@@ -21,10 +21,12 @@ def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',ch
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("install nginx",server, 'no')
+    task0=PersonTask(module='yum',args='name=pcre-devel state=present')
     task1 = PersonTask(module="get_url", args="checksum=md5:{{checksum}} url={{fro}} dest=~", )
     task2 = PersonTask(module="script",
                        args="../../scripts/nginx/nginx_install.sh -v {{version}} -f {{prefix}} -u {{user}}", )
     task3 = PersonTask(module="file", args="dest=~/{{file}} state=absent", )
+    pb.add_task(task0)
     pb.add_task(task1)
     pb.add_task(task2)
     pb.add_task(task3)
@@ -33,7 +35,7 @@ def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',ch
 
 def nginx_removeplaybook(server='other',prefix='/usr/local',):
     _ext_vars = {
-        'prefix': '/usr/local',
+        'prefix': prefix,
         'basedir': '{{prefix}}/nginx',
         'user':'nginx',
     }
@@ -81,8 +83,7 @@ def nginx_configureplaybook(server='other',prefix='/usr/local',workproc='1',pid=
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
-if __name__=='__main__':
-    nginx_removeplaybook(server='nginx-server')
-    nginx_installplaybook(server='nginx-server')
-    nginx_configureplaybook(server='nginx-server')
-    nginx_controlplaybook(server='nginx-server',control='start')
+
+nginx_removeplaybook(server='ansibleapi-server')
+nginx_installplaybook(server='ansibleapi-server')
+
