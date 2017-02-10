@@ -89,7 +89,7 @@ DATABASES = {
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'devEops',
+        'NAME':'anweb',
         'USER':'root',
         'PASSWORD':'000000',
         'HOST':'',
