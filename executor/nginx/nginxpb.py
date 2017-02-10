@@ -21,7 +21,8 @@ def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',ch
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("install nginx",server, 'no')
-    task0=PersonTask(module='yum',args='name=pcre-devel state=present')
+    #task0=PersonTask(module='yum',args='name=pcre-devel state=present')
+    task0=PersonTask(module='shell',args='yum install pcre-devel -y')
     task1 = PersonTask(module="get_url", args="checksum=md5:{{checksum}} url={{fro}} dest=~", )
     task2 = PersonTask(module="script",
                        args="../../scripts/nginx/nginx_install.sh -v {{version}} -f {{prefix}} -u {{user}}", )
