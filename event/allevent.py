@@ -37,11 +37,11 @@ def evt_mysql_control(server='other',control='help',):
 '''
     info:java安装卸载
 '''
-def evt_java_install():
-    javapb.java_installplaybook(server='tomcat-server')
+def evt_java_install(server='other'):
+    javapb.java_installplaybook(server=server)
 
-def evt_java_remove():
-    javapb.java_removeplaybook(server='tomcat-server',prefix='/usr/local')
+def evt_java_remove(server='other'):
+    javapb.java_removeplaybook(server=server,prefix='/usr/local')
 
 '''
     info:nginx的安装 nginx的配置修改 nginx的重启
