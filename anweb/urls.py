@@ -8,5 +8,5 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from . import views
 urlpatterns = [
-   url(r'^test/',views.test,name='test'),
+   url(r'^test/$',views.test,name='test'),
 ]
