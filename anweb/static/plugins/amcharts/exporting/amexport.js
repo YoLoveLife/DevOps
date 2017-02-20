@@ -726,7 +726,7 @@ AmCharts.AmExport = AmCharts.Class({
 						if (_this.DEBUG == 10) {
 							_this.log('FORCE ONLOAD', img);
 						} // DEBUG
-						img.src = "data:../image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+						img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 						img.src = source;
 					}
 
