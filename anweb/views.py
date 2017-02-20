@@ -4,7 +4,11 @@ from event import allevent
 from django.http import HttpResponse
 from django.views.generic.detail import DetailView
 from django.views.decorators.http import require_http_methods
-
+from anweb.models import Group
+from django.forms.models import model_to_dict
+from django.core import serializers
+from util import toJSON
+import json
 @require_http_methods(["GET","POST"])
 def index(request):
     #return HttpResponse('this is test result')
@@ -17,3 +21,14 @@ def Index(request):
     return render(request, 'index.html',{
                                    #      'servicer':encoder.toJSON(servicer_list[0]),
                                          })
+
+@require_http_methods(["GET",])
+def get_group_list(request):
+    group_list=Group.objects.all()
+    list={}
+    for group in group_list:
+        list=list+toJSON(group)
+    print(list)
+    return HttpResponse(json.dumps({
+            'group_list':json.dumps(serializers.serialize("json",Group.objects.all())),
+        }))
