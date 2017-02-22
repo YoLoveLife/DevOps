@@ -137,7 +137,7 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
                                             <td>新闻24小时APP</td>
                                             <td>新一年新的项目 希望一切顺利</td>
                                             <td>
-                                                <button class="btn btn-primary" data-toggle="modal" data-target="#modifygroup"><i class="fa fa-edit "></i> Edit</button>
+                                                <button class="btn btn-primary" data-toggle="modal" data-target="#groupinfo"><i class="fa fa-edit "></i> Edit</button>
                                                 <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>
                                             </td>
                                         </tr>
@@ -166,12 +166,12 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
             </div>
          <!-- /. PAGE WRAPPER  -->
      <!-- /. WRAPPER  -->
-    <div class="modal fade" id="modifygroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="groupinfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">修改组信息</h4>
+                <h4 class="modal-title" id="myModalLabel">组信息</h4>
             </div>
             <div class="form-group">
                 <label>组名称</label>
@@ -203,11 +203,11 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
                 $('#dataTables-example').dataTable();
             });
 
-            $('#modifygroup').on('show.bs.modal', function() {
+            $('#groupinfo').on('show.bs.modal', function() {
             alert('此处插入读取组信息的内容');
             });
 
-            $('#modifygroup').on('hide.bs.modal', function() {
+            $('#groupinfo').on('hide.bs.modal', function() {
             alert('此处插入保存组信息的内容');
             });
     </script>
