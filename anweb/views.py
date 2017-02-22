@@ -27,15 +27,18 @@ def cherry_host(request):
 
 
 @require_http_methods(["GET",])
-def get_group_list(request):
-    a=Group.objects.all()
-    list=[]
+def get_group_list(request,position):
+    print(position)
+    if position == '0':
+        a = Group.objects.all()
+    else:
+        a=Group.objects.get(id=int(position))
+    list = []
     for i in a:
         list.append(toJSON(i))
-    print(list)
     return HttpResponse(json.dumps({
-            'group_list':list
-        }))
+        'group_list': list
+    }))
 
 '''
 @require_http_methods(["GET","POST"])

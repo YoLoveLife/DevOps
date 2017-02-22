@@ -103,8 +103,8 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
                 </ul>
                
             </div>
-            
-        </nav>  
+        </nav>
+
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
@@ -163,21 +163,29 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">组信息</h4>
             </div>
-            <div class="form-group">
-                <label>组名称</label>
-                <input class="form-control" width="10" />
-            </div>
-            <div class="form-group">
-                <label>组备注</label>
-                <input class="form-control" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">提交更改</button>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 form-group">
+                        <label>组名称</label>
+                        <input class="form-control" width="10" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 form-group">
+                        <label>组备注</label>
+                        <input class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 form-group">
+                        <button type="button" class="btn btn-primary">提交更改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
-</div>
+    </div>
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->
     <script src="../static/js/jquery-1.10.2.js"></script>
@@ -191,19 +199,23 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
         <script>
             $(document).ready(function () {
                // $('#dataTables-example').dataTable();
-                getGroup();
+                getGroup(0);
             });
-            $('#groupinfo').on('show.bs.modal', function() {
-                getGroup();
-            });
+
+           // $('#groupinfo').on('show.bs.modal', function() {
+            //    //getGroup();
+            //    console.log($(this).attr("id"))
+            //});
 
             $('#groupinfo').on('hide.bs.modal', function() {
              alert('此处插入保存组信息的内容');
             });
 
-            function getGroup() {
+            function getGroup(position) {
+                 var url='/anweb/cherry/search/'+position;
+                 console.log(url);
             $.ajax({
-                    url: '/anweb/cherry/search',
+                    url: url,
             type: "GET",
                 success: function (group_list) {
                 group_list = JSON.parse(group_list);
@@ -212,7 +224,7 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
                     for(var j=0;j<group_list[i].length;j++){
                         var temp=JSON.parse(group_list[i][j]);
                         string+='<tr><td>'+temp['id']+'</td><td>'+temp['group_name']+'</td><td>'+temp['remark']+
-                            '</td><td>'+'<button class="btn btn-primary" data-toggle="modal" data-target="#groupinfo"><i class="fa fa-edit "></i> Edit</button><button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>'
+                            '</td><td>'+'<button class="btn btn-primary" data-toggle="modal" data-target="#groupinfo" id="hello"><i class="fa fa-edit "></i> Edit</button><button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>'
                             +'</td><td>';
                     }
                 }
