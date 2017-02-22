@@ -183,10 +183,8 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
-                alert('页面启动');
                 getGroup();
             });
-
             $('#groupinfo').on('show.bs.modal', function() {
                 getGroup();
             });
@@ -197,7 +195,7 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
 
             function getGroup() {
             $.ajax({
-                    url: '/anweb/cherry/groupsearch',
+                    url: '/anweb/cherry/search',
             type: "GET",
                 success: function (group_list) {
                 group_list = JSON.parse(group_list);
