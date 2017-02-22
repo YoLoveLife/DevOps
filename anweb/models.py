@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from __future__ import unicode_literals
 
 from django.db import models
@@ -14,18 +15,34 @@ class Softlib(models.Model):
     soft_version=models.CharField(max_length=10)
     soft_md5=models.CharField(max_length=100)
 
+class State(models.Model):
+    id=models.IntegerField(primary_key=True)
+    state_name=models.CharField(max_length=100)
+
 class Group(models.Model):
     id=models.IntegerField(primary_key=True)
     group_name=models.CharField(max_length=100)
     remark=models.CharField(max_length=100)
+    def toJSON(self):
+        fields = []
+        for field in self._meta.fields:
+            fields.append(field.name)
+
+        d = {}
+        for attr in fields:
+            d[attr] = getattr(self, attr)
+
+        import json
+        return json.dumps(d)
 
 class Host(models.Model):
     id=models.IntegerField(primary_key=True)
     group_id=models.ForeignKey(Group)
-    softlib_id=models.ForeignKey(Softlib)
+    softlib_id=models.ForeignKey(Softlib,default=0)
     sship=models.CharField(max_length=15,default='192.168.1.1')
     sshpasswd=models.CharField(max_length=100,default='000000')
     sshport=models.CharField(max_length=5,default='22')
+    state=models.IntegerField(default=0)
 
 class Java(models.Model):
     id=models.IntegerField(primary_key=True)
