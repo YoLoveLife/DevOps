@@ -25,6 +25,18 @@ def cherry_host(request):
     #return HttpResponse('this is test result')
     return render(request, 'cherry_host.html', {})
 
+
+@require_http_methods(["GET",])
+def get_group_list(request):
+    a=Group.objects.all()
+    list=[]
+    for i in a:
+        list.append(toJSON(i))
+    print(list)
+    return HttpResponse(json.dumps({
+            'group_list':list
+        }))
+
 '''
 @require_http_methods(["GET","POST"])
 def Index(request):
