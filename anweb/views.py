@@ -28,6 +28,7 @@ def cherry_host(request):
 
 @require_http_methods(["GET",])
 def get_group_list(request):
+    print a
     a=Group.objects.all()
     list=[]
     for i in a:

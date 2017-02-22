@@ -132,24 +132,6 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>新闻24小时APP</td>
-                                            <td>新一年新的项目 希望一切顺利</td>
-                                            <td>
-                                                <button class="btn btn-primary" data-toggle="modal" data-target="#groupinfo"><i class="fa fa-edit "></i> Edit</button>
-                                                <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>新闻36小时APP</td>
-                                            <td>新一年新的项目 希望一切顺利</td>
-                                            <td>
-                                                <button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button>
-                                                <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Add</button>
@@ -201,15 +183,37 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
         <script>
             $(document).ready(function () {
                 $('#dataTables-example').dataTable();
+                alert('页面启动');
+                getGroup();
             });
 
             $('#groupinfo').on('show.bs.modal', function() {
-            alert('此处插入读取组信息的内容');
+                getGroup();
             });
 
             $('#groupinfo').on('hide.bs.modal', function() {
-            alert('此处插入保存组信息的内容');
+             alert('此处插入保存组信息的内容');
             });
+
+            function getGroup() {
+            $.ajax({
+                    url: '/anweb/cherry/groupsearch',
+            type: "GET",
+                success: function (group_list) {
+                group_list = JSON.parse(group_list);
+                var string='';
+                for(var i in group_list){
+                    for(var j=0;j<group_list[i].length;j++){
+                        var temp=JSON.parse(group_list[i][j]);
+                        string+='<tr><td>'+temp['id']+'</td><td>'+temp['group_name']+'</td><td>'+temp['remark']+
+                            '</td><td>'+'<button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button><button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>'
+                            +'</td><td>';
+                    }
+                }
+                $('tbody').html(string);
+            }
+        });
+        }
     </script>
          <!-- CUSTOM SCRIPTS -->
     <script src="../static/js/custom.js"></script>
