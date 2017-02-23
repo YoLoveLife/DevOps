@@ -101,5 +101,4 @@ def evt_redis_control(server='other',control='help'):
 def evt_shell_control(server='other',control='hostname'):
     shellpb.shell_book(server,control)
 
-
 #evt_redis_install(server='redis-server',version='2.6.17',checksum='918d74591e272e4419cba5beef67e995')

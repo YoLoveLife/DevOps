@@ -36,7 +36,7 @@ def redis_removeplaybook(server='other',prefix='/usr/local'):
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("install redis",server, 'no')
-    task1 = PersonTask(module="script", args="../../scripts/redis/redis_remove.sh -u {{user}} -f {{prefix}}", )
+    task1 = PersonTask(module="script", args="../scripts/redis/redis_remove.sh -u {{user}} -f {{prefix}}", )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
@@ -54,7 +54,7 @@ def redis_controlplaybook(server='other',control='start'):
     personblock.run_block()
 
 
-def redis_configureplaybook(server='other',prefix='/usr/local',bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend=''):
+def redis_configureplaybook(server='other',version='3.2.4',prefix='/usr/local',bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend=''):
     _ext_vars={
         'prefix':   prefix,
         'basedir':  '{{prefix}}/redis',
@@ -80,9 +80,7 @@ def redis_configureplaybook(server='other',prefix='/usr/local',bind='0.0.0.0',po
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control redis",server, 'no')
-    task1 = PersonTask(module="template", args="dest=/etc/redis.conf src=../template/redis.j2 owner=redis group=redis mode=644", )
+    task1 = PersonTask(module="template", args="dest=/etc/redis.conf src=../template/redis%s.j2 owner=redis group=redis mode=644"%version, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
-
-#redis_removeplaybook(server='redis-server')
