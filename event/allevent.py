@@ -79,12 +79,12 @@ def evt_tomcat_control(server='other',control='help'):
 '''
 def evt_redis_install(server='other',version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',
                       bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend='',):
-    redispb.redis_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum,
-    )
+    redispb.redis_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum,)
     redispb.redis_configureplaybook(server=server,bind=bind,port=port,appendonly=appendonly,noonrewrite=noonrewrite,saveoptions=saveoptions
                                     ,datadir=datadir,requirepass=requirepass,slaveof=slaveof,masterauth=masterauth,cluster_enabled=cluster_enabled,
                                     cluster_config_file=cluster_config_file,extend=extend,)
     redispb.redis_controlplaybook(server=server,control='start')
+
 
 def evt_redis_reconfigure(server='other',bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',
                           saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',
@@ -100,3 +100,6 @@ def evt_redis_control(server='other',control='help'):
 
 def evt_shell_control(server='other',control='hostname'):
     shellpb.shell_book(server,control)
+
+
+#evt_redis_install(server='redis-server',version='2.6.17',checksum='918d74591e272e4419cba5beef67e995')
