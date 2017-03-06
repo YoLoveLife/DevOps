@@ -80,7 +80,7 @@ def redis_configureplaybook(server='other',version='3.2.4',prefix='/usr/local',b
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control redis",server, 'no')
-    task1 = PersonTask(module="template", args="dest=/etc/redis.conf src=../template/redis%s.j2 owner=redis group=redis mode=644"%version, )
+    task1 = PersonTask(module="template", args="dest=/etc/redis.conf src=../template/redis/redis%s.j2 owner=redis group=redis mode=644"%version, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
