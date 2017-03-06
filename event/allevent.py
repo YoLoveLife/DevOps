@@ -10,6 +10,7 @@ from executor.nginx import nginxpb
 from executor.tomcat import tomcatpb
 from executor.redis import redispb
 from executor.base import shellpb
+from inventory import maker
 '''
     info:基础配置 包含gcc make libio libselinux except
 '''
@@ -102,3 +103,5 @@ def evt_shell_control(server='other',control='hostname'):
     shellpb.shell_book(server,control)
 
 #evt_redis_install(server='redis-server',version='2.6.17',checksum='918d74591e272e4419cba5beef67e995')
+maker.inventory_maker(['192.168.254.129'])
+evt_redis_install(server="all",)
