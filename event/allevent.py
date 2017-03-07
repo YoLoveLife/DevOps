@@ -79,9 +79,9 @@ def evt_tomcat_control(server='other',control='help'):
     info:redis安装 重新配置
 '''
 def evt_redis_install(server='other',version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',
-                      bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend='',):
+                      bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend='',):
     redispb.redis_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum,)
-    redispb.redis_configureplaybook(server=server,bind=bind,port=port,appendonly=appendonly,noonrewrite=noonrewrite,saveoptions=saveoptions
+    redispb.redis_configureplaybook(server=server,version=version,bind=bind,port=port,appendonly=appendonly,noonrewrite=noonrewrite,saveoptions=saveoptions
                                     ,datadir=datadir,requirepass=requirepass,slaveof=slaveof,masterauth=masterauth,cluster_enabled=cluster_enabled,
                                     cluster_config_file=cluster_config_file,extend=extend,)
     redispb.redis_controlplaybook(server=server,control='start')
@@ -96,12 +96,17 @@ def evt_redis_reconfigure(server='other',bind='0.0.0.0',port='6379',appendonly='
     redispb.redis_controlplaybook(server=server,control='stop')
     redispb.redis_controlplaybook(server=server,control='start')
 
-def evt_redis_control(server='other',control='help'):
-    redispb.redis_controlplaybook(server=server,control=control)
+def evt_redis_control(server='other',control='help',passwd='000000'):
+    redispb.redis_controlplaybook(server=server,control=control,passwd=passwd)
+
+def evt_redis_remove(server='other',prefix='/usr/local'):
+    redispb.redis_removeplaybook(server=server,prefix=prefix)
 
 def evt_shell_control(server='other',control='hostname'):
     shellpb.shell_book(server,control)
 
-#evt_redis_install(server='redis-server',version='2.6.17',checksum='918d74591e272e4419cba5beef67e995')
-maker.inventory_maker(['192.168.254.129'])
-evt_redis_install(server="all",)
+
+maker.inventory_maker(['192.168.254.132'])
+evt_nginx_control(server='all',control='stop')
+#evt_redis_remove(server='all')
+#evt_nginx_install(server="all",checksum="088292d9caf6059ef328aa7dda332e44")

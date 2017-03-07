@@ -25,7 +25,7 @@ def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',ch
     task0=PersonTask(module='shell',args='yum install pcre-devel -y')
     task1 = PersonTask(module="get_url", args="checksum=md5:{{checksum}} url={{fro}} dest=~", )
     task2 = PersonTask(module="script",
-                       args="../../scripts/nginx/nginx_install.sh -v {{version}} -f {{prefix}} -u {{user}}", )
+                       args="../scripts/nginx/nginx_install.sh -v {{version}} -f {{prefix}} -u {{user}}", )
     task3 = PersonTask(module="file", args="dest=~/{{file}} state=absent", )
     pb.add_task(task0)
     pb.add_task(task1)
@@ -45,7 +45,7 @@ def nginx_removeplaybook(server='other',prefix='/usr/local',):
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("remove nginx",server, 'no')
     task1 = PersonTask(module="script",
-                       args="../../scripts/nginx/nginx_remove.sh -f {{prefix}} -u {{user}}", )
+                       args="../scripts/nginx/nginx_remove.sh -f {{prefix}} -u {{user}}", )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
@@ -59,7 +59,7 @@ def nginx_controlplaybook(server='other',control='start',pid='/usr/local/nginx/l
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control nginx", server, 'no')
     task1 = PersonTask(module="script",
-                       args="../../scripts/nginx/nginx_control.sh {{control}} {{pid}}", )
+                       args="../scripts/nginx/nginx_control.sh {{control}} {{pid}}", )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
@@ -80,7 +80,7 @@ def nginx_configureplaybook(server='other',prefix='/usr/local',workproc='1',pid=
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("configure nginx", server, 'no')
     task1 = PersonTask(module="template",
-                   args="dest={{basedir}}/conf/nginx.conf src=../../template/nginx.j2 owner=nginx group=nginx mode=644", )
+                   args="dest={{basedir}}/conf/nginx.conf src=../template/nginx.j2 owner=nginx group=nginx mode=644", )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
