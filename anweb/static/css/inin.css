@@ -1,0 +1,59 @@
+body{
+   background: #3498db;
+}
+.main-title{
+    margin-bottom: 5px;
+}
+.logo{
+    background:url(../img/icons/png/Watches.png) center 0 no-repeat;
+    background-size:100px 100px;
+    height:100px;
+    width:100px;
+    margin:7px auto auto 35px;
+    overflow: hidden;
+    text-indent: -9999em;
+}
+.title h3{
+    font-family:Flat-UI-Icons;
+}
+.title small {
+    color: #ffffff;
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.navbar {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 15px;
+}
+#main-login{
+    text-align: center;
+    padding: 30px 200px 267px 30px;
+    margin: 5px 77px 77px 245px;
+    border-radius:6px;
+}
+#main-login .login-screen{
+    min-height: 500px;
+    border-radius: 12px;
+}
+#main-login .login-icon{
+    top: 190px;
+}
+#main-login-tip{
+    display:none;
+    margin-top:15px;
+    font-size:13px;
+    color:#bfc9ca;
+    text-align:center;
+}
+#main-page{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+#main-about-me p{
+    text-align:center;
+}
