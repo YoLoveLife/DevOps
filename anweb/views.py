@@ -15,17 +15,7 @@ def index(request):
     return render(request, 'index.html',{})
 
 
-@require_http_methods(["GET","POST"])
-def cherry_group(request):
-    #return HttpResponse('this is test result')
-    return render(request, 'cherry_group.html', {})
-
-@require_http_methods(["GET","POST"])
-def cherry_host(request):
-    #return HttpResponse('this is test result')
-    return render(request, 'cherry_host.html', {})
-
-
+'''
 @require_http_methods(["GET",])
 def get_group_list(request,position):
     print(position)
@@ -40,7 +30,6 @@ def get_group_list(request,position):
         'group_list': list
     }))
 
-'''
 @require_http_methods(["GET","POST"])
 def Index(request):
     #servicer_list=Servicer.objects.all().order_by('id')

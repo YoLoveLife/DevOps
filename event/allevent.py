@@ -106,7 +106,7 @@ def evt_shell_control(server='other',control='hostname'):
     shellpb.shell_book(server,control)
 
 
-maker.inventory_maker(['192.168.254.132'])
-evt_nginx_control(server='all',control='stop')
+#maker.inventory_maker(['192.168.254.132'])
+#evt_nginx_control(server='all',control='stop')
 #evt_redis_remove(server='all')
 #evt_nginx_install(server="all",checksum="088292d9caf6059ef328aa7dda332e44")
