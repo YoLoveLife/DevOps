@@ -1,0 +1,151 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12" id="ajax-logo">
+            <a class="fui-list-large-thumbnails"></a>
+            <small id="ajax-index">Cherry/Group</small>
+            <div id="ajax-link">
+                <a href="#"><i class="fui-facebook"></i></a>
+                <a href="#"><i class="fui-github"></i></a>
+                <a href="#"><i class="fui-google-plus"></i></a>
+                <a href="#"><i class="fui-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-xs-3 ajax-toolbar-col">
+            <div class="btn-toolbar ajax-toolbar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" onclick="OpenGroupModal4AddInfo('#groupInfo')"><span class="fui-plus-circle"></span></a>
+                    <a class="btn btn-primary" onclick="OpenGroupModal4Modify('#groupInfo')"><span class="fui-cross-circle"></span></a>
+                    <a class="btn btn-primary" onclick="OpenGroupModal4AddInfo('#groupInfo')"><span class="fui-gear"></span></a>
+                    <a class="btn btn-primary" onclick="OpenGroupModal4AddInfo('#groupHelp')"><span class="fui-question-circle"></span></a>
+                </div>
+            </div> <!-- /toolbar -->
+        </div>
+    </div>
+    <div class="row" style="margin-left: 10px;margin-right: 10px;margin-top: 15px;">
+        <table class="table table-hover" id="ajax-data">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Size</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="group-table">
+                <td>
+                    <label class="checkbox" for="checkbox1">
+                        <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox">
+                    </label>
+                </td>
+                <td>1</td>
+                <td>新闻24小时APP</td>
+                <td>表格单元格</td>
+            </tr>
+            <tr class="group-table">
+                <td>
+                    <label class="checkbox" for="checkbox2">
+                        <input type="checkbox" value="" id="checkbox2" data-toggle="checkbox">
+                    </label>
+                </td>
+                <td>2</td>
+                <td>新闻36小时APP</td>
+                <td>表格单元格</td>
+            </tr>
+            <tr class="group-table">
+                <td>
+                    <label class="checkbox" for="checkbox3">
+                        <input type="checkbox" value="" id="checkbox3" data-toggle="checkbox">
+                    </label>
+                </td>
+                <td>3</td>
+                <td>新闻48小时APP</td>
+                <td>表格单元格</td>
+            </tr>
+            <tr class="group-table">
+                <td>
+                    <label class="checkbox" for="checkbox4">
+                        <input type="checkbox" value="" id="checkbox4" data-toggle="checkbox">
+                    </label>
+                </td>
+                <td>4</td>
+                <td>新闻52小时APP</td>
+                <td>表格单元格</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--About Me Modal-->
+<div class="modal fade" id="groupInfo" tabindex="-1" role="dialog" aria-labelledby="groupInfoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="groupInfoLabel">Group Info</h4>
+            </div>
+            <div id="ajax-modalgroupinfo">
+                <div class="form-group container-fluid">
+                    <div class="row row-modal">
+                        <label class="col-sm-4 control-label" >Group ID</label>
+                        <div class="col-sm-4">
+                            <input id="groupInfo-id"class="form-control" placeholder="Autogeneration" data-toggle="tooltip" data-placement="top" title="" disabled="" data-original-title="Hello world!" type="text">
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                        <label class="col-sm-4 control-label">Group Name</label>
+                        <div class="col-sm-4">
+                            <input id="groupInfo-name"class="form-control" placeholder="Group Name" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip for name" type="text">
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                        <label class="col-sm-4 control-label">Group Remark</label>
+                        <div class="col-sm-4">
+                            <input id="groupInfo-remark"class="form-control" placeholder="Group Remark" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip for last name" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="PostGroupInfo4ModifyAdd()">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--About Me Modal-->
+
+<!--About Me Modal-->
+<div class="modal fade" id="groupHelp" tabindex="-1" role="dialog" aria-labelledby="groupHelpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ggroupHelpLabel">Notice</h4>
+            </div>
+            <div id="ajax-modalgrouphelp">
+                <div class="form-group container-fluid">
+                    <div class="row row-modal">
+                        <p>应用组管理</p>
+                        <p>Notice</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--About Me Modal-->
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="checkbox"]').radiocheck();
+        $('.form-control').tooltip();
+    });
+</script>
