@@ -10,4 +10,6 @@ from django.contrib import admin
 from . import views
 urlpatterns = [
    url(r'^$',views.index,name='index'),
+   url(r'^groupsearch/',views.groupsearch,name='groupsearch'),
+   url(r'^groupmodify/',views.groupmodify,name='groupmodify'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

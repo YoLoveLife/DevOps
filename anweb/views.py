@@ -3,6 +3,7 @@ from django.shortcuts import render
 from event import allevent
 from django.http import HttpResponse
 from django.views.generic.detail import DetailView
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from anweb.models import Group
 from django.forms.models import model_to_dict
@@ -13,6 +14,35 @@ import json
 def index(request):
     #return HttpResponse('this is test result')
     return render(request, 'index.html',{})
+
+@require_http_methods(["GET",])
+def groupsearch(request):
+    a = Group.objects.all()
+    list = []
+    for i in a:
+        list.append(toJSON(i))
+
+    return HttpResponse(json.dumps({
+        'group_list': list
+    }))
+
+@csrf_exempt
+@require_http_methods(["POST"],)
+def groupmodify(request):
+    group_id=request.POST.get('groupid');
+    group_name=request.POST.get('groupname');
+    group_remark=request.POST.get('groupremark');
+    if group_id == "0":#ADD
+        group=Group(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark))
+        group.save()
+        return HttpResponse(json.dumps({
+            'status': "add"
+        }))
+    else:#UPDATE
+        Group.objects.filter(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark));
+        return HttpResponse(json.dumps({
+            'status': "update"
+        }))
 
 
 '''

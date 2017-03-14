@@ -58,12 +58,11 @@ function Group9SearchChecked() {
 //
 function PostGroupInfo4ModifyAdd(){
     //依据表单内容提交POST
-    var groupid=document.getElementById('groupInfo-id').getAttribute('value');
-    var groupname=document.getElementById('groupInfo-name').getAttribute('value');
-    var groupremark=document.getElementById('groupInfo-remark').getAttribute('value');
+    var groupname=document.getElementById('groupInfo-name').value;
+    var groupremark=document.getElementById('groupInfo-remark').value;
     //POST数据
-    Group9ModifyGroup(groupid,groupname,groupremark);
-
+    Group9ModifyGroup("0",groupname,groupremark);
+    document.getElementById('groupInfo').close;
 }
 
 //
@@ -79,21 +78,20 @@ function ModifyHTMLPage(group_info_list){
 //Function use for new Group
 //
 function Group9ModifyGroup(groupid,groupname,groupremark){
-    var list=[groupid,groupname,groupremark];
-    ModifyHTMLPage(list);
-    /*
+    var postdata={"groupid":groupid,"groupname":groupname,"groupremark":groupremark};
     $.ajax({
-        url:'groupnew/',
+        url:'groupmodify/',
         type:'POST',
-        data:"groupid"+groupid+"groupname="+groupname+"&groupremark="+groupremark,
-        success:function(){//成功修改
+        data:postdata,
+        success:function(data){//成功修改
+            data=JSON.parse(data);
             var list=[groupid,groupname,groupremark];
-            ModifyHTMLPage(list);
+            Group9GetBackData();
         },
         error:function(){//修改失败
-
+            console.log("modifyGroup fail");
         }
-    });*/
+    });
 }
 
 //
@@ -106,16 +104,17 @@ function Group9GetBackData(){
         success:function(group_list){
             group_list=JSON.parse(group_list);
             var string="";
-            var checkbox="<label class=\"checkbox\" for=\"checkbox2\"><input type=\"checkbox\" value=\"\" id=\"checkbox2\" data-toggle=\"checkbox\"></label>";
             for(var i in group_list){
                 for(var j=0;j<group_list[i].length;j++){
+                    var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
                     var temp=JSON.parse(group_list[i][j]);
-                    string+='<tr><td>'+checkbox+'</td><td>'+temp['id']+
+                    string+='<tr class=\"group-table\"><td>'+checkbox+'</td><td>'+temp['id']+
                         '</td><td>'+temp['group_name']+'</td><td>'
                         + temp['remark']+'</td>';
                 }
             }
             $('tbody').html(string);
+            $('[data-toggle="checkbox"]').radiocheck();//数据样式变更
         }
     });
 }
