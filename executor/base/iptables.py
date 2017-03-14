@@ -22,7 +22,7 @@ def iptables_configureplaybook(server='other',dport="80",protocol="tcp",jump="AC
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def iptables_controlplaybook(server='other',control='save'):
+def iptables_controlplaybook(server='other',control='restart'):
     _ext_vars={'control':control
                }
     personblock=PersonBlock()
@@ -34,5 +34,5 @@ def iptables_controlplaybook(server='other',control='save'):
     personblock.run_block()
 
 if __name__ == "__main__":
-    iptables_configureplaybook(server='nginx-server')
-    iptables_controlplaybook(server='nginx-server')
+    iptables_configureplaybook(server='redis-server')
+    iptables_controlplaybook(server='redis-server')
