@@ -20,7 +20,7 @@ class State(models.Model):
     state_name=models.CharField(max_length=100)
 
 class Group(models.Model):
-    id=models.IntegerField(primary_key=True)
+    id=models.AutoField(primary_key=True)
     group_name=models.CharField(max_length=100)
     remark=models.CharField(max_length=100)
     def toJSON(self):

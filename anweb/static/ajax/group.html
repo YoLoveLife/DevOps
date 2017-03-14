@@ -31,40 +31,10 @@
                 <th>#</th>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Size</th>
+                <th>Remark</th>
             </tr>
             </thead>
             <tbody>
-            <tr class="group-table">
-                <td>
-                    <label class="checkbox" for="checkbox1">
-                        <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox">
-                    </label>
-                </td>
-                <td>1</td>
-                <td>新闻24小时APP</td>
-                <td>表格单元格</td>
-            </tr>
-            <tr class="group-table">
-                <td>
-                    <label class="checkbox" for="checkbox2">
-                        <input type="checkbox" value="" id="checkbox2" data-toggle="checkbox">
-                    </label>
-                </td>
-                <td>2</td>
-                <td>新闻36小时APP</td>
-                <td>表格单元格</td>
-            </tr>
-            <tr class="group-table">
-                <td>
-                    <label class="checkbox" for="checkbox3">
-                        <input type="checkbox" value="" id="checkbox3" data-toggle="checkbox">
-                    </label>
-                </td>
-                <td>3</td>
-                <td>新闻48小时APP</td>
-                <td>表格单元格</td>
-            </tr>
             <tr class="group-table">
                 <td>
                     <label class="checkbox" for="checkbox4">
@@ -94,25 +64,25 @@
                     <div class="row row-modal">
                         <label class="col-sm-4 control-label" >Group ID</label>
                         <div class="col-sm-4">
-                            <input id="groupInfo-id"class="form-control" placeholder="Autogeneration" data-toggle="tooltip" data-placement="top" title="" disabled="" data-original-title="Hello world!" type="text">
+                            <input id="groupInfo-id"class="form-control" placeholder="Autogeneration" data-toggle="tooltip" data-placement="top" title="" disabled="" data-original-title="New group id" type="text">
                         </div>
                     </div>
                     <div class="row row-modal">
                         <label class="col-sm-4 control-label">Group Name</label>
                         <div class="col-sm-4">
-                            <input id="groupInfo-name"class="form-control" placeholder="Group Name" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip for name" type="text">
+                            <input id="groupInfo-name"class="form-control" placeholder="Group Name" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="New group name" type="text">
                         </div>
                     </div>
                     <div class="row row-modal">
                         <label class="col-sm-4 control-label">Group Remark</label>
                         <div class="col-sm-4">
-                            <input id="groupInfo-remark"class="form-control" placeholder="Group Remark" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip for last name" type="text">
+                            <input id="groupInfo-remark"class="form-control" placeholder="Group Remark" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Remark for new group" type="text">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="PostGroupInfo4ModifyAdd()">提交</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="PostGroupInfo4ModifyAdd()">提交</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
@@ -126,7 +96,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="ggroupHelpLabel">Notice</h4>
+                <h4 class="modal-title" id="groupHelpLabel">Notice</h4>
             </div>
             <div id="ajax-modalgrouphelp">
                 <div class="form-group container-fluid">
@@ -145,7 +115,7 @@
 <!--About Me Modal-->
 <script>
     $(document).ready(function(){
-        $('[data-toggle="checkbox"]').radiocheck();
+        Group9GetBackData();
         $('.form-control').tooltip();
     });
 </script>
