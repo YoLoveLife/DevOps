@@ -31,12 +31,12 @@ class Group(models.Model):
         d = {}
         for attr in fields:
             d[attr] = getattr(self, attr)
-
         import json
         return json.dumps(d)
 
 class Host(models.Model):
     id=models.IntegerField(primary_key=True)
+    hostname=models.CharField(max_length=15,default='localhost')
     group_id=models.ForeignKey(Group)
     softlib_id=models.ForeignKey(Softlib,default=0)
     sship=models.CharField(max_length=15,default='192.168.1.1')

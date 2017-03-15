@@ -16,14 +16,15 @@ function OpenGroupModal4AddInfo(modal){
 //Modal For Modify Group Info
 //
 function OpenGroupModal4Modify(modal){
-    var Element=Group9SearchChecked();
-    var list=[Element.childNodes[3].innerHTML,Element.childNodes[5].innerHTML,Element.childNodes[7].innerHTML];
-    ModifyModal(list);
-    $(function() {
+    var Element=Group9SearchChecked();//查询被选中的用户
+    var list=[Element.childNodes[1].innerHTML,Element.childNodes[2].innerHTML,Element.childNodes[3].innerHTML];//获取被选中的组
+    ModifyModal(list);//修改模态框的数据
+    $(function() {//开启模态框
         $(modal).modal({
             keyboard: true
         })
     });
+    Group9FlushPage(Group9GetBackData());//重新从后台获取数据
 }
 
 //
@@ -58,20 +59,15 @@ function Group9SearchChecked() {
 //
 function PostGroupInfo4ModifyAdd(){
     //依据表单内容提交POST
+    var groupid=document.getElementById('groupInfo-id').value;
     var groupname=document.getElementById('groupInfo-name').value;
     var groupremark=document.getElementById('groupInfo-remark').value;
+    if(groupid==""){
+        groupid="0";
+    }
     //POST数据
-    Group9ModifyGroup("0",groupname,groupremark);
+    Group9ModifyGroup(groupid,groupname,groupremark);
     document.getElementById('groupInfo').close;
-}
-
-//
-//Function for change the html page
-//
-function ModifyHTMLPage(group_info_list){
-    var Element=Group9SearchChecked();
-    Element.childNodes[5].innerHTML=group_info_list[1];
-    Element.childNodes[7].innerHTML=group_info_list[2];
 }
 
 //
@@ -86,7 +82,7 @@ function Group9ModifyGroup(groupid,groupname,groupremark){
         success:function(data){//成功修改
             data=JSON.parse(data);
             var list=[groupid,groupname,groupremark];
-            Group9GetBackData();
+            Group9FlushPage(Group9GetBackData());
         },
         error:function(){//修改失败
             console.log("modifyGroup fail");
@@ -95,28 +91,36 @@ function Group9ModifyGroup(groupid,groupname,groupremark){
 }
 
 //
-//Function use by Group page
+//Function for get Group_list
 //
 function Group9GetBackData(){
-    $.ajax({
+  $.ajax({
         url:'groupsearch/',
         type:"GET",
         success:function(group_list){
             group_list=JSON.parse(group_list);
-            var string="";
-            for(var i in group_list){
-                for(var j=0;j<group_list[i].length;j++){
-                    var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
-                    var temp=JSON.parse(group_list[i][j]);
-                    string+='<tr class=\"group-table\"><td>'+checkbox+'</td><td>'+temp['id']+
-                        '</td><td>'+temp['group_name']+'</td><td>'
-                        + temp['remark']+'</td>';
-                }
-            }
-            $('tbody').html(string);
-            $('[data-toggle="checkbox"]').radiocheck();//数据样式变更
+            return group_list
         }
     });
+}
+
+//
+//Function use by Group page
+//
+function Group9FlushPage(group_list){
+    var string="";
+    for(var i in group_list){
+        for(var j=0;j<group_list[i].length;j++){
+            var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
+            var temp=JSON.parse(group_list[i][j]);
+            string+='<tr class=\"group-table\"><td>'+checkbox+'</td><td>'+temp['id']+
+                '</td><td>'+temp['group_name']+'</td><td>'
+                + temp['remark']+'</td>';
+        }
+    }
+    $('tbody').html(string);
+    $('[data-toggle="checkbox"]').radiocheck();//数据样式变更
+
 }
 
 

@@ -22,16 +22,6 @@ $(document).ready(function(){
  Main scripts used by theme
  ---------------------------------------------*/
 //
-// Function for modal show
-//
-function OpenModal(modal){
-    $(function() {
-        $(modal).modal({
-            keyboard: true
-        })
-    });
-}
-//
 //  Function for load content from url and put in $('.ajax-content') block
 //
 function LoadAjaxContent(url){
@@ -52,52 +42,3 @@ function LoadAjaxContent(url){
     });
 }
 
-
-
-
-//模态框有两种模式
-//一种是添加 一种是修改
-//添加需要
-function OpenGroupModal(modal,pagetype){
-    //模态框开启
-    if(pagetype='modify'){
-        //DOM修改
-        //$('')
-    }
-    $(function() {
-        $(modal).modal({
-            keyboard: true
-        })
-    });
-}
-
-//
-//Search the group which is checked
-//
-function Group9SearchChecked(){
-    var tbody=$('#ajax-data').childNodes()[0];
-    alert(tbody.html);
-}
-//
-//Function use by Group page
-//
-function Group9GetBackData(){
-    $.ajax({
-        url:'groupsearch/',
-        type:"GET",
-        success:function(group_list){
-            group_list=JSON.parse(group_list);
-            var string="";
-            var checkbox="<label class=\"checkbox\" for=\"checkbox2\"><input type=\"checkbox\" value=\"\" id=\"checkbox2\" data-toggle=\"checkbox\"></label>";
-            for(var i in group_list){
-                for(var j=0;j<group_list[i].length;j++){
-                    var temp=JSON.parse(group_list[i][j]);
-                    string+='<tr><td>'+checkbox+'</td><td>'+temp['id']+
-                        '</td><td>'+temp['group_name']+'</td><td>'
-                        + temp['remark']+'</td>';
-                }
-            }
-            $('tbody').html(string);
-        }
-    });
-}

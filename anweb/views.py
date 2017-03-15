@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.views.generic.detail import DetailView
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from anweb.models import Group
+from anweb.models import Group,Host
 from django.forms.models import model_to_dict
 from django.core import serializers
 from util import toJSON
@@ -39,10 +39,23 @@ def groupmodify(request):
             'status': "add"
         }))
     else:#UPDATE
-        Group.objects.filter(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark));
+        Group.objects.filter(id=int(group_id)).update(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark))
         return HttpResponse(json.dumps({
             'status': "update"
         }))
+
+@csrf_exempt
+@require_http_methods(["POST"],)
+def hostsearch(request):
+    group_id=request.POST.get('groupid');
+    a=Host.objects.filter(group_id=int(group_id))
+    list = []
+    for i in a:
+        list.append(toJSON(i))
+
+    return HttpResponse(json.dumps({
+        'group_list': list
+    }))
 
 
 '''
