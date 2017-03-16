@@ -94,14 +94,17 @@ function Group9ModifyGroup(groupid,groupname,groupremark){
 //Function for get Group_list
 //
 function Group9GetBackData(){
+    var list;
   $.ajax({
+        async:false,
         url:'groupsearch/',
         type:"GET",
         success:function(group_list){
             group_list=JSON.parse(group_list);
-            return group_list
+            list=group_list;
         }
     });
+    return list;
 }
 
 //
@@ -120,7 +123,6 @@ function Group9FlushPage(group_list){
     }
     $('tbody').html(string);
     $('[data-toggle="checkbox"]').radiocheck();//数据样式变更
-
 }
 
 

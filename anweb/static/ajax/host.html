@@ -112,10 +112,16 @@
 <!--About Me Modal-->
 <script>
     $(document).ready(function(){
-        $('[data-toggle="checkbox"]').radiocheck();
-        $('.form-control').tooltip();
+        /*
         if ($('[data-toggle="select"]').length) {
             $('[data-toggle="select"]').select2();
         }
+        $('[data-toggle="checkbox"]').radiocheck();
+        $('.form-control').tooltip();*/
+
+    });
+    $(document).onload(function(){
+        Host9FlushPage({});
+        $('.form-control').tooltip();
     });
 </script>
