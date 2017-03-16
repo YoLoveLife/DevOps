@@ -6,6 +6,7 @@
 //Function use by Host page
 //
 function Host9GetBackData(groupid){
+    var host_list;
     postdata={"groupid":groupid};
     $.ajax({
         url:'hostsearch/',
@@ -15,34 +16,30 @@ function Host9GetBackData(groupid){
             host_list=JSON.parse(host_list);
         }
     });
+    return host_list;
 }
 
-function Group9FlushPage(host_list){
+function Host9FlushPage(host_list){
     var string="";
-    for(var i in group_list){
-        for(var j=0;j<group_list[i].length;j++){
-            var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
-            var temp=JSON.parse(group_list[i][j]);
-            string+='<tr class="group-table"><td>'+checkbox+'</td><td>'+temp['id']+
-                '</td><td>'+temp['hostname']+
-                    '</td><td>'+temp['apptype']+'</td>'
+    if(host_list={}){
+    }
+    else{
 
-            /*
-             <tr class="group-table">
-                <td>
-                    <label class="checkbox" for="checkbox1">
-                        <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox">
-                    </label>
-                </td>
-                <td>1</td>
-                <td>redis.yo.miracle.com</td>
-                <td>Redis</td>
-            </tr>
-            */
+        for(var i in group_list){
+            for(var j=0;j<group_list[i].length;j++){
+                var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
+                var temp=JSON.parse(group_list[i][j]);
+                string+='<tr class="group-table"><td>'+checkbox+'</td><td>'+temp['id']+
+                    '</td><td>'+temp['hostname']+
+                        '</td><td>'+temp['apptype']+'</td>'
+            }
         }
     }
     $('tbody').html(string);
     $('[data-toggle="checkbox"]').radiocheck();//数据样式变更
+        if ($('[data-toggle="select"]').length) {
+            $('[data-toggle="select"]').select2();
+        }
 }
 
 /*
