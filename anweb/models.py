@@ -19,20 +19,11 @@ class State(models.Model):
     id=models.IntegerField(primary_key=True)
     state_name=models.CharField(max_length=100)
 
+
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
     group_name=models.CharField(max_length=100)
     remark=models.CharField(max_length=100)
-    def toJSON(self):
-        fields = []
-        for field in self._meta.fields:
-            fields.append(field.name)
-
-        d = {}
-        for attr in fields:
-            d[attr] = getattr(self, attr)
-        import json
-        return json.dumps(d)
 
 class Host(models.Model):
     id=models.IntegerField(primary_key=True)

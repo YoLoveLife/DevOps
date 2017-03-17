@@ -6,9 +6,9 @@ from django.views.generic.detail import DetailView
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from anweb.models import Group,Host
-from django.forms.models import model_to_dict
 from django.core import serializers
 from util import toJSON
+from anweb import model2json
 import json
 '''
 METHOD:GET
@@ -33,7 +33,6 @@ def groupsearch(request):
     list = []
     for i in a:
         list.append(toJSON(i))
-
     return HttpResponse(json.dumps({
         'group_list': list
     }))
@@ -72,11 +71,16 @@ ASYNC:false
 @csrf_exempt
 @require_http_methods(["POST"],)
 def hostsearch(request):
-    group_id=request.POST.get('groupid');
+    group_id=request.POST.get('group_id');
     a=Host.objects.filter(group_id=int(group_id))
     list = []
+    '''
     for i in a:
         list.append(toJSON(i))
+        print(type(i))
+    '''
+    data=serializers.serialize('json',a,)
+    model2json.host9hostsearch(data)
     return HttpResponse(json.dumps({
         'host_list': list
     }))

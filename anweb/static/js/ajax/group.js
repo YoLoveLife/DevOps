@@ -28,7 +28,7 @@ function OpenGroupModal4Modify(modal){
 }
 
 //
-//Function for change the modal in HTML
+//Function for change the modal
 //
 function ModifyModal(group_info_list){
     document.getElementById('groupInfo-id').setAttribute('value',group_info_list[0]);
@@ -50,7 +50,18 @@ function Group9SearchChecked() {
             //groups[i]就是每一行 每一行的第一个元素firstElementChild就是所谓的checkbox 但是这里的checkbox由两部分组成<label><input></label>我们所需要的是input中的属性
             //如果被选中的话
             return groups[i]
+            Group9CleanChecked();
         }
+    }
+}
+
+//
+//Clean checked
+//
+function Group9CleanChecked(){
+    var groups = document.getElementsByClassName('group-table');//这是一个NodeList以列表的形式包含列表内的每一行元素
+    for (var i = 0; i < groups.length; i++) {//遍历NodeLists中的所有元素 每一次就是一行
+        groups[i].firstElementChild.firstElementChild.firstElementChild.checked=false;
     }
 }
 
@@ -65,7 +76,7 @@ function PostGroupInfo4ModifyAdd(){
     if(groupid==""){
         groupid="0";
     }
-    //POST数据
+    //POST数据z`
     Group9ModifyGroup(groupid,groupname,groupremark);
     document.getElementById('groupInfo').close;
 }
@@ -100,8 +111,7 @@ function Group9GetBackData(){
         url:'groupsearch/',
         type:"GET",
         success:function(group_list){
-            group_list=JSON.parse(group_list);
-            list=group_list;
+            list=JSON.parse(group_list);
         }
     });
     return list;
@@ -113,7 +123,7 @@ function Group9GetBackData(){
 function Group9FlushPage(group_list){
     var string="";
     for(var i in group_list){
-        for(var j=0;j<group_list[i].length;j++){
+        for(var j=1;j<group_list[i].length;j++){
             var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
             var temp=JSON.parse(group_list[i][j]);
             string+='<tr class=\"group-table\"><td>'+checkbox+'</td><td>'+temp['id']+
