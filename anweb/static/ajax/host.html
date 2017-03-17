@@ -14,13 +14,7 @@
     <hr/>
     <div class="row">
         <div class="col-xs-3 jax-toolbar-col">
-            <select id="host-grouplist"class="form-control select select-primary ajax-toolbar" data-toggle="select">
-                <option value="0" selected>Choose hero</option>
-                <option value="1">Spider Man</option>
-                <option value="2">Wolverine</option>
-                <option value="3">Captain America</option>
-                <option value="4">X-Men</option>
-                <option value="5">Crocodile</option>
+            <select id="host-grouplist"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
             </select>
         </div>
         <div class="col-xs-3 jax-toolbar-col">
@@ -118,10 +112,8 @@
         }
         $('[data-toggle="checkbox"]').radiocheck();
         $('.form-control').tooltip();*/
-
-    });
-    $(document).onload(function(){
-        Host9FlushPage({});
+        Host9FlushGroupList();
+        Host9FlushPage(Host9GetBackData(0));
         $('.form-control').tooltip();
     });
 </script>
