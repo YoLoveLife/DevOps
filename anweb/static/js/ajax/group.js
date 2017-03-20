@@ -111,6 +111,7 @@ function Group9GetBackData(){
         url:'groupsearch/',
         type:"GET",
         success:function(group_list){
+            console.log(group_list);
             list=JSON.parse(group_list);
         }
     });

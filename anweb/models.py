@@ -19,7 +19,6 @@ class State(models.Model):
     id=models.IntegerField(primary_key=True)
     state_name=models.CharField(max_length=100)
 
-
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
     group_name=models.CharField(max_length=100)
@@ -28,8 +27,8 @@ class Group(models.Model):
 class Host(models.Model):
     id=models.IntegerField(primary_key=True)
     hostname=models.CharField(max_length=15,default='localhost')
-    group_id=models.ForeignKey(Group)
-    softlib_id=models.ForeignKey(Softlib,default=0)
+    group=models.ForeignKey(Group)
+    softlib=models.ForeignKey(Softlib,default=0)
     sship=models.CharField(max_length=15,default='192.168.1.1')
     sshpasswd=models.CharField(max_length=100,default='000000')
     sshport=models.CharField(max_length=5,default='22')

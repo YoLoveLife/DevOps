@@ -6,18 +6,23 @@
 //Function use by Host page
 //
 function Host9GetBackData(group_id){
-    var host_list={};
+    var list=[];
+    if(group_id=="0")
+    {
+        return list;
+    }
     postdata={"group_id":group_id};
     $.ajax({
-        afync:false,
+        async:false,
         url:'hostsearch/',
-        type:"POST",
+        type:"GET",
         data:postdata,
+        dataType:"json",
         success:function(host_list){
-            host_list=JSON.parse(host_list);
+            list=host_list;
         }
     });
-    return host_list;
+    return list;
 }
 
 //
@@ -33,8 +38,8 @@ function Host9FlushPage(host_list){
                 var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
                 var temp=JSON.parse(host_list[i][j]);
                 string+='<tr class="group-table"><td>'+checkbox+'</td><td>'+temp['id']+
-                    '</td><td>'+temp['hostname']+
-                        '</td><td>'+"APP"+'</td>';
+                    '</td><td>'+temp['hostname']+'</td><td>'+temp['sship']+
+                        '</td><td>'+temp['app_type']+'</td>';
             }
         }
     }
@@ -48,9 +53,10 @@ function Host9FlushPage(host_list){
 //
 function Host9FlushGroupList(){
     var group_list  =  Group9GetBackData();
+    //string="";
     string='<option value=\"0\" selected>No Selected</option>';
     for(var i in group_list){
-        for(var j=1;j<group_list[i].length;j++){
+        for(var j=0;j<group_list[i].length;j++){
             var temp=JSON.parse(group_list[i][j]);
             string+="<option value=\""+temp['id']+"\">"+temp['group_name']+ "</option>";
         }
