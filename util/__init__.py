@@ -2,7 +2,7 @@
 # !/usr/bin/env python
 # Author Yo
 # Email YoLoveLife@outlook.com
-
+import json
 FTP='192.168.254.134'
 CHECKSUM=1
 
@@ -19,3 +19,6 @@ def toJSON(self):
         else:
             d[attr]=getattr(self, attr)
     return json.dumps(d)
+
+def str2dict(data):
+    return json.loads(data)

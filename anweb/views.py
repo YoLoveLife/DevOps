@@ -8,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from anweb.models import Group,Host
 from django.core import serializers
 from util import toJSON
-from anweb import model2json
+from anweb import service
 import json
 '''
 METHOD:GET
@@ -18,7 +18,6 @@ ASYNC:true
 '''
 @require_http_methods(["GET"])
 def index(request):
-    #return HttpResponse('this is test result')
     return render(request, 'index.html',{})
 
 '''
@@ -29,10 +28,10 @@ ASYNC:false
 '''
 @require_http_methods(["GET",])
 def groupsearch(request):
-    a = Group.objects.all()
-    list = []
-    for i in a:
-        list.append(toJSON(i))
+    list=service.group9groupsearch()
+    print(json.dumps({
+        'group_list': list
+    }))
     return HttpResponse(json.dumps({
         'group_list': list
     }))
@@ -46,41 +45,29 @@ ASYNC:true
 @csrf_exempt
 @require_http_methods(["POST"],)
 def groupmodify(request):
-    group_id=request.POST.get('groupid');
-    group_name=request.POST.get('groupname');
-    group_remark=request.POST.get('groupremark');
-    if group_id == "0":#ADD
-        group=Group(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark))
-        group.save()
-        return HttpResponse(json.dumps({
-            'status': "add"
-        }))
-    else:#UPDATE
-        Group.objects.filter(id=int(group_id)).update(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark))
-        return HttpResponse(json.dumps({
-            'status': "update"
-        }))
+    group_id=request.POST.get('groupid')
+    group_name=request.POST.get('groupname')
+    group_remark=request.POST.get('groupremark')
+    service.group9modifygroup(group_id,group_name,group_remark)
+    return HttpResponse(json.dumps({
+        'status': "1"
+    }))
 
 '''
-METHOD:POST
+METHOD:GET
 URL:/anweb/hostsearch
 POST:groupid
 RETURN:list of host for groupid
 ASYNC:false
 '''
 @csrf_exempt
-@require_http_methods(["POST"],)
+@require_http_methods(["GET"],)
 def hostsearch(request):
-    group_id=request.POST.get('group_id');
-    a=Host.objects.filter(group_id=int(group_id))
-    list = []
-    '''
-    for i in a:
-        list.append(toJSON(i))
-        print(type(i))
-    '''
-    data=serializers.serialize('json',a,)
-    model2json.host9hostsearch(data)
+    group_id=request.GET.get('group_id')
+    list=service.host9hostsearch(group_id)
+    print(json.dumps({
+        'host_list': list
+    }))
     return HttpResponse(json.dumps({
         'host_list': list
     }))
