@@ -42,3 +42,13 @@ function LoadAjaxContent(url){
     });
 }
 
+//
+//Function for open mdal
+//
+function OpenModal(modal){
+    $(function() {
+        $(modal).modal({
+            keyboard: true
+        })
+    });
+}
