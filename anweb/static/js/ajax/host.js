@@ -3,6 +3,11 @@
  */
 
 //
+//Function for open modal
+//
+
+
+//
 //Function use by Host page
 //
 function Host9GetBackData(group_id){
@@ -70,9 +75,10 @@ function Host9FlushGroupList(){
 //
 //Function Group Pick up and show the host table
 //
-function Host9PickGroup(){
-    var objSelect=document.getElementById('host-grouplist');
-    var groupid=objSelect.options[objSelect.selectedIndex].value;
-    var list=Host9GetBackData(groupid);
+function Host9PickGroup() {
+    var objSelect = document.getElementById('host-grouplist');
+    var groupid = objSelect.options[objSelect.selectedIndex].value;
+    var list = Host9GetBackData(groupid);
     Host9FlushPage(list);
+
 }

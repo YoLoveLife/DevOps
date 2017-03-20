@@ -1,8 +1,12 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-12" id="ajax-logo">
+        <div class="col-lg-1" id="ajax-logo">
             <a class="fui-list-large-thumbnails"></a>
-            <small id="ajax-index">Cherry/Host</small>
+        </div>
+        <div class="col-lg-8" id="ajax-title">
+            <small id="ajax-index">Manager/Host</small>
+        </div>
+        <div class="col-lg-3" id="ajax-linklogo">
             <div id="ajax-link">
                 <a href="#"><i class="fui-facebook"></i></a>
                 <a href="#"><i class="fui-github"></i></a>
@@ -20,9 +24,10 @@
         <div class="col-xs-3 jax-toolbar-col">
             <div class="btn-toolbar ajax-toolbar">
                 <div class="btn-group">
-                    <a class="btn btn-primary" onclick=""><span class="fui-list-thumbnailed"></span></a>
+                    <a class="btn btn-primary" onclick="OpenModal('#batchsubmit')"><span class="fui-list-thumbnailed"></span></a>
                     <a class="btn btn-primary" onclick=""><span class="fui-home"></span></a>
                     <a class="btn btn-primary" onclick=""><span class="fui-chat"></span></a>
+                    <a class="btn btn-primary" onclick="OpenModal('#hostHelp')"><span class="fui-question-circle"></span></a>
                 </div>
             </div> <!-- /toolbar -->
         </div>
@@ -57,44 +62,17 @@
 
 
 <!--About Me Modal-->
-<div class="modal fade" id="hostInfo" tabindex="-1" role="dialog" aria-labelledby="hostInfoLabel" aria-hidden="true">
+<div class="modal fade" id="hostHelp" tabindex="-1" role="dialog" aria-labelledby="hostHelpLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="hostInfoLabel">Group Info</h4>
+                <h4 class="modal-title" id="hostHelpLabel">Notice</h4>
             </div>
-            <div id="ajax-modalhostInfo">
+            <div id="ajax-modalhostHelp">
                 <div class="form-group container-fluid">
                     <div class="row row-modal">
-                        <label class="col-sm-4 control-label" >Group ID</label>
-                        <div class="col-sm-4">
-                            <input id="hostInfo-id"class="form-control" placeholder="Autogeneration" data-toggle="tooltip" data-placement="top" title="" disabled="" data-original-title="Hello world!" type="text">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">提交</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-<!--About Me Modal-->
-
-<!--About Me Modal-->
-<div class="modal fade" id="groupHelp" tabindex="-1" role="dialog" aria-labelledby="groupHelpLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="ggroupHelpLabel">Notice</h4>
-            </div>
-            <div id="ajax-modalgrouphelp">
-                <div class="form-group container-fluid">
-                    <div class="row row-modal">
-                        <p>应用组管理</p>
+                        <p>应用主机管理</p>
                         <p>Notice</p>
                     </div>
                 </div>
@@ -106,16 +84,9 @@
     </div><!-- /.modal -->
 </div>
 <!--About Me Modal-->
+
 <script>
     $(document).ready(function(){
-        /*
-        if ($('[data-toggle="select"]').length) {
-            $('[data-toggle="select"]').select2();
-        }
-        $('[data-toggle="checkbox"]').radiocheck();
-        $('.form-control').tooltip();*/
-        Host9FlushGroupList();
-        Host9FlushPage(Host9GetBackData(0));
         $('.form-control').tooltip();
     });
 </script>
