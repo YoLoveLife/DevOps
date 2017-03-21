@@ -17,77 +17,137 @@
     </div>
     <hr/>
     <div class="row">
-        <div class="col-xs-3 ajax-toolbar-col">
-            <div class="btn-toolbar ajax-toolbar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" onclick="OpenGroupModal4AddInfo('#groupInfo')"><span class="fui-plus-circle"></span></a>
-                    <a class="btn btn-primary" disabled><span class="fui-cross-circle"></span></a>
-                    <a class="btn btn-primary" onclick="OpenGroupModal4Modify('#groupInfo')"><span class="fui-gear"></span></a>
-                    <a class="btn btn-primary" onclick="OpenGroupModal4AddInfo('#groupHelp')"><span class="fui-question-circle"></span></a>
-                </div>
-            </div> <!-- /toolbar -->
+        <div class="jax-toolbar-col">
+            <select id="batch-grouplist"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+            </select>
         </div>
     </div>
     <div class="row" style="margin-left: 10px;margin-right: 10px;margin-top: 15px;">
-        <div class="col-xs-4">
-            <div class="todo">
-                <ul>
-                    <li class="todo-done">
-                        <div class="todo-content">
-                            <h4 class="todo-name">
-                                Meet Adrian at 6pm
-                            </h4>
-                            Times Square
-                        </div>
-                    </li>
-                    <li class="todo-done">
-                        <div class="todo-content">
-                            <h4 class="todo-name">
-                                Chat with V.Kudinov
-                            </h4>
-                            Skype conference an 9 am
-                        </div>
-                    </li>
-                    <li class="todo-done">
-                        <div class="todo-content">
-                            <h4 class="todo-name">
-                                Watch Iron Man
-                            </h4>
-                            1998 Broadway
-                        </div>
-                    </li>
-                    <li class="todo-done">
-                        <div class="todo-content">
-                            <h4 class="todo-name">
-                                Fix bug on a <strong>Website</strong>
-                            </h4>
-                            As soon as possible
-                        </div>
-                    </li>
-                </ul>
-            </div><!-- /.todo -->
-        </div><!-- /.col-xs-4 -->
+        <div class="col-lg-5">
+                <div class="todo">
+                    <ul>
+                        <li class="todo-done">
+                            <div class="todo-content">
+                                <h4 class="todo-name">
+                                    Meet Adrian at 6pm
+                                </h4>
+                                Times Square
+                            </div>
+                        </li>
+                        <li class="todo-done">
+                            <div class="todo-content">
+                                <h4 class="todo-name">
+                                    Chat with V.Kudinov
+                                </h4>
+                                Skype conference an 9 am
+                            </div>
+                        </li>
+                        <li class="todo-done">
+                            <div class="todo-content">
+                                <h4 class="todo-name">
+                                    Watch Iron Man
+                                </h4>
+                                1998 Broadway
+                            </div>
+                        </li>
+                        <li class="todo-done">
+                            <div class="todo-content">
+                                <h4 class="todo-name">
+                                    Fix bug on a <strong>Website</strong>
+                                </h4>
+                                As soon as possible
+                            </div>
+                        </li>
+                    </ul>
+                </div><!-- /.todo -->
+        </div>
+        <div class="col-lg-7">
+            <div class="row row-batchbtn">
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info" onclick="OpenModal('#batchtomcat')">Tomcat</a>
+                </div>
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info">Nginx</a>
+                </div>
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info">Redis</a>
+                </div>
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info">MySQL</a>
+                </div>
+            </div>
+            <div class="row row-batchbtn">
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-default disabled">RabbitMQ</a>
+                </div>
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-default disabled">Erlang</a>
+                </div>
+                <div class="col-xs-3">
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-default disabled">Zabbix-Agent</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 
 <!--About Me Modal-->
-<div class="modal fade" id="groupHelp" tabindex="-1" role="dialog" aria-labelledby="groupHelpLabel" aria-hidden="true">
+<div class="modal fade" id="batchtomcat" tabindex="-1" role="dialog" aria-labelledby="batchtomcatLabel" aria-hidden="true" style="width:auto;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="groupHelpLabel">Notice</h4>
+                <h4 class="modal-title" id="batchtomcatLabel">Tomcat Batch</h4>
             </div>
-            <div id="ajax-modalgrouphelp">
+            <div id="ajax-modalbatchtomcat">
                 <div class="form-group container-fluid">
                     <div class="row row-modal">
-                        <p>应用组管理</p>
-                        <p>Notice</p>
+                        <div class="col-lg-3" style="margin-top: 20px;margin-bottom: 7px;">
+                            <p>JDK Choice</p>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="jax-toolbar-col">
+                                <select id="batch-jdkversion"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-modal" style="margin-bottom: 10px;">
+                        <div class="col-lg-3" style="margin-top: 20px;margin-bottom: 7px;">
+                            <p>Tomcat Choice</p>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="jax-toolbar-col">
+                                <select id="batch-tomcatversion"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                        <div class="col-lg-3" style="margin-bottom: 7px;margin-top: 7px;">
+                            <p>JDK Prefix</p>
+                        </div>
+                        <div class="col-lg-5" style="margin-left: 25px;">
+                            <div class="form-group">
+                                <input type="text" value="/usr/local" placeholder="JDK" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                        <div class="col-lg-3" style="margin-bottom: 7px;margin-top: 7px;">
+                            <p>Tomcat Prefix</p>
+                        </div>
+                        <div class="col-lg-5" style="margin-left: 25px;">
+                            <div class="form-group">
+                                <input type="text" value="/usr/local" placeholder="Tomcat" class="form-control" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Batch9PostTomcat()">提交</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
@@ -100,5 +160,8 @@
         $('.todo').on('click', 'li', function () {
             $(this).toggleClass('todo-done');
         });
+        if ($('[data-toggle="select"]').length) {
+            $('[data-toggle="select"]').select2();
+        };
     });
 </script>

@@ -4,6 +4,7 @@
 //
 //Modal For Add and Info
 //
+/*
 function OpenGroupModal4AddInfo(modal){
     $(function() {
         $(modal).modal({
@@ -11,6 +12,7 @@ function OpenGroupModal4AddInfo(modal){
         })
     });
 }
+*/
 
 //
 //Modal For Modify Group Info
