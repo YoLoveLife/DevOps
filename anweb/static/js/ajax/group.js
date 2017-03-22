@@ -52,7 +52,6 @@ function Group9SearchChecked() {
             //groups[i]就是每一行 每一行的第一个元素firstElementChild就是所谓的checkbox 但是这里的checkbox由两部分组成<label><input></label>我们所需要的是input中的属性
             //如果被选中的话
             return groups[i]
-            Group9CleanChecked();
         }
     }
 }
@@ -107,17 +106,17 @@ function Group9ModifyGroup(groupid,groupname,groupremark){
 //Function for get Group_list
 //
 function Group9GetBackData(){
-    var list;
-  $.ajax({
+    var list=[];
+    $.ajax({
         async:false,
         url:'groupsearch/',
         type:"GET",
+        dataType:"json",
         success:function(group_list){
-            console.log(group_list);
-            list=JSON.parse(group_list);
+            list=group_list;
         }
     });
-    return list;
+  return list;
 }
 
 //

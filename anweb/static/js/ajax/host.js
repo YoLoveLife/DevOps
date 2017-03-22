@@ -80,5 +80,4 @@ function Host9PickGroup() {
     var groupid = objSelect.options[objSelect.selectedIndex].value;
     var list = Host9GetBackData(groupid);
     Host9FlushPage(list);
-
 }

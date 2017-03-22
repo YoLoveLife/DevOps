@@ -29,9 +29,6 @@ ASYNC:false
 @require_http_methods(["GET",])
 def groupsearch(request):
     list=service.group9groupsearch()
-    print(json.dumps({
-        'group_list': list
-    }))
     return HttpResponse(json.dumps({
         'group_list': list
     }))
@@ -65,9 +62,22 @@ ASYNC:false
 def hostsearch(request):
     group_id=request.GET.get('group_id')
     list=service.host9hostsearch(group_id)
-    print(json.dumps({
+    return HttpResponse(json.dumps({
         'host_list': list
     }))
+
+'''
+METHOD:GET
+URL:/anweb/softversion
+POST:app_id
+RETURN:list of app version
+ASYNC:false
+'''
+@csrf_exempt
+@require_http_methods(["GET"],)
+def softversion(request):
+    appname=request.GET.get('appname')
+    list=service.batch9appversion(appname)
     return HttpResponse(json.dumps({
         'host_list': list
     }))

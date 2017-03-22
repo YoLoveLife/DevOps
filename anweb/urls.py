@@ -13,4 +13,5 @@ urlpatterns = [
    url(r'^groupsearch/',views.groupsearch,name='groupsearch'),
    url(r'^groupmodify/',views.groupmodify,name='groupmodify'),
    url(r'^hostsearch/',views.hostsearch,name='hostsearch'),
+   url(r'^softversion/',views.softversion,name='softversion'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

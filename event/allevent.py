@@ -69,7 +69,7 @@ def evt_nginx_control(server='other',control='help',pid='/usr/local/nginx/logs/n
     info:tomcat的安装
 '''
 def evt_tomcat_install(server='other',version='7.0.72',prefix='/usr/local',java_opts='',checksum='c24bfae15bb9c510451a05582aae634d'):
-    tomcatpb.tomcat_installplaybook(server==server,version=version,prefix=prefix,java_opts=java_opts,checksum=checksum)
+    tomcatpb.tomcat_installplaybook(server=server,version=version,prefix=prefix,java_opts=java_opts,checksum=checksum)
     tomcatpb.tomcat_controlplaybook(server=server,control='start')
 
 def evt_tomcat_control(server='other',control='help'):
