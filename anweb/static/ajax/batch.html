@@ -18,14 +18,14 @@
     <hr/>
     <div class="row">
         <div class="jax-toolbar-col">
-            <select id="batch-grouplist"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+            <select id="host-grouplist" class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Batch9PickGroup()">
             </select>
         </div>
     </div>
     <div class="row" style="margin-left: 10px;margin-right: 10px;margin-top: 15px;">
         <div class="col-lg-5">
                 <div class="todo">
-                    <ul>
+                    <ul id="batch-host">
                         <li class="todo-done">
                             <div class="todo-content">
                                 <h4 class="todo-name">
@@ -61,10 +61,10 @@
                     </ul>
                 </div><!-- /.todo -->
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-7" id="batch-btn">
             <div class="row row-batchbtn">
                 <div class="col-xs-3">
-                    <a href="#fakelink" class="btn btn-block btn-lg btn-info" onclick="OpenModal('#batchtomcat')">Tomcat</a>
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info" onclick="OpenBatchModal4Tomcat('#batchtomcat')">Tomcat</a>
                 </div>
                 <div class="col-xs-3">
                     <a href="#fakelink" class="btn btn-block btn-lg btn-info">Nginx</a>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="col-lg-2">
                             <div class="jax-toolbar-col">
-                                <select id="batch-jdkversion"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+                                <select id="batch-jdkversion" class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
                                 </select>
                             </div>
                         </div>
@@ -163,5 +163,6 @@
         if ($('[data-toggle="select"]').length) {
             $('[data-toggle="select"]').select2();
         };
+        Batch9DataInit();
     });
 </script>

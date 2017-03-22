@@ -49,3 +49,16 @@ def host9hostsearch(group_id):
         list.append(json.dumps(tmpdict))
     return list
 
+'''
+PARM:appname
+RETURN:返回应用程序的版本
+USE:
+'''
+def batch9appversion(appname):
+    soft=Soft.objects.filter(soft_name=appname)
+    versionlist=Softlib.objects.filter(soft_type=soft)
+    list=[]
+    for version in versionlist:
+        tmpdict=model_to_dict(version)
+        list.append(json.dumps(tmpdict))
+    return list
