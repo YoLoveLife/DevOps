@@ -52,3 +52,12 @@ function OpenModal(modal){
         })
     });
 }
+
+//
+//Function for list pick up
+//
+function ListPickUp(listname){
+    var objSelect = document.getElementById(listname);
+    var objvalue = objSelect.options[objSelect.selectedIndex].value;
+    return objvalue;
+}
