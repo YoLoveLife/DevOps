@@ -31,8 +31,7 @@ function Batch9DataInit(){
 //Function for Pick up Group
 //
 function Batch9PickGroup(){
-    var objSelect = document.getElementById('host-grouplist');
-    var groupid = objSelect.options[objSelect.selectedIndex].value;
+    var groupid=ListPickUp('host-grouplist')
     var list = Host9GetBackData(groupid);
     Batch9FlushPage(list);
 }
@@ -51,7 +50,7 @@ function Batch9FlushPage(host_list){
         for(var i in host_list){
             for(var j=0;j<host_list[i].length;j++){
                 var temp=JSON.parse(host_list[i][j]);
-                string+='<li class="todo-done"><div class="todo-icon fui-dropbox"></div><div class="todo-content"><h4 class="todo-name">'+
+                string+='<li><div class="todo-icon fui-dropbox"></div><div class="todo-content"><h4 class="todo-name">'+
                     temp['hostname']+'</h4>'+temp['sship']+'</div></li>';
             }
         }
@@ -77,29 +76,75 @@ function Batch9Version(version_list,modallist){
     };
 }
 
+
+//
+//Function get postdata
+//
+function Batch9GetTomcatPostData(){
+    var list=[];
+    var objHostlist=document.getElementsByClassName('todo-done');
+    if(objHostlist.length==0){
+        return list;
+    }
+    for(var i=0;i<objHostlist.length;i++){
+        var sship=objHostlist[i].firstElementChild.nextElementSibling.lastChild;
+        list.push(sship.data);
+    }
+    return list
+}
+
+//
+//Function for tomcat modal data get
+//
+function Batch9TomcatModalGet() {
+    var postdata={};
+    var iplist=Batch9GetTomcatPostData();
+    var javaversion=ListPickUp("batch-jdkversion");
+    var tomcatversion=ListPickUp("batch-tomcatversion");
+    var javaprefix=document.getElementById("batch-prefix-java").value;
+    var tomcatprefix=document.getElementById("batch-prefix-tomcat").value;
+    if(javaversion=="0"||tomcatversion=="0"||javaprefix.length==0||tomcatprefix.length==0){
+        alert("未选择");
+        return ;
+    }
+    //
+    postdata['iplist[]']=iplist;
+    postdata['javaversion']=javaversion;
+    postdata['tomcatversion']=tomcatversion;
+    postdata['javaprefix']=javaprefix;
+    postdata['tomcatprefix']=tomcatprefix;
+    return postdata;
+}
+
 //
 //Function for post the tomcat install
 //
 function Batch9PostTomcat(){
-    //数据获取
-    //
-    var list=[];
+    var postdata=Batch9TomcatModalGet();
+    console.log(postdata);
+    if(postdata.length==0){
+        return ;
+    }
     $.ajax({
         async:false,
-        url:'batchgetapptype/',
-        type:"GET",
-        dataType:"json",
-        success:function(host_list){
-            list=host_list;
+        url:'batchtomcat/',
+        type:"POST",
+        data:postdata,
+        success:function(status){
+            return ;
         }
     });
-    return list;
 }
 
 //
 //Function OpenBatchModal4Tomcat
 //
 function OpenBatchModal4Tomcat(modal){
+    var iplist=Batch9GetTomcatPostData();
+    if(iplist.length==0) {
+        alert("未选择");
+        return ;
+    }
     $(function() {
         $(modal).modal({
             keyboard: true

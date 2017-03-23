@@ -78,6 +78,31 @@ ASYNC:false
 def softversion(request):
     appname=request.GET.get('appname')
     list=service.batch9appversion(appname)
+    print(list)
     return HttpResponse(json.dumps({
         'host_list': list
+    }))
+
+'''
+METHOD:GET
+URL:/anweb/batchtomcat
+POST:list of tomcat install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchtomcat(request):
+    iplist=request.POST.getlist('iplist[]');
+    javaversion=request.POST.get('javaversion');
+    tomcatversion=request.POST.get('tomcatversion');
+    javaprefix=request.POST.get('javaprefix');
+    tomcatprefix=request.POST.get('tomcatprefix');
+    print(iplist)
+    print(javaversion)
+    print(tomcatversion)
+    print(javaprefix)
+    print(tomcatprefix)
+    return HttpResponse(json.dumps({
+        'status': 'success'
     }))

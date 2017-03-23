@@ -14,4 +14,5 @@ urlpatterns = [
    url(r'^groupmodify/',views.groupmodify,name='groupmodify'),
    url(r'^hostsearch/',views.hostsearch,name='hostsearch'),
    url(r'^softversion/',views.softversion,name='softversion'),
+   url(r'^batchtomcat/',views.batchtomcat,name='batchtomcat'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
