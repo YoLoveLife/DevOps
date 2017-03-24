@@ -11,3 +11,8 @@ def inventory_maker(host_list):
     output=open(FILE,'w')
     for host in host_list:
         output.writelines(host+"\n")
+    output.close()
+
+def inventory_clear():
+    if os.path.exists(FILE):
+        os.remove(FILE)

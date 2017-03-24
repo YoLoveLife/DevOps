@@ -8,6 +8,8 @@ from django.core import serializers
 from util import toJSON,str2dict
 from anweb.models import Group,Host,Softlib,Soft
 from django.forms.models import model_to_dict
+from event import allevent
+from inventory import maker
 import json
 '''
 PARM:null
@@ -62,3 +64,21 @@ def batch9appversion(appname):
         tmpdict=model_to_dict(version)
         list.append(json.dumps(tmpdict))
     return list
+
+'''
+PARM:info for install tomcat
+RETURN:执行结果
+USE:
+'''
+def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix):
+    print(iplist)
+    print(javaversion)
+    print(tomcatversion)
+    print(javaprefix)
+    print(tomcatprefix)
+    tomcatversion = Softlib.objects.get(id=tomcatversion).soft_version
+    javaversion=Softlib.objects.get(id=javaversion).soft_version
+    maker.inventory_maker(iplist)
+    allevent.evt_java_install(server='all',version=javaversion,prefix=javaprefix,)
+    allevent.evt_tomcat_install(server='all',version=tomcatversion,prefix=tomcatprefix,)
+    maker.inventory_clear()
