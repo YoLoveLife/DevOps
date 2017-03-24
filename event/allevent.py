@@ -62,8 +62,13 @@ def evt_nginx_reconfigure(server='other',prefix='/usr/local',
     nginxpb.nginx_controlplaybook(server=server,control=reload,pid=prefix+'/'+pid)
 
 def evt_nginx_control(server='other',control='help',pid='/usr/local/nginx/logs/nginx.pid'):
-
     nginxpb.nginx_controlplaybook(server=server,control=control,pid=pid)
+
+'''
+    info:java的安装
+'''
+def evt_java_install(server='other',version='7u79',prefix='/usr/local',checksum='9222e097e624800fdd9bfb568169ccad'):
+    javapb.java_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum)
 
 '''
     info:tomcat的安装
@@ -73,7 +78,7 @@ def evt_tomcat_install(server='other',version='7.0.72',prefix='/usr/local',java_
     tomcatpb.tomcat_controlplaybook(server=server,control='start')
 
 def evt_tomcat_control(server='other',control='help'):
-    tomcatpb.tomcat_controlplaybook(server=server,control=control)
+    tomcatpb.tomcat_controlplaybook(server=server,control='start')
 
 '''
     info:redis安装 重新配置
@@ -106,7 +111,6 @@ def evt_shell_control(server='other',control='hostname'):
     shellpb.shell_book(server,control)
 
 
-#maker.inventory_maker(['192.168.254.132'])
-#evt_nginx_control(server='all',control='stop')
-#evt_redis_remove(server='all')
-#evt_nginx_install(server="all",checksum="088292d9caf6059ef328aa7dda332e44")
+#maker.inventory_maker(['192.168.254.129'])
+#evt_redis_remove(server="all",)
+#evt_redis_install(server="all",)

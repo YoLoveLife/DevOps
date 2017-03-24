@@ -1,13 +1,8 @@
 from django.shortcuts import render
 # Create your views here.
-from event import allevent
 from django.http import HttpResponse
-from django.views.generic.detail import DetailView
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from anweb.models import Group,Host
-from django.core import serializers
-from util import toJSON
 from anweb import service
 import json
 '''
@@ -93,16 +88,12 @@ ASYNC:true
 @csrf_exempt
 @require_http_methods(["POST"],)
 def batchtomcat(request):
-    iplist=request.POST.getlist('iplist[]');
-    javaversion=request.POST.get('javaversion');
-    tomcatversion=request.POST.get('tomcatversion');
-    javaprefix=request.POST.get('javaprefix');
-    tomcatprefix=request.POST.get('tomcatprefix');
-    print(iplist)
-    print(javaversion)
-    print(tomcatversion)
-    print(javaprefix)
-    print(tomcatprefix)
+    iplist=request.POST.getlist('iplist[]')
+    javaversion=request.POST.get('javaversion')
+    tomcatversion=request.POST.get('tomcatversion')
+    javaprefix=request.POST.get('javaprefix')
+    tomcatprefix=request.POST.get('tomcatprefix')
+    status=service.batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix);
     return HttpResponse(json.dumps({
-        'status': 'success'
+        'status': status
     }))
