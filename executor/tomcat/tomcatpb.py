@@ -7,7 +7,7 @@ from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 from scripts import SCRIPTS_DIR
-
+from template import TEMPLATEDIR
 def tomcat_installplaybook(server='other',version='7.0.72',prefix='/usr/local',java_opts='',checksum='c24bfae15bb9c510451a05582aae634d'):
     _ext_vars = {
         'version':version,
@@ -27,7 +27,7 @@ def tomcat_installplaybook(server='other',version='7.0.72',prefix='/usr/local',j
                        args="%s/tomcat/tomcat_install.sh -v {{version}} -f {{prefix}}"%SCRIPTS_DIR, )
     task3 = PersonTask(module="file", args="dest=~/{{file}} state=absent", )
     task4 = PersonTask(module="template",
-                       args="dest={{basedir}}/bin/setenv.sh src=../template/setenv.j2 owner=root group=root mode=755", )
+                       args="dest={{basedir}}/bin/setenv.sh src=%s/setenv.j2 owner=root group=root mode=755"%TEMPLATEDIR, )
     pb.add_task(task1)
     pb.add_task(task2)
     pb.add_task(task3)

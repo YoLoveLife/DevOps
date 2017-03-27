@@ -7,6 +7,7 @@ from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 from scripts import SCRIPTS_DIR
+from template import TEMPLATEDIR
 def java_installplaybook(server='other',version='7u79',prefix='/usr/local',checksum='9222e097e624800fdd9bfb568169ccad'):
     _ext_vars = {
         'version':version,

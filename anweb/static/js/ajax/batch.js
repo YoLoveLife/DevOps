@@ -80,7 +80,7 @@ function Batch9Version(version_list,modallist){
 //
 //Function get postdata
 //
-function Batch9GetTomcatPostData(){
+function Batch9GetPostIPData(){
     var list=[];
     var objHostlist=document.getElementsByClassName('todo-done');
     if(objHostlist.length==0){
@@ -98,7 +98,7 @@ function Batch9GetTomcatPostData(){
 //
 function Batch9TomcatModalGet() {
     var postdata={};
-    var iplist=Batch9GetTomcatPostData();
+    var iplist=Batch9GetPostIPData();
     var javaversion=ListPickUp("batch-jdkversion");
     var tomcatversion=ListPickUp("batch-tomcatversion");
     var javaprefix=document.getElementById("batch-prefix-java").value;
@@ -140,7 +140,7 @@ function Batch9PostTomcat(){
 //Function OpenBatchModal4Tomcat
 //
 function OpenBatchModal4Tomcat(modal){
-    var iplist=Batch9GetTomcatPostData();
+    var iplist=Batch9GetPostIPData();
     if(iplist.length==0) {
         alert("未选择");
         return ;
@@ -154,4 +154,63 @@ function OpenBatchModal4Tomcat(modal){
     Batch9Version(javaversionlist,'#batch-jdkversion');//刷新数据
     tomcatversionlist=Batch9GetVersion("tomcat");
     Batch9Version(tomcatversionlist,'#batch-tomcatversion');
+}
+
+//
+//Function OpenBatchModal4MySQL
+//
+function OpenBatchModal4MySQL(modal){
+    var iplist=Batch9GetPostIPData();
+    if(iplist.length==0) {
+        alert("未选择");
+        return ;
+    }
+    $(function() {
+        $(modal).modal({
+            keyboard: true
+        })
+    });
+    mysqlversion=Batch9GetVersion("mysql");
+   // javaversionlist=Batch9GetVersion("java");//获得数据
+    Batch9Version(mysqlversion,'#batch-mysqlversion');//刷新数据
+}
+
+//
+//Function for mysql modal data get
+//
+function Batch9MySQLModalGet() {
+    var postdata={};
+    var iplist=Batch9GetPostIPData();
+    var mysqlversion=ListPickUp("batch-mysqlversion");
+    var mysqlprefix=document.getElementById("batch-prefix-mysql").value;
+    var mysqlpasswd=document.getElementById("batch-passwd-mysql").value;
+    if(mysqlversion=="0"||mysqlprefix.length==0){
+        alert("未选择");
+        return ;
+    }
+    //
+    postdata['iplist[]']=iplist;
+    postdata['mysqlversion']=mysqlversion;
+    postdata['mysqlprefix']=mysqlprefix;
+    postdata['mysqlpasswd']=mysqlpasswd;
+    return postdata;
+}
+
+//
+//Function
+//
+function Batch9PostMySQL(){
+    var postdata=Batch9MySQLModalGet();
+    if(postdata.length==0){
+        return ;
+    }
+    $.ajax({
+        async:false,
+        url:'batchmysql/',
+        type:"POST",
+        data:postdata,
+        success:function(status){
+            return ;
+        }
+    });
 }

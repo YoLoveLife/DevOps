@@ -22,7 +22,7 @@ def evt_base_install(server='other'):
 '''
 def evt_mysql_install(server='other',version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',mysqlpasswd=''):
     mysqlpb.mysql_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum)
-    mysqlpb.mysql_controlplaybook(server=server,control='start')
+    #mysqlpb.mysql_controlplaybook(server=server,control='start')
     mysqlpb.mysql_configureplaybook(server=server,)
     mysqlpb.mysql_initializationplaybook(server=server,mysqlpasswd=mysqlpasswd)
 

@@ -11,6 +11,7 @@ from django.forms.models import model_to_dict
 from event import allevent
 from inventory import maker
 import json
+
 '''
 PARM:null
 RETURN:list
@@ -71,14 +72,22 @@ RETURN:执行结果
 USE:
 '''
 def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix):
-    print(iplist)
-    print(javaversion)
-    print(tomcatversion)
-    print(javaprefix)
-    print(tomcatprefix)
-    tomcatversion = Softlib.objects.get(id=tomcatversion).soft_version
-    javaversion=Softlib.objects.get(id=javaversion).soft_version
+    tomcatlib=Softlib.objects.get(id=tomcatversion)
+    javalib=Softlib.objects.get(id=javaversion)
+
+    tomcatversion =tomcatlib.soft_version
+    javaversion=javalib.soft_version
+    javacheck=javalib.soft_md5
+    tomcatcheck=tomcatlib.soft_md5
     maker.inventory_maker(iplist)
-    allevent.evt_java_install(server='all',version=javaversion,prefix=javaprefix,)
-    allevent.evt_tomcat_install(server='all',version=tomcatversion,prefix=tomcatprefix,)
+    allevent.evt_java_install(server='all',version=javaversion,prefix=javaprefix,checksum=javacheck)
+    allevent.evt_tomcat_install(server='all',version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
+    maker.inventory_clear()
+
+def batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd):
+    mysqllib=Softlib.objects.get(id=mysqlversion)
+    mysqlcheck=mysqllib.soft_md5
+    print(mysqlversion)
+    maker.inventory_maker(iplist)
+    allevent.evt_mysql_install(server='all',version=mysqlversion,prefix=mysqlprefix,checksum=mysqlcheck,mysqlpasswd=mysqlpasswd)
     maker.inventory_clear()

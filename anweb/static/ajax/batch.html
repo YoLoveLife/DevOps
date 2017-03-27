@@ -26,6 +26,7 @@
         <div class="col-lg-5">
                 <div class="todo">
                     <ul id="batch-host">
+                        <!--
                         <li class="todo-done">
                             <div class="todo-content">
                                 <h4 class="todo-name">
@@ -34,6 +35,7 @@
                                 Times Square
                             </div>
                         </li>
+                        -->
                     </ul>
                 </div><!-- /.todo -->
         </div>
@@ -49,7 +51,7 @@
                     <a href="#fakelink" class="btn btn-block btn-lg btn-info">Redis</a>
                 </div>
                 <div class="col-xs-3">
-                    <a href="#fakelink" class="btn btn-block btn-lg btn-info">MySQL</a>
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info" onclick="OpenBatchModal4MySQL('#batchmysql')">MySQL</a>
                 </div>
             </div>
             <div class="row row-batchbtn">
@@ -68,7 +70,7 @@
 </div>
 
 
-<!--About Me Modal-->
+<!--About Tomcat Modal-->
 <div class="modal fade" id="batchtomcat" tabindex="-1" role="dialog" aria-labelledby="batchtomcatLabel" aria-hidden="true" style="width:auto;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -79,29 +81,29 @@
             <div id="ajax-modalbatchtomcat">
                 <div class="form-group container-fluid">
                     <div class="row row-modal">
-                        <div class="col-lg-3" style="margin-top: 20px;margin-bottom: 7px;">
+                        <div class="col-lg-4" style="margin-top: 20px;margin-bottom: 7px;">
                             <p>JDK Choice</p>
                         </div>
                         <div class="col-lg-2">
                             <div class="jax-toolbar-col">
-                                <select id="batch-jdkversion" class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+                                <select id="batch-jdkversion" class="form-control select select-primary ajax-toolbar" data-toggle="select">
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row row-modal" style="margin-bottom: 10px;">
-                        <div class="col-lg-3" style="margin-top: 20px;margin-bottom: 7px;">
+                        <div class="col-lg-4" style="margin-top: 20px;margin-bottom: 7px;">
                             <p>Tomcat Choice</p>
                         </div>
                         <div class="col-lg-2">
                             <div class="jax-toolbar-col">
-                                <select id="batch-tomcatversion"class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Host9PickGroup()">
+                                <select id="batch-tomcatversion"class="form-control select select-primary ajax-toolbar" data-toggle="select">
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row row-modal">
-                        <div class="col-lg-3" style="margin-bottom: 7px;margin-top: 7px;">
+                        <div class="col-lg-4" style="margin-bottom: 7px;margin-top: 7px;">
                             <p>JDK Prefix</p>
                         </div>
                         <div class="col-lg-5" style="margin-left: 25px;">
@@ -111,7 +113,7 @@
                         </div>
                     </div>
                     <div class="row row-modal">
-                        <div class="col-lg-3" style="margin-bottom: 7px;margin-top: 7px;">
+                        <div class="col-lg-4" style="margin-bottom: 7px;margin-top: 7px;">
                             <p>Tomcat Prefix</p>
                         </div>
                         <div class="col-lg-5" style="margin-left: 25px;">
@@ -123,13 +125,67 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Batch9PostTomcat()">提交</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Batch9PostMySQL()">提交</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<!--About Me Modal-->
+<!--About Tomcat Modal-->
+
+
+
+<!--About MySQL Modal-->
+<div class="modal fade" id="batchmysql" tabindex="-1" role="dialog" aria-labelledby="batchmysqlLabel" aria-hidden="true" style="width:auto;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="batchmysqlLabel">MySQL Batch</h4>
+            </div>
+            <div id="ajax-modalbatchmysql">
+                <div class="form-group container-fluid">
+                    <div class="row row-modal">
+                        <div class="col-lg-4" style="margin-top: 20px;margin-bottom: 7px;padding-right: 0px;">
+                            <p>MySQL Version</p>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="jax-toolbar-col">
+                                <select id="batch-mysqlversion" class="form-control select select-primary ajax-toolbar" data-toggle="select">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                         <div class="col-lg-4">
+                            <p>MySQL Prefix</p>
+                        </div>
+                        <div class="col-lg-5" style="margin-left: 25px;">
+                            <div class="form-group">
+                                <input type="text" id="batch-prefix-mysql"value="/usr/local" placeholder="MySQL" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                         <div class="col-lg-4">
+                            <p>MySQL Password</p>
+                        </div>
+                        <div class="col-lg-5" style="margin-left: 25px;">
+                            <div class="form-group">
+                                <input type="text" id="batch-passwd-mysql" value="0000000" placeholder="MySQL" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Batch9PostMySQL()">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--About MySQL Modal-->
 
 <script>
     $(document).ready(function(){
