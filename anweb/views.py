@@ -79,7 +79,7 @@ def softversion(request):
     }))
 
 '''
-METHOD:GET
+METHOD:POST
 URL:/anweb/batchtomcat
 POST:list of tomcat install info
 RETURN:true/false
@@ -94,6 +94,25 @@ def batchtomcat(request):
     javaprefix=request.POST.get('javaprefix')
     tomcatprefix=request.POST.get('tomcatprefix')
     status=service.batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix);
+    return HttpResponse(json.dumps({
+        'status': status
+    }))
+
+'''
+METHOD:POST
+URL:/anweb/batchmysql
+POST:list of mysql install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchmysql(request):
+    iplist = request.POST.getlist('iplist[]')
+    mysqlversion = request.POST.get('mysqlversion')
+    mysqlprefix = request.POST.get('mysqlprefix')
+    mysqlpasswd=request.POST.get('mysqlpasswd')
+    status=service.batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd)
     return HttpResponse(json.dumps({
         'status': status
     }))
