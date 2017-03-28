@@ -80,8 +80,8 @@ def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix
     javacheck=javalib.soft_md5
     tomcatcheck=tomcatlib.soft_md5
     maker.inventory_maker(iplist)
-    allevent.evt_java_install(server='all',version=javaversion,prefix=javaprefix,checksum=javacheck)
-    allevent.evt_tomcat_install(server='all',version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
+    allevent.evt_java_install(version=javaversion,prefix=javaprefix,checksum=javacheck)
+    allevent.evt_tomcat_install(version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
     maker.inventory_clear()
 
 '''
@@ -95,7 +95,7 @@ def batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,
     mysqlcheck=mysqllib.soft_md5
     print(mysqlversion)
     maker.inventory_maker(iplist)
-    allevent.evt_mysql_install(server='all',version=mysqlversion,prefix=mysqlprefix,checksum=mysqlcheck,mysqlpasswd=mysqlpasswd,mysqldatadir=mysqldatadir,mysqlport=mysqlport,mysqltmp=mysqltmp)
+    allevent.evt_mysql_install(version=mysqlversion,prefix=mysqlprefix,checksum=mysqlcheck,mysqlpasswd=mysqlpasswd,mysqldatadir=mysqldatadir,mysqlport=mysqlport,mysqltmp=mysqltmp)
     maker.inventory_clear()
 
 '''
@@ -108,6 +108,6 @@ def batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd):
     redisversion=redislib.soft_version
     redischeck=redislib.soft_md5
     maker.inventory_maker(iplist)
-    allevent.evt_redis_install(server='all',version=redisversion,prefix=redisprefix,checksum=redischeck,port=redisport,requirepass=redispasswd,)
+    allevent.evt_redis_install(version=redisversion,prefix=redisprefix,checksum=redischeck,port=redisport,requirepass=redispasswd,)
     maker.inventory_clear()
 

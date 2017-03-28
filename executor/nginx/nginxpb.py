@@ -7,7 +7,9 @@ from util import FTP
 from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
-def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',checksum='088292d9caf6059ef328aa7dda332e44'):
+from scripts import SCRIPTS_DIR
+from template import TEMPLATEDIR
+def nginx_installplaybook(version='1.10.1',prefix='/usr/local',checksum='088292d9caf6059ef328aa7dda332e44'):
     _ext_vars = {
         'version': version,
         'prefix': prefix,
@@ -20,12 +22,12 @@ def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',ch
 
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
-    pb = PersonBook("install nginx",server, 'no')
+    pb = PersonBook("install nginx", 'no')
     #task0=PersonTask(module='yum',args='name=pcre-devel state=present')
     task0=PersonTask(module='shell',args='yum install pcre-devel -y')
     task1 = PersonTask(module="get_url", args="checksum=md5:{{checksum}} url={{fro}} dest=~", )
     task2 = PersonTask(module="script",
-                       args="../scripts/nginx/nginx_install.sh -v {{version}} -f {{prefix}} -u {{user}}", )
+                       args="%s/nginx/nginx_install.sh -v {{version}} -f {{prefix}} -u {{user}}"%SCRIPTS_DIR, )
     task3 = PersonTask(module="file", args="dest=~/{{file}} state=absent", )
     pb.add_task(task0)
     pb.add_task(task1)
@@ -34,7 +36,7 @@ def nginx_installplaybook(server='other',version='1.10.1',prefix='/usr/local',ch
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def nginx_removeplaybook(server='other',prefix='/usr/local',):
+def nginx_removeplaybook(prefix='/usr/local',):
     _ext_vars = {
         'prefix': prefix,
         'basedir': '{{prefix}}/nginx',
@@ -43,28 +45,28 @@ def nginx_removeplaybook(server='other',prefix='/usr/local',):
 
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
-    pb = PersonBook("remove nginx",server, 'no')
+    pb = PersonBook("remove nginx", 'no')
     task1 = PersonTask(module="script",
-                       args="../scripts/nginx/nginx_remove.sh -f {{prefix}} -u {{user}}", )
+                       args="%s/nginx/nginx_remove.sh -f {{prefix}} -u {{user}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def nginx_controlplaybook(server='other',control='start',pid='/usr/local/nginx/logs/nginx.pid'):
+def nginx_controlplaybook(control='start',pid='/usr/local/nginx/logs/nginx.pid'):
     _ext_vars = {
         'control':control,
         'pid':pid
     }
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
-    pb = PersonBook("control nginx", server, 'no')
+    pb = PersonBook("control nginx", 'no')
     task1 = PersonTask(module="script",
-                       args="../scripts/nginx/nginx_control.sh {{control}} {{pid}}", )
+                       args="%s/nginx/nginx_control.sh {{control}} {{pid}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def nginx_configureplaybook(server='other',prefix='/usr/local',workproc='1',pid='logs/nginx.pid',workconn='1024',port='80',servername='localhost',locations=''):
+def nginx_configureplaybook(prefix='/usr/local',workproc='1',pid='logs/nginx.pid',workconn='1024',port='80',servername='localhost',locations=''):
     _ext_vars = {
         'prefix':prefix,
         'basedir':'{{prefix}}/nginx',
@@ -78,9 +80,9 @@ def nginx_configureplaybook(server='other',prefix='/usr/local',workproc='1',pid=
     }
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
-    pb = PersonBook("configure nginx", server, 'no')
+    pb = PersonBook("configure nginx", 'no')
     task1 = PersonTask(module="template",
-                   args="dest={{basedir}}/conf/nginx.conf src=../template/nginx.j2 owner=nginx group=nginx mode=644", )
+                   args="dest={{basedir}}/conf/nginx.conf src=%s/nginx.j2 owner=nginx group=nginx mode=644"%TEMPLATEDIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()

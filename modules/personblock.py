@@ -37,6 +37,7 @@ class PersonBlock():
         #ext=self.variable_manager.extra_vars.copy()
         #self.variable_manager.extra_vars=ext.update(newext)
         self.variable_manager.extra_vars=newext
+
     def set_playbook(self,pb):
         self.playbook=pb
 

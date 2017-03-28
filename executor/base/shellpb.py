@@ -7,12 +7,12 @@ from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 
-def shell_book(server='other',shell='hostname'):
+def shell_book(shell='hostname'):
     _ext_vars={'shell':shell,
                }
     personblock=PersonBlock()
     personblock.add_extendvars(_ext_vars)
-    pb=PersonBook("shell iptables ",server,'no')
+    pb=PersonBook("shell iptables ",'no')
     task1=PersonTask(module="shell",args="{{shell}}",)
     pb.add_task(task1)
     personblock.set_playbook(pb)
