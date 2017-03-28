@@ -269,6 +269,16 @@
                             </div>
                         </div>
                     </div>
+                      <div class="row row-modal">
+                        <div class="col-lg-4">
+                            <p>Nginx Port</p>
+                        </div>
+                        <div class="col-lg-5" style="margin-left: 25px;">
+                            <div class="form-group">
+                                <textarea type="text" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -279,6 +289,49 @@
     </div><!-- /.modal -->
 </div>
 <!--About Redis Modal-->
+
+
+<!--About Nginx Modal-->
+<div class="modal fade" id="batchnginx" tabindex="-1" role="dialog" aria-labelledby="batchnginxLabel" aria-hidden="true" style="width:auto;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="batchnginxLabel">Nginx Batch</h4>
+            </div>
+            <div id="ajax-modalbatchnginx">
+                <div class="form-group container-fluid">
+                    <div class="row row-modal">
+                        <div class="col-lg-4" style="margin-top: 20px;margin-bottom: 7px;padding-right: 0px;">
+                            <p>Nginx Version</p>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="jax-toolbar-col">
+                                <select id="batch-version-nginx" class="form-control select select-primary ajax-toolbar" data-toggle="select">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-modal">
+                        <div class="col-lg-4">
+                            <p>Nginx Port</p>
+                        </div>
+                        <div class="col-lg-5" style="margin-left: 25px;">
+                            <div class="form-group">
+                                <textarea></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Batch9PostRedis()">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--About Nginx Modal-->
 
 <script>
     $(document).ready(function(){
