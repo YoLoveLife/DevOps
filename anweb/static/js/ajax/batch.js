@@ -99,8 +99,8 @@ function Batch9GetPostIPData(){
 function Batch9TomcatModalGet() {
     var postdata={};
     var iplist=Batch9GetPostIPData();
-    var javaversion=ListPickUp("batch-jdkversion");
-    var tomcatversion=ListPickUp("batch-tomcatversion");
+    var javaversion=ListPickUp("batch-version-jdk");
+    var tomcatversion=ListPickUp("batch-version-tomcat");
     var javaprefix=document.getElementById("batch-prefix-java").value;
     var tomcatprefix=document.getElementById("batch-prefix-tomcat").value;
     if(javaversion=="0"||tomcatversion=="0"||javaprefix.length==0||tomcatprefix.length==0){
@@ -151,9 +151,9 @@ function OpenBatchModal4Tomcat(modal){
         })
     });
     javaversionlist=Batch9GetVersion("java");//获得数据
-    Batch9Version(javaversionlist,'#batch-jdkversion');//刷新数据
+    Batch9Version(javaversionlist,'#batch-version-jdk');//刷新数据
     tomcatversionlist=Batch9GetVersion("tomcat");
-    Batch9Version(tomcatversionlist,'#batch-tomcatversion');
+    Batch9Version(tomcatversionlist,'#batch-version-tomcat');
 }
 
 //
@@ -172,7 +172,7 @@ function OpenBatchModal4MySQL(modal){
     });
     mysqlversion=Batch9GetVersion("mysql");
    // javaversionlist=Batch9GetVersion("java");//获得数据
-    Batch9Version(mysqlversion,'#batch-mysqlversion');//刷新数据
+    Batch9Version(mysqlversion,'#batch-version-mysql');//刷新数据
 }
 
 //
@@ -181,10 +181,13 @@ function OpenBatchModal4MySQL(modal){
 function Batch9MySQLModalGet() {
     var postdata={};
     var iplist=Batch9GetPostIPData();
-    var mysqlversion=ListPickUp("batch-mysqlversion");
+    var mysqlversion=ListPickUp("batch-version-mysql");
     var mysqlprefix=document.getElementById("batch-prefix-mysql").value;
     var mysqlpasswd=document.getElementById("batch-passwd-mysql").value;
-    if(mysqlversion=="0"||mysqlprefix.length==0){
+    var mysqldatadir=document.getElementById("batch-datadir-mysql").value;
+    var mysqlport=document.getElementById("batch-port-mysql").value;
+    var mysqltmp=document.getElementById("batch-tmp-mysql").value;
+    if(mysqlversion=="0"||mysqlprefix.length==0||mysqlport.length==0||mysqltmp.length==0){
         alert("未选择");
         return ;
     }
@@ -193,6 +196,9 @@ function Batch9MySQLModalGet() {
     postdata['mysqlversion']=mysqlversion;
     postdata['mysqlprefix']=mysqlprefix;
     postdata['mysqlpasswd']=mysqlpasswd;
+    postdata['mysqldatadir']=mysqldatadir;
+    postdata['mysqlport']=mysqlport;
+    postdata['mysqltmp']=mysqltmp;
     return postdata;
 }
 
@@ -213,4 +219,64 @@ function Batch9PostMySQL(){
             return ;
         }
     });
+}
+
+//
+//Function
+//
+function Batch9PostRedis(){
+    var postdata=Batch9RedisModalGet();
+    if(postdata.length==0){
+        return ;
+    }
+    $.ajax({
+        async:false,
+        url:'batchredis/',
+        type:"POST",
+        data:postdata,
+        success:function(status){
+            return ;
+        }
+    });
+}
+
+//
+//Function for mysql modal data get
+//
+function Batch9RedisModalGet() {
+    var postdata={};
+    var iplist=Batch9GetPostIPData();
+    var redisversion=ListPickUp("batch-version-redis");
+    var redisprefix=document.getElementById("batch-prefix-redis").value;
+    var redisport=document.getElementById("batch-port-redis").value;
+    var redispasswd=document.getElementById("batch-passwd-redis").value;
+    if(redisversion.length==0||redisprefix.length==0||redisport.length==0){
+        alert("未选择");
+        return ;
+    }
+    //
+    postdata['iplist[]']=iplist;
+    postdata['redisversion']=redisversion;
+    postdata['redisprefix']=redisprefix;
+    postdata['redisport']=redisport;
+    postdata['redispasswd']=redispasswd;
+    return postdata;
+}
+
+//
+//Function OpenBatchModal4Redis
+//
+function OpenBatchModal4Redis(modal){
+    var iplist=Batch9GetPostIPData();
+    if(iplist.length==0) {
+        alert("未选择");
+        return ;
+    }
+    $(function() {
+        $(modal).modal({
+            keyboard: true
+        })
+    });
+    redisversion=Batch9GetVersion("redis");
+    Batch9Version(redisversion,'#batch-version-redis');//刷新数据
 }

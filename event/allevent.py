@@ -20,10 +20,10 @@ def evt_base_install(server='other'):
 '''
     info:mysql的初次安装 mysql的配置修改 mysql的重启等
 '''
-def evt_mysql_install(server='other',version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',mysqlpasswd=''):
-    mysqlpb.mysql_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum)
-    #mysqlpb.mysql_controlplaybook(server=server,control='start')
-    mysqlpb.mysql_configureplaybook(server=server,)
+def evt_mysql_install(server='other',version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',mysqlpasswd='',mysqlport="3306",mysqltmp='/tmp/mysql.sock',mysqldatadir='/usr/local/mysql/data'):
+    mysqlpb.mysql_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum,datadir=mysqldatadir)
+    mysqlpb.mysql_configureplaybook(server=server,socket=mysqltmp,port=mysqlport)
+    mysqlpb.mysql_controlplaybook(server=server,control='start')
     mysqlpb.mysql_initializationplaybook(server=server,mysqlpasswd=mysqlpasswd)
 
 def evt_mysql_reconfigure(server='other',prefix='/usr/local',port='3306',socket='/tmp/mysql.sock',datadir='/usr/local/mysql/data',
@@ -84,12 +84,12 @@ def evt_tomcat_control(server='other',control='help'):
     info:redis安装 重新配置
 '''
 def evt_redis_install(server='other',version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',
-                      bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend='',):
+                      bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend='',):
     redispb.redis_installplaybook(server=server,version=version,prefix=prefix,checksum=checksum,)
     redispb.redis_configureplaybook(server=server,version=version,bind=bind,port=port,appendonly=appendonly,noonrewrite=noonrewrite,saveoptions=saveoptions
                                     ,datadir=datadir,requirepass=requirepass,slaveof=slaveof,masterauth=masterauth,cluster_enabled=cluster_enabled,
                                     cluster_config_file=cluster_config_file,extend=extend,)
-    redispb.redis_controlplaybook(server=server,control='start')
+    #redispb.redis_controlplaybook(server=server,control='start')
 
 
 def evt_redis_reconfigure(server='other',bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',

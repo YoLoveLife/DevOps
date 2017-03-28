@@ -16,4 +16,5 @@ urlpatterns = [
    url(r'^softversion/',views.softversion,name='softversion'),
    url(r'^batchtomcat/',views.batchtomcat,name='batchtomcat'),
    url(r'^batchmysql/',views.batchmysql,name='batchmysql'),
+   url(r'^batchredis/',views.batchredis,name='batchredis'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -6,6 +6,8 @@ from util import FTP
 from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+from scripts import SCRIPTS_DIR
+from template import TEMPLATEDIR
 def redis_installplaybook(server='other',version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8'):
     _ext_vars = {
         'version':version,
@@ -20,7 +22,7 @@ def redis_installplaybook(server='other',version='3.2.4',prefix='/usr/local',che
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("install redis",server, 'no')
     task1 = PersonTask(module="get_url", args="checksum=md5:{{checksum}} url={{fro}} dest=~", )
-    task2 = PersonTask(module="script", args="../scripts/redis/redis_install.sh -v {{version}} -f {{prefix}} -u {{user}}", )
+    task2 = PersonTask(module="script", args="%s/redis/redis_install.sh -v {{version}} -f {{prefix}} -u {{user}}"%SCRIPTS_DIR, )
     task3 = PersonTask(module="file", args="dest=~/{{file}} state=absent", )
     pb.add_task(task1)
     pb.add_task(task2)
@@ -36,7 +38,7 @@ def redis_removeplaybook(server='other',prefix='/usr/local'):
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("install redis",server, 'no')
-    task1 = PersonTask(module="script", args="../scripts/redis/redis_remove.sh -u {{user}} -f {{prefix}}", )
+    task1 = PersonTask(module="script", args="%s/redis/redis_remove.sh -u {{user}} -f {{prefix}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
@@ -50,9 +52,9 @@ def redis_controlplaybook(server='other',control='start',passwd='000000'):
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control redis",server, 'no')
     if control=='stop':
-        task1 = PersonTask(module="script", args="../scripts/redis/redis_control.sh {{control}} {{passwd}}", )
+        task1 = PersonTask(module="script", args="%s/redis/redis_control.sh {{control}} {{passwd}}"%SCRIPTS_DIR, )
     else:
-        task1 = PersonTask(module="script", args="../scripts/redis/redis_control.sh {{control}}", )
+        task1 = PersonTask(module="script", args="%s/redis/redis_control.sh {{control}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
@@ -84,9 +86,9 @@ def redis_configureplaybook(server='other',version='3.2.4',prefix='/usr/local',b
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control redis",server, 'no')
-    task1 = PersonTask(module="template", args="dest=/etc/redis.conf src=../template/redis/redis%s.j2 owner=redis group=redis mode=644"%version, )
+    task1 = PersonTask(module="template", args="dest=/etc/redis.conf src=%s/redis/redis%s.j2 owner=redis group=redis mode=644"%(TEMPLATEDIR,version), )
     print('0000000')
-    print("dest=/etc/redis.conf src=../template/redis/redis%s.j2 owner=redis group=redis mode=644"%version)
+    print("dest=/etc/redis.conf src=%s/redis/redis%s.j2 owner=redis group=redis mode=644"%(TEMPLATEDIR,version))
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
