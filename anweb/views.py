@@ -112,7 +112,31 @@ def batchmysql(request):
     mysqlversion = request.POST.get('mysqlversion')
     mysqlprefix = request.POST.get('mysqlprefix')
     mysqlpasswd=request.POST.get('mysqlpasswd')
-    status=service.batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd)
+    mysqlport=request.POST.get('mysqlport')
+    mysqldatadir=request.POST.get('mysqldatadir')
+    mysqltmp=request.POST.get('mysqltmp')
+    status=service.batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqltmp,)
+    return HttpResponse(json.dumps({
+        'status': status
+    }))
+
+
+'''
+METHOD:POST
+URL:/anweb/batchredis
+POST:list of redis install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchredis(request):
+    iplist = request.POST.getlist('iplist[]')
+    redisversion = request.POST.get('redisversion')
+    redisprefix = request.POST.get('redisprefix')
+    redisport = request.POST.get('redisport')
+    redispasswd = request.POST.get('redispasswd')
+    status = service.batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd)
     return HttpResponse(json.dumps({
         'status': status
     }))

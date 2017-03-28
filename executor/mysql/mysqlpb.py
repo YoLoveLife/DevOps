@@ -8,12 +8,12 @@ from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 from scripts import SCRIPTS_DIR
 from template import TEMPLATEDIR
-def mysql_installplaybook(server='other',version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3'):
+def mysql_installplaybook(server='other',version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',datadir='/usr/local/mysql/data'):
     _ext_vars = {
         'version': version,
         'prefix': prefix,
         'basedir': '{{prefix}}/mysql',
-        'datadir':'{{basedir}}/data',
+        'datadir':datadir,
         'user': 'mysql',
         #'file': 'mariadb-{{version}}-linux-{{ansible_architecture}}.tar.gz',
         'file': 'mariadb-{{version}}-linux-x86_64.tar.gz',
@@ -56,7 +56,7 @@ def mysql_controlplaybook(server='other',control='start'):
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("control mysql", server, 'no')
     task1 = PersonTask(module="script",
-                       args="%s/mysql/mysql_control.sh {{control}}"%TEMPLATEDIR, )
+                       args="%s/mysql/mysql_control.sh {{control}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
@@ -69,7 +69,7 @@ def mysql_initializationplaybook(server='other',mysqlpasswd='000000'):
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("initialization mysql", server, 'no')
     task1 = PersonTask(module="script",
-                       args="%s/mysql/mysql_answer.exp {{mysqlpasswd}}"%TEMPLATEDIR, )
+                       args="%s/mysql/mysql_answer.exp {{mysqlpasswd}}"%SCRIPTS_DIR,)
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()

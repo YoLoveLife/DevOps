@@ -84,10 +84,30 @@ def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix
     allevent.evt_tomcat_install(server='all',version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
     maker.inventory_clear()
 
-def batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd):
+'''
+PARM:info for install mysql
+RETURN:执行结果
+USE:
+'''
+def batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqltmp):
     mysqllib=Softlib.objects.get(id=mysqlversion)
+    mysqlversion=mysqllib.soft_version
     mysqlcheck=mysqllib.soft_md5
     print(mysqlversion)
     maker.inventory_maker(iplist)
-    allevent.evt_mysql_install(server='all',version=mysqlversion,prefix=mysqlprefix,checksum=mysqlcheck,mysqlpasswd=mysqlpasswd)
+    allevent.evt_mysql_install(server='all',version=mysqlversion,prefix=mysqlprefix,checksum=mysqlcheck,mysqlpasswd=mysqlpasswd,mysqldatadir=mysqldatadir,mysqlport=mysqlport,mysqltmp=mysqltmp)
     maker.inventory_clear()
+
+'''
+PARM:info for install redis
+RETURN:执行结果
+USE:
+'''
+def batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd):
+    redislib=Softlib.objects.get(id=redisversion)
+    redisversion=redislib.soft_version
+    redischeck=redislib.soft_md5
+    maker.inventory_maker(iplist)
+    allevent.evt_redis_install(server='all',version=redisversion,prefix=redisprefix,checksum=redischeck,port=redisport,requirepass=redispasswd,)
+    maker.inventory_clear()
+
