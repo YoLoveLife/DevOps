@@ -25,8 +25,22 @@ def getThread(JVMPID):
 
 def analysisThead(string):
     r1=re.compile(r'\".*\"')
+    r2=re.compile(r'java.lang.Thread.State:\w+.*\w+')
+    m=r2.match(string)
+    thread_state=r2.findall(string)
     thread_list=r1.findall(string)
     theadinfo=r1.split(string)
+    return thread_list
 
+#print(getJVMInfo())
+str=getThread(getJVMInfo()[0])
+print(analysisThead(str))
 
-print(getThread(getJVMInfo()[0]))
+'''
+NEW 线程被NEW出来 未调用start方法
+RUNNABLE 线程已经调用了start方法 但是run方法可能运行也可能没有运行
+BLOCKED 线程进入了synchronized同步块
+WAITING 调用了对象的wait方法
+TIMED_WAITING
+TERMINATED run方法退出
+'''

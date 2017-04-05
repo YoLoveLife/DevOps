@@ -16,15 +16,11 @@
         </div>
     </div>
     <hr/>
-    <div class="row">
-        <div class="jax-toolbar-col">
-            <select id="host-grouplist" class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Batch9PickGroup()">
-            </select>
-        </div>
-    </div>
     <div class="row" style="margin-left: 10px;margin-right: 10px;margin-top: 15px;">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
                 <div class="todo">
+                    <select id="host-grouplist" class="form-control select select-primary ajax-toolbar" data-toggle="select" onchange="Batch9PickGroup()">
+                    </select>
                     <ul id="batch-host">
                         <!--
                         <li class="todo-done">
@@ -45,7 +41,7 @@
                     <a href="#fakelink" class="btn btn-block btn-lg btn-info" onclick="OpenBatchModal4Tomcat('#batchtomcat')">Tomcat</a>
                 </div>
                 <div class="col-xs-3">
-                    <a href="#fakelink" class="btn btn-block btn-lg btn-info">Nginx</a>
+                    <a href="#fakelink" class="btn btn-block btn-lg btn-info disabled">Nginx</a>
                 </div>
                 <div class="col-xs-3">
                     <a href="#fakelink" class="btn btn-block btn-lg btn-info" onclick="OpenBatchModal4Redis('#batchredis')">Redis</a>

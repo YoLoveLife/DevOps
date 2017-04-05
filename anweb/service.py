@@ -6,7 +6,7 @@
 from models import Group
 from django.core import serializers
 from util import toJSON,str2dict
-from anweb.models import Group,Host,Softlib,Soft
+from anweb.models import Group,Host,Softlib,Soft,Tomcat
 from django.forms.models import model_to_dict
 from event import allevent
 from inventory import maker
@@ -75,10 +75,14 @@ def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix
     tomcatlib=Softlib.objects.get(id=tomcatversion)
     javalib=Softlib.objects.get(id=javaversion)
 
+    #tomcat = Tomcat(group_id_id=)
+    #tomcat.save()
+
     tomcatversion =tomcatlib.soft_version
     javaversion=javalib.soft_version
     javacheck=javalib.soft_md5
     tomcatcheck=tomcatlib.soft_md5
+
     maker.inventory_maker(iplist)
     allevent.evt_java_install(version=javaversion,prefix=javaprefix,checksum=javacheck)
     allevent.evt_tomcat_install(version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
