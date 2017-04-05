@@ -21,7 +21,7 @@ _ACEOF
 function IsAlready()
 {
 	if [ -d "/usr/local/mysql" ];then
-		echo "002001002"
+		echo "已安装"
 		exit 2
 	fi
 }
@@ -42,7 +42,7 @@ function Avrg()
 {
 	ARGS=`getopt -o yv:f:u:d: --long version:,prefix:,user:,datadir: -n 'mysql_install' -- "$@"`
 	if [ ! $? -eq 0 ];then
-		echo "002002002"
+		echo "参数错误"
 		exit 2
 	fi
 	eval set -- "${ARGS}"
@@ -75,35 +75,26 @@ function Avrg()
 				break
 				;;
 			*)
-				echo "002002002"
+				echo "参数错误"
 				exit 2
 				;;
 		esac
 	done	
 }
 IsAlready
-if [ "$1" == "--help" ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
 FILENAME=mariadb-${VERSION}-linux-${SYSTEM}
-if [ -f "./${FILENAME}" ];then
-	echo "002004001"
-	exit 1
-fi
+
 tar -xvzf ${FILENAME}.tar.gz -C ${PREFIX} &>/dev/null
 
 mv ${PREFIX}/${FILENAME}/ ${BASEDIR}
 if [ `cat /etc/passwd |grep mysql|wc -l` == "0" ];then
 	groupadd ${USER}
 	useradd -s ${SHELL} -g ${USER} ${USER}
-else
-	echo "002006001"
-	exit  1
 fi
 
-Confirm > ${BASEDIR}/INSTALL.info
+#Confirm > ${BASEDIR}/INSTALL.info
 
 mkdir -p ${DATADIR}
 chown -R ${USER}:${USER} ${DATADIR}
@@ -113,5 +104,6 @@ ${BASEDIR}/scripts/mysql_install_db --basedir=${BASEDIR} --datadir=${DATADIR} --
 
 cp ${BASEDIR}/support-files/mysql.server /etc/init.d/mysqld
 cp ${BASEDIR}/bin/mysql /usr/bin/mysql
+cp ${BASEDIR}/support-files/my-large.cnf /etc/my.cnf
 /sbin/chkconfig --add mysqld
 echo "002000000"

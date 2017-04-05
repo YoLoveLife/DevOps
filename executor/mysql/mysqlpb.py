@@ -43,7 +43,7 @@ def mysql_removeplaybook(prefix='/usr/local'):
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("remove mysql",'no')
     task1 = PersonTask(module="script",
-                       args="../../scripts/mysql/mysql_remove.sh -f {{prefix}} -u {{user}} -d {{datadir}} -c {{conf}}", )
+                       args="%s/mysql/mysql_remove.sh -f {{prefix}} -u {{user}} -d {{datadir}} -c {{conf}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()

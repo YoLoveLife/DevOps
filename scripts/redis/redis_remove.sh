@@ -58,16 +58,10 @@ function Avrg()
 			esac
 	done
 }
-if [ "$1" == "--help" ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
 DIRNAME=${PREFIX}/redis
 rm -rf ${LOGFILE} ${DATADIR} ${DIRNAME}
-if [ "`cat /etc/passwd|grep ${USER}|wc -l`" == "1" ];then
-	userdel -r ${USER}
-fi
-if [ "$?" == "0" ];then
-	echo "001000000"
-fi
+
+echo "001000000"
+

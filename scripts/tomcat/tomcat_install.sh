@@ -34,7 +34,7 @@ function Avrg()
 {
 	ARGS=`getopt -o v:u:f: --long version:,prefix: -n 'tomcat_install.sh' -- "$@"`
 	if [ ! $? -eq 0 ];then
-		echo "004002002"
+		echo "参数错误"
 		exit 2
 	fi
 	eval set -- "${ARGS}"
@@ -56,28 +56,19 @@ function Avrg()
 				;;
 			*)
 				#Help
-				echo "004002002"
+				echo "参数错误"
 				exit 2
 			esac
 	done
 }
 IsAlready
-if [ "$1" == '--help' ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
-
-if [ ! -f "apache-tomcat-${VERSION}.tar.gz" ];then
-	echo "004004001"
-	exit 1
-fi
-
 
 tar -xvzf apache-tomcat-${VERSION}.tar.gz -C ${PREFIX} &>/dev/null
 mv ${PREFIX}/apache-tomcat-${VERSION} ${PREFIX}/tomcat
 BASEDIR=${PREFIX}/redis
 
-Confirm > ${PREFIX}/tomcat/INSTALL.info
+#Confirm > ${PREFIX}/tomcat/INSTALL.info
 
 echo "004000000"
