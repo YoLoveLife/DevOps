@@ -23,7 +23,7 @@ function Avrg()
 {
 	ARGS=`getopt -o f:d:u:c: --long prefix:,datadir:,user:,conf: -n 'mysql_remove' -- "$@"`
 	if [ ! $? -eq 0 ];then
-		echo "001002002"
+		echo "参数错误"
 		exit 2
 	fi
 	eval set -- "${ARGS}"
@@ -53,22 +53,21 @@ function Avrg()
 				;;
 			*)
 				#Help
-				echo "001002002"
+				echo "参数错误"
 				exit 2	
 			esac
 	done
 }
-if [ "$1" == "--help" ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
 BASEDIR=${PREFIX}/mysql
 if [ `ps -ef |grep mysql|wc -l` == "3" ];then
-	echo "002005002"
+	echo "mysql进程正在运行"
 	exit 
 fi
+
 rm -rf ${DATADIR} ${BASEDIR} ${CONF}
+
 if [ "`cat /etc/passwd|grep ${USER}|wc -l`" == "1" ];then
 	userdel -r ${USER}
 fi

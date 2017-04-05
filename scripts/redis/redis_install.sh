@@ -19,7 +19,7 @@ _ACEOF
 function IsAlready()
 {
 	if [ -d "/usr/local/redis" ];then
-		echo "001001002"
+		echo "已安装"
 		exit 2
 	fi
 }
@@ -38,7 +38,7 @@ function Avrg()
 {
 	ARGS=`getopt -o v:u:f:u: --long version:,prefix:,user: -n 'redis_install.sh' -- "$@"`
 	if [ ! $? -eq 0 ];then
-		echo "001002002"
+		echo "参数错误"
 		exit 2
 	fi
 	eval set -- "${ARGS}"
@@ -64,61 +64,23 @@ function Avrg()
 				;;
 			*)
 				#Help
-				echo "001002002"
+				echo "参数错误"
 				exit 2	
 			esac
 	done
 }
 IsAlready
-if [ "$1" == '--help' ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
 
-ISGCC=`rpm -qa |grep ^gcc-[1-9].*\.${SYSTEM}|wc -l`
-ISMAKE=`rpm -qa|grep ^make.*\.${SYSTEM}|wc -l`
-if [ ! `id -u` -eq "0" ];then
-	echo "001005003"
-	exit 1
-fi
-if [ "${ISGCC}" == "0" ];then
-	echo "001003002"
-	exit 1
-fi
-
-if [ "${ISMAKE}" == "0" ];then
-	echo "001003002"
-	exit 1
-fi
-if [ ! -f "redis-${VERSION}.tar.gz" ];then
-	echo "001004001"
-	exit 1
-fi
 tar -xvzf redis-${VERSION}.tar.gz -C ${PREFIX} &>/dev/null
 mv ${PREFIX}/redis-${VERSION} ${PREFIX}/redis
 BASEDIR=${PREFIX}/redis
 
-groupadd ${USER}
-if [ "$?" != "0" ];then
-	echo "001006001"
-	exit 1
-fi
-useradd -s ${SHELL} -g ${USER} ${USER}
-if [ "$?" != "0" ];then
-	echo "001006001"
-	exit 1
-fi
-chown -R ${USER}:${USER} $BASEDIR
-Confirm > ${PREFIX}/redis/INSTALL.info 
+#Confirm > ${PREFIX}/redis/INSTALL.info
 
-
-make --directory=${BASEDIR} &>/dev/null 
-if [ ! $? -eq 0 ];then
-	echo "001007003"
-	exit 2
-fi
+make --directory=${BASEDIR} &>/dev/null
 
 mkdir ${BASEDIR}/bin
-find ${BASEDIR}/src -perm -u=x -type f -exec cp {} ${BASEDIR}/bin \;
+find ${BASEDIR}/src -perm -u=x -type f -exec ln -s {} ${BASEDIR}/bin \;
 echo "001000000"
