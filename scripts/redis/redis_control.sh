@@ -16,18 +16,10 @@ _ACEOF
 }
 function Start()
 {
-    if [ `ps aux |grep redis-server |wc -l` -eq 2 ];then
-        echo redis_online
-        exit 2
-    fi
     ${COMMDDIR}/redis-server ${CONF}
 }
 function Stop()
 {
-    if [ `netstat -tln |grep 6379 |wc -l` -eq 0 ];then
-        echo redis_ofline
-        exit 2
-    fi
     ${COMMDDIR}/redis-cli -h 127.0.0.1 -p 6379 -a $1 shutdown
 }
 case "$1" in
