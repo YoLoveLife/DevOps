@@ -90,3 +90,17 @@ class Tomcat(models.Model):
     group_id=models.ForeignKey(Group)
     prefix=models.CharField(max_length=100,default='/usr/local')
     java_opts=models.CharField(max_length=100,default='')
+
+class Operation(models.Model):
+    id=models.IntegerField(primary_key=True)
+    oper_name=models.CharField(max_length=100,default=0)
+
+class History(models.Model):
+    id=models.IntegerField(primary_key=True)#操作ID
+    oper_type=models.ForeignKey(Operation)#操作类型
+    oper_time=models.DateField()#操作时间
+    oper_group=models.ForeignKey(Group)#操作组
+    oper_info=models.CharField(max_length=100)#操作信息
+
+
+
