@@ -1,46 +1,142 @@
 from django.shortcuts import render
 # Create your views here.
-from event import allevent
 from django.http import HttpResponse
-from django.views.generic.detail import DetailView
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from anweb.models import Group
-from django.forms.models import model_to_dict
-from django.core import serializers
-from util import toJSON
+from anweb import service
 import json
-@require_http_methods(["GET","POST"])
+'''
+METHOD:GET
+URL:/anweb
+RETURN:template of page index
+ASYNC:true
+'''
+@require_http_methods(["GET"])
 def index(request):
-    #return HttpResponse('this is test result')
     return render(request, 'index.html',{})
 
-
-@require_http_methods(["GET","POST"])
-def cherry_group(request):
-    #return HttpResponse('this is test result')
-    return render(request, 'cherry_group.html', {})
-
-@require_http_methods(["GET","POST"])
-def cherry_host(request):
-    #return HttpResponse('this is test result')
-    return render(request, 'cherry_host.html', {})
+'''
+METHOD:GET
+URL:/anweb/groupsearch
+RETURN:list of group by json
+ASYNC:false
+'''
+@require_http_methods(["GET",])
+def groupsearch(request):
+    list=service.group9groupsearch()
+    return HttpResponse(json.dumps({
+        'group_list': list
+    }))
 
 '''
-@require_http_methods(["GET","POST"])
-def Index(request):
-    #servicer_list=Servicer.objects.all().order_by('id')
-    return render(request, 'index.html',{
-                                   #      'servicer':encoder.toJSON(servicer_list[0]),
-                                         })
+METHOD:POST
+URL:/anweb/groupmodify
+RETURN:modify the group data if the group don't exsit add this group to database
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def groupmodify(request):
+    group_id=request.POST.get('groupid')
+    group_name=request.POST.get('groupname')
+    group_remark=request.POST.get('groupremark')
+    service.group9modifygroup(group_id,group_name,group_remark)
+    return HttpResponse(json.dumps({
+        'status': "1"
+    }))
 
-@require_http_methods(["GET",])
-def get_group_list(request):
-    group_list=Group.objects.all()
-    list={}
-    for group in group_list:
-        list=list+toJSON(group)
+'''
+METHOD:GET
+URL:/anweb/hostsearch
+POST:groupid
+RETURN:list of host for groupid
+ASYNC:false
+'''
+@csrf_exempt
+@require_http_methods(["GET"],)
+def hostsearch(request):
+    group_id=request.GET.get('group_id')
+    list=service.host9hostsearch(group_id)
+    return HttpResponse(json.dumps({
+        'host_list': list
+    }))
+
+'''
+METHOD:GET
+URL:/anweb/softversion
+POST:app_id
+RETURN:list of app version
+ASYNC:false
+'''
+@csrf_exempt
+@require_http_methods(["GET"],)
+def softversion(request):
+    appname=request.GET.get('appname')
+    list=service.batch9appversion(appname)
     print(list)
     return HttpResponse(json.dumps({
-            'group_list':json.dumps(serializers.serialize("json",Group.objects.all())),
-        }))
+        'host_list': list
+    }))
+
 '''
+METHOD:POST
+URL:/anweb/batchtomcat
+POST:list of tomcat install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchtomcat(request):
+    iplist=request.POST.getlist('iplist[]')
+    javaversion=request.POST.get('javaversion')
+    tomcatversion=request.POST.get('tomcatversion')
+    javaprefix=request.POST.get('javaprefix')
+    tomcatprefix=request.POST.get('tomcatprefix')
+    status=service.batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix);
+    return HttpResponse(json.dumps({
+        'status': status
+    }))
+
+'''
+METHOD:POST
+URL:/anweb/batchmysql
+POST:list of mysql install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchmysql(request):
+    iplist = request.POST.getlist('iplist[]')
+    mysqlversion = request.POST.get('mysqlversion')
+    mysqlprefix = request.POST.get('mysqlprefix')
+    mysqlpasswd=request.POST.get('mysqlpasswd')
+    mysqlport=request.POST.get('mysqlport')
+    mysqldatadir=request.POST.get('mysqldatadir')
+    mysqltmp=request.POST.get('mysqltmp')
+    status=service.batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqltmp,)
+    return HttpResponse(json.dumps({
+        'status': status
+    }))
+
+
+'''
+METHOD:POST
+URL:/anweb/batchredis
+POST:list of redis install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchredis(request):
+    iplist = request.POST.getlist('iplist[]')
+    redisversion = request.POST.get('redisversion')
+    redisprefix = request.POST.get('redisprefix')
+    redisport = request.POST.get('redisport')
+    redispasswd = request.POST.get('redispasswd')
+    status = service.batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd)
+    return HttpResponse(json.dumps({
+        'status': status
+    }))

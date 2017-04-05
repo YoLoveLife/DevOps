@@ -10,7 +10,7 @@ from ansible.inventory import Inventory
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 from modules.personbook import PersonBook
-HOST_LIST='/etc/ansible/hosts'
+HOST_LIST='/tmp/ansible.host'
 class PersonBlock():
     def __init__(self):
         Options = namedtuple('Options',
@@ -37,6 +37,7 @@ class PersonBlock():
         #ext=self.variable_manager.extra_vars.copy()
         #self.variable_manager.extra_vars=ext.update(newext)
         self.variable_manager.extra_vars=newext
+
     def set_playbook(self,pb):
         self.playbook=pb
 

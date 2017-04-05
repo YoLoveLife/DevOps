@@ -28,14 +28,15 @@ function Stop()
         echo redis_ofline
         exit 2
     fi
-    ${COMMDDIR}/redis-cli -h 127.0.0.1 -p 6379 shutdown
+    ${COMMDDIR}/redis-cli -h 127.0.0.1 -p 6379 -a $1 shutdown
 }
 case "$1" in
     "start")
         Start
         ;;
     "stop")
-        Stop
+        shift
+        Stop $1
         ;;
         *)
         Help

@@ -6,14 +6,15 @@ from util import FTP
 from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
-import django
-def base_personplaybook(server='other'):
+from scripts import SCRIPTS_DIR
+from template import TEMPLATEDIR
+def base_personplaybook():
     _ext_vars={'yum_repo':'/etc/yum.repos.d',
                'md5sum':'ccd96d70ecfe3b1655c98d8dabd8dcb5',
                'url':'http://%s/repos/Zbjt.repo'%FTP,}
     personblock=PersonBlock()
     personblock.add_extendvars(_ext_vars)
-    pb=PersonBook("install base soft",server,'no')
+    pb=PersonBook("install base soft",'no')
     task1=PersonTask(module="shell",args="tar -cvzf ~/bk.tar.gz {{yum_repo}}/* --remove-files",)
     task2=PersonTask(module="get_url",args="checksum=md5:{{md5sum}} url={{url}} dest={{yum_repo}}/",)
     task3=PersonTask(module="shell",args="yum clean all;yum makecache;",)
