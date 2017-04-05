@@ -1,7 +1,7 @@
 #!/bin/bash
-#Time 2017-02-06 09:23
-#Author Yo
-#Control nginx
+# Author Yo
+# Email YoLoveLife@outlook.com
+# Time 2017-03-07 09:25
 source /etc/profile
 COMMDDIR=/usr/local/nginx/sbin
 function Help()

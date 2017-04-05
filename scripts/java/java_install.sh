@@ -65,14 +65,14 @@ function Avrg()
 		esac
 	done
 }
-BVERSION=`echo ${VERSION}|cut -d"u" -f1`
-MVERSION=`echo ${VERSION}|cut -d"u" -f2`
 IsAlready
 if [ "$1" == "--help" ];then
 	Help
 	exit 2
 fi
 Avrg $@
+BVERSION=`echo ${VERSION}|cut -d"u" -f1`
+MVERSION=`echo ${VERSION}|cut -d"u" -f2`
 FILENAME=jdk-${VERSION}-linux-x64
 if [ -f "./${FILENAME}" ];then
 	echo "003004001"
@@ -84,6 +84,6 @@ BASEDIR=${PREFIX}/java
 mv ${PREFIX}/jdk1.${BVERSION}.0_${MVERSION}/ ${BASEDIR}
 Confirm > ${BASEDIR}/INSTALL.info
 
-#find ${BASEDIR}/bin -perm -u=x -type f -exec ln -s {} /usr/bin \;
-find ${BASEDIR}/bin -perm -u=x -type f -exec cp {} /usr/bin \;
+find ${BASEDIR}/bin -perm -u=x -type f -exec ln -s {} /usr/bin \;
+#find ${BASEDIR}/bin -perm -u=x -type f -exec cp {} /usr/bin \;
 echo "003000000"

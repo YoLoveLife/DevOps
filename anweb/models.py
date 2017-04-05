@@ -20,25 +20,15 @@ class State(models.Model):
     state_name=models.CharField(max_length=100)
 
 class Group(models.Model):
-    id=models.IntegerField(primary_key=True)
+    id=models.AutoField(primary_key=True)
     group_name=models.CharField(max_length=100)
     remark=models.CharField(max_length=100)
-    def toJSON(self):
-        fields = []
-        for field in self._meta.fields:
-            fields.append(field.name)
-
-        d = {}
-        for attr in fields:
-            d[attr] = getattr(self, attr)
-
-        import json
-        return json.dumps(d)
 
 class Host(models.Model):
     id=models.IntegerField(primary_key=True)
-    group_id=models.ForeignKey(Group)
-    softlib_id=models.ForeignKey(Softlib,default=0)
+    hostname=models.CharField(max_length=15,default='localhost')
+    group=models.ForeignKey(Group)
+    softlib=models.ForeignKey(Softlib,default=0)
     sship=models.CharField(max_length=15,default='192.168.1.1')
     sshpasswd=models.CharField(max_length=100,default='000000')
     sshport=models.CharField(max_length=5,default='22')
@@ -100,3 +90,17 @@ class Tomcat(models.Model):
     group_id=models.ForeignKey(Group)
     prefix=models.CharField(max_length=100,default='/usr/local')
     java_opts=models.CharField(max_length=100,default='')
+
+class Operation(models.Model):
+    id=models.IntegerField(primary_key=True)
+    oper_name=models.CharField(max_length=100,default=0)
+
+class History(models.Model):
+    id=models.IntegerField(primary_key=True)#操作ID
+    oper_type=models.ForeignKey(Operation)#操作类型
+    oper_time=models.DateField()#操作时间
+    oper_group=models.ForeignKey(Group)#操作组
+    oper_info=models.CharField(max_length=100)#操作信息
+
+
+

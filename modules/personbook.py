@@ -4,9 +4,9 @@
 # Email YoLoveLife@outlook.com
 from modules.persontask import PersonTask
 class PersonBook():
-    def __init__(self,pbname,pbhosts,pbfacts,):
+    def __init__(self,pbname,pbfacts,):
         self.name=pbname
-        self.hosts=pbhosts
+        self.hosts='all'
         self.gather_facts=pbfacts
         self.tasks=[]
 
