@@ -10,7 +10,7 @@ from executor.nginx import nginxpb
 from executor.tomcat import tomcatpb
 from executor.redis import redispb
 from executor.base import shellpb
-from inventory import maker
+from executor.dispatch import dispatchpb
 '''
     info:基础配置 包含gcc make libio libselinux except
 '''
@@ -38,10 +38,10 @@ def evt_mysql_control(control='help',):
 '''
     info:java安装卸载
 '''
-def evt_java_install(server='other'):
-    javapb.java_installplaybook(server=server)
+def evt_java_install(prefix="/usr/local",checksum='9222e097e624800fdd9bfb568169ccad'):
+    javapb.java_installplaybook(prefix=prefix,checksum=checksum)
 
-def evt_java_remove(server='other'):
+def evt_java_remove(prefix='/usr/local'):
     javapb.java_removeplaybook(prefix='/usr/local')
 
 '''
@@ -118,7 +118,13 @@ def evt_redis_remove(prefix='/usr/local'):
 def evt_shell_control(control='hostname'):
     shellpb.shell_book(control)
 
+'''
+配置文件修改
+'''
+def evt_dispatch_getcnf(cnf):
+    str=dispatchpb.dispatch_getcnf(cnf)
+    return str
 
-#maker.inventory_maker(['192.168.254.129'])
-#evt_redis_remove(server="all",)
-#evt_redis_install(server="all",)
+def evt_dispatch_setcnf(newsstr,src,cnf):#src本地临时配置文件 cnf远端目标配置文件 完全路径
+    dispatchpb.dispatch_cnf2file(newsstr,cnf)
+    dispatchpb.dispatch_setcnf(src,cnf)
