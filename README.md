@@ -33,3 +33,17 @@ devEops是一个django项目，依赖于
 #### For
 * 完成host界面设计以及编码
 * 前台代码重构
+
+### 2017-4-18
+#### Info
+  构建了devEopsWeb的group页面和host页面。对dashboard的app-bell中的get more info按钮进行了ajax事件的绑定。
+#### Bug
+  * Page: pages/dashboard.html
+  * Do: 点击app-bell元素中的 get more info <a>
+  * Result: 两次点击中，一次点击会进行ajax页面修改。有一次会直接跳转到pages/host.html，样式全无。
+
+### 2017-4-19
+#### Info
+  构建了devEopsWeb的redis的部署界面。我觉得自己做的很棒！我觉得自己很帅！在构建提交的模态框，对于HTML和JS的提交的数据的存储方式提出问题。
+#### Img
+  ![BATCH-REDIS](img/batch-redis.jpg)
