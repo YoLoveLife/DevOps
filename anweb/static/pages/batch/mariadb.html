@@ -29,13 +29,13 @@
                     <div class="row">
                         <div class="col-md-5 form-group">
                             MariaDB - Version
-                            <select class="form-control">
+                            <select class="form-control" id="batch_version">
                                 <option selected="selected">No Selected</option>
                             </select>
                         </div>
                         <div class="col-md-5 form-group">
                             MariaDB - Prefix
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Prefix" value="/usr/local/mysql">
+                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Prefix" value="/usr/local" disabled>
                         </div>
                     </div>
                     <div class="row">
@@ -129,3 +129,8 @@
         </div>
     </div>
 </div>
+<script>
+        $(document).ready(function(){
+        $.pageShow.versionFlush('mysql','batch_version');
+    });
+</script>

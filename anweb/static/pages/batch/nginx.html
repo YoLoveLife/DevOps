@@ -29,13 +29,13 @@
                     <div class="row">
                         <div class="col-md-5 form-group">
                             Nginx - Version
-                            <select class="form-control">
+                            <select class="form-control" id="batch_version">
                                 <option selected="selected">No Selected</option>
                             </select>
                         </div>
                         <div class="col-md-5 form-group">
                             Nginx - Prefix
-                            <input type="text" class="form-control batch-nginx-input" placeholder="Enter Nginx Prefix" value="/usr/local/nginx">
+                            <input type="text" class="form-control batch-nginx-input" placeholder="Enter Nginx Prefix" value="/usr/local" disabled>
                         </div>
                     </div>
                 </div>
@@ -101,3 +101,8 @@
         </div>
     </div>
 </div>
+<script>
+        $(document).ready(function(){
+        $.pageShow.versionFlush('nginx','batch_version');
+    });
+</script>

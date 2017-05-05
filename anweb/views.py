@@ -55,7 +55,7 @@ ASYNC:false
 @csrf_exempt
 @require_http_methods(["GET"],)
 def hostsearch(request):
-    group_id=request.GET.get('group_id')
+    group_id=request.GET.get('id')
     list=service.host9hostsearch(group_id)
     return HttpResponse(json.dumps({
         'host_list': list
@@ -73,9 +73,29 @@ ASYNC:false
 def softversion(request):
     appname=request.GET.get('appname')
     list=service.batch9appversion(appname)
-    print(list)
     return HttpResponse(json.dumps({
         'host_list': list
+    }))
+
+
+'''
+METHOD:POST
+URL:/anweb/batchredis
+POST:list of redis install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchredis(request):
+    iplist = request.POST.getlist('iplist[]')
+    redisversion = request.POST.get('redisversion')
+    redisprefix = request.POST.get('redisprefix')
+    redisport = request.POST.get('redisport')
+    redispasswd = request.POST.get('redispasswd')
+    status = service.batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd)
+    return HttpResponse(json.dumps({
+        'status': status
     }))
 
 '''
@@ -121,22 +141,3 @@ def batchmysql(request):
     }))
 
 
-'''
-METHOD:POST
-URL:/anweb/batchredis
-POST:list of redis install info
-RETURN:true/false
-ASYNC:true
-'''
-@csrf_exempt
-@require_http_methods(["POST"],)
-def batchredis(request):
-    iplist = request.POST.getlist('iplist[]')
-    redisversion = request.POST.get('redisversion')
-    redisprefix = request.POST.get('redisprefix')
-    redisport = request.POST.get('redisport')
-    redispasswd = request.POST.get('redispasswd')
-    status = service.batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd)
-    return HttpResponse(json.dumps({
-        'status': status
-    }))

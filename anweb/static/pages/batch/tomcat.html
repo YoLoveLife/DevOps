@@ -29,19 +29,19 @@
                     <div class="row">
                         <div class="col-md-5 form-group">
                             Java - Version
-                            <select class="form-control">
+                            <select class="form-control" id="batch_version_java">
                                 <option selected="selected">No Selected</option>
                             </select>
                         </div>
                         <div class="col-md-5 form-group">
                             Java - Prefix
-                            <input type="text" class="form-control batch-tomcat-input" placeholder="Enter Java Prefix" value="/usr/local/java">
+                            <input type="text" class="form-control batch-tomcat-input" placeholder="Enter Java Prefix" value="/usr/local" disabled>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5 form-group">
                             Tomcat - Version
-                            <select class="form-control">
+                            <select class="form-control" id="batch_version_tomcat">
                                 <option selected="selected">No Selected</option>
                             </select>
                         </div>
@@ -115,3 +115,9 @@
         </div>
     </div>
 </div>
+<script>
+        $(document).ready(function(){
+        $.pageShow.versionFlush('tomcat','batch_version_tomcat');
+        $.pageShow.versionFlush('java','batch_version_java');
+    });
+</script>
