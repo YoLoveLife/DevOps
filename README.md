@@ -47,3 +47,9 @@ devEops是一个django项目，依赖于
   构建了devEopsWeb的redis的部署界面。我觉得自己做的很棒！我觉得自己很帅！在构建提交的模态框，对于HTML和JS的提交的数据的存储方式提出问题。
 #### Img
   ![BATCH-REDIS](img/batch-redis.jpg)
+
+### 2017-5-5
+#### Info
+  将devEopsWeb的内容加入到devEops做一个前后台的接入。Group page中完成了后台数据的呈现。
+#### For
+  考虑将部署的位置Prefix写死为/usr/local，配置文件的位置写死为/etc下，这样后期管理的时候更加方便。

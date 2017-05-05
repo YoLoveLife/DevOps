@@ -12,6 +12,18 @@ from event import allevent
 from inventory import maker
 import json
 
+
+'''
+PARM:null
+RETURN:list
+USE:返回对应id的服务器IP
+'''
+def batch9ID2IP(idlist):
+    iplist=[]
+    for id in idlist:
+        host=Host.objects.get(id=id)
+        iplist.append(host.sship)
+
 '''
 PARM:null
 RETURN:list
@@ -48,7 +60,6 @@ def host9hostsearch(group_id):
     list=[]
     for host in hostlist:
         tmpdict=model_to_dict(host)
-        tmpdict['app_type']=host.softlib.soft_type.soft_name
         list.append(json.dumps(tmpdict))
     return list
 
@@ -74,10 +85,6 @@ USE:
 def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix):
     tomcatlib=Softlib.objects.get(id=tomcatversion)
     javalib=Softlib.objects.get(id=javaversion)
-
-    #tomcat = Tomcat(group_id_id=)
-    #tomcat.save()
-
     tomcatversion =tomcatlib.soft_version
     javaversion=javalib.soft_version
     javacheck=javalib.soft_md5
@@ -114,4 +121,3 @@ def batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd):
     maker.inventory_maker(iplist)
     allevent.evt_redis_install(version=redisversion,prefix=redisprefix,checksum=redischeck,port=redisport,requirepass=redispasswd,)
     maker.inventory_clear()
-

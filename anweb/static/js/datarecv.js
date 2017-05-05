@@ -11,6 +11,24 @@
 $.dataRecv={};
 
 /**
+* @Type: Object
+* @Desc: all options in this project.
+* */
+$.dataRecv.options={
+    prefix:'/usr/local',
+    redis_port:'6379',
+    redis_passwd:'000000',
+    redis_version:'NULL',
+    mysql_passwd:'000000',
+    mysql_datadir:'/storage/mysql',
+    mysql_port:'3306',
+    mysql_socket:'/tmp/mysql.sock',
+    java_version:'NULL',
+    tomcat_version:'NULL',
+    nginx_version:'NULL'
+}
+
+/**
  * @Type: Function
  * @Return: true/false
  * @Usage: $.dataRecv.lofinValidate(username,userpasswd)
@@ -27,40 +45,18 @@ $.dataRecv.loginValidate=function(username,userpasswd){
 /*-----------Group Page Data JS-----------*/
 /**
  * @Type: Function
- * @Return: Null
- * @Usage: $.dataRecv.groupTabDataFlush(group_list)
- * @Desc: group_list - js list of the group
- * */
-$.dataRecv.groupTabDataFlush=function(group_list){
-    /*Code need change*/
-    var string="";
-    for(var i in group_list){
-        for(var j=1;j<group_list[i].length;j++){
-            var checkbox="<label class=\"checkbox\" for=\"checkbox"+j+"\"><input type=\"checkbox\" value=\"\" id=\"checkbox"+j+"\"data-toggle=\"checkbox\"></label>";
-            var temp=JSON.parse(group_list[i][j]);
-            string+='<tr class=\"group-table\"><td>'+checkbox+'</td><td>'+temp['id']+
-                '</td><td>'+temp['group_name']+'</td><td>'
-                + temp['remark']+'</td>';
-        }
-    }
-    $('tbody').html(string);
-    $('[data-toggle="checkbox"]').radiocheck();//数据样式变更
-}
-
-/**
- * @Type: Function
  * @Return: group_list
  * @Usage: $.dataRecv.groupGetBkData()
  * @Desc: Get the All Group from the database.json data.
  * */
 $.dataRecv.groupGetBkData=function(){
-    return $.devEops.ajaxBkDataAsync('grousearch/',false,"GET",{});
+    return $.devEops.ajaxBkDataAsync('groupsearch/',false,"GET",{});
 }
 
 /**
  * @Type: Function
  * @Return: null
- * @Usage: $.groupModifyDatabase(group)
+ * @Usage: $.dataRecv.groupModifyDatabase(group)
  * @Desc: group is a object.
  * */
 $.dataRecv.groupModifyDatabase=function(group) {
@@ -70,9 +66,33 @@ $.dataRecv.groupModifyDatabase=function(group) {
 
 
 /*-----------Host Page Data JS-----------*/
+/**
+ * @Type: Function
+ * @Return: host_list
+ * @Usage: $.dataRecv.hostGetBkData(group_id)
+ * @Desc: Get the host list for group_id
+ * */
+$.dataRecv.hostGetBkData=function(group_id){
+    var list=[];
+    var postdata={'id':group_id};
+    list=$.devEops.ajaxBkDataAsync('hostsearch/',false,'GET',postdata);
+    return list;
+}
 
-
-
+/*-----------Batch Page Data JS-----------*/
+/**
+ * @Type: Function
+ * @Arvg: softname - name of soft
+ * @Return: version_list
+ * @Usage: $.dataRecv.batchGetSoftVersion(softname)
+ * @Desc: Get the soft version
+ * */
+$.dataRecv.batchGetSoftVersion=function(softname){
+    var list=[];
+    postdata={'appname':softname};
+    list=$.devEops.ajaxBkDataAsync('softversion/',false,'GET',postdata);
+    return list;
+}
 
 
 
