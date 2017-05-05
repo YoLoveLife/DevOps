@@ -1,0 +1,117 @@
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        Tomcat
+        <small>Batch deployment</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">Ansible</li>
+        <li class="active">Batch deployment</li>
+        <li class="active">Tomcat</li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container page-tomcat">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Tomcat - Batch deployment</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="static/img/tomcat.png" alt="mess">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            Java - Version
+                            <select class="form-control">
+                                <option selected="selected">No Selected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 form-group">
+                            Java - Prefix
+                            <input type="text" class="form-control batch-tomcat-input" placeholder="Enter Java Prefix" value="/usr/local/java">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            Tomcat - Version
+                            <select class="form-control">
+                                <option selected="selected">No Selected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 form-group">
+                            Tomcat - Prefix
+                            <input type="text" class="form-control batch-tomcat-input" placeholder="Enter Tomcat Prefix" value="/usr/local/tomcat">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Operation</h3>
+                </div>
+                <div class="box-body">
+                    <button class="btn btn-app" data-toggle="modal" data-target="#myModal">
+                        <i class="fa fa-braille"></i> Range
+                    </button>
+                    <button class="btn btn-app" disabled>
+                        <i class="fa fa-clock-o"></i> TimeSet
+                    </button>
+                    <button class="btn btn-app">
+                        <i class="fa fa-check"></i> Start
+                    </button>
+                    <button class="btn btn-app">
+                        <i class="fa fa-times" onclick="$.pageShow.clearBatchInputBox('batch-tomcat-input')"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row batch-notice">
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Tomcat - Batch notice</h3>
+                </div>
+                <div class="box-body">
+                    <dt>Java - Prefix</dt>
+                    <dd>Java安装目录</dd>
+                    <dt>Tomcat - Prefix</dt>
+                    <dd>Tomcat 安装目录</dd>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+<!--
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Launch demo modal
+        </button>
+-->
+<!--Modal-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

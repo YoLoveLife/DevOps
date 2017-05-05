@@ -3,111 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <title>devEops - Graduation Project</title>
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/flat-ui.min.css" rel="stylesheet">
-    <link href="../static/css/inin.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../static/img/favicon.ico">
+    <link rel="stylesheet" href="static/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet/less" type="text/css" href="static/less/deveops.less">
+    <link rel="stylesheet/less" type="text/css" href="static/less/dashboard.less">
+    <link rel="stylesheet/less" type="text/css" href="static/less/manager.less">
+    <link rel="stylesheet/less" type="text/css" href="static/less/ansible.less">
+    <link rel="stylesheet" type="text/css" href="static/plugins/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
-    <div id='toolbar' class="container-fluid">
-        <div class="row">
-            <div class="logo col-lg-2">
-                <a href="index.html"></a>
-            </div>
-            <div class="title col-lg-4">
-                <h3 class="main-title">devEops</h3>
-                <small>Graduation Project for Ansible API</small>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <nav class="navbar navbar-inverse" role="navigation">
-                    <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav navbar-left" id="main-menu">
-                            <li><a href="static/ajax/dashboard.html" class="ajax-link">Dashboard<span class="navbar-unread">1</span></a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manager<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="static/ajax/group.html" class="ajax-link">Group</a></li>
-                                                                        <li class="divider"></li>
-                                    <li><a href="static/ajax/host.html" class="ajax-link">Host</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ansible<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="static/ajax/batch.html" class="ajax-link">Batch deployment</a></li>
-                                    <li><a href="static/ajax/release.html" class="ajax-link">Centralized release</a></li>
-                                    <li><a href="static/ajax/configure.html" class="ajax-link">Configuration modification</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" disabled>Liar<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" class="ajax-link">Tomcat</a></li>
-                                    <li><a href="#" class="ajax-link">Nginx</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" disabled>Save<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" class="ajax-link" >Tcat</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#" class="ajax-link">Firewall</a></li>
-                                </ul>
-                            </li>
-                            <li><a onclick="OpenModal('#aboutMe')">About Yo</a></li>
+<!--Main Page-->
+<div class="wrapper">
+    <!--Main topbar-->
+    <header class="main-header">
+        <a href="index.html" class="logo">
+            <span class="logo-lg"><b>devEops</b>beta</span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <div class="navbar-top-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown messages-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="label label-success">4</span>
+                        </a>
+                        <ul class="dropdown-menu">
                         </ul>
-                        <form class="navbar-form navbar-right" action="#" role="search">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input class="form-control" id="navbarInput-01" type="search" placeholder="Search">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn">
-                                            <span class="fui-search">
-                                            </span>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div><!-- /.navbar-collapse -->
-                </nav><!-- /navbar -->
+                    </li>
+                    <li class="dropdown notifications-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">11</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </li>
+                    <li class="dropdown tasks-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-flag-o"></i>
+                            <span class="label label-danger">7</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </div> <!-- /row -->
-    </div>
-    <div id='main-page' class="navbar navbar-inverse container-fluid">
+        </nav>
+    </header>
+    <!--Main leftbar-->
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="header menu-title">MAIN NAVIGATION</li>
+                <li class="treeview">
+                    <a href="static/pages/dashboard.html" class="ajax-link">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="static/pages/timeline.html" class="ajax-link">
+                        <i class="fa fa-clock-o"></i>
+                        <span>TimeLine</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-server"></i>
+                        <span>Manager</span>
+                        <span>
+                            <i class="fa fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none">
+                        <li><a href="static/pages/group.html" class="ajax-link"><i class="fa fa-group"></i>Group</a></li>
+                        <li><a href="static/pages/host.html" class="ajax-link"><i class="fa fa-laptop"></i>Host</a></li>
+                        <li><a href="static/pages/search.html" class="ajax-link"><i class="fa fa-search"></i>Search</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-magic"></i>
+                        <span>Ansible</span>
+                        <span>
+                            <i class="fa fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none">
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap"></i>Batch deployment
+                                <span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu" style="display: none">
+                                <li><a href="static/pages/batch/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
+                                <li><a href="static/pages/batch/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
+                                <li><a href="static/pages/batch/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
+                                <li><a href="static/pages/batch/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="static/pages/cen.html" class="ajax-link"><i class="fa fa-cogs"></i>Centralized release</a></li>
+                        <li><a href="static/pages/conf.html" class="ajax-link"><i class="glyphicon glyphicon-info-sign"></i>Configuration modify</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-comment-o"></i>
+                        <span>Liar</span>
+                        <span>
+                            <i class="fa fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none">
+                        <li><a href="static/pages/tomcat.html" class="ajax-link"><i class="fa fa-houzz"></i>Tomcat</a></li>
+                        <li><a href="static/pages/nginx.html" class="ajax-link"><i class="fa fa-joomla"></i>Nginx</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-gratipay"></i>
+                        <span>Pavel</span>
+                        <span>
+                            <i class="fa fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none">
+                        <li><a href="static/pages/tomcat.html" class="ajax-link"><i class="fa fa-slideshare"></i>Save me</a></li>
+                        <li><a href="static/pages/nginx.html" class="ajax-link"><i class="fa fa-viadeo"></i>Pavel</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <div class="content-wrapper">
         <div id="ajax-content">
         </div>
     </div>
-    <!--About Me Modal-->
-    <div class="modal fade" id="aboutMe" tabindex="-1" role="dialog" aria-labelledby="aboutMeLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="aboutMeLabel">About Yo</h4>
-                </div>
-                <div id="main-about-me">
-                    <p>MiraCle Yo</p>
-                    <p>Email - <a href="mailto:YoLoveLife@outlook.com">YoLoveLife@outlook.com</a></p>
-                    <p>Tel - 18380594040</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <!--About Me Modal-->
-<script src="../static/js/jquery/jquery.min.js"></script>
-<script src="../static/js/flat-ui.js"></script>
-    <script src="../static/js/bootstrap.js"></script>
-<script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/application.js"></script>
-<script src="../static/js/ajax/deveops.js"></script>
-<script src="../static/js/ajax/group.js"></script>
-    <script src="../static/js/ajax/host.js"></script>
-<script src="../static/js/ajax/batch.js"></script>
+</div>
+<script src="static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="static/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/plugins/less/less.js"></script>
+<script src="static/js/deveops.js"></script>
+<script src="static/js/datarecv.js"></script>
+<script src="static/js/pageshow.js"></script>
 </body>
 </html>

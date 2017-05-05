@@ -1,0 +1,185 @@
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        Host
+        <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">Manager</li>
+        <li class="active">Host</li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container page-host">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-hosttb">
+                <div class="box-header">
+                    <h3 class="box-title">HostList</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-header box-toolbar">
+                    <div class="row">
+                        <div class="col-sm-6" style="padding-top: 15px;padding-left: 30px">
+                            <label class="groupslct">Show
+                                <select id="groupslct">
+                                    <option value="10">H24APP</option>
+                                    <option value="20">ZJZX</option>
+                                    <option value="30">dddd</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
+                                entries
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-toolbar-btn">
+                                <a class="btn btn-app">
+                                    <i class="fa fa-plus"></i> Add
+                                </a>
+                                <a class="btn btn-app">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <a class="btn btn-app" disabled>
+                                    <i class="fa fa-info"></i> Info
+                                </a>
+                                <a class="btn btn-app" disabled>
+                                    <i class="fa fa-times"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>HostID</th>
+                                        <th>Hostname</th>
+                                        <th>IPAddress</th>
+                                        <th>AppType</th>
+                                        <th>Info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <label><input type="checkbox" class="minimal" checked></label>
+                                        </td>
+                                        <td>Mozilla 1.0</td>
+                                        <td>Win 95+ / OSX.1+</td>
+                                        <td>1</td>
+                                        <td>A</td>
+                                        <td><button href="pages/modal.html" data-toggle="modal" data-target="#HostInfo">
+                                            <i class="fa fa-info"></i>
+                                        </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label><input type="checkbox" class="minimal"></label>
+                                        </td>
+                                        <td>Mozilla 1.0</td>
+                                        <td>Win 95+ / OSX.1+</td>
+                                        <td>1</td>
+                                        <td>A</td>
+                                        <td><button href="pages/modal.html" data-toggle="modal" data-target="#HostInfo">
+                                            <i class="fa fa-info"></i>
+                                        </button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label><input type="checkbox" class="minimal"></label>
+                                        </td>
+                                        <td>Mozilla 1.0</td>
+                                        <td>Win 95+ / OSX.1+</td>
+                                        <td>1</td>
+                                        <td>A</td>
+                                        <td><button href="pages/modal.html" data-toggle="modal" data-target="#HostInfo">
+                                            <i class="fa fa-info"></i>
+                                        </button></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>HostID</th>
+                                        <th>Hostname</th>
+                                        <th>IPAddress</th>
+                                        <th>AppType</th>
+                                        <th>Info</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+<!--Modal-->
+<div class="modal fade" id="HostInfo" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-hostinfo" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Host Info</h4>
+            </div>
+            <div class="modal-body container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="small-box">
+                            <div class="inner" style="background-color: #605ca8">
+                                <h3>Linux</h3>
+                                <p>OS</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-linux">
+                                </i>
+                            </div>
+                            <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #555299">More info</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="small-box">
+                            <div class="inner" style="background-color: #39CCCC;">
+                                <h3>600M</h3>
+                                <p>Memory</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-linode">
+                                </i>
+                            </div>
+                            <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #30BBBB">More info</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="small-box">
+                            <div class="inner" style="background-color: #00c0ef">
+                                <h3>60%</h3>
+                                <p>CPU</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-microchip">
+                                </i>
+                            </div>
+                            <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #00A7D0">More info</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
