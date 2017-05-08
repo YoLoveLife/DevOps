@@ -26,30 +26,77 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">s
+            <div class="col-md-2">
                 <div class="box box-default">
                     <div class="box-header">
                         <h3 class="box-title">Operation</h3>
                     </div>
                     <div class="box-body">
-                        <a class="btn btn-app">
+                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="$.pageShow.groupModalPutInfo(1)">
                             <i class="fa fa-plus"></i> Add
-                        </a>
-                        <a class="btn btn-app">
+                        </button>
+                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="$.pageShow.groupModalPutInfo(2)">
                             <i class="fa fa-edit"></i> Edit
-                        </a>
-                        <a class="btn btn-app">
+                        </button>
+                        <button class="btn btn-app" disabled>
                             <i class="fa fa-times"></i> Delete
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!--Main Content-->
+<!--Modal-->
+<div class="modal fade" id="GroupInfo" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-hostinfo" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Group Info</h4>
+            </div>
+            <div class="modal-body container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>GID</label>
+                            <input type="text" class="form-control" id="grpID" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Group Name</label>
+                            <input type="text" class="form-control" id="grpName">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Group Remark</label>
+                            <input type="text" class="form-control" id="grpRemark">
+                        </div>
+                    </div>
+                    <!--
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Group Status</label>
+                            <input type="text" class="form-control" default="groupremark">
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$.pageShow.groupModalPostInfo()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
      $(document).ready(function(){
-        var list=$.dataRecv.groupGetBkData();
-        $.pageShow.groupTabDataFlush(list);
+        $.pageShow.groupInit();
     });
 </script>

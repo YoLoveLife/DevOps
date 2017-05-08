@@ -59,9 +59,9 @@ $.dataRecv.groupGetBkData=function(){
  * @Usage: $.dataRecv.groupModifyDatabase(group)
  * @Desc: group is a object.
  * */
-$.dataRecv.groupModifyDatabase=function(group) {
-    var postdata={"groupid":group.groupid,"groupname":group.groupname,"groupremark":group.groupremark};
-    $.devEops.ajaxBkDataAsync('groupmodify/',true,"POST",postdata);
+$.dataRecv.groupModifyDatabase=function(postdata) {
+    //var postdata={"groupid":group.groupid,"groupname":group.groupname,"groupremark":group.groupremark};
+    $.devEops.ajaxBkDataAsync('groupmodify/',false,"POST",postdata);
 }
 
 
@@ -93,6 +93,8 @@ $.dataRecv.batchGetSoftVersion=function(softname){
     list=$.devEops.ajaxBkDataAsync('softversion/',false,'GET',postdata);
     return list;
 }
+
+
 
 
 
