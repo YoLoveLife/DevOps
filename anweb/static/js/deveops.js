@@ -162,7 +162,7 @@ $.devEops.openModal=function(modal){
 
 /**
  * @Type: Function
- * @Return
+ * @Return the value of pick up list
  * @Usage: $.devEops.listPickUp(listname)
  * @Argv: Listname - the id of tab.
  * @Desc: Get the select Tab value and return.
@@ -176,20 +176,21 @@ $.devEops.listPickUp=function(listname){
 
 /**
  * @Type: Function
- * @Return: Null
- * @Usage: $.devEops.
+ * @Return: Element of checked.
+ * @Usage: $.devEops.searchChecked(listelement)
  * @Desc: Through getElementsByClassName get the nodelist of tab-class and find which is checked
  * @Notice: 如果有可能通过在点击的时候也增添class 使用hasClass来做 循环的方式不合理
  * */
 $.devEops.searchChecked=function(listelement){
     var nodeList=document.getElementsByClassName(listelement);
     for (var i = 0; i < nodeList.length; i++) {//遍历NodeLists中的所有元素 每一次就是一行
-        if(nodeList[i].firstElementChild.firstElementChild.firstElementChild.checked){
+        if(nodeList[i].firstElementChild.firstElementChild.checked){
             //nodeList[i]就是每一行 每一行的第一个元素firstElementChild就是所谓的checkbox 但是这里的checkbox由两部分组成<label><input></label>我们所需要的是input中的属性
             //如果被选中的话
             return nodeList[i]
         }
     }
+    return null;
 }
 
 

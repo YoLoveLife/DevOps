@@ -24,12 +24,7 @@
                     <div class="row">
                         <div class="col-sm-6" style="padding-top: 15px;padding-left: 30px">
                             <label class="groupslct">Show
-                                <select id="groupslct">
-                                    <option value="10">H24APP</option>
-                                    <option value="20">ZJZX</option>
-                                    <option value="30">dddd</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select id="groupselect" onchange="$.pageShow.ChoseGroup()">
                                 </select>
                                 entries
                             </label>
@@ -61,48 +56,10 @@
                                         <th>HostID</th>
                                         <th>Hostname</th>
                                         <th>IPAddress</th>
-                                        <th>AppType</th>
                                         <th>Info</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>
-                                            <label><input type="checkbox" class="minimal" checked></label>
-                                        </td>
-                                        <td>Mozilla 1.0</td>
-                                        <td>Win 95+ / OSX.1+</td>
-                                        <td>1</td>
-                                        <td>A</td>
-                                        <td><button href="pages/modal.html" data-toggle="modal" data-target="#HostInfo">
-                                            <i class="fa fa-info"></i>
-                                        </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label><input type="checkbox" class="minimal"></label>
-                                        </td>
-                                        <td>Mozilla 1.0</td>
-                                        <td>Win 95+ / OSX.1+</td>
-                                        <td>1</td>
-                                        <td>A</td>
-                                        <td><button href="pages/modal.html" data-toggle="modal" data-target="#HostInfo">
-                                            <i class="fa fa-info"></i>
-                                        </button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label><input type="checkbox" class="minimal"></label>
-                                        </td>
-                                        <td>Mozilla 1.0</td>
-                                        <td>Win 95+ / OSX.1+</td>
-                                        <td>1</td>
-                                        <td>A</td>
-                                        <td><button href="pages/modal.html" data-toggle="modal" data-target="#HostInfo">
-                                            <i class="fa fa-info"></i>
-                                        </button></td>
-                                    </tr>
                                     </tbody>
                                     <tfoot>
                                     <tr>
@@ -110,7 +67,6 @@
                                         <th>HostID</th>
                                         <th>Hostname</th>
                                         <th>IPAddress</th>
-                                        <th>AppType</th>
                                         <th>Info</th>
                                     </tr>
                                     </tfoot>
@@ -126,12 +82,12 @@
 </section>
 <!--Main Content-->
 <!--Modal-->
-<div class="modal fade" id="HostInfo" tabindex="-1" role="dialog" >
-    <div class="modal-dialog modal-hostinfo" role="document">
+<div class="modal fade" id="Hostarv" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-hostarv" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Host Info</h4>
+                <h4 class="modal-title">Host Arv</h4>
             </div>
             <div class="modal-body container">
                 <div class="row">
@@ -183,3 +139,40 @@
         </div>
     </div>
 </div>
+
+<!--Modal-->
+<div class="modal fade" id="HostInfo" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-hostinfo" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Host Info</h4>
+            </div>
+            <div class="modal-body container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Host ID</label>
+                            <input type="text" class="form-control" id="hstID">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>IPAddress</label>
+                            <input type="text" class="form-control" id="hstName">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $.pageShow.hostInit();
+    });
+</script>

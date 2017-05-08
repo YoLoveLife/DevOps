@@ -15,7 +15,18 @@ $.pageShow={};
 /**
  * @Type: Function
  * @Return: Null
- * @Usage: $.dataRecv.groupTabDataFlush(group_list)
+ * @Usage: $.pageShow.groupInit()
+ * @Desc: Function for init the group page.When you want to flush the page.
+ * */
+$.pageShow.groupInit=function(){
+    var list=$.dataRecv.groupGetBkData();
+    $.pageShow.groupTabDataFlush(list);
+}
+
+/**
+ * @Type: Function
+ * @Return: Null
+ * @Usage: $.pageShow.groupTabDataFlush(group_list)
  * @Desc: group_list - js list of the group
  * */
 $.pageShow.groupTabDataFlush=function(group_list){
@@ -24,10 +35,118 @@ $.pageShow.groupTabDataFlush=function(group_list){
     for(var i in group_list){
         for(var j=0;j<group_list[i].length;j++){
             var temp=JSON.parse(group_list[i][j]);
-            string+="<tr><td><input type='radio' name='radiogp' class='minimal'></td><td>"+temp['id']+"</td><td>"+temp['name']+"</td><td>"+temp['remark']+"</td>"+alive+"</tr>";
+            if(temp['id']==1){
+                continue;
+            }
+            string+="<tr class='grp-list'><td><input type='radio' name='radiogp' class='minimal' checked></td><td>"+temp['id']+"</td><td>"+temp['name']+"</td><td>"+temp['remark']+"</td>"+alive+"</tr>";
         }
     }
     $('table').html(string);
+}
+
+/**
+ * @Type: Function
+ * @Argv: if type==1 add.elif type==2 modify
+ * @Return: Null
+ * @Usage: $.pageShow.groupModalPutInfo()
+ * @Desc: Input the selected group info to the modal
+ * */
+$.pageShow.groupModalPutInfo=function(type){
+    var GID=document.getElementById('grpID');
+    var GNAME=document.getElementById('grpName');
+    var GREMARK=document.getElementById('grpRemark');
+    if(type==2){
+        var Element=$.devEops.searchChecked('grp-list');
+        GID.setAttribute('value',Element.childNodes[1].innerHTML);
+        GNAME.setAttribute('value',Element.childNodes[2].innerHTML);
+        GREMARK.setAttribute('value',Element.childNodes[3].innerHTML);
+    }
+    else{
+        GID.setAttribute('value','#NEW');
+        GNAME.setAttribute('value','');
+        GREMARK.setAttribute('value','');
+    }
+    return ;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.groupModalPostInfo()
+ * @Desc:
+ * */
+$.pageShow.groupModalPostInfo=function(){
+    var GID=document.getElementById('grpID');
+    var GNAME=document.getElementById('grpName');
+    var GREMARK=document.getElementById('grpRemark');
+    var postdata;
+    if(GID.value=='#NEW')
+    {
+        postdata={"groupid":1,"groupname":GNAME.value,"groupremark":GREMARK.value};
+    }
+    else{
+        postdata={"groupid":GID.value,"groupname":GNAME.value,"groupremark":GREMARK.value};
+    }
+    $.dataRecv.groupModifyDatabase(postdata);
+    $.pageShow.groupInit();
+}
+/*-----------Host Page Data JS-----------*/
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.hostInit()
+ * @Desc: Function for init the host page.When you want to flush the page.
+ * */
+$.pageShow.hostInit=function() {
+    var objS=document.getElementById('groupselect');
+    objS.options.length=0;
+    var list=$.dataRecv.groupGetBkData();
+    for(var i in list){
+        for(var j=0;j<list[i].length;j++){
+            var temp=JSON.parse(list[i][j]);
+            if(temp['id']==1){
+                var op=new Option(temp['name'],temp['id'])
+                objS.options.add(op);
+                op.selected=true;
+                continue;
+            }
+            objS.options.add(new Option(temp['name'],temp['id']));
+        }
+    }
+}
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.ChoseGroup()
+ * @Desc: Function for chose group.
+ * */
+$.pageShow.ChoseGroup=function(){
+    var id=$.devEops.listPickUp('groupselect');
+    var list=$.dataRecv.hostGetBkData(id);
+    $.pageShow.hostTabDataFlush(list);
+}
+
+/**
+ * @Type: Function
+ * @Return: Null
+ * @Usage: $.pageShow.hostTabDataFlush(host_list)
+ * @Desc: host_list - js list of the group
+ * */
+$.pageShow.hostTabDataFlush=function(host_list){
+    var string="";
+    for(var i in host_list){
+        for(var j=0;j<host_list[i].length;j++){
+            var temp=JSON.parse(host_list[i][j]);
+            if(temp['id']==1){
+                continue;
+            }
+            string+="<tr><td><input type='radio' name='radiogp' class='minimal' checked></td><td>"+temp['id']+"</td><td>"+temp['name']+"</td><td>"+temp['sship']+"</td><td><button data-toggle='modal' data-target='#Hostarv'><i class='fa fa-info'></i></button></td><tr>";
+        }
+    }
+    $('tbody').html(string);
 }
 
 /*-----------Search Page Data JS-----------*/
@@ -46,6 +165,10 @@ $.pageShow.SearchInfoResult=function() {
 
 
 /*-----------Batch Page Data JS-----------*/
+/**
+ * @Type: Argv
+ * @Desc: the ip list for ansible
+ * */
 $.pageShow.AnsibleHostIDList={};
 
 /**

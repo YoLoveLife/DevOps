@@ -42,11 +42,12 @@ RETURN:TRUE/FALSE
 USE:如果组不存在 则添加组；如果组存在 则修改组
 '''
 def group9modifygroup(group_id,group_name,group_remark):
-    if group_id == "0":#ADD
-        group=Group(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark))
+    if group_id == "1":#ADD
+        group=Group(name=unicode.encode(group_name),remark=unicode.encode(group_remark))
+        print(group_id,group_name,group_remark)
         group.save()
     else:#UPDATE
-        Group.objects.filter(id=int(group_id)).update(group_name=unicode.encode(group_name),remark=unicode.encode(group_remark))
+        Group.objects.filter(id=int(group_id)).update(name=unicode.encode(group_name),remark=unicode.encode(group_remark))
 
 '''
 PARM:group_id
