@@ -45,7 +45,13 @@
                         </div>
                         <div class="col-md-5 form-group">
                             Redis - Password
-                            <input type="text" class="form-control batch-redis-input" placeholder="Enter Redis api passwd">
+                            <input type="password" class="form-control batch-redis-input" placeholder="Enter Redis api passwd">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            Redis - Datadir
+                            <input type="text" class="form-control batch-redis-input" placeholder="Enter Redis DataDir" value="/usr/local/redis/data">
                         </div>
                     </div>
                 </div>
@@ -63,7 +69,7 @@
                     <button class="btn btn-app" disabled>
                         <i class="fa fa-clock-o"></i> TimeSet
                     </button>
-                    <button class="btn btn-app">
+                    <button class="btn btn-app" onclick="$.pageShow.redisBatch()">
                         <i class="fa fa-check"></i> Start
                     </button>
                     <button class="btn btn-app" onclick="$.pageShow.clearBatchInputBox('batch-redis-input')">
@@ -138,7 +144,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="">Save changes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
@@ -148,6 +154,6 @@
         var list=$.dataRecv.groupGetBkData();
         $.pageShow.versionFlush('redis','batch_version');
         $.pageShow.rangeSelectInsert(list,'range-group');
-        $("[data-toggle='tooltip']").tooltip();
+        //$("[data-toggle='tooltip']").tooltip();
     });
 </script>

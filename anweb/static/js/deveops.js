@@ -167,12 +167,12 @@ $.devEops.openModal=function(modal){
  * @Argv: Listname - the id of tab.
  * @Desc: Get the select Tab value and return.
  * */
-$.devEops.listPickUp=function(listname){
+$.devEops.SelectPickUp=function(listname){
     var objSelect = document.getElementById(listname);
     var objvalue = objSelect.options[objSelect.selectedIndex].value;
-    return objvalue;
+    var objlabel = objSelect.options[objSelect.selectedIndex].label;
+    return [objvalue,objlabel];
 }
-
 
 /**
  * @Type: Function
@@ -236,4 +236,19 @@ $.devEops.analyzeSearchItem=function(string){
     }
     console.log(Dist);
     return Dist;
+}
+
+/**
+ * @Type: Function
+ * @Argv: object
+ * @Return: list
+ * @Usage: $.devEops.object2List()
+ * @Desc: 将object字典的值部分转换为list
+ * */
+$.devEops.object2List=function(object) {
+    var list=[];
+    for(var i in object){
+        list.push(object[i]);
+    }
+    return list;
 }

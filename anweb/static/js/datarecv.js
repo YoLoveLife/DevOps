@@ -78,6 +78,17 @@ $.dataRecv.hostGetBkData=function(group_id){
     list=$.devEops.ajaxBkDataAsync('hostsearch/',false,'GET',postdata);
     return list;
 }
+/**
+ * @Type: Function
+ * @Argv: ipaddress,groupid
+ * @Return: Null
+ * @Usage: $.dataRecv.hostUpdateInfo(ipaddress,groupid)
+ * @Desc:
+ * */
+$.dataRecv.hostUpdateInfo=function(ipaddress,groupid){
+    postdata={'ipaddress':ipaddress,'group':groupid};
+    $.devEops.ajaxBkDataAsync('hostupdate/',false,'GET',postdata);
+}
 
 /*-----------Batch Page Data JS-----------*/
 /**
@@ -94,9 +105,48 @@ $.dataRecv.batchGetSoftVersion=function(softname){
     return list;
 }
 
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.dataRecv.batchRedis()
+ * */
+$.dataRecv.batchRedis=function(iplist,redisversion,redisprefix,redisport,redispasswd,redisdatadir){
+    var postdata={'iplist':iplist,'version':redisversion,'prefix':redisprefix,'port':redisport,'passwd':redispasswd,'datadir':redisdatadir};
+    $.devEops.ajaxBkDataAsync('batchredis/',true,'POST',postdata);
+}
 
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.dataRecv.batchMySQL()
+ * */
+$.dataRecv.batchMySQL=function(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqlsocket){
+    var postdata={'iplist':iplist,'version':mysqlversion,'prefix':mysqlprefix,'datadir':mysqldatadir,'port':mysqlport,'passwd':mysqlpasswd,'socket':mysqlsocket};
+    $.devEops.ajaxBkDataAsync('batchmysql/',true,'POST',postdata);
+}
 
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.dataRecv.batchTomcat()
+ * */
+$.dataRecv.batchTomcat=function (iplist,javaversion,javaprefix,tomcatversion,tomcatprefix) {
+    var postdata={'iplist':iplist,'javaversion':javaversion,'javaprefix':javaprefix,'tomcatversion':tomcatversion,'tomcatprefix':tomcatprefix};
+    $.devEops.ajaxBkDataAsync('batchtomcat/',true,'POST',postdata);
+}
 
-
-
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.dataRecv.batchNginx()
+ * */
+$.dataRecv.batchNginx=function(iplist,nginxversion,nginxprefix,nginxpid){
+    var postdata={'iplist':iplist,'version':nginxversion,'prefix':nginxprefix,'pid':nginxpid};
+    console.log(postdata);
+    $.devEops.ajaxBkDataAsync('batchnginx/',true,'POST',postdata);
+}
 

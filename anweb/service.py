@@ -6,7 +6,7 @@
 from models import Group
 from django.core import serializers
 from util import toJSON,str2dict
-from anweb.models import Group,Host,Softlib,Soft,Tomcat
+from anweb.models import Group,Host,Softlib,Soft,Redis,MySQL,Tomcat,Java,Nginx
 from django.forms.models import model_to_dict
 from event import allevent
 from inventory import maker
@@ -37,6 +37,20 @@ def group9groupsearch():
     return list
 
 '''
+PARM:ipaddress,groupid
+RETURN:status
+USE:
+'''
+def host9hostupdate(ipaddress,groupid):
+    group=Group.objects.get(id=groupid)
+    host=Host(group=group,sship=unicode.encode(ipaddress))
+    host.save()
+    maker.inventory_maker([ipaddress])
+    allevent.evt_base_install()
+    maker.inventory_clear()
+    return 1
+
+'''
 PARM:group_id,group_name,group_remark
 RETURN:TRUE/FALSE
 USE:如果组不存在 则添加组；如果组存在 则修改组
@@ -44,7 +58,7 @@ USE:如果组不存在 则添加组；如果组存在 则修改组
 def group9modifygroup(group_id,group_name,group_remark):
     if group_id == "1":#ADD
         group=Group(name=unicode.encode(group_name),remark=unicode.encode(group_remark))
-        print(group_id,group_name,group_remark)
+        #print(group_id,group_name,group_remark)
         group.save()
     else:#UPDATE
         Group.objects.filter(id=int(group_id)).update(name=unicode.encode(group_name),remark=unicode.encode(group_remark))
@@ -84,6 +98,14 @@ RETURN:执行结果
 USE:
 '''
 def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix):
+    list=[]
+    for i in iplist:
+        tomcat=Tomcat(host_id=int(i),prefix=tomcatprefix,softlib_id=tomcatversion)
+        java=Java(host_id=int(i),prefix=javaprefix,softlib_id=javaversion)
+        tomcat.save()
+        java.save()
+        host=Host.objects.get(id=unicode.encode(i))
+        list.append(host.sship)
     tomcatlib=Softlib.objects.get(id=tomcatversion)
     javalib=Softlib.objects.get(id=javaversion)
     tomcatversion =tomcatlib.soft_version
@@ -91,7 +113,7 @@ def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix
     javacheck=javalib.soft_md5
     tomcatcheck=tomcatlib.soft_md5
 
-    maker.inventory_maker(iplist)
+    maker.inventory_maker(list)
     allevent.evt_java_install(version=javaversion,prefix=javaprefix,checksum=javacheck)
     allevent.evt_tomcat_install(version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
     maker.inventory_clear()
@@ -101,13 +123,18 @@ PARM:info for install mysql
 RETURN:执行结果
 USE:
 '''
-def batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqltmp):
-    mysqllib=Softlib.objects.get(id=mysqlversion)
+def batch9mysqlinstall(iplist,version,prefix,passwd,datadir,port,socket):
+    list=[]
+    for i in iplist:
+        mysql=MySQL(host_id=int(i),prefix=prefix,passwd=passwd,port=port,socket=socket,datadir=datadir,softlib_id=int(version))
+        mysql.save()
+        host=Host.objects.get(id=unicode.encode(i))
+        list.append(host.sship)
+    mysqllib=Softlib.objects.get(id=version)
     mysqlversion=mysqllib.soft_version
     mysqlcheck=mysqllib.soft_md5
-    print(mysqlversion)
-    maker.inventory_maker(iplist)
-    allevent.evt_mysql_install(version=mysqlversion,prefix=mysqlprefix,checksum=mysqlcheck,mysqlpasswd=mysqlpasswd,mysqldatadir=mysqldatadir,mysqlport=mysqlport,mysqltmp=mysqltmp)
+    maker.inventory_maker(list)
+    allevent.evt_mysql_install(version=mysqlversion,prefix=prefix,checksum=mysqlcheck,mysqlpasswd=passwd,mysqldatadir=datadir,mysqlport=port,mysqlsocket=socket)
     maker.inventory_clear()
 
 '''
@@ -115,10 +142,36 @@ PARM:info for install redis
 RETURN:执行结果
 USE:
 '''
-def batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd):
+def batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd,redisdatadir):
+    list=[]
+    for i in iplist:
+        redis = Redis(host_id=int(i),prefix=redisprefix,port=redisport,requirepass=redispasswd,datadir=redisdatadir,softlib_id=int(redisversion))
+        redis.save()
+        host=Host.objects.get(id=unicode.encode(i))
+        list.append(host.sship)
     redislib=Softlib.objects.get(id=redisversion)
     redisversion=redislib.soft_version
     redischeck=redislib.soft_md5
-    maker.inventory_maker(iplist)
-    allevent.evt_redis_install(version=redisversion,prefix=redisprefix,checksum=redischeck,port=redisport,requirepass=redispasswd,)
+    maker.inventory_maker(list)
+    allevent.evt_redis_install(version=redisversion,prefix=redisprefix,checksum=redischeck,datadir=redisdatadir)
+    maker.inventory_clear()
+
+'''
+PARM: info for install nginx
+RETURN:执行结果
+USE:
+'''
+def batch9nginxinstall(iplist,version,prefix,pid):
+    list=[]
+    for i in iplist:
+        nginx=Nginx(host_id=int(i),prefix=prefix,pid=pid,softlib_id=int(version))
+        nginx.save()
+        host=Host.objects.get(id=unicode.encode(i))
+        list.append(host.sship)
+    print(list)
+    nginxlib=Softlib.objects.get(id=version)
+    nginxversion=nginxlib.soft_version
+    nginxcheck=nginxlib.soft_md5
+    maker.inventory_maker(list)
+    allevent.evt_nginx_install(version=nginxversion,prefix=prefix,checksum=nginxcheck)
     maker.inventory_clear()

@@ -124,7 +124,8 @@ $.pageShow.hostInit=function() {
  * @Desc: Function for chose group.
  * */
 $.pageShow.ChoseGroup=function(){
-    var id=$.devEops.listPickUp('groupselect');
+    var ar=$.devEops.SelectPickUp('groupselect');
+    var id=ar[0];
     var list=$.dataRecv.hostGetBkData(id);
     $.pageShow.hostTabDataFlush(list);
 }
@@ -143,10 +144,52 @@ $.pageShow.hostTabDataFlush=function(host_list){
             if(temp['id']==1){
                 continue;
             }
-            string+="<tr><td><input type='radio' name='radiogp' class='minimal' checked></td><td>"+temp['id']+"</td><td>"+temp['name']+"</td><td>"+temp['sship']+"</td><td><button data-toggle='modal' data-target='#Hostarv'><i class='fa fa-info'></i></button></td><tr>";
+            string+="<tr class='hst-list'><td><input type='radio' name='radiohst' class='minimal' checked></td><td>"+temp['id']+"</td><td>"+temp['name']+"</td><td>"+temp['sship']+"</td><td><button data-toggle='modal' data-target='#Hostarv'><i class='fa fa-info'></i></button></td><tr>";
         }
     }
     $('tbody').html(string);
+}
+
+/**
+ * @Type: Function
+ * @Argv: arv - if arv==1 add elif arv=2 modify
+ * @Return: Null
+ * @Usage: $.pageShow.hostModalModify()
+ * @Desc: @Argv
+ * */
+$.pageShow.hostModalModify=function(arv){
+    var ar=$.devEops.SelectPickUp('groupselect');
+    $.pageShow.rangeSelectInsert($.dataRecv.groupGetBkData(),'group_chose');
+    var selectGroup=document.getElementById('group_chose');
+    for(var i=0;i<selectGroup.options.length;i++){
+        if(selectGroup.options[i].label==ar[1]){
+            selectGroup.selectedIndex=i;
+            break;
+        }
+    }
+    var IP = document.getElementById('hstIP');
+    if(arv==1) {
+        IP.removeAttribute('disabled');
+        IP.value = '';
+    }else{
+        var Element = $.devEops.searchChecked('hst-list');
+        IP.setAttribute('disabled',true);
+        IP.value = Element.childNodes[3].innerHTML;
+    }
+    return ;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.hostUpdateInfo()
+ * @Desc: Update User Info Bk.
+ * */
+$.pageShow.hostUpdateInfo=function(){
+    var IP = document.getElementById('hstIP');
+    var ar=$.devEops.SelectPickUp('group_chose');
+    $.dataRecv.hostUpdateInfo(IP.value,ar[0]);
 }
 
 /*-----------Search Page Data JS-----------*/
@@ -293,4 +336,83 @@ $.pageShow.rangeSelectedRemove=function () {
     delete $.pageShow.AnsibleHostIDList[hostname];
     objS.options.remove(index);
     return ;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.redisBatch()
+ * @Desc: 批量部署redis
+ * */
+$.pageShow.redisBatch=function(){
+    var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
+    var redisprefix,redisport,redispasswd,redisversion,redisdatadir;
+    var NodeList=document.getElementsByClassName('batch-redis-input');
+    redisversion=$.devEops.SelectPickUp('batch_version')[0];
+    redisprefix=NodeList[0].value;
+    redisport=NodeList[1].value;
+    redispasswd=NodeList[2].value;
+    redisdatadir=NodeList[3].value;
+    $.dataRecv.batchRedis(iplist,redisversion,redisprefix,redisport,redispasswd,redisdatadir);
+    delete $.pageShow.AnsibleHostIDList;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.mysqlBatch()
+ * @Desc:批量部署mysql
+ * */
+$.pageShow.mysqlBatch=function(){
+    var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
+    var mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqlsocket;
+    var NodeList=document.getElementsByClassName('batch-mysql-input');
+    mysqlversion=$.devEops.SelectPickUp('batch_version')[0];
+    mysqlprefix=NodeList[0].value;
+    mysqlpasswd=NodeList[1].value;
+    mysqldatadir=NodeList[2].value;
+    mysqlport=NodeList[3].value;
+    mysqlsocket=NodeList[4].value;
+    $.dataRecv.batchMySQL(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqlsocket);
+    delete $.pageShow.AnsibleHostIDList;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.tomcatBatch()
+ * @Desc: 批量部署tomcat
+ * */
+$.pageShow.tomcatBatch=function(){
+    var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
+    var javaversion,javaprefix,tomcatversion,tomcatprefix;
+    var NodeList=document.getElementsByClassName('batch-tomcat-input');
+    javaversion=$.devEops.SelectPickUp('batch_version_java')[0];
+    javaprefix=NodeList[0].value;
+    tomcatversion=$.devEops.SelectPickUp('batch_version_tomcat')[0];
+    tomcatprefix=NodeList[1].value;
+    $.dataRecv.batchTomcat(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix);
+    delete $.pageShow.AnsibleHostIDList;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.nginxBatch()
+ * @Desc: 批量部署nginx
+ * */
+$.pageShow.nginxBatch=function(){
+    var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
+    var nginxversion,nginxprefix,nginxpid;
+    var NodeList=document.getElementsByClassName('batch-nginx-input');
+    nginxversion=$.devEops.SelectPickUp('batch_version')[0];
+    nginxprefix=NodeList[0].value;
+    nginxpid=NodeList[1].value;
+    console.log(nginxversion,nginxprefix,nginxpid);
+    $.dataRecv.batchNginx(iplist,nginxversion,nginxprefix,nginxpid);
+    delete $.pageShow.AnsibleHostIDList;
 }
