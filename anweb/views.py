@@ -63,6 +63,26 @@ def hostsearch(request):
 
 '''
 METHOD:GET
+URL:/anweb/hostupdate
+POST:ipaddress,group_id
+RETURN:null
+ASYNC:false
+'''
+@csrf_exempt
+@require_http_methods(["GET"],)
+def hostupdate(request):
+    ipaddress=request.GET.get('ipaddress')
+    group_id=request.GET.get('group')
+    print(ipaddress,group_id)
+    list=service.host9hostsearch(group_id)
+    status=service.host9hostupdate(ipaddress,group_id);
+    return HttpResponse(json.dumps({
+        'status': status
+    }))
+
+
+'''
+METHOD:GET
 URL:/anweb/softversion
 POST:app_id
 RETURN:list of app version
@@ -87,13 +107,14 @@ ASYNC:true
 '''
 @csrf_exempt
 @require_http_methods(["POST"],)
-def batchredis(request):
+def batchredis(request):#iplist,redisversion,redisprefix,redisport,redispasswd
     iplist = request.POST.getlist('iplist[]')
-    redisversion = request.POST.get('redisversion')
-    redisprefix = request.POST.get('redisprefix')
-    redisport = request.POST.get('redisport')
-    redispasswd = request.POST.get('redispasswd')
-    status = service.batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd)
+    version = request.POST.get('version')
+    prefix = request.POST.get('prefix')
+    port = request.POST.get('port')
+    passwd = request.POST.get('passwd')
+    datadir = request.POST.get('datadir')
+    status = service.batch9redisinstall(iplist,version,prefix,port,passwd,datadir)
     return HttpResponse(json.dumps({
         'status': status
     }))
@@ -110,9 +131,10 @@ ASYNC:true
 def batchtomcat(request):
     iplist=request.POST.getlist('iplist[]')
     javaversion=request.POST.get('javaversion')
-    tomcatversion=request.POST.get('tomcatversion')
     javaprefix=request.POST.get('javaprefix')
+    tomcatversion=request.POST.get('tomcatversion')
     tomcatprefix=request.POST.get('tomcatprefix')
+    print(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix)
     status=service.batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix);
     return HttpResponse(json.dumps({
         'status': status
@@ -129,13 +151,32 @@ ASYNC:true
 @require_http_methods(["POST"],)
 def batchmysql(request):
     iplist = request.POST.getlist('iplist[]')
-    mysqlversion = request.POST.get('mysqlversion')
-    mysqlprefix = request.POST.get('mysqlprefix')
-    mysqlpasswd=request.POST.get('mysqlpasswd')
-    mysqlport=request.POST.get('mysqlport')
-    mysqldatadir=request.POST.get('mysqldatadir')
-    mysqltmp=request.POST.get('mysqltmp')
-    status=service.batch9mysqlinstall(iplist,mysqlversion,mysqlprefix,mysqlpasswd,mysqldatadir,mysqlport,mysqltmp,)
+    version = request.POST.get('version')
+    prefix = request.POST.get('prefix')
+    passwd=request.POST.get('passwd')
+    port=request.POST.get('port')
+    datadir=request.POST.get('datadir')
+    socket=request.POST.get('socket')
+    status=service.batch9mysqlinstall(iplist,version,prefix,passwd,datadir,port,socket,)
+    return HttpResponse(json.dumps({
+        'status': status
+    }))
+
+'''
+METHOD:POST
+URL:/anweb/batchnginx
+POST:list of nginx install info
+RETURN:true/false
+ASYNC:true
+'''
+@csrf_exempt
+@require_http_methods(["POST"],)
+def batchnginx(request):
+    iplist = request.POST.getlist('iplist[]')
+    version = request.POST.get('version')
+    prefix = request.POST.get('prefix')
+    pid=request.POST.get('pid');
+    status=service.batch9nginxinstall(iplist,version,prefix,pid)
     return HttpResponse(json.dumps({
         'status': status
     }))

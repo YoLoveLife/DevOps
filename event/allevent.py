@@ -20,11 +20,11 @@ def evt_base_install():
 '''
     info:mysql的初次安装 mysql的配置修改 mysql的重启等
 '''
-def evt_mysql_install(version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',mysqlpasswd='',mysqlport="3306",mysqltmp='/tmp/mysql.sock',mysqldatadir='/usr/local/mysql/data'):
+def evt_mysql_install(version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',mysqlpasswd='',mysqlport="3306",mysqlsocket='/tmp/mysql.sock',mysqldatadir='/usr/local/mysql/data'):
     mysqlpb.mysql_installplaybook(version=version,prefix=prefix,checksum=checksum,datadir=mysqldatadir)
     #mysqlpb.mysql_configureplaybook(socket=mysqltmp,port=mysqlport)
-    mysqlpb.mysql_controlplaybook(control='start')
-    mysqlpb.mysql_initializationplaybook(mysqlpasswd=mysqlpasswd)
+    #mysqlpb.mysql_controlplaybook(control='start')
+    #mysqlpb.mysql_initializationplaybook(mysqlpasswd=mysqlpasswd)
 
 def evt_mysql_reconfigure(prefix='/usr/local',port='3306',socket='/tmp/mysql.sock',datadir='/usr/local/mysql/data',
                             key_buffer_size='256M',table_open_cache='256',sort_buffer_size='1M',read_buffer_size='1M',read_rnd_buffer_size='4M',
@@ -55,7 +55,7 @@ def evt_nginx_install(version='1.10.1',prefix='/usr/local',checksum='088292d9caf
     nginxpb.nginx_configureplaybook(prefix=prefix,workproc=workproc,pid=pid
                                     ,workconn=workconn,port=port,servername=servername,locations=locations)
     '''
-    nginxpb.nginx_controlplaybook(control='start',pid=prefix+'/'+pid)
+    #nginxpb.nginx_controlplaybook(control='start',pid=prefix+'/'+pid)
 
 def evt_nginx_reconfigure(prefix='/usr/local',
                       workproc='1',pid='logs/nginx.pid',workconn='1024',port='80',servername='localhost',locations='',):
@@ -79,7 +79,7 @@ def evt_java_install(version='7u79',prefix='/usr/local',checksum='9222e097e62480
 '''
 def evt_tomcat_install(version='7.0.72',prefix='/usr/local',java_opts='',checksum='c24bfae15bb9c510451a05582aae634d'):
     tomcatpb.tomcat_installplaybook(version=version,prefix=prefix,java_opts=java_opts,checksum=checksum)
-    tomcatpb.tomcat_controlplaybook(control='start')
+    #tomcatpb.tomcat_controlplaybook(control='start')
 
 def evt_tomcat_control(control='help'):
     tomcatpb.tomcat_controlplaybook(control='start')
@@ -87,14 +87,8 @@ def evt_tomcat_control(control='help'):
 '''
     info:redis安装 重新配置
 '''
-def evt_redis_install(version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',
-                      bind='0.0.0.0',port='6379',appendonly='yes',noonrewrite='no',saveoptions='save 900 300\nsave 30 10\nsave 2000 1',datadir='{{basedir}}/data',requirepass='000000',slaveof='',masterauth='',cluster_enabled='',cluster_config_file='',extend='',):
-    redispb.redis_installplaybook(version=version,prefix=prefix,checksum=checksum,)
-    '''
-    redispb.redis_configureplaybook(version=version,bind=bind,port=port,appendonly=appendonly,noonrewrite=noonrewrite,saveoptions=saveoptions
-                                    ,datadir=datadir,requirepass=requirepass,slaveof=slaveof,masterauth=masterauth,cluster_enabled=cluster_enabled,
-                                    cluster_config_file=cluster_config_file,extend=extend,)
-    '''
+def evt_redis_install(version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',datadir='{{basedir}}/data'):
+    redispb.redis_installplaybook(version=version,prefix=prefix,checksum=checksum,datadir=datadir)
     #redispb.redis_controlplaybook(control='start')
 
 

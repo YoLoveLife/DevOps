@@ -31,18 +31,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="box-toolbar-btn">
-                                <a class="btn btn-app">
+                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="$.pageShow.hostModalModify(1)">
                                     <i class="fa fa-plus"></i> Add
-                                </a>
-                                <a class="btn btn-app">
+                                </button>
+                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="$.pageShow.hostModalModify(2)">
                                     <i class="fa fa-edit"></i> Edit
-                                </a>
-                                <a class="btn btn-app" disabled>
+                                </button>
+                                <button class="btn btn-app" disabled>
                                     <i class="fa fa-info"></i> Info
-                                </a>
-                                <a class="btn btn-app" disabled>
-                                    <i class="fa fa-times"></i> Delete
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -146,27 +143,28 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Host Info</h4>
+                <h4 class="modal-title">Host Add</h4>
             </div>
             <div class="modal-body container">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Host ID</label>
-                            <input type="text" class="form-control" id="hstID">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>IPAddress</label>
-                            <input type="text" class="form-control" id="hstName">
+                            <input type="text" class="form-control" id="hstIP">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Group</label>
+                            <select class="form-control" id="group_chose">
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$.pageShow.hostUpdateInfo()">Update</button>
             </div>
         </div>
     </div>
