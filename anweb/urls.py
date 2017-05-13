@@ -19,4 +19,5 @@ urlpatterns = [
    url(r'^batchmysql/',views.batchmysql,name='batchmysql'),
    url(r'^batchredis/',views.batchredis,name='batchredis'),
    url(r'^batchnginx/', views.batchnginx, name='batchnginx'),
+   url(r'^historyget/',views.historyget,name='historyget'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

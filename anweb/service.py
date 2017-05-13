@@ -6,7 +6,7 @@
 from models import Group
 from django.core import serializers
 from util import toJSON,str2dict
-from anweb.models import Group,Host,Softlib,Soft,Redis,MySQL,Tomcat,Java,Nginx
+from anweb.models import Group,Host,Softlib,Soft,Redis,MySQL,Tomcat,Java,Nginx,History,State,Operation
 from django.forms.models import model_to_dict
 from event import allevent
 from inventory import maker
@@ -48,6 +48,7 @@ def host9hostupdate(ipaddress,groupid):
     maker.inventory_maker([ipaddress])
     allevent.evt_base_install()
     maker.inventory_clear()
+    historyCreate(2,host.sship,2)
     return 1
 
 '''
@@ -62,6 +63,7 @@ def group9modifygroup(group_id,group_name,group_remark):
         group.save()
     else:#UPDATE
         Group.objects.filter(id=int(group_id)).update(name=unicode.encode(group_name),remark=unicode.encode(group_remark))
+    historyCreate(1,'',2)
 
 '''
 PARM:group_id
@@ -113,11 +115,14 @@ def batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix
     javacheck=javalib.soft_md5
     tomcatcheck=tomcatlib.soft_md5
 
+    history=historyCreate(5,'',1)
+
     maker.inventory_maker(list)
     allevent.evt_java_install(version=javaversion,prefix=javaprefix,checksum=javacheck)
     allevent.evt_tomcat_install(version=tomcatversion,prefix=tomcatprefix,checksum=tomcatcheck)
     maker.inventory_clear()
 
+    historyUpdate(history,'',2)
 '''
 PARM:info for install mysql
 RETURN:执行结果
@@ -133,9 +138,14 @@ def batch9mysqlinstall(iplist,version,prefix,passwd,datadir,port,socket):
     mysqllib=Softlib.objects.get(id=version)
     mysqlversion=mysqllib.soft_version
     mysqlcheck=mysqllib.soft_md5
+
+    history=historyCreate(6,'',1)
+
     maker.inventory_maker(list)
     allevent.evt_mysql_install(version=mysqlversion,prefix=prefix,checksum=mysqlcheck,mysqlpasswd=passwd,mysqldatadir=datadir,mysqlport=port,mysqlsocket=socket)
     maker.inventory_clear()
+
+    historyUpdate(history,'',2)
 
 '''
 PARM:info for install redis
@@ -152,9 +162,14 @@ def batch9redisinstall(iplist,redisversion,redisprefix,redisport,redispasswd,red
     redislib=Softlib.objects.get(id=redisversion)
     redisversion=redislib.soft_version
     redischeck=redislib.soft_md5
+
+    history=historyCreate(3,'',1)
+
     maker.inventory_maker(list)
     allevent.evt_redis_install(version=redisversion,prefix=redisprefix,checksum=redischeck,datadir=redisdatadir)
     maker.inventory_clear()
+
+    historyUpdate(history,'',2)
 
 '''
 PARM: info for install nginx
@@ -168,10 +183,42 @@ def batch9nginxinstall(iplist,version,prefix,pid):
         nginx.save()
         host=Host.objects.get(id=unicode.encode(i))
         list.append(host.sship)
-    print(list)
     nginxlib=Softlib.objects.get(id=version)
     nginxversion=nginxlib.soft_version
     nginxcheck=nginxlib.soft_md5
+
+    history=historyCreate(4,'',1)
     maker.inventory_maker(list)
     allevent.evt_nginx_install(version=nginxversion,prefix=prefix,checksum=nginxcheck)
     maker.inventory_clear()
+
+    historyUpdate(history,'',2)
+
+'''
+PARM:
+RETURN:history
+USE:
+'''
+def historyCreate(type,hostlist,result):
+    history=History(oper_type_id=type,oper_hostlist=hostlist,oper_info='',oper_result_id=result)
+    history.save()
+    return history
+
+'''
+PARM:
+RETURN:NULL
+USE:
+'''
+def historyUpdate(history,info,result):
+    history.oper_info=info
+    history.oper_result=result
+    history.save()
+
+def historyget():
+    a = History.objects.all()
+    list=[]
+    for history in a:
+        tmpdict=model_to_dict(history)
+        tmpdict['oper_time']=history.oper_time.strftime('%Y-%m-%d %H:%M')
+        list.append(json.dumps(tmpdict))
+    return list

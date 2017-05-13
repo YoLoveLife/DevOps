@@ -80,9 +80,11 @@ class Operation(models.Model):
 class History(models.Model):
     id=models.AutoField(primary_key=True)#操作ID
     oper_type=models.ForeignKey(Operation)#操作类型
-    oper_time=models.DateField()#操作时间
-    oper_group=models.ForeignKey(Group)#操作组
-    oper_info=models.CharField(max_length=100)#操作信息
+    oper_time=models.DateTimeField(auto_now=True)#操作时间
+    oper_hostlist=models.CharField(max_length=200,default='NULL')#操作主机列表
+    oper_info=models.CharField(max_length=1000,default='NULL')#操作信息
+    oper_result=models.ForeignKey(State,default=1)#状态
+
 
 
 

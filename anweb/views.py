@@ -29,6 +29,17 @@ def groupsearch(request):
     }))
 
 '''
+METHOD:GET
+URL:/anweb/historyget
+RETURN: list of history by json
+ASYNC:false
+'''
+@require_http_methods(["GET",])
+def historyget(request):
+    list=service.historyget()
+    return HttpResponse(json.dumps({'history_list':list}))
+
+'''
 METHOD:POST
 URL:/anweb/groupmodify
 RETURN:modify the group data if the group don't exsit add this group to database
