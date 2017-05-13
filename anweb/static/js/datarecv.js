@@ -41,6 +41,16 @@ $.dataRecv.loginValidate=function(username,userpasswd){
         return false;
     }
 }
+/*----------TimeLine Page Data Js---------*/
+/**
+ * @Type: Function
+ * @Return: history_list
+ * @Usage: $.dataRecv.historyGetBkData()
+ * @Desc: Get the all History from the database.json data
+ * */
+$.dataRecv.historyGetBkData=function(){
+    return $.devEops.ajaxBkDataAsync('historyget/',false,'GET',{})
+}
 
 /*-----------Group Page Data JS-----------*/
 /**
@@ -87,7 +97,7 @@ $.dataRecv.hostGetBkData=function(group_id){
  * */
 $.dataRecv.hostUpdateInfo=function(ipaddress,groupid){
     postdata={'ipaddress':ipaddress,'group':groupid};
-    $.devEops.ajaxBkDataAsync('hostupdate/',false,'GET',postdata);
+    $.devEops.ajaxBkDataAsync('hostupdate/',true,'GET',postdata);
 }
 
 /*-----------Batch Page Data JS-----------*/

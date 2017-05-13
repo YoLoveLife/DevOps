@@ -11,6 +11,76 @@
  * */
 $.pageShow={};
 
+/*----------TimeLine Page Data JS---------*/
+/**
+ * @Type: Function
+ * @Return: Null
+ * @Usage: $.pageShow.timeLineInit()
+ * @Desc: Function for init the timeline page.
+ * */
+$.pageShow.timeLineInit=function(){
+    var list=$.dataRecv.historyGetBkData();
+    $.pageShow.timeLineDataFlush(list);
+}
+
+/**
+ * @Type: Function
+ * @Argv: list - list of timeLine
+ * @Return: Null
+ * @Usage: $.pageShow.timeLineDataFlush(list)
+ * */
+/*
+               <li class="time-label"><span>Start</span></li>
+                <li>
+                    <i class="fa fa-envelope"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                        <div class="timeline-body">
+                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                            quora plaxo ideeli hulu weebly balihoo...
+                        </div>
+                        <div class="timeline-footer">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+* */
+$.pageShow.timeLineDataFlush=function(history_list){
+    var string="<li class='time-label'></li>";
+    var end="<li><i class='fa fa-clock-o'></i></li>";
+    var item="";
+    var title,state;
+    for(var i in history_list){
+        for(var j=history_list[i].length-1;j>=0;j--){
+            var temp=JSON.parse(history_list[i][j]);
+            if(parseInt(temp['oper_type'])>=1&&parseInt(temp['oper_type'])<=2){
+                title='Manager Operation';
+            }else{
+                title='Ansible Operation';
+            }
+            if(parseInt(temp['oper_result'])==1)
+            {
+                state="<span class='label label-primary'>Running</span>";
+            }else if(parseInt(temp['oper_result'])==2){
+                state="<span class='label label-success'>Done</span>";
+            }else{
+                state="<span class='label label-danger'>Error</span>";
+            }
+            item="<li><i class='fa fa-envelope'></i><div class='timeline-item'><span class='time'><i class='fa fa-clock-o'></i>"+temp['oper_time']+"</span><h3 class='timeline-header'><a>"+title+"</a></h3><div class='timeline-body'>"+temp['oper_info']+"</div><div class='timeline-footer'>"+state+"</div></div></li>";
+            string+=item;
+        }
+    }
+    string=string+end;
+    $('.timeline').html(string);
+}
+
 /*-----------Group Page Data JS-----------*/
 /**
  * @Type: Function
@@ -57,14 +127,14 @@ $.pageShow.groupModalPutInfo=function(type){
     var GREMARK=document.getElementById('grpRemark');
     if(type==2){
         var Element=$.devEops.searchChecked('grp-list');
-        GID.setAttribute('value',Element.childNodes[1].innerHTML);
-        GNAME.setAttribute('value',Element.childNodes[2].innerHTML);
-        GREMARK.setAttribute('value',Element.childNodes[3].innerHTML);
+        GID.value=Element.childNodes[1].innerHTML;
+        GNAME.value=Element.childNodes[2].innerHTML
+        GREMARK.value=Element.childNodes[3].innerHTML;
     }
     else{
-        GID.setAttribute('value','#NEW');
-        GNAME.setAttribute('value','');
-        GREMARK.setAttribute('value','');
+        GID.value='#NEW';
+        GNAME.removeAttribute('value');
+        GREMARK.removeAttribute('value');
     }
     return ;
 }
