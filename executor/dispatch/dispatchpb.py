@@ -52,7 +52,7 @@ def dispatch_setcnf(src,dest):#src=/tmp/aaaa dest=/etc/hosts dir=/etc file=hosts
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("dispatch setcnf", 'no')
-    task1 = PersonTask(module="copy", args="src={{src}} dest={{dest}} backup=yes", )
+    task1 = PersonTask(module="copy", args="src={{src}} mode=644 dest={{dest}} backup=yes", )
     task2 = PersonTask(module="shell",args="find %s -name %s -mmin +61 -exec rm -f {} \;"%(dir,BACK_NAME%file))#删除旧分配备份
     pb.add_task(task1)
     pb.add_task(task2)

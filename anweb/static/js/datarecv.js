@@ -156,7 +156,28 @@ $.dataRecv.batchTomcat=function (iplist,javaversion,javaprefix,tomcatversion,tom
  * */
 $.dataRecv.batchNginx=function(iplist,nginxversion,nginxprefix,nginxpid){
     var postdata={'iplist':iplist,'version':nginxversion,'prefix':nginxprefix,'pid':nginxpid};
-    console.log(postdata);
     $.devEops.ajaxBkDataAsync('batchnginx/',true,'POST',postdata);
 }
 
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.dataRecv.confGet()
+ * */
+$.dataRecv.confGet=function(iplist,cnf){
+    var postdata={'iplist':iplist,'cnf':cnf};
+    var conf=$.devEops.ajaxBkDataAsync('confget/',false,'GET',postdata);
+    return conf;
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage:$.dataRecv.confModify()
+ * */
+$.dataRecv.confModify=function (iplist,tmpconf,newstr,cnf) {
+    var postdata={'iplist':iplist,'tmp':tmpconf,'newstr':newstr,'cnf':cnf};
+    $.devEops.ajaxBkDataAsync('confmodify/',false,'GET',postdata);
+}

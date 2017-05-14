@@ -120,5 +120,5 @@ def evt_dispatch_getcnf(cnf):
     return str
 
 def evt_dispatch_setcnf(newsstr,src,cnf):#src本地临时配置文件 cnf远端目标配置文件 完全路径
-    dispatchpb.dispatch_cnf2file(newsstr,cnf)
+    dispatchpb.dispatch_cnf2file(newsstr,src)
     dispatchpb.dispatch_setcnf(src,cnf)

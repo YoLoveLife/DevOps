@@ -20,4 +20,6 @@ urlpatterns = [
    url(r'^batchredis/',views.batchredis,name='batchredis'),
    url(r'^batchnginx/', views.batchnginx, name='batchnginx'),
    url(r'^historyget/',views.historyget,name='historyget'),
+   url(r'^confget/',views.confget,name='confget'),
+   url(r'^confmodify/',views.confmodify,name='confmodify'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
