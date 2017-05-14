@@ -20,13 +20,16 @@
                     <h3 class="box-title">Operation</h3>
                 </div>
                 <div class="box-body">
-                    <button class="btn btn-app" data-toggle="modal" data-target="#Conf-Modify-Range">
+                    <button class="btn btn-app" data-toggle="modal" data-target="#SelectRange">
                         <i class="fa fa-braille"></i> Range
                     </button>
-                    <button class="btn btn-app">
+                    <button class="btn btn-app" onclick="$.pageShow.getConf()">
+                        <i class="fa fa-binoculars"></i> Get
+                    </button>
+                    <button class="btn btn-app" disabled>
                         <i class="fa fa-clock-o"></i> Compare
                     </button>
-                    <button class="btn btn-app">
+                    <button class="btn btn-app" onclick="$.pageShow.modifyConf()">
                         <i class="fa fa-check"></i> Modify
                     </button>
                 </div>
@@ -43,7 +46,7 @@
                 </div>
                 <div class="box-body">
                     <form>
-                        <textarea class="textarea" placeholder="Choose hosts modify file"></textarea>
+                        <textarea class="textarea" id='conftextarea' placeholder="Choose hosts modify file" style="height: 390px"></textarea>
                     </form>
                 </div>
             </div>
@@ -51,9 +54,8 @@
     </div>
 </section>
 <!--Main Content-->
-
 <!--Modal-->
-<div class="modal fade" id="Conf-Modify-Range" tabindex="-1" role="dialog" >
+<div class="modal fade" id="SelectRange" tabindex="-1" role="dialog" >
     <div class="modal-dialog modal-range" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -65,44 +67,29 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Group</label>
-                            <select multiple class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
+                            <select multiple class="form-control" id="range-group" onchange="$.pageShow.rangeSelectGroup()">
                             </select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Host</label>
-                            <select multiple class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
+                            <select multiple class="form-control" id="range-host">
                             </select>
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button class="btn btn-app">
+                        <button class="btn btn-app" onclick="$.pageShow.rangeSelectHost()">
                             <i class="fa fa-chevron-circle-right"></i> Select
                         </button>
-                        <button class="btn btn-app">
+                        <button class="btn btn-app" onclick="$.pageShow.rangeSelectedRemove()">
                             <i class="fa fa-chevron-circle-left"></i> Remove
                         </button>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Selected</label>
-                            <select multiple class="form-control">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
+                            <select multiple class="form-control" id="range-selected">
                             </select>
                         </div>
                     </div>
@@ -110,8 +97,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        var list=$.dataRecv.groupGetBkData();
+        $.pageShow.rangeSelectInsert(list,'range-group');
+    });
+</script>

@@ -482,7 +482,36 @@ $.pageShow.nginxBatch=function(){
     nginxversion=$.devEops.SelectPickUp('batch_version')[0];
     nginxprefix=NodeList[0].value;
     nginxpid=NodeList[1].value;
-    console.log(nginxversion,nginxprefix,nginxpid);
     $.dataRecv.batchNginx(iplist,nginxversion,nginxprefix,nginxpid);
     delete $.pageShow.AnsibleHostIDList;
+}
+
+/*-----------Conf Page Data JS-----------*/
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.getConf()
+ * @Desc:
+ * */
+$.pageShow.getConf=function(){
+    var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
+    var conf=$.dataRecv.confGet(iplist,'/etc/hosts');
+    var Element=document.getElementById('conftextarea');
+    Element.value=conf['conf'];
+    $.pageShow.TmpConf=conf['tmp'];
+}
+
+/**
+ * @Type: Function
+ * @Argv: Null
+ * @Return: Null
+ * @Usage: $.pageShow.modifyConf()
+ * @Desc:
+ * */
+$.pageShow.modifyConf=function(){
+    var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
+    var Element=document.getElementById('conftextarea');
+    var newconf=Element.value;
+    $.dataRecv.confModify(iplist,$.pageShow.TmpConf,newconf,'/etc/hosts');
 }

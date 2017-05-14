@@ -211,7 +211,7 @@ USE:
 '''
 def historyUpdate(history,info,result):
     history.oper_info=info
-    history.oper_result=result
+    history.oper_result_id=result
     history.save()
 
 def historyget():
@@ -222,3 +222,28 @@ def historyget():
         tmpdict['oper_time']=history.oper_time.strftime('%Y-%m-%d %H:%M')
         list.append(json.dumps(tmpdict))
     return list
+
+def cnfget(iplist,cnf):
+    list=[]
+    for i in iplist:
+        host=Host.objects.get(id=unicode.encode(i))
+        list.append(host.sship)
+
+    maker.inventory_maker(list)
+    str=allevent.evt_dispatch_getcnf(cnf)
+    maker.inventory_clear()
+    return str
+
+def cnfmodify(iplist,tmp,newstr,cnf):
+    list=[]
+    for i in iplist:
+        host=Host.objects.get(id=unicode.encode(i))
+        list.append(host.sship)
+
+    history=historyCreate(8,'',1)
+
+    maker.inventory_maker(list)
+    str=allevent.evt_dispatch_setcnf(newstr,tmp,cnf)
+    maker.inventory_clear()
+
+    historyUpdate(history,'',2)

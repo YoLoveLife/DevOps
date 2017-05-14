@@ -192,4 +192,30 @@ def batchnginx(request):
         'status': status
     }))
 
+'''
+METHOD:GET
+URL:/anweb/confget
+RETURN:
+ASYNC:false
+'''
+@require_http_methods(["GET"],)
+def confget(request):
+    iplist=request.GET.getlist('iplist[]')
+    cnf=request.GET.get('cnf')
+    (conf,tmp)=service.cnfget(iplist,cnf)
+    return HttpResponse(json.dumps({'conf':conf,'tmp':tmp}))
 
+'''
+METHOD:GET
+URL:/anweb/confmodify
+RETURN:
+ASYNC:false
+'''
+@require_http_methods(["GET"])
+def confmodify(request):
+    iplist=request.GET.getlist('iplist[]')
+    tmp=request.GET.get('tmp')
+    newstr=request.GET.get('newstr')
+    cnf=request.GET.get('cnf')
+    service.cnfmodify(iplist,tmp,newstr,cnf)
+    return HttpResponse(json.dumps({'status':1}))
