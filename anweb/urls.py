@@ -22,4 +22,6 @@ urlpatterns = [
    url(r'^historyget/',views.historyget,name='historyget'),
    url(r'^confget/',views.confget,name='confget'),
    url(r'^confmodify/',views.confmodify,name='confmodify'),
+   url(r'^appget/',views.appget,name='appget'),
+   url(r'^appcontrol/',views.appcontrol,name='appcontrol'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

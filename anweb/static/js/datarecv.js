@@ -181,3 +181,28 @@ $.dataRecv.confModify=function (iplist,tmpconf,newstr,cnf) {
     var postdata={'iplist':iplist,'tmp':tmpconf,'newstr':newstr,'cnf':cnf};
     $.devEops.ajaxBkDataAsync('confmodify/',false,'GET',postdata);
 }
+
+/*-----------Control Page Data JS-----------*/
+/**
+ * @Type: Function
+ * @Argv: appname - name of app
+ * @Return: NUll
+ * @Usage: $.dataRecv.appListGet()
+ * */
+$.dataRecv.appListGet=function(appname){
+    var postdata={'appname':appname};
+    var list=$.devEops.ajaxBkDataAsync('appget/',false,'GET',postdata);
+    return list;
+}
+
+/**
+ * @Type: Function
+ * @Argv: hostid - hostid;type- 1start:2stop:3restart;appname - name of app
+ * @Return: Null
+ * @Usage: $.dataRecv.controlApp(hostid,type,appname)
+ * */
+$.dataRecv.controlApp=function(hostid,type,appname){
+    var postdata={'hostid':hostid,'type':type,'appname':appname};
+    console.log(postdata);
+    $.devEops.ajaxBkDataAsync('appcontrol/',false,'GET',postdata);
+}

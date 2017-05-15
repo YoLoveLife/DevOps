@@ -260,6 +260,7 @@ $.pageShow.hostUpdateInfo=function(){
     var IP = document.getElementById('hstIP');
     var ar=$.devEops.SelectPickUp('group_chose');
     $.dataRecv.hostUpdateInfo(IP.value,ar[0]);
+    $.pageShow.hostInit();
 }
 
 /*-----------Search Page Data JS-----------*/
@@ -496,10 +497,12 @@ $.pageShow.nginxBatch=function(){
  * */
 $.pageShow.getConf=function(){
     var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
-    var conf=$.dataRecv.confGet(iplist,'/etc/hosts');
+    var file=$.devEops.SelectPickUp('fileselect')[1];
+    var conf=$.dataRecv.confGet(iplist,file);
     var Element=document.getElementById('conftextarea');
     Element.value=conf['conf'];
     $.pageShow.TmpConf=conf['tmp'];
+    $.pageShow.DestConf=file;
 }
 
 /**
@@ -513,5 +516,46 @@ $.pageShow.modifyConf=function(){
     var iplist=$.devEops.object2List($.pageShow.AnsibleHostIDList);
     var Element=document.getElementById('conftextarea');
     var newconf=Element.value;
-    $.dataRecv.confModify(iplist,$.pageShow.TmpConf,newconf,'/etc/hosts');
+    $.dataRecv.confModify(iplist,$.pageShow.TmpConf,newconf,$.pageShow.DestConf);
+}
+
+/*-----------Control Page Data JS-----------*/
+/**
+ * @Type: Function
+ * @Argv: appname
+ * @Return: Null
+ * @Usage: $.pageShow.appListShow()
+ * "{"prefix": "/usr/local", "requirepass": "psaux", "bind": "0.0.0.0", "softlib": 6, "hostname": "tomcat.yo.miracle.com", "host": 12, "port": "6379", "groupname": "devEops-dev", "datadir": "/usr/local/redis/data", "online": false, "id": 2}"
+ * */
+$.pageShow.appListShow=function(appname){
+    var list=$.dataRecv.appListGet(appname);
+    var string="<tr><th>#</th><th>HostID</th><th>Hostname</th><th>Groupname</th><th>Status</th></tr>";
+    var online="<td><span class='label label-success'>Online</span></td>";
+    var offline="<td><span class='label label-danger'>Offline</span></td>";
+    for(var i in list){
+        for(var j=0;j<list[i].length;j++){
+            var temp=JSON.parse(list[i][j]);
+            string+="<tr class='app-list'><td><input type='radio' name='radioapp' class='minimal' checked></td><td>"+temp['host']+"</td><td>"+temp['hostname']+"</td><td>"+temp['groupname']+"</td>";
+            if(temp['online']==false){
+                string+=offline;
+            }else if(temp['online']==true){
+                string+=online;
+            }
+            string+="</tr>";
+        }
+    }
+    $('table').html(string);
+}
+
+/**
+ * @Type: Function
+ * @Argv: type - 1start:2stop:3restart; appname - redis:nginx:tomcat:mysql
+ * @Return: Null
+ * @Usage: $.pageShow.appControl(type)
+ * */
+$.pageShow.appControl=function(type,appname){
+    var Element=$.devEops.searchChecked('app-list');
+    var hostid=Element.childNodes[1].innerHTML;
+    $.dataRecv.controlApp(hostid,type,appname);
+    $.pageShow.appListShow(appname);
 }

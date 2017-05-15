@@ -47,6 +47,7 @@ class MySQL(models.Model):
     socket=models.CharField(max_length=100,default='/tmp/mysql.sock')
     datadir=models.CharField(max_length=100,default='/storage/mysql')
     softlib=models.ForeignKey(Softlib,default=1)
+    online=models.BooleanField(default=False)
 
 class Nginx(models.Model):
     id=models.AutoField(primary_key=True)
@@ -55,6 +56,7 @@ class Nginx(models.Model):
     pid=models.CharField(max_length=100)
     port=models.CharField(max_length=100,default='80')
     softlib=models.ForeignKey(Softlib,default=1)
+    online=models.BooleanField(default=False)
 
 class Redis(models.Model):
     id=models.AutoField(primary_key=True)
@@ -65,6 +67,7 @@ class Redis(models.Model):
     datadir=models.CharField(max_length=100)
     requirepass=models.CharField(max_length=100)
     softlib=models.ForeignKey(Softlib,default=1)
+    online=models.BooleanField(default=False)
 
 class Tomcat(models.Model):
     id=models.AutoField(primary_key=True)
@@ -72,6 +75,7 @@ class Tomcat(models.Model):
     prefix=models.CharField(max_length=100,default='/usr/local')
     java_opts=models.CharField(max_length=100,default='')
     softlib=models.ForeignKey(Softlib,default=1)
+    online=models.BooleanField(default=False)
 
 class Operation(models.Model):
     id=models.AutoField(primary_key=True)
