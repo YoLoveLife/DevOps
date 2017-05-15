@@ -219,3 +219,30 @@ def confmodify(request):
     cnf=request.GET.get('cnf')
     service.cnfmodify(iplist,tmp,newstr,cnf)
     return HttpResponse(json.dumps({'status':1}))
+
+'''
+METHOD:GET
+URL:/anweb/appget
+RETURN:list
+ASYNC:false
+'''
+@require_http_methods(["GET"])
+def appget(request):
+    appname=request.GET.get('appname')
+    list=service.applist(appname)
+    return HttpResponse(json.dumps({'applist':list}))
+
+'''
+METHOD:GET
+URL:/anweb/appcontrol
+RETURN:NULL
+ASYNC:false
+'''
+@require_http_methods(["GET"])
+def appcontrol(request):
+    #{'hostid':hostid,'type':type,'appname':appname};
+    hostid=request.GET.get('hostid')
+    type=request.GET.get('type')
+    appname=request.GET.get('appname')
+    service.appcontrol(hostid,type,appname)
+    return HttpResponse(json.dumps({'status':'1'}))

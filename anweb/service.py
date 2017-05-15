@@ -247,3 +247,63 @@ def cnfmodify(iplist,tmp,newstr,cnf):
     maker.inventory_clear()
 
     historyUpdate(history,'',2)
+
+def applist(appname):
+    list = []
+    a=[]
+    if appname=="redis":
+        a=Redis.objects.all()
+    elif appname=="nginx":
+        a=Nginx.objects.all()
+    elif appname=="mysql":
+        a=MySQL.objects.all()
+    elif appname=="tomcat":
+        a=Tomcat.objects.all()
+    for app in a:
+        tmpdict = model_to_dict(app)
+        host=Host.objects.get(id=int(tmpdict['host']))
+        group=Group.objects.get(id=int(host.group_id))
+        tmpdict['hostname']=host.name
+        tmpdict['groupname']=group.name
+        list.append(json.dumps(tmpdict))
+    return list
+
+def appcontrol(hostid,type,appname):
+    list=[]
+    host=Host.objects.get(id=hostid)
+    list.append(host.sship)
+    maker.inventory_maker(list)
+    if appname=='redis':
+        redis=Redis.objects.get(host_id=int(hostid))
+        allevent.evt_redis_control(control=type,passwd=redis.requirepass)
+        if type=='stop':
+            redis.online=False
+        else:
+            redis.online=True
+        redis.save()
+    elif appname=='tomcat':
+        tomcat=Tomcat.objects.get(host_id=int(hostid))
+        allevent.evt_tomcat_control(control=type)
+        if type=='stop':
+            tomcat.online=False
+        else:
+            tomcat.online=True
+        tomcat.save()
+    elif appname=='mysql':
+        mysql=MySQL.objects.get(host_id=int(hostid))
+        allevent.evt_mysql_control(control=type)
+        if type=='stop':
+            mysql.online=False
+        else:
+            mysql.online=True
+        mysql.save()
+    elif appname=='nginx':
+        nginx=Nginx.objects.get(host_id=int(hostid))
+        allevent.evt_nginx_control(control=type,pid=nginx.pid)
+        if type=='stop':
+            nginx.online=False
+        else:
+            nginx.online=True
+        nginx.save()
+    maker.inventory_clear()
+
