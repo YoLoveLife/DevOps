@@ -272,6 +272,7 @@ def appcontrol(hostid,type,appname):
     list=[]
     host=Host.objects.get(id=hostid)
     list.append(host.sship)
+    history=historyCreate(9,host.sship,1)
     maker.inventory_maker(list)
     if appname=='redis':
         redis=Redis.objects.get(host_id=int(hostid))
@@ -306,4 +307,5 @@ def appcontrol(hostid,type,appname):
             nginx.online=True
         nginx.save()
     maker.inventory_clear()
+    historyUpdate(history,'',2)
 

@@ -82,7 +82,7 @@ def evt_tomcat_install(version='7.0.72',prefix='/usr/local',java_opts='',checksu
     #tomcatpb.tomcat_controlplaybook(control='start')
 
 def evt_tomcat_control(control='help'):
-    tomcatpb.tomcat_controlplaybook(control='start')
+    tomcatpb.tomcat_controlplaybook(control=control)
 
 '''
     info:redis安装 重新配置

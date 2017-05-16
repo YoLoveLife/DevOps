@@ -2,115 +2,70 @@
 <section class="content-header">
     <h1>
         MariaDB
-        <small>Batch deployment</small>
+        <small>App control</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
         <li class="active">Ansible</li>
-        <li class="active">Batch deployment</li>
+        <li class="active">App control</li>
         <li class="active">MariaDB</li>
     </ol>
 </section>
 <!--Content Header-->
 <!--Main Content-->
-<section class="content container page-mariadb">
-    <div class="row">
-        <div class="col-md-10">
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">MariaDB - Batch deployment</h3>
+<section class="content container app-mysql">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="box box-default box-grouptb">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">MariaDB List</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table">
+                        </table>
+                    </div>
                 </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <img src="static/img/mariadb.png" alt="mess">
-                        </div>
+            </div>
+            <div class="col-md-2">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title">Operation</h3>
                     </div>
-                    <div class="row">
-                        <div class="col-md-5 form-group">
-                            MariaDB - Version
-                            <select class="form-control" id="batch_version">
-                                <option selected="selected">No Selected</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5 form-group">
-                            MariaDB - Prefix
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Prefix" value="/usr/local" disabled>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5 form-group">
-                            MariaDB - Password
-                            <input type="password" class="form-control batch-mysql-input" placeholder="Enter MariaDB Password">
-                        </div>
-                        <div class="col-md-5 form-group">
-                            MariaDB - Datadir
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Datadir" value="/usr/local/mysql/data">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5 form-group">
-                            MariaDB - Port
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Port" value="3306">
-                        </div>
-                        <div class="col-md-5 form-group">
-                            MariaDB - Socket
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Socket" value="/tmp/mysql.sock">
-                        </div>
+                    <div class="box-body">
+                        <button class="btn btn-app" onclick="$.pageShow.appControl('stop','mysql')">
+                            <i class="fa fa-plus"></i> Stop
+                        </button>
+                        <button class="btn btn-app" onclick="$.pageShow.appControl('start','mysql')">
+                            <i class="fa fa-edit"></i> Start
+                        </button>
+                        <button class="btn btn-app" onclick="$.pageShow.appControl('restart','mysql')">
+                            <i class="fa fa-times"></i> Restart
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Operation</h3>
-                </div>
-                <div class="box-body">
-                    <button class="btn btn-app" data-toggle="modal" data-target="#SelectRange">
-                        <i class="fa fa-braille"></i> Range
-                    </button>
-                    <button class="btn btn-app" disabled>
-                        <i class="fa fa-clock-o"></i> TimeSet
-                    </button>
-                    <button class="btn btn-app" onclick="$.pageShow.mysqlBatch()">
-                        <i class="fa fa-check"></i> Start
-                    </button>
-                    <button class="btn btn-app" onclick="$.pageShow.clearBatchInputBox('batch-mysql-input')">
-                        <i class="fa fa-times"></i> Clear
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row batch-notice">
         <div class="col-md-6">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">MariaDB - Batch notice</h3>
+                    <h3 class="box-title">Tomcat - Control notice</h3>
                 </div>
                 <div class="box-body">
-                    <dt>MariaDB - Prefix
-                    </dt>
-                    <dd>MariaDB安装目录，{{Preifx}}/redis。包含了MariaDB源码以及编译后的命令行文件。
-                    </dd>
-                    <dt>MariaDB - Password</dt>
-                    <dd>localhost - root的登录权限。</dd>
-                    <dt>MariaDB - Datadir</dt>
-                    <dd>MariaDB数据存放目录</dd>
-                    <dt>MariaDB - Socket</dt>
-                    <dd>MariaDB Socket文件存放</dd>
+                    <dt>Redis - Prefix</dt>
+                    <dd>Redis安装目录，{{Preifx}}/redis。包含了Redis源码以及编译后的命令行文件。</dd>
+                    <dt>Redis - Port</dt>
+                    <dd>对外提供Redis服务的端口。</dd>
+                    <dt>Redis - Password</dt>
+                    <dd>Redis访问密码，3.0版本后Redis的网络访问必须设置访问密码。</dd>
+                    <dt>Notice</dt>
+                    <dd>Redis服务配置文件存放/etc/redis.conf</dd>
                 </div>
             </div>
         </div>
     </div>
 </section>
 <!--Main Content-->
-<!--
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Launch demo modal
-        </button>
--->
 <!--Modal-->
 <div class="modal fade" id="SelectRange" tabindex="-1" role="dialog" >
     <div class="modal-dialog modal-range" role="document">
@@ -124,7 +79,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Group</label>
-                            <select multiple class="form-control" id="range-group" onchange="$.pageShow.rangeSelectGroup()">
+                            <select multiple class="form-control" id="range-group" onchange="">
                             </select>
                         </div>
                     </div>
@@ -136,10 +91,10 @@
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button class="btn btn-app" onclick="$.pageShow.rangeSelectHost()">
+                        <button class="btn btn-app" onclick="">
                             <i class="fa fa-chevron-circle-right"></i> Select
                         </button>
-                        <button class="btn btn-app" onclick="$.pageShow.rangeSelectedRemove()">
+                        <button class="btn btn-app" onclick="">
                             <i class="fa fa-chevron-circle-left"></i> Remove
                         </button>
                     </div>
@@ -159,9 +114,7 @@
     </div>
 </div>
 <script>
-        $(document).ready(function(){
-            var list=$.dataRecv.groupGetBkData();
-        $.pageShow.versionFlush('mysql','batch_version');
-        $.pageShow.rangeSelectInsert(list,'range-group');
+    $(document).ready(function(){
+        $.pageShow.appListShow('mysql');
     });
 </script>
