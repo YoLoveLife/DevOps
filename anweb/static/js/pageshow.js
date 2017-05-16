@@ -62,7 +62,10 @@ $.pageShow.timeLineDataFlush=function(history_list){
             var temp=JSON.parse(history_list[i][j]);
             if(parseInt(temp['oper_type'])>=1&&parseInt(temp['oper_type'])<=2){
                 title='Manager Operation';
-            }else{
+            }else if(parseInt(temp['oper_type'])==9){
+                title='Control Operation';
+            }
+            else{
                 title='Ansible Operation';
             }
             if(parseInt(temp['oper_result'])==1)
@@ -529,6 +532,7 @@ $.pageShow.modifyConf=function(){
  * */
 $.pageShow.appListShow=function(appname){
     var list=$.dataRecv.appListGet(appname);
+    console.log(list);
     var string="<tr><th>#</th><th>HostID</th><th>Hostname</th><th>Groupname</th><th>Status</th></tr>";
     var online="<td><span class='label label-success'>Online</span></td>";
     var offline="<td><span class='label label-danger'>Offline</span></td>";
