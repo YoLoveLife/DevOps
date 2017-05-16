@@ -35,6 +35,8 @@ def evt_mysql_reconfigure(prefix='/usr/local',port='3306',socket='/tmp/mysql.soc
 def evt_mysql_control(control='help',):
     mysqlpb.mysql_controlplaybook(control=control)
 
+def evt_mysql_remove(prefix='/usr/local',datadir='/usr/local/mysql/data'):
+    mysqlpb.mysql_removeplaybook(prefix=prefix,datadir=datadir)
 '''
     info:java安装卸载
 '''
@@ -68,6 +70,9 @@ def evt_nginx_reconfigure(prefix='/usr/local',
 def evt_nginx_control(control='help',pid='/usr/local/nginx/logs/nginx.pid'):
     nginxpb.nginx_controlplaybook(control=control,pid=pid)
 
+def evt_nginx_remove(prefix='/usr/local/nginx'):
+    nginxpb.nginx_removeplaybook(prefix=prefix)
+
 '''
     info:java的安装
 '''
@@ -84,6 +89,8 @@ def evt_tomcat_install(version='7.0.72',prefix='/usr/local',java_opts='',checksu
 def evt_tomcat_control(control='help'):
     tomcatpb.tomcat_controlplaybook(control=control)
 
+def evt_tomcat_remove(prefix='/usr/local/tomcat'):
+    tomcatpb.tomcat_removeplaybook(prefix=prefix)
 '''
     info:redis安装 重新配置
 '''

@@ -32,11 +32,11 @@ def mysql_installplaybook(version='10.1.12',prefix='/usr/local',checksum='30a862
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def mysql_removeplaybook(prefix='/usr/local'):
+def mysql_removeplaybook(prefix='/usr/local',datadir='/usr/local/mysql/data'):
     _ext_vars = {
         'prefix': prefix,
         'basedir': '{{prefix}}/mysql',
-        'datadir':'{{basedir}}/data',
+        'datadir':datadir,
         'user': 'mysql',
         'conf':'/etc/my.cnf',}
     personblock = PersonBlock()

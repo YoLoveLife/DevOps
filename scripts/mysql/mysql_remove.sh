@@ -61,10 +61,6 @@ function Avrg()
 
 Avrg $@
 BASEDIR=${PREFIX}/mysql
-if [ `ps -ef |grep mysql|wc -l` == "3" ];then
-	echo "mysql进程正在运行"
-	exit 
-fi
 
 rm -rf ${DATADIR} ${BASEDIR} ${CONF}
 
