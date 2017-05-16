@@ -246,3 +246,16 @@ def appcontrol(request):
     appname=request.GET.get('appname')
     service.appcontrol(hostid,type,appname)
     return HttpResponse(json.dumps({'status':'1'}))
+
+'''
+METHOD:GET
+URL:/anweb/appremove
+RETURN:NULL
+ASYNC:false
+'''
+@require_http_methods(['GET'])
+def appremove(request):
+    hostid=request.GET.get('hostid')
+    appname=request.GET.get('appname')
+    service.appremove(hostid,appname)
+    return HttpResponse(json.dumps({'status':'1'}))

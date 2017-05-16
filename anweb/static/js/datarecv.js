@@ -203,6 +203,16 @@ $.dataRecv.appListGet=function(appname){
  * */
 $.dataRecv.controlApp=function(hostid,type,appname){
     var postdata={'hostid':hostid,'type':type,'appname':appname};
-    console.log(postdata);
     $.devEops.ajaxBkDataAsync('appcontrol/',false,'GET',postdata);
+}
+
+/**
+ * @Type: Function
+ * @Argv: hostid - hostid;appname - redis:tomcat:java:mysql:nginx
+ * @Return: Null
+ * @Usage: $.dataRecv.removeApp(hostid,appname)
+ * */
+$.dataRecv.removeApp=function(hostid,appname){
+    var postdata={'hostid':hostid,'appname':appname};
+    $.devEops.ajaxBkDataAsync('appremove',false,'GET',postdata);
 }

@@ -41,6 +41,9 @@
                         <button class="btn btn-app" onclick="$.pageShow.appControl('restart','redis')">
                             <i class="fa fa-times"></i> Restart
                         </button>
+                        <button class="btn btn-app" onclick="$.pageShow.appRemove('redis')">
+                            <i class="fa fa-times"></i> Remove
+                        </button>
                     </div>
                 </div>
             </div>
@@ -66,53 +69,6 @@
     </div>
 </section>
 <!--Main Content-->
-<!--Modal-->
-<div class="modal fade" id="SelectRange" tabindex="-1" role="dialog" >
-    <div class="modal-dialog modal-range" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Range Select</h4>
-            </div>
-            <div class="modal-body container">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Group</label>
-                            <select multiple class="form-control" id="range-group" onchange="">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Host</label>
-                            <select multiple class="form-control" id="range-host">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <button class="btn btn-app" onclick="">
-                            <i class="fa fa-chevron-circle-right"></i> Select
-                        </button>
-                        <button class="btn btn-app" onclick="">
-                            <i class="fa fa-chevron-circle-left"></i> Remove
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Selected</label>
-                            <select multiple class="form-control" id="range-selected">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     $(document).ready(function(){
         $.pageShow.appListShow('redis');

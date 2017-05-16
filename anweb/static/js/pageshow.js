@@ -563,3 +563,16 @@ $.pageShow.appControl=function(type,appname){
     $.dataRecv.controlApp(hostid,type,appname);
     $.pageShow.appListShow(appname);
 }
+
+/**
+ * @Type: Function
+ * @Argv: appname- redis;nginx;tomcat;java;mysql
+ * @Return: Null
+ * @Usage: $.pageShow.appRemove(appname)
+ * */
+$.pageShow.appRemove=function(appname){
+    var Element=$.devEops.searchChecked('app-list');
+    var hostid=Element.childNodes[1].innerHTML;
+    $.dataRecv.removeApp(hostid,appname);
+    $.pageShow.appListShow(appname);
+}

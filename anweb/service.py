@@ -307,5 +307,29 @@ def appcontrol(hostid,type,appname):
             nginx.online=True
         nginx.save()
     maker.inventory_clear()
-    historyUpdate(history,'',2)
+    historyUpdate(history,host.sship,2)
 
+def appremove(hostid,appname):
+    list=[]
+    host=Host.objects.get(id=hostid)
+    list.append(host.sship)
+    history=historyCreate(9,host.sship,1)
+    maker.inventory_maker(list)
+    if appname=='redis':
+        redis=Redis.objects.get(host_id=int(hostid))
+        allevent.evt_redis_remove(prefix=redis.prefix)
+    elif appname=='mysql':
+        mysql=MySQL.objects.get(host_id=int(hostid))
+        allevent.evt_mysql_remove(prefix=mysql.prefix,datadir=mysql.datadir)
+    elif appname=='nginx':
+        nginx=Nginx.objects.get(host_id=int(hostid))
+        allevent.evt_nginx_remove(prefix=nginx.prefix,)
+    elif appname=='tomcat':
+        tomcat=Tomcat.objects.get(host_id=int(hostid))
+        allevent.evt_tomcat_remove(prefix=tomcat.prefix)
+    elif appname=='java':
+        java=Java.objects.get(host_id=int(hostid))
+        allevent.evt_java_remove(prefix=java.prefix)
+
+    maker.inventory_clear()
+    historyUpdate(history,host.sship,2)

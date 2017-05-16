@@ -24,4 +24,5 @@ urlpatterns = [
    url(r'^confmodify/',views.confmodify,name='confmodify'),
    url(r'^appget/',views.appget,name='appget'),
    url(r'^appcontrol/',views.appcontrol,name='appcontrol'),
+   url(r'^appremove/',views.appremove,name='appremove'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
