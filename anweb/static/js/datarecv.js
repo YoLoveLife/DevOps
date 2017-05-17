@@ -214,5 +214,5 @@ $.dataRecv.controlApp=function(hostid,type,appname){
  * */
 $.dataRecv.removeApp=function(hostid,appname){
     var postdata={'hostid':hostid,'appname':appname};
-    $.devEops.ajaxBkDataAsync('appremove',false,'GET',postdata);
+    $.devEops.ajaxBkDataAsync('appremove/',false,'GET',postdata);
 }

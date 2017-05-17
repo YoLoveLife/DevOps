@@ -292,7 +292,7 @@ def appcontrol(hostid,type,appname):
         tomcat.save()
     elif appname=='mysql':
         mysql=MySQL.objects.get(host_id=int(hostid))
-        allevent.evt_mysql_control(control=type)
+        allevent.evt_mysql_control(control=type,passwd=mysql.passwd)
         if type=='stop':
             mysql.online=False
         else:
@@ -318,18 +318,23 @@ def appremove(hostid,appname):
     if appname=='redis':
         redis=Redis.objects.get(host_id=int(hostid))
         allevent.evt_redis_remove(prefix=redis.prefix)
+        redis.delete()
     elif appname=='mysql':
         mysql=MySQL.objects.get(host_id=int(hostid))
         allevent.evt_mysql_remove(prefix=mysql.prefix,datadir=mysql.datadir)
+        mysql.delete()
     elif appname=='nginx':
         nginx=Nginx.objects.get(host_id=int(hostid))
         allevent.evt_nginx_remove(prefix=nginx.prefix,)
+        nginx.delete()
     elif appname=='tomcat':
         tomcat=Tomcat.objects.get(host_id=int(hostid))
         allevent.evt_tomcat_remove(prefix=tomcat.prefix)
+        tomcat.delete()
     elif appname=='java':
         java=Java.objects.get(host_id=int(hostid))
         allevent.evt_java_remove(prefix=java.prefix)
+        java.delete()
 
     maker.inventory_clear()
     historyUpdate(history,host.sship,2)

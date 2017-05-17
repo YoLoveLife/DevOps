@@ -32,8 +32,11 @@ def evt_mysql_reconfigure(prefix='/usr/local',port='3306',socket='/tmp/mysql.soc
     #mysqlpb.mysql_configureplaybook(port=port,socket=socket,prefix=prefix,datadir=datadir,key_buffer_size=key_buffer_size,table_open_cache=table_open_cache,sort_buffer_size=sort_buffer_size,read_buffer_size=read_buffer_size,read_rnd_buffer_size=read_rnd_buffer_size,query_cache_size=query_cache_size,thread_cache_size=thread_cache_size,server_id=server_id,extend=extend)
     mysqlpb.mysql_controlplaybook(control='restart')
 
-def evt_mysql_control(control='help',):
-    mysqlpb.mysql_controlplaybook(control=control)
+def evt_mysql_control(control='help',passwd='000000'):
+    if control!='init':
+        mysqlpb.mysql_controlplaybook(control=control)
+    else:
+        mysqlpb.mysql_initializationplaybook(mysqlpasswd=passwd)
 
 def evt_mysql_remove(prefix='/usr/local',datadir='/usr/local/mysql/data'):
     mysqlpb.mysql_removeplaybook(prefix=prefix,datadir=datadir)

@@ -32,14 +32,17 @@
                         <h3 class="box-title">Operation</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-app" onclick="$.pageShow.appControl('stop','mysql')">
-                            <i class="fa fa-plus"></i> Stop
-                        </button>
                         <button class="btn btn-app" onclick="$.pageShow.appControl('start','mysql')">
-                            <i class="fa fa-edit"></i> Start
+                            <i class="fa fa-play"></i> Start
+                        </button>
+                        <button class="btn btn-app" onclick="$.pageShow.appControl('stop','mysql')">
+                            <i class="fa fa-stop"></i> Stop
                         </button>
                         <button class="btn btn-app" onclick="$.pageShow.appControl('restart','mysql')">
-                            <i class="fa fa-times"></i> Restart
+                            <i class="fa fa-refresh"></i> Restart
+                        </button>
+                        <button class="btn btn-app" onclick="$.pageShow.appControl('init','mysql')">
+                            <i class="fa fa-refresh"></i> Init
                         </button>
                         <button class="btn btn-app" onclick="$.pageShow.appRemove('mysql')">
                             <i class="fa fa-times"></i> Remove
