@@ -7,13 +7,23 @@ from anweb import service
 import json
 '''
 METHOD:GET
-URL:/anweb
+URL:/anweb/index
 RETURN:template of page index
 ASYNC:true
 '''
 @require_http_methods(["GET"])
 def index(request):
     return render(request, 'index.html',{})
+
+'''
+METHOD:GET
+URL:/anweb/login
+RETURN:template of page login
+ASYNC:true
+'''
+@require_http_methods(["GET"])
+def login(request):
+    return render(request,'login.html',{})
 
 '''
 METHOD:GET
