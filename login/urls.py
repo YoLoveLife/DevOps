@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib import admin
 from . import views
 urlpatterns = [
-   url(r'^$',views.login,name='login'),
-   url(r'^loginpermit/',views.loginpermit,name='loginpermit')
+   url(r'^$',views.logintest,name='login'),
+   url(r'^loginpermit/',views.loginpermit,name='loginpermit'),
+   url(r'^test/',views.test,name='test')
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_LOGIN_ROOT)
