@@ -144,7 +144,6 @@ def batch9mysqlinstall(iplist,version,prefix,passwd,datadir,port,socket):
     maker.inventory_maker(list)
     allevent.evt_mysql_install(version=mysqlversion,prefix=prefix,checksum=mysqlcheck,mysqlpasswd=passwd,mysqldatadir=datadir,mysqlport=port,mysqlsocket=socket)
     maker.inventory_clear()
-
     historyUpdate(history,'',2)
 
 '''
