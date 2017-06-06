@@ -9,7 +9,9 @@ from django.conf import settings
 from django.contrib import admin
 from . import views
 urlpatterns = [
-   url(r'^$',views.index,name='index'),
+   url(r'^$',views.login,name='login'),
+   url(r'^loginpermit/', views.loginpermit, name='loginpermit'),
+   url(r'^index/',views.index,name='index'),
    url(r'^groupsearch/',views.groupsearch,name='groupsearch'),
    url(r'^groupmodify/',views.groupmodify,name='groupmodify'),
    url(r'^hostsearch/',views.hostsearch,name='hostsearch'),

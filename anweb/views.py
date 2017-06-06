@@ -1,10 +1,39 @@
 from django.shortcuts import render
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login
 from anweb import service
 import json
+
+@require_http_methods(["GET"])
+def login(request):
+    return render(request,'login.html',{})
+
+'''
+METHOD:GET
+URL:/login/loginpermit
+RETURN:permit login
+ASYNC:false
+'''
+@csrf_exempt
+@require_http_methods(['POST'])
+def loginpermit(request):
+    username=request.GET.get('username')
+    passwd=request.GET.get('passwd')
+    #status=service.permitlogin(username,passwd)
+    user = authenticate(username=username,password=passwd)
+    if user is not None:
+        if user.is_active:
+            login(request,user)
+            return render(request, 'index.html', {})
+        else:
+            print("aaa")
+    else:
+        print("bbb")
+
 '''
 METHOD:GET
 URL:/anweb/index
