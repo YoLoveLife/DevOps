@@ -5,6 +5,7 @@ PATH=/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin
 PREFIX=/usr/local
 BASEDIR=${PREFIX}/redis
 LOGFILE="${BASEDIR}/redis.log"
+CONFFILE=/etc/redis.conf
 DATADIR="${BASEDIR}/data/"
 USER="redis"
 function Help()
@@ -61,7 +62,7 @@ function Avrg()
 
 Avrg $@
 DIRNAME=${PREFIX}/redis
-rm -rf ${LOGFILE} ${DATADIR} ${DIRNAME}
+rm -rf ${LOGFILE} ${DATADIR} ${DIRNAME} $CONFFILE
 
 echo "001000000"
 

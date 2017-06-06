@@ -17,16 +17,6 @@ def index(request):
 
 '''
 METHOD:GET
-URL:/anweb/login
-RETURN:template of page login
-ASYNC:true
-'''
-@require_http_methods(["GET"])
-def login(request):
-    return render(request,'login.html',{})
-
-'''
-METHOD:GET
 URL:/anweb/groupsearch
 RETURN:list of group by json
 ASYNC:false
@@ -94,8 +84,6 @@ ASYNC:false
 def hostupdate(request):
     ipaddress=request.GET.get('ipaddress')
     group_id=request.GET.get('group')
-    print(ipaddress,group_id)
-    list=service.host9hostsearch(group_id)
     status=service.host9hostupdate(ipaddress,group_id);
     return HttpResponse(json.dumps({
         'status': status
