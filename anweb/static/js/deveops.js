@@ -46,7 +46,7 @@ $(function(){
     if(ajax_url.length<1){
         ajax_url=o.mainPage;
     }
-    $.devEops.loadAjaxContent('static/pages/dashboard.html');
+    //$.devEops.loadAjaxContent('static/pages/dashboard.html');
 
     $.devEops.ajaxContentClickModify('.sidebar');
     $.devEops.ajaxContentClickModify('.app-bell');

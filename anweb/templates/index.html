@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>devEops - Graduation Project</title>
-    <link rel="stylesheet" href="static/plugins/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet/less" type="text/css" href="static/less/deveops.less">
-    <link rel="stylesheet/less" type="text/css" href="static/less/dashboard.less">
-    <link rel="stylesheet/less" type="text/css" href="static/less/manager.less">
-    <link rel="stylesheet/less" type="text/css" href="static/less/ansible.less">
-    <link rel="stylesheet" type="text/css" href="static/plugins/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/anweb/static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" type="text/css" href="/anweb/static/less/deveops.less">
+    <link rel="stylesheet/less" type="text/css" href="/anweb/static/less/dashboard.less">
+    <link rel="stylesheet/less" type="text/css" href="/anweb/static/less/manager.less">
+    <link rel="stylesheet/less" type="text/css" href="/anweb/static/less/ansible.less">
+    <link rel="stylesheet" type="text/css" href="/anweb/static/plugins/font-awesome/css/font-awesome.css">
 </head>
 <body>
 <!--Main Page-->
@@ -52,16 +52,17 @@
     <!--Main leftbar-->
     <aside class="main-sidebar">
         <section class="sidebar">
+            {% block sidebar %}
             <ul class="sidebar-menu">
                 <li class="header menu-title">MAIN NAVIGATION</li>
                 <li class="treeview">
-                    <a href="static/pages/dashboard.html" class="ajax-link">
+                    <a href="/anweb/static/pages/dashboard.html" class="ajax-link">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="static/pages/timeline.html" class="ajax-link">
+                    <a href="/anweb/static/pages/timeline.html" class="ajax-link">
                         <i class="fa fa-clock-o"></i>
                         <span>TimeLine</span>
                     </a>
@@ -75,9 +76,9 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="static/pages/group.html" class="ajax-link"><i class="fa fa-group"></i>Group</a></li>
-                        <li><a href="static/pages/host.html" class="ajax-link"><i class="fa fa-laptop"></i>Host</a></li>
-                        <li><a href="static/pages/search.html" class="ajax-link"><i class="fa fa-search"></i>Search</a></li>
+                        <li><a href="/anweb/static/pages/group.html" class="ajax-link"><i class="fa fa-group"></i>Group</a></li>
+                        <li><a href="/anweb/static/pages/host.html" class="ajax-link"><i class="fa fa-laptop"></i>Host</a></li>
+                        <li><a href="/anweb/static/pages/search.html" class="ajax-link"><i class="fa fa-search"></i>Search</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -96,14 +97,14 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu" style="display: none">
-                                <li><a href="static/pages/batch/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
-                                <li><a href="static/pages/batch/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
-                                <li><a href="static/pages/batch/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
-                                <li><a href="static/pages/batch/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
+                                <li><a href="/anweb/static/pages/batch/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
+                                <li><a href="/anweb/static/pages/batch/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
+                                <li><a href="/anweb/static/pages/batch/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
+                                <li><a href="/anweb/static/pages/batch/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
                             </ul>
                         </li>
-                        <li><a href="static/pages/cen.html" class="ajax-link"><i class="fa fa-cogs"></i>Centralized release</a></li>
-                        <li><a href="static/pages/conf.html" class="ajax-link"><i class="glyphicon glyphicon-info-sign"></i>Configuration modify</a></li>
+                        <li><a href="/anweb/static/pages/cen.html" class="ajax-link"><i class="fa fa-cogs"></i>Centralized release</a></li>
+                        <li><a href="/anweb/static/pages/conf.html" class="ajax-link"><i class="glyphicon glyphicon-info-sign"></i>Configuration modify</a></li>
                         <li>
                             <a href="#"><i class="fa fa-life-ring"></i>App Control
                                 <span>
@@ -111,10 +112,10 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu" style="display: none">
-                                <li><a href="static/pages/app/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
-                                <li><a href="static/pages/app/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
-                                <li><a href="static/pages/app/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
-                                <li><a href="static/pages/app/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
+                                <li><a href="/anweb/static/pages/app/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
+                                <li><a href="/anweb/static/pages/app/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
+                                <li><a href="/anweb/static/pages/app/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
+                                <li><a href="/anweb/static/pages/app/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -128,8 +129,8 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="static/pages/tomcat.html" class="ajax-link"><i class="fa fa-houzz"></i>Tomcat</a></li>
-                        <li><a href="static/pages/nginx.html" class="ajax-link"><i class="fa fa-joomla"></i>Nginx</a></li>
+                        <li><a href="/anweb/static/pages/tomcat.html" class="ajax-link"><i class="fa fa-houzz"></i>Tomcat</a></li>
+                        <li><a href="/anweb/static/pages/nginx.html" class="ajax-link"><i class="fa fa-joomla"></i>Nginx</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -141,23 +142,28 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="static/pages/tomcat.html" class="ajax-link"><i class="fa fa-slideshare"></i>Save me</a></li>
-                        <li><a href="static/pages/nginx.html" class="ajax-link"><i class="fa fa-viadeo"></i>Pavel</a></li>
+                        <li><a href="/anweb/static/pages/tomcat.html" class="ajax-link"><i class="fa fa-slideshare"></i>Save me</a></li>
+                        <li><a href="/anweb/static/pages/nginx.html" class="ajax-link"><i class="fa fa-viadeo"></i>Pavel</a></li>
                     </ul>
                 </li>
             </ul>
+            {% endblock %}
         </section>
     </aside>
     <div class="content-wrapper">
         <div id="ajax-content">
+            {% block content %}
+            {% endblock %}
         </div>
     </div>
 </div>
-<script src="static/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="static/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="static/plugins/less/less.js"></script>
-<script src="static/js/deveops.js"></script>
-<script src="static/js/datarecv.js"></script>
-<script src="static/js/pageshow.js"></script>
+<script src="/anweb/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="/anweb/static/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/anweb/static/plugins/less/less.js"></script>
+<script src="/anweb/static/js/deveops.js"></script>
+<!--
+<script src="/anweb/static/js/datarecv.js"></script>
+<script src="/anweb/static/js/pageshow.js"></script>
+-->
 </body>
 </html>

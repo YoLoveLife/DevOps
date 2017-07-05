@@ -14,13 +14,14 @@
     </div>
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
-        <form>
+        <form method="post" action="">
+            {% csrf_token %}
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" id='loginemail' placeholder="Email">
+                {{ login_form.email }}
                 <span class="fa fa-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" id='loginpasswd' placeholder="Password">
+                {{ login_form.passwd }}
                 <span class="fa fa-lock form-control-feedback"></span>
             </div>
             <div class="row">
@@ -32,7 +33,7 @@
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block" onclick="return $.loginValidate.loginPermit()">Sign In</button>
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                 </div>
             </div>
         </form>
@@ -40,7 +41,9 @@
 </div>
 <script src="static/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="static/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!--
 <script src="static/js/login.js"></script>
+-->
 <script src="static/plugins/less/less.js"></script>
 </body>
 </html>
