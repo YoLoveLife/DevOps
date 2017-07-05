@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'anweb',
-    'login',
 ]
 
 MIDDLEWARE = [
@@ -135,4 +134,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT=os.path.join(BASE_DIR,'anweb/static')
-STATIC_LOGIN_ROOT=os.path.join(BASE_DIR,'login/static')

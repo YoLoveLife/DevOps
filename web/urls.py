@@ -25,5 +25,4 @@ from django.conf import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^anweb/', include('anweb.urls')),
-    url(r'^login/',include('login.urls')),
 ]
