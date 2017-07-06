@@ -19,10 +19,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url,include
-from django.contrib import admin
-from django.conf.urls.static import static
-from django.conf import settings
+from .views import IndexView
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^anweb/', include('anweb.urls')),
+    url(r'^$',IndexView.as_view(), name='index'),
+    url(r'^login/',include('validate.urls', namespace='validate')),
 ]

@@ -1,16 +1,17 @@
+import json
+
+from django.contrib.auth import authenticate,login
+from django.http import HttpResponse
 from django.shortcuts import render
-# Create your views here.
-from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login
-from anweb import service
-import json
+
+from apps.anweb import service
+
 
 @require_http_methods(["GET"])
 def login(request):
-    return render(request,'login.html',{})
+    return render(request, '../templates/login.html', {})
 
 '''
 METHOD:GET
@@ -28,7 +29,7 @@ def loginpermit(request):
     if user is not None:
         if user.is_active:
             login(request,user)
-            return render(request, 'index.html', {})
+            return render(request, '../templates/index.html', {})
         else:
             print("aaa")
     else:
@@ -42,7 +43,7 @@ ASYNC:true
 '''
 @require_http_methods(["GET"])
 def index(request):
-    return render(request, 'index.html',{})
+    return render(request, '../templates/index.html', {})
 
 '''
 METHOD:GET
@@ -52,7 +53,7 @@ ASYNC:false
 '''
 @require_http_methods(["GET",])
 def groupsearch(request):
-    list=service.group9groupsearch()
+    list= service.group9groupsearch()
     return HttpResponse(json.dumps({
         'group_list': list
     }))
@@ -65,7 +66,7 @@ ASYNC:false
 '''
 @require_http_methods(["GET",])
 def historyget(request):
-    list=service.historyget()
+    list= service.historyget()
     return HttpResponse(json.dumps({'history_list':list}))
 
 '''
@@ -80,7 +81,7 @@ def groupmodify(request):
     group_id=request.POST.get('groupid')
     group_name=request.POST.get('groupname')
     group_remark=request.POST.get('groupremark')
-    service.group9modifygroup(group_id,group_name,group_remark)
+    service.group9modifygroup(group_id, group_name, group_remark)
     return HttpResponse(json.dumps({
         'status': "1"
     }))
@@ -96,7 +97,7 @@ ASYNC:false
 @require_http_methods(["GET"],)
 def hostsearch(request):
     group_id=request.GET.get('id')
-    list=service.host9hostsearch(group_id)
+    list= service.host9hostsearch(group_id)
     return HttpResponse(json.dumps({
         'host_list': list
     }))
@@ -113,7 +114,7 @@ ASYNC:false
 def hostupdate(request):
     ipaddress=request.GET.get('ipaddress')
     group_id=request.GET.get('group')
-    status=service.host9hostupdate(ipaddress,group_id);
+    status= service.host9hostupdate(ipaddress, group_id);
     return HttpResponse(json.dumps({
         'status': status
     }))
@@ -130,7 +131,7 @@ ASYNC:false
 @require_http_methods(["GET"],)
 def softversion(request):
     appname=request.GET.get('appname')
-    list=service.batch9appversion(appname)
+    list= service.batch9appversion(appname)
     return HttpResponse(json.dumps({
         'host_list': list
     }))
@@ -152,7 +153,7 @@ def batchredis(request):#iplist,redisversion,redisprefix,redisport,redispasswd
     port = request.POST.get('port')
     passwd = request.POST.get('passwd')
     datadir = request.POST.get('datadir')
-    status = service.batch9redisinstall(iplist,version,prefix,port,passwd,datadir)
+    status = service.batch9redisinstall(iplist, version, prefix, port, passwd, datadir)
     return HttpResponse(json.dumps({
         'status': status
     }))
@@ -173,7 +174,7 @@ def batchtomcat(request):
     tomcatversion=request.POST.get('tomcatversion')
     tomcatprefix=request.POST.get('tomcatprefix')
     print(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix)
-    status=service.batch9tomcatinstall(iplist,javaversion,javaprefix,tomcatversion,tomcatprefix);
+    status= service.batch9tomcatinstall(iplist, javaversion, javaprefix, tomcatversion, tomcatprefix);
     return HttpResponse(json.dumps({
         'status': status
     }))
@@ -195,7 +196,7 @@ def batchmysql(request):
     port=request.POST.get('port')
     datadir=request.POST.get('datadir')
     socket=request.POST.get('socket')
-    status=service.batch9mysqlinstall(iplist,version,prefix,passwd,datadir,port,socket,)
+    status= service.batch9mysqlinstall(iplist, version, prefix, passwd, datadir, port, socket, )
     return HttpResponse(json.dumps({
         'status': status
     }))
@@ -214,7 +215,7 @@ def batchnginx(request):
     version = request.POST.get('version')
     prefix = request.POST.get('prefix')
     pid=request.POST.get('pid');
-    status=service.batch9nginxinstall(iplist,version,prefix,pid)
+    status= service.batch9nginxinstall(iplist, version, prefix, pid)
     return HttpResponse(json.dumps({
         'status': status
     }))
@@ -229,7 +230,7 @@ ASYNC:false
 def confget(request):
     iplist=request.GET.getlist('iplist[]')
     cnf=request.GET.get('cnf')
-    (conf,tmp)=service.cnfget(iplist,cnf)
+    (conf,tmp)= service.cnfget(iplist, cnf)
     return HttpResponse(json.dumps({'conf':conf,'tmp':tmp}))
 
 '''
@@ -244,7 +245,7 @@ def confmodify(request):
     tmp=request.GET.get('tmp')
     newstr=request.GET.get('newstr')
     cnf=request.GET.get('cnf')
-    service.cnfmodify(iplist,tmp,newstr,cnf)
+    service.cnfmodify(iplist, tmp, newstr, cnf)
     return HttpResponse(json.dumps({'status':1}))
 
 '''
@@ -256,7 +257,7 @@ ASYNC:false
 @require_http_methods(["GET"])
 def appget(request):
     appname=request.GET.get('appname')
-    list=service.applist(appname)
+    list= service.applist(appname)
     return HttpResponse(json.dumps({'applist':list}))
 
 '''
@@ -271,7 +272,7 @@ def appcontrol(request):
     hostid=request.GET.get('hostid')
     type=request.GET.get('type')
     appname=request.GET.get('appname')
-    service.appcontrol(hostid,type,appname)
+    service.appcontrol(hostid, type, appname)
     return HttpResponse(json.dumps({'status':'1'}))
 
 '''
@@ -284,5 +285,5 @@ ASYNC:false
 def appremove(request):
     hostid=request.GET.get('hostid')
     appname=request.GET.get('appname')
-    service.appremove(hostid,appname)
+    service.appremove(hostid, appname)
     return HttpResponse(json.dumps({'status':'1'}))

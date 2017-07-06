@@ -1,61 +1,53 @@
 <!--Content Header-->
 <section class="content-header">
     <h1>
-        MariaDB
+        Tomcat
         <small>Batch deployment</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
         <li class="active">Ansible</li>
         <li class="active">Batch deployment</li>
-        <li class="active">MariaDB</li>
+        <li class="active">Tomcat</li>
     </ol>
 </section>
 <!--Content Header-->
 <!--Main Content-->
-<section class="content container page-mariadb">
+<section class="content container page-tomcat">
     <div class="row">
         <div class="col-md-10">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">MariaDB - Batch deployment</h3>
+                    <h3 class="box-title">Tomcat - Batch deployment</h3>
                 </div>
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <img src="/anweb/static/img/mariadb.png" alt="mess">
+                            <img src="/apps/static/img/tomcat.png" alt="mess">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5 form-group">
-                            MariaDB - Version
-                            <select class="form-control" id="batch_version">
+                            Java - Version
+                            <select class="form-control" id="batch_version_java">
                                 <option selected="selected">No Selected</option>
                             </select>
                         </div>
                         <div class="col-md-5 form-group">
-                            MariaDB - Prefix
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Prefix" value="/usr/local" disabled>
+                            Java - Prefix
+                            <input type="text" class="form-control batch-tomcat-input" placeholder="Enter Java Prefix" value="/usr/local" disabled>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-5 form-group">
-                            MariaDB - Password
-                            <input type="password" class="form-control batch-mysql-input" placeholder="Enter MariaDB Password">
+                            Tomcat - Version
+                            <select class="form-control" id="batch_version_tomcat">
+                                <option selected="selected">No Selected</option>
+                            </select>
                         </div>
                         <div class="col-md-5 form-group">
-                            MariaDB - Datadir
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Datadir" value="/usr/local/mysql/data">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5 form-group">
-                            MariaDB - Port
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Port" value="3306">
-                        </div>
-                        <div class="col-md-5 form-group">
-                            MariaDB - Socket
-                            <input type="text" class="form-control batch-mysql-input" placeholder="Enter MariaDB Socket" value="/tmp/mysql.sock">
+                            Tomcat - Prefix
+                            <input type="text" class="form-control batch-tomcat-input" placeholder="Enter Tomcat Prefix" value="/usr/local" disabled>
                         </div>
                     </div>
                 </div>
@@ -73,11 +65,11 @@
                     <button class="btn btn-app" disabled>
                         <i class="fa fa-clock-o"></i> TimeSet
                     </button>
-                    <button class="btn btn-app" onclick="$.pageShow.mysqlBatch()">
+                    <button class="btn btn-app" onclick="$.pageShow.tomcatBatch()">
                         <i class="fa fa-check"></i> Start
                     </button>
-                    <button class="btn btn-app" onclick="$.pageShow.clearBatchInputBox('batch-mysql-input')">
-                        <i class="fa fa-times"></i> Clear
+                    <button class="btn btn-app">
+                        <i class="fa fa-times" onclick="$.pageShow.clearBatchInputBox('batch-tomcat-input')"></i> Clear
                     </button>
                 </div>
             </div>
@@ -87,30 +79,19 @@
         <div class="col-md-6">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">MariaDB - Batch notice</h3>
+                    <h3 class="box-title">Tomcat - Batch notice</h3>
                 </div>
                 <div class="box-body">
-                    <dt>MariaDB - Prefix
-                    </dt>
-                    <dd>MariaDB安装目录，{{Preifx}}/redis。包含了MariaDB源码以及编译后的命令行文件。
-                    </dd>
-                    <dt>MariaDB - Password</dt>
-                    <dd>localhost - root的登录权限。</dd>
-                    <dt>MariaDB - Datadir</dt>
-                    <dd>MariaDB数据存放目录</dd>
-                    <dt>MariaDB - Socket</dt>
-                    <dd>MariaDB Socket文件存放</dd>
+                    <dt>Java - Prefix</dt>
+                    <dd>Java安装目录</dd>
+                    <dt>Tomcat - Prefix</dt>
+                    <dd>Tomcat 安装目录</dd>
                 </div>
             </div>
         </div>
     </div>
 </section>
 <!--Main Content-->
-<!--
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Launch demo modal
-        </button>
--->
 <!--Modal-->
 <div class="modal fade" id="SelectRange" tabindex="-1" role="dialog" >
     <div class="modal-dialog modal-range" role="document">
@@ -161,7 +142,8 @@
 <script>
         $(document).ready(function(){
             var list=$.dataRecv.groupGetBkData();
-        $.pageShow.versionFlush('mysql','batch_version');
+        $.pageShow.versionFlush('tomcat','batch_version_tomcat');
+        $.pageShow.versionFlush('java','batch_version_java');
         $.pageShow.rangeSelectInsert(list,'range-group');
     });
 </script>

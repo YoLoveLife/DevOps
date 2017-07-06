@@ -534,7 +534,8 @@ class Nmcli(object):
             return "no"
 
     def list_connection_info(self):
-        # Ask the settings service for the list of connections it provides
+        # Ask the
+        # settings service for the list of connections it provides
         bus=dbus.SystemBus()
 
         service_name="org.freedesktop.NetworkManager"
