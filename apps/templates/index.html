@@ -1,167 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>devEops - Graduation Project</title>
-    <link rel="stylesheet" href="/apps/static/plugins/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet/less" type="text/css" href="/apps/static/less/deveops.less">
-    <link rel="stylesheet/less" type="text/css" href="/apps/static/less/dashboard.less">
-    <link rel="stylesheet/less" type="text/css" href="/apps/static/less/manager.less">
-    <link rel="stylesheet/less" type="text/css" href="/apps/static/less/ansible.less">
-    <link rel="stylesheet" type="text/css" href="/apps/static/plugins/font-awesome/css/font-awesome.css">
-</head>
-<body>
-<!--Main Page-->
-<div class="wrapper">
-    <!--Main topbar-->
-    <header class="main-header">
-        <a href="index.html" class="logo">
-            <span class="logo-lg"><b>devEops</b>beta</span>
-        </a>
-        <nav class="navbar navbar-static-top">
-            <div class="navbar-top-menu">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">0</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                        </ul>
-                    </li>
-                    <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">0</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                        </ul>
-                    </li>
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">0</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                        </ul>
-                    </li>
-                </ul>
+{% extends 'base.html' %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            Dashboard
+            <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container page-dashboard">
+        <div class="row">
+            <div class="app-bell">
+                <div class="col-lg-2">
+                    <div class="small-box">
+                        <div class="inner" style="background-color: #605ca8">
+                            <h3>4</h3>
+                            <p>Redis</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bell-o">
+                            </i>
+                        </div>
+                        <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #555299">More info</a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="small-box">
+                        <div class="inner" style="background-color: #39CCCC;">
+                            <h3>5</h3>
+                            <p>Nginx</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bell-o">
+                            </i>
+                        </div>
+                        <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #30BBBB">More info</a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="small-box">
+                        <div class="inner" style="background-color: #00c0ef">
+                            <h3>6</h3>
+                            <p>Tomcat</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bell-o">
+                            </i>
+                        </div>
+                        <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #00A7D0">More info</a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="small-box">
+                        <div class="inner" style="background-color: #FF851B">
+                            <h3>64</h3>
+                            <p>MySQL</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bell-o">
+                            </i>
+                        </div>
+                        <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #FF7701">More info</a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="small-box">
+                        <div class="inner" style="background-color: #D81B60">
+                            <h3>12</h3>
+                            <p>Rabbit</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bell-o">
+                            </i>
+                        </div>
+                        <a href="pages/host.html" class="ajax-link small-box-footer" style="background-color: #CA195A">More info</a>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </header>
-    <!--Main leftbar-->
-    <aside class="main-sidebar">
-        <section class="sidebar">
-            <ul class="sidebar-menu">
-                <li class="header menu-title">MAIN NAVIGATION</li>
-                <li class="treeview">
-                    <a href="/apps/static/pages/dashboard.html" class="ajax-link">
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="/apps/static/pages/timeline.html" class="ajax-link">
-                        <i class="fa fa-clock-o"></i>
-                        <span>TimeLine</span>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-server"></i>
-                        <span>Manager</span>
-                        <span>
-                            <i class="fa fa-chevron-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/apps/static/pages/group.html" class="ajax-link"><i class="fa fa-group"></i>Group</a></li>
-                        <li><a href="/apps/static/pages/host.html" class="ajax-link"><i class="fa fa-laptop"></i>Host</a></li>
-                        <li><a href="/apps/static/pages/search.html" class="ajax-link"><i class="fa fa-search"></i>Search</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-magic"></i>
-                        <span>Ansible</span>
-                        <span>
-                            <i class="fa fa-chevron-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap"></i>Batch deployment
-                                <span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none">
-                                <li><a href="/apps/static/pages/batch/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
-                                <li><a href="/apps/static/pages/batch/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
-                                <li><a href="/apps/static/pages/batch/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
-                                <li><a href="/apps/static/pages/batch/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/apps/static/pages/cen.html" class="ajax-link"><i class="fa fa-cogs"></i>Centralized release</a></li>
-                        <li><a href="/apps/static/pages/conf.html" class="ajax-link"><i class="glyphicon glyphicon-info-sign"></i>Configuration modify</a></li>
-                        <li>
-                            <a href="#"><i class="fa fa-life-ring"></i>App Control
-                                <span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none">
-                                <li><a href="/apps/static/pages/app/redis.html" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
-                                <li><a href="/apps/static/pages/app/mariadb.html" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
-                                <li><a href="/apps/static/pages/app/tomcat.html" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
-                                <li><a href="/apps/static/pages/app/nginx.html" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-comment-o"></i>
-                        <span>Liar</span>
-                        <span>
-                            <i class="fa fa-chevron-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/apps/static/pages/tomcat.html" class="ajax-link"><i class="fa fa-houzz"></i>Tomcat</a></li>
-                        <li><a href="/apps/static/pages/nginx.html" class="ajax-link"><i class="fa fa-joomla"></i>Nginx</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-gratipay"></i>
-                        <span>Pavel</span>
-                        <span>
-                            <i class="fa fa-chevron-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/apps/static/pages/tomcat.html" class="ajax-link"><i class="fa fa-slideshare"></i>Save me</a></li>
-                        <li><a href="/apps/static/pages/nginx.html" class="ajax-link"><i class="fa fa-viadeo"></i>Pavel</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-    </aside>
-    <div class="content-wrapper">
-        <div id="ajax-content">
-            {% block content %}
-            {% endblock %}
         </div>
-    </div>
-</div>
-<script src="/apps/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="/apps/static/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="/apps/static/plugins/less/less.js"></script>
-<script src="/apps/static/js/deveops.js"></script>
-<!--
-<script src="/anweb/static/js/datarecv.js"></script>
-<script src="/anweb/static/js/pageshow.js"></script>
--->
-</body>
-</html>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Monthly Recap Report</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <p class="text-center">
+                                    <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                                </p>
+                                <div class="chart">
+                                    <canvas id="salesChart" style="height: 180px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="text-center">
+                                    <strong>Goal Completion</strong>
+                                </p>
+                                <div class="progress-group">
+                                    <span class="progress-text">Add Producets</span>
+                                    <span class="progress-number"><b>160</b>/200</span>
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-aqua" style="width: 10%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    <span class="progress-text">Add Producets</span>
+                                    <span class="progress-number"><b>10</b>/200</span>
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-group">
+                                    <span class="progress-text">Add Producets</span>
+                                    <span class="progress-number"><b>160</b>/200</span>
+                                    <div class="progress sm">
+                                        <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+{% endblock %}

@@ -22,5 +22,6 @@ from django.conf.urls import url,include
 from .views import IndexView
 urlpatterns = [
     url(r'^$',IndexView.as_view(), name='index'),
-    url(r'^login/',include('validate.urls', namespace='validate')),
+    url(r'^login/', include('validate.urls', namespace='validate')),
+    url(r'^manager/',include('manager.urls', namespace='manager')),
 ]

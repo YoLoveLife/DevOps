@@ -13,7 +13,7 @@ class LoginView(TemplateView):
     def get(self,request, *args, **kwargs):
         login_form= LoginForm()
         #return super(LoginView, self).get(request, *args, **kwargs)
-        return render(request, 'login.html', {'data': 2})
+        return render(request, 'login.html', {'login_form': login_form})
 
     def post(self,request):
         error = ''
@@ -26,7 +26,7 @@ class LoginView(TemplateView):
                 return HttpResponseRedirect(reverse('index'))
             else:
                 error = 'Error Passwd'
-        return render(request, '../templates/login.html', {'error': error, 'login_form': login_form})
+        return render(request, 'login.html', {'error': error, 'login_form': login_form})
 
 class LogoutView(View):
     def post(self,request):
