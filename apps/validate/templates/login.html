@@ -37,6 +37,13 @@
                     <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                 </div>
             </div>
+            {% if error %}
+                <div class="row">
+                    <div class="col-xs-5">
+                        <h3>登录信息有误</h3>
+                    </div>
+                </div>
+            {% endif %}
         </form>
     </div>
 </div>
