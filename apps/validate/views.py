@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate,login
 from django.http import HttpResponseRedirect
 class LoginView(TemplateView):
-    template_name='login.html'
+    template_name= 'login.html'
     form_class= LoginForm
     redirect_field_name='next'
 

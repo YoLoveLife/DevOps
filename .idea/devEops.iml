@@ -18,6 +18,13 @@
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/apps/templates" />
+        <option value="$MODULE_DIR$/apps/validate/templates" />
+        <option value="$MODULE_DIR$/apps/manager/templates" />
+      </list>
+    </option>
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />

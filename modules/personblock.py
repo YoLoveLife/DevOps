@@ -30,8 +30,12 @@ class PersonBlock():
               options=self.options,
               passwords=self.passwords,
               stdout_callback=self.results_callback,)
+        #self.play = Play().load(self.play_source, variable_manager=self.variable_manager, loader=self.loader)
 
     def add_extendvars(self,newext):
+        #print(newext)
+        #ext=self.variable_manager.extra_vars.copy()
+        #self.variable_manager.extra_vars=ext.update(newext)
         self.variable_manager.extra_vars=newext
 
     def set_playbook(self,pb):

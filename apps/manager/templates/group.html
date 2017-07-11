@@ -1,3 +1,4 @@
+{% block content %}
 <!--Content Header-->
     <section class="content-header">
         <h1>
@@ -21,7 +22,18 @@
                     </div>
                     <div class="box-body">
                         <table class="table">
-                            <!--Table Data-->
+                            <tr><th>#</th><th>GID</th><th>GName</th><th>GRemark</th><th>Status</th></tr>
+                        {% if group_list %}
+                            {% for row in grouplist %}
+                                <tr class='grp-list'>
+                                    <td><input type='radio' name='radiogp' class='minimal' checked></td>
+                                    <td>{{ row.id }}</td>
+                                    <td>{{ row.name }}</td>
+                                    <td>{{ row.remark }}</td>
+                                    <td><span class='label label-success'>Alived</span></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                         </table>
                     </div>
                 </div>
@@ -94,9 +106,11 @@
         </div>
     </div>
 </div>
-
+{% endblock %}
+<!--
 <script>
      $(document).ready(function(){
         $.pageShow.groupInit();
     });
 </script>
+-->
