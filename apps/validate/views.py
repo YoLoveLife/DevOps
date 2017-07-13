@@ -1,22 +1,20 @@
 from django.shortcuts import redirect,render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,FormView
 from django.views.generic import View
 from .forms import LoginForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect
-class LoginView(TemplateView):
+class LoginView(FormView):
     template_name= 'login.html'
     form_class= LoginForm
     redirect_field_name='next'
 
     def get(self,request, *args, **kwargs):
-        login_form= LoginForm()
-        #return super(LoginView, self).get(request, *args, **kwargs)
-        return render(request,self.template_name, {'login_form': login_form})
+        return super(LoginView,self).get(request,*args,**kwargs)
 
-    def post(self,request):
-        error = ''
+    def post(self,request,*args, **kwargs):
+        error = 'nowhere'
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             data=login_form.clean()
@@ -26,7 +24,8 @@ class LoginView(TemplateView):
                 return HttpResponseRedirect(reverse('index'))
             else:
                 error = 'Error Passwd'
-        return render(request,self.template_name, {'error': error, 'login_form': login_form})
+        return render(request,self.template_name, {'error': error, 'form': login_form})
+
 
 class LogoutView(View):
     template_name='login.html'

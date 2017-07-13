@@ -5,12 +5,14 @@
 # Email YoLoveLife@outlook.com
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-class LoginForm(forms.Form):
-    email=forms.EmailField(label="Username",max_length=100,widget=forms.TextInput(attrs={'type':'email','class':'form-control','placeholder':'Email'}))
-    passwd=forms.CharField(label="Passwd",widget=forms.PasswordInput(attrs={'type':'password','class':'form-control','placeholder':'Password'}))
-
 
 class GroupForm(forms.Form):
-    id=forms.IntegerField(label="ID",widget=forms.TextInput())
-    name=forms.CharField(label="Name",max_length=100)
-    remark=forms.CharField(label="Remark",max_length=100)
+    id=forms.IntegerField(label="ID",widget=forms.TextInput(attrs={'type':'text','class':'form-control','disabled':'yes'}))
+    name=forms.CharField(label="Name",max_length=100,widget=forms.TextInput(attrs={'type':'text','class':'form-control'}))
+    remark=forms.CharField(label="Remark",max_length=100,widget=forms.TextInput(attrs={'type':'text','class':'form-control'}))
+
+
+class HostForm(forms.Form):
+    name=forms.CharField(label="hostname",max_length=50)
+    groupid=forms.IntegerField(label="groupid")
+    sship=forms.CharField(label="sship",max_length=15)
