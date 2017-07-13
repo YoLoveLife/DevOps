@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% block content %}
 <!--Content Header-->
     <section class="content-header">
@@ -23,7 +24,6 @@
                     <div class="box-body">
                         <table class="table">
                             <tr><th>#</th><th>GID</th><th>GName</th><th>GRemark</th><th>Status</th></tr>
-                        {% if group_list %}
                             {% for row in grouplist %}
                                 <tr class='grp-list'>
                                     <td><input type='radio' name='radiogp' class='minimal' checked></td>
@@ -33,7 +33,6 @@
                                     <td><span class='label label-success'>Alived</span></td>
                                 </tr>
                             {% endfor %}
-                        {% endif %}
                         </table>
                     </div>
                 </div>
@@ -60,52 +59,7 @@
     </section>
     <!--Main Content-->
 <!--Modal-->
-<div class="modal fade" id="GroupInfo" tabindex="-1" role="dialog" >
-    <div class="modal-dialog modal-hostinfo" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Group Info</h4>
-            </div>
-            <div class="modal-body container">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>GID</label>
-                            <input type="text" class="form-control" id="grpID" disabled>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Group Name</label>
-                            <input type="text" class="form-control" id="grpName">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label>Group Remark</label>
-                            <input type="text" class="form-control" id="grpRemark">
-                        </div>
-                    </div>
-                    <!--
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>Group Status</label>
-                            <input type="text" class="form-control" default="groupremark">
-                        </div>
-                    </div>
-                    -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$.pageShow.groupModalPostInfo()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "_group_modal.html" %}
 {% endblock %}
 <!--
 <script>
@@ -114,3 +68,21 @@
     });
 </script>
 -->
+
+{% block foot_js %}
+    <script>
+        $(document).ready(function(){
+            $('#modal_group_id').click(function(){
+                var $form=$('$form_group');
+                function success(data,textStatus,jqXHR){
+                    if(data.success==true){
+                        window.location.reload();
+                    }else{
+                        $
+                    }
+                }
+            })
+        })
+
+    </script>
+{% endblock %}

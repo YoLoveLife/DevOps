@@ -48,8 +48,8 @@ $(function(){
     }
     //$.devEops.loadAjaxContent('static/pages/dashboard.html');
 
-    $.devEops.ajaxContentClickModify('.sidebar');
-    $.devEops.ajaxContentClickModify('.app-bell');
+    //$.devEops.ajaxContentClickModify('.sidebar');
+    //$.devEops.ajaxContentClickModify('.app-bell');
 })
 
 /**

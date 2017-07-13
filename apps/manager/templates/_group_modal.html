@@ -1,0 +1,33 @@
+{% extends '_modal.html' %}
+{% block modal_id %}GroupInfo{% endblock %}
+{% block modal_class %}modal-hostinfo{% endblock %}
+{% block modal_title %}Group Info{% endblock %}
+{% block modal_body %}
+                <form method="post" action="{% url 'manager:group' %}" method="post" id="form_group" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>GID</label>
+                            {{ form.id }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Group Name</label>
+                            {{ form.name }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Group Remark</label>
+                            {{ form.remark }}
+                        </div>
+                    </div>
+                </div>
+                </form>
+{% endblock %}
+
+{% block modal_confirm_id %}modal_group_id{% endblock %}

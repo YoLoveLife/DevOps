@@ -8,5 +8,6 @@ from django.conf.urls import url
 import views
 
 urlpatterns = [
-    url(r'^group$', views.ManagerGroupView.as_view(), name='group'),
+    url(r'^group$', views.ManagerGroupListView.as_view(), name='group'),
+    url(r'^host$', views.ManagerHostListView.as_view(), name='host'),
 ]
