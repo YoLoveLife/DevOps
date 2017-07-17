@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 class LoginView(FormView):
     template_name= 'login.html'
     form_class= LoginForm
-    redirect_field_name='next'
+    redirect_field_name='yo'
 
     def get(self,request, *args, **kwargs):
         return super(LoginView,self).get(request,*args,**kwargs)

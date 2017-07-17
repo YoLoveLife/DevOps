@@ -1,0 +1,35 @@
+{% extends '_modal.html' %}
+{% block modal_id %}HostInfo{% endblock %}
+{% block modal_class %}modal-hostinfo{% endblock %}
+{% block modal_title %}Host Info{% endblock %}
+{% block modal_body %}
+                <form method="post" action="{% url 'manager:host' %}" method="post" id="form_host" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>IPAddress</label>
+                            {{ form.ip }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Group</label>
+                            <select class="form-control" id="group_chose">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Hostname</label>
+                            {{ form.hostname }}
+                        </div>
+                    </div>
+                </div>
+
+
+
+                </form>
+{% endblock %}
+
+{% block modal_confirm_id %}modal_host_id{% endblock %}
