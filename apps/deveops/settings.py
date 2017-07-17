@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'anweb',
+        'NAME':'deveops',
         'USER':'root',
         'PASSWORD':'000000',
         'HOST':'',
