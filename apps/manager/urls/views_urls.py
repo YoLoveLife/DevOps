@@ -4,8 +4,8 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf.urls import url
-
-import views
+from rest_framework import viewsets
+from .. import views
 
 urlpatterns = [
     url(r'^group$', views.ManagerGroupListView.as_view(), name='group'),

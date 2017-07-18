@@ -21,7 +21,12 @@ Including another URLconf
 from django.conf.urls import url,include
 from .views import IndexView
 urlpatterns = [
+    #VIEW
     url(r'^$',IndexView.as_view(), name='index'),
     url(r'^login/', include('validate.urls', namespace='validate')),
-    url(r'^manager/', include('manager.urls', namespace='manager')),
+    url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
+
+    #API
+    url(r'^api/manager/',include('manager.urls.api_urls',namespace='api-manager')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

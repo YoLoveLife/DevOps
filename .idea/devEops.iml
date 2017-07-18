@@ -22,6 +22,7 @@
         <option value="$MODULE_DIR$/apps/templates" />
         <option value="$MODULE_DIR$/apps/validate/templates" />
         <option value="$MODULE_DIR$/apps/manager/templates" />
+        <option value="$MODULE_DIR$/apps/magic/templates" />
       </list>
     </option>
   </component>
