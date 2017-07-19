@@ -2,19 +2,18 @@ from .models import Host,Group
 from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import User
-class HostSerializer(serializers.ModelSerializer):
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        module=Host
-        fields=('id','name','group','sship','sshpasswd','sshport')
+        model = Group
+        fields = ('id','name','remark')
 
-
-
-class GroupSerializer(serializers.ModelSerializer):
-    '''
+class HostSerializer(serializers.HyperlinkedModelSerializer):
+    group_id=serializers.CharField(source="group.id")
     class Meta:
-        module=Group
-        fields=('id','name','remark')
-    '''
-    id=serializers.IntegerField(read_only=True)
-    name=serializers.CharField(required=False,max_length=100,)
-    remark=serializers.CharField(required=False,max_length=100,)
+        model=Host
+        fields = ('id','name','group_id','sship','sshpasswd','sshport')
+        depth = 1
+
+
+
