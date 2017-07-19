@@ -15,4 +15,4 @@ class GroupForm(forms.Form):
 class HostForm(forms.Form):
     name=forms.CharField(label="hostname",max_length=50)
     groupid=forms.IntegerField(label="groupid")
-    sship=forms.CharField(label="sship",max_length=15)
+    sship=forms.CharField(label="ssource='Group.id'ship",max_length=15)
