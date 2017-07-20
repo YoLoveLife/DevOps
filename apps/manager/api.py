@@ -9,6 +9,8 @@ from rest_framework import generics
 class HostViewSet(viewsets.ModelViewSet):
     queryset = Host.objects.all()
     serializer_class = HostSerializer
+    #def create(self, request, *args, **kwargs):
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
