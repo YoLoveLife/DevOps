@@ -141,3 +141,7 @@ STATICFILES_DIRS = (
 
 from django.urls import reverse_lazy
 LOGIN_URL=reverse_lazy('validate:login')
+
+SESSION_SAVE_EVERY_REQUEST=True
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_COOKIE_AGE=15*60
