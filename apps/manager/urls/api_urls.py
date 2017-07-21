@@ -10,6 +10,7 @@ from .. import api
 #]
 urlpatterns=[
     url(r'^v1/group/(?P<pk>[0-9]+)', api.GroupListAPI.as_view()),
-    url(r'^v1/hostbygroup/(?P<pk>[0-9]+)',api.HostListByGroupAPI.as_view())
+    url(r'^v1/groupcreate/', api.GroupCreateAPI.as_view()),
+    url(r'^v1/hostbygroup/(?P<pk>[0-9]+)',api.HostListByGroupAPI.as_view()),
 ]
 #urlpatterns+=router.urls

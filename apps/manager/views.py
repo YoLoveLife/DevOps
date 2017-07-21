@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView,FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from models import Group
-from forms import GroupForm
+from forms import GroupForm,HostForm
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
     template_name= 'group.html'
@@ -14,7 +14,7 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
     def get_context_data(self, **kwargs):
         context= super(ManagerGroupListView, self).get_context_data(**kwargs)
         grouplist = Group.objects.all()
-        group_form=GroupForm()
+        # group_form=GroupForm()
         context.update({'grouplist': grouplist,
                         })
         return context
@@ -22,21 +22,27 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
 
-    def post(self,request,*args, **kwargs):
-        error=""
-        group_form = GroupForm(request.POST)
-        if group_form.is_valid():
-            data=group_form.clean()
-        return render(request,self.template_name,{'error':error,'form':group_form})
+    # def post(self,request,*args, **kwargs):
+    #     error=""
+    #     group_form = GroupForm(request.POST)
+    #     if group_form.is_valid():
+    #         data=group_form.clean()
+    #     return render(request,self.template_name,{'error':error,'form':group_form})
 
 
-class ManagerHostListView(LoginRequiredMixin,TemplateView):
+class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='host.html'
-    #form_class=
+    form_class = HostForm
 
-    def get(self,request):
+    def get_context_data(self, **kwargs):
+        context= super(ManagerHostListView, self).get_context_data(**kwargs)
         grouplist = Group.objects.all()
-        return render(request,self.template_name,{'grouplist':grouplist})
+        context.update({'grouplist': grouplist,
+                        })
+        return context
+
+    def get(self,request,*args, **kwargs):
+        return super(ManagerHostListView, self).get(request, *args, **kwargs)
 
     def post(self,request):
         return

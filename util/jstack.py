@@ -16,7 +16,6 @@ def getJVMInfo():
             THREADS=p.num_threads()
             return (JVMPID,THREADS)
 
-
 def getThread(JVMPID):
     COMMMD=JSTACK+" -l "+str(JVMPID)
     print(COMMMD)

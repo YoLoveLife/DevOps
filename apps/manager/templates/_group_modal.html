@@ -6,6 +6,11 @@
                 <form method="post" id="form_group" enctype="application/json">
                     {% csrf_token %}
                     <div class="row">
+                        <div class="col-md-4">
+                            <p class="alert alert-danger" id="modal-error" style="display: none"></p>
+                        </div>
+                    </div>
+                    <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>GID</label>
@@ -22,8 +27,8 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label>Group Remark</label>
-                            {{ form.remark }}
+                            <label>Group Info</label>
+                            {{ form.info }}
                         </div>
                     </div>
                 </div>

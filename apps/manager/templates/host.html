@@ -3,8 +3,8 @@
 <!--Content Header-->
 <section class="content-header">
     <h1>
-        Host
-        <small>Control panel</small>
+        主机
+        <small>控制台</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -14,61 +14,88 @@
 </section>
 <!--Content Header-->
 <!--Main Content-->
-<section class="content container page-host">
+<section class="content container-fluid page-host">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="box box-hosttb">
                 <div class="box-header">
-                    <h3 class="box-title">HostList</h3>
+                    <h3 class="box-title">主机列表</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-header box-toolbar">
                     <div class="row">
                         <div class="col-sm-6" style="padding-top: 15px;padding-left: 30px">
-                            <label class="groupslct">Show
-                                <select id="groupselect">
+                            <label class="groupslct">展示
+                                <select id="groupselect" onchange="SelectChange()">
+                                <option id="0">Null</option>
                                     {% for row in grouplist %}
                                     <option id="{{ row.id }}">{{ row.name }}</option>
                                     {% endfor %}
                                 </select>
-                                entries
+                                主机列表
                             </label>
                         </div>
                         <div class="col-md-6">
                             <div class="box-toolbar-btn">
                                 <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="$.pageShow.hostModalModify(1)">
-                                    <i class="fa fa-plus"></i> Add
+                                    <i class="fa fa-plus"></i> 新增
                                 </button>
                                 <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="$.pageShow.hostModalModify(2)">
-                                    <i class="fa fa-edit"></i> Edit
+                                    <i class="fa fa-edit"></i> 修改
                                 </button>
                                 <button class="btn btn-app" disabled>
-                                    <i class="fa fa-info"></i> Info
+                                    <i class="fa fa-info"></i> 信息
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-lg-12">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>HostID</th>
-                                        <th>Hostname</th>
-                                        <th>IPAddress</th>
+                                        <th>主机ID</th>
+                                        <th>操作系统</th>
+                                        <th>管理IP</th>
+                                        <th>服务IP</th>
+                                        <th>外网IP</th>
+                                        <th>服务器位置</th>
+                                        <th>主机名称</th>
+                                        <th>普通用户</th>
+                                        <th>用户密码</th>
+                                        <th>管理端口</th>
+                                        <th>CPU核数</th>
+                                        <th>内存大小(Mb)</th>
+                                        <th>本地磁盘(Gb)</th>
+                                        <th>共享磁盘(Gb)</th>
+                                        <th>共享磁盘路径</th>
+                                        <th>信息</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="hosttbody">
 
                                     </tbody>
                                     <tfoot>
                                     <tr>
                                         <th>#</th>
-                                        <th>HostID</th>
-                                        <th>Hostname</th>
-                                        <th>IPAddress</th>
+                                        <th>主机ID</th>
+                                        <th>操作系统</th>
+                                        <th>管理IP</th>
+                                        <th>服务IP</th>
+                                        <th>外网IP</th>
+                                        <th>服务器位置</th>
+                                        <th>主机名称</th>
+                                        <th>普通用户</th>
+                                        <th>用户密码</th>
+                                        <th>管理端口</th>
+                                        <th>CPU核数</th>
+                                        <th>内存大小(Mb)</th>
+                                        <th>本地磁盘(Gb)</th>
+                                        <th>共享磁盘(Gb)</th>
+                                        <th>共享磁盘路径</th>
+                                        <th>信息</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -86,21 +113,82 @@
 {% endblock %}
 {% block foot_js %}
 <script>
-    $(document).ready(function(){
-        //$.pageShow.hostInit();
-        $('#groupselect').onchange=function () {
-            alert("wandefo");
-            var ar=$.devEops.SelectPickUp('#groupselect');
-            var groupid=ar[0];
-            var the_url="{% url 'api-manager:host-list' pk=0 %}".replace('0',groupid);
-            $.ajax({
-                url:the_url,
-                method:'GET',
-                success:function (data) {
-                    alert("wandefo");
+    function TbodyInsert(data){
+        var string="";
+        var tbody=document.getElementById('hosttbody');
+        tbody.innerHTML="";
+        for(var j=0 ;j<data.length;j++){
+            var oTr=document.createElement('tr');
+            var oTd=new Array();
+            var oTd1=document.createElement('td');
+            oTd1.innerHTML="<input type='radio' name='radiohst' class='minimal'>";
+            oTd.push(oTd1)
+            var oTd2=document.createElement('td');
+            oTd2.innerHTML=data[j].id;
+            oTd.push(oTd2)
+            var oTd3=document.createElement('td');
+            oTd3.innerHTML=data[j].systemtype;
+            oTd.push(oTd3)
+            var oTd4=document.createElement('td');
+            oTd4.innerHTML=data[j].manage_ip;
+            oTd.push(oTd4)
+            var oTd5=document.createElement('td');
+            oTd5.innerHTML=data[j].service_ip;
+            oTd.push(oTd5)
+            var oTd6=document.createElement('td');
+            oTd6.innerHTML=data[j].outer_ip;
+            oTd.push(oTd6)
+            var oTd7=document.createElement('td');
+            oTd7.innerHTML=data[j].server_position;
+            oTd.push(oTd7)
+            var oTd8=document.createElement('td');
+            oTd8.innerHTML=data[j].hostname;
+            oTd.push(oTd8)
+            var oTd9=document.createElement('td');
+            oTd9.innerHTML=data[j].normal_user;
+            oTd.push(oTd9)
+            var oTd10=document.createElement('td');
+            oTd10.innerHTML=data[j].sshpasswd;
+            oTd.push(oTd10)
+            var oTd11=document.createElement('td');
+            oTd11.innerHTML=data[j].sshport;
+            oTd.push(oTd11)
+            var oTd12=document.createElement('td');
+            oTd12.innerHTML=data[j].coreness;
+            oTd.push(oTd12)
+            var oTd13=document.createElement('td');
+            oTd13.innerHTML=data[j].memory;
+            oTd.push(oTd13)
+            var oTd14=document.createElement('td');
+            oTd14.innerHTML=data[j].root_disk;
+            oTd.push(oTd14)
+            var oTd15=document.createElement('td');
+            oTd15.innerHTML=data[j].share_disk;
+            oTd.push(oTd15)
+            var oTd16=document.createElement('td');
+            oTd16.innerHTML=data[j].share_disk_path;
+            oTd.push(oTd16)
+            var oTd17=document.createElement('td');
+            oTd17.innerHTML=data[j].info
+            oTd.push(oTd17)
+            for(var i=0;i<oTd.length;i++){
+                oTr.appendChild(oTd[i])
+            }
+            tbody.appendChild(oTr)
+        }
+    }
+    function SelectChange(){
+        var objSelect = document.getElementById('groupselect');
+        var obj=objSelect.options[objSelect.selectedIndex].id;
+        $.ajax({
+            url:"/api-manager/v1/hostbygroup/"+obj,
+            type:"get",
+            success:function(data,testStatus,jqXHR){
+                for(d in data){
+                    TbodyInsert(data);
                 }
+            }
         });
-        };
-    });
+    }
 </script>
 {% endblock %}
