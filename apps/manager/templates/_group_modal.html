@@ -3,7 +3,7 @@
 {% block modal_class %}modal-groupinfo{% endblock %}
 {% block modal_title %}Group Info{% endblock %}
 {% block modal_body %}
-                <form method="post" action="{% url 'manager:group' %}" method="post" id="form_group" enctype="multipart/form-data">
+                <form method="post" id="form_group" enctype="application/json">
                     {% csrf_token %}
                     <div class="row">
                     <div class="col-md-2">

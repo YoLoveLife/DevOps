@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <!--Content Header-->
     <section class="content-header">
@@ -68,20 +69,27 @@
     });
 </script>
 -->
-
 {% block foot_js %}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
     <script>
         $(document).ready(function(){
             $('#modal_group_id').click(function(){
-                var $form=$('$form_group');
-                function success(data,textStatus,jqXHR){
-                    if(data.success==true){
-                        window.location.reload();
-                    }else{
-                        $
+                var ajax_option={
+                    url:"/api-manager/group/",
+                    type:"post",
+                    dataType:"json",
+                    success:function (data,testStatus,jqXHR) {
+                        if(data.success==true){
+                            window.location.reload();
+                        }else{
+                            $('#modal-error').html(data.msg).css('display','block');
+                        }
                     }
                 }
+                var $form=$('#form_group');
+                $form.ajaxSubmit(ajax_option);
             })
+
         })
 
     </script>
