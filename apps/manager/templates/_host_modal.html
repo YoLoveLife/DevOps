@@ -3,7 +3,7 @@
 {% block modal_class %}modal-hostinfo{% endblock %}
 {% block modal_title %}Host Info{% endblock %}
 {% block modal_body %}
-                <form method="post" action="{% url 'manager:host' %}" method="post" id="form_host" enctype="multipart/form-data">
+                <form method="post" id="form_host" enctype="application/json">
                     {% csrf_token %}
                     <div class="row">
                     <div class="col-md-3">
@@ -26,9 +26,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 </form>
 {% endblock %}
 

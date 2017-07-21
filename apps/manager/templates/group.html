@@ -4,8 +4,8 @@
 <!--Content Header-->
     <section class="content-header">
         <h1>
-            Group
-            <small>Control panel</small>
+            应用系统
+            <small>控制台</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -15,22 +15,22 @@
     </section>
     <!--Content Header-->
     <!--Main Content-->
-    <section class="content container page-group">
+    <section class="content container-fluid page-group">
         <div class="row">
             <div class="col-md-10">
                 <div class="box box-default box-grouptb">
                     <div class="box-header with-border">
-                        <h3 class="box-title">GroupList</h3>
+                        <h3 class="box-title">应用系统列表</h3>
                     </div>
                     <div class="box-body">
                         <table class="table">
-                            <tr><th>#</th><th>GID</th><th>GName</th><th>GRemark</th><th>Status</th></tr>
+                            <tr><th>#</th><th>应用系统ID</th><th>应用系统名称</th><th>应用系统信息</th><th>应用系统状态</th></tr>
                             {% for row in grouplist %}
                                 <tr class='grp-list'>
-                                    <td><input type='radio' name='radiogp' class='minimal' checked></td>
+                                    <td><input type='radio' name='radiogp' class='minimal'></td>
                                     <td>{{ row.id }}</td>
                                     <td>{{ row.name }}</td>
-                                    <td>{{ row.remark }}</td>
+                                    <td>{{ row.info }}</td>
                                     <td><span class='label label-success'>Alived</span></td>
                                 </tr>
                             {% endfor %}
@@ -41,17 +41,20 @@
             <div class="col-md-2">
                 <div class="box box-default">
                     <div class="box-header">
-                        <h3 class="box-title">Operation</h3>
+                        <h3 class="box-title">操作</h3>
                     </div>
                     <div class="box-body">
                         <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="$.pageShow.groupModalPutInfo(1)">
-                            <i class="fa fa-plus"></i> Add
+                            <i class="fa fa-plus"></i> 新增
                         </button>
                         <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="$.pageShow.groupModalPutInfo(2)">
-                            <i class="fa fa-edit"></i> Edit
+                            <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
-                            <i class="fa fa-times"></i> Delete
+                            <i class="fa fa-times"></i> 删除
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-info"></i> 信息
                         </button>
                     </div>
                 </div>
@@ -75,9 +78,8 @@
         $(document).ready(function(){
             $('#modal_group_id').click(function(){
                 var ajax_option={
-                    url:"/api-manager/group/",
+                    url:"/api-manager/v1/groupcreate/",
                     type:"post",
-                    dataType:"json",
                     success:function (data,testStatus,jqXHR) {
                         if(data.success==true){
                             window.location.reload();
@@ -89,8 +91,6 @@
                 var $form=$('#form_group');
                 $form.ajaxSubmit(ajax_option);
             })
-
         })
-
     </script>
 {% endblock %}
