@@ -10,11 +10,11 @@ class HostSerializer(serializers.ModelSerializer):
                   'normal_user','sshpasswd','sshport','coreness','memory','root_disk','share_disk','share_disk_path','info')
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    host_set=HostSerializer(many=True,read_only=True)
+    #host_set=HostSerializer(many=True,read_only=True)
     class Meta:
         model = Group
         fields = ('id', 'name', 'info',
-                  'host_set',
+      #            'host_set',
                 )
 
 

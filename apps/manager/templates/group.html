@@ -24,16 +24,15 @@
                     </div>
                     <div class="box-body">
                         <table class="table" id="group_tb">
-                            <tr><th>#</th><th>应用系统ID</th><th>应用系统名称</th><th>应用系统信息</th><th>应用系统状态</th></tr>
-                            {% for row in grouplist %}
-                                <tr class='grp-list'>
-                                    <td><input type='radio' name='radiogp' class='minimal'></td>
-                                    <td>{{ row.id }}</td>
-                                    <td>{{ row.name }}</td>
-                                    <td>{{ row.info }}</td>
-                                    <td><span class='label label-success'>Alived</span></td>
-                                </tr>
-                            {% endfor %}
+                            <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th data-field="id">应用系统ID</th>
+                                        <th data-field="name">应用系统名称</th>
+                                        <th data-field="info">应用系统信息</th>
+                                        <th>应用系统状态</th>
+                                    </tr>
+                            </thead>
                         </table>
                     </div>
                 </div>
@@ -78,10 +77,43 @@
     <script>
         $(document).ready(function(){
             var table=$('#group_tb').bootstrapTable({
-
+                url : '/api-manager/v1/group/',
+                method  : 'GET',
+                uniqueId :  'id',
+                toolbar : '#item_info_toolbar',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                sidePagination  : 'client',
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                colums  :   [
+                    {
+                        checkbox:true
+                    },
+                    {
+                        title:'应用系统ID',
+                        field:'id',
+                        align:'center'
+                    },
+                    {
+                        title:'应用系统名称',
+                        field:'name',
+                        align:'center'
+                    },
+                    {
+                        title:'应用系统信息',
+                        field:'info',
+                        align:'center'
+                    },
+                ]
             })
 
-
+            $('#group_tb').bootstrapTable('refresh');
             $('#modal_group_id').click(function(){
                 //$('#modal-error').html("").css('display','none');
                 //var error_modal=document.getElementById('modal-error');
