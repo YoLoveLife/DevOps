@@ -14,21 +14,13 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
     def get_context_data(self, **kwargs):
         context= super(ManagerGroupListView, self).get_context_data(**kwargs)
         grouplist = Group.objects.all()
-        # group_form=GroupForm()
+
         context.update({'grouplist': grouplist,
                         })
         return context
 
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
-
-    # def post(self,request,*args, **kwargs):
-    #     error=""
-    #     group_form = GroupForm(request.POST)
-    #     if group_form.is_valid():
-    #         data=group_form.clean()
-    #     return render(request,self.template_name,{'error':error,'form':group_form})
-
 
 class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='host.html'
@@ -44,5 +36,9 @@ class ManagerHostListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerHostListView, self).get(request, *args, **kwargs)
 
-    def post(self,request):
-        return
+
+class ManagerSearchListView(LoginRequiredMixin,TemplateView):
+    template_name = 'search.html'
+
+    def get(self, request, *args, **kwargs):
+        return super(ManagerSearchListView,self).get(request,*args,**kwargs)

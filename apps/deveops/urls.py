@@ -19,10 +19,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url,include
-from .views import IndexView
+from .views import IndexView,ErrorView
 urlpatterns = [
     # VIEW
     url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^404/',ErrorView.as_view(),name='404'),
     url(r'^login/', include('validate.urls', namespace='validate')),
     url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
 

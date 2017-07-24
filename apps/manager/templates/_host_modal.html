@@ -1,31 +1,136 @@
 {% extends '_modal.html' %}
 {% block modal_id %}HostInfo{% endblock %}
 {% block modal_class %}modal-hostinfo{% endblock %}
+{% block modal_style %}width:600px;{% endblock %}
 {% block modal_title %}Host Info{% endblock %}
 {% block modal_body %}
                 <form method="post" id="form_host" enctype="application/json">
                     {% csrf_token %}
                     <div class="row">
+                        <div class="col-md-8">
+                            <p class="alert alert-danger" id="modal-error" style="display: none"></p>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>主机ID</label>
+                            {{ form.id }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>操作系统</label>
+                            {{ form.systemtype }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>应用系统</label>
+                            {{ form.group }}
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>管理IP</label>
+                            {{ form.manage_ip }}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>服务IP</label>
+                            {{ form.service_ip }}
+                        </div>
+                    </div>
+                        <div class="col-md-2">
+                        <div class="form-group">
+                            <label>外网IP</label>
+                            {{ form.outer_ip }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>IPAddress</label>
-                            {{ form.ip }}
+                            <label>服务器位置</label>
+                            {{ form.server_position }}
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Group</label>
-                            <select class="form-control" id="group_chose">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Hostname</label>
+                            <label>主机名称</label>
                             {{ form.hostname }}
                         </div>
                     </div>
                 </div>
+                    <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>普通用户</label>
+                            {{ form.normal_user }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>用户密码</label>
+                            {{ form.sshpasswd }}
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>管理端口</label>
+                            {{ form.sshport }}
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>CPU核数</label>
+                            {{ form.coreness }}
+                        </div>
+                    </div>
+                        <div class="col-md-2">
+                        <div class="form-group">
+                            <label>内存大小(Mb)</label>
+                            {{ form.memory }}
+                        </div>
+                    </div>
+                        <div class="col-md-2">
+                        <div class="form-group">
+                            <label>本地磁盘(Gb)</label>
+                            {{ form.root_disk }}
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                        <div class="form-group">
+                            <label>共享磁盘(Gb)</label>
+                            {{ form.memory }}
+                        </div>
+                    </div>
+                        <div class="col-md-2">
+                        <div class="form-group">
+                            <label>共享磁盘路径</label>
+                            {{ form.memory }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>信息</label>
+                            {{ form.memory }}
+                        </div>
+                    </div>
+                </div>
+
                 </form>
 {% endblock %}
 

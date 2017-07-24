@@ -23,7 +23,7 @@
                         <h3 class="box-title">应用系统列表</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table">
+                        <table class="table" id="group_tb">
                             <tr><th>#</th><th>应用系统ID</th><th>应用系统名称</th><th>应用系统信息</th><th>应用系统状态</th></tr>
                             {% for row in grouplist %}
                                 <tr class='grp-list'>
@@ -41,13 +41,13 @@
             <div class="col-md-2">
                 <div class="box box-default">
                     <div class="box-header">
-                        <h3 class="box-title">操作</h3>
+                        <h3 class="box-title" style="text-align: center">操作</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="$.pageShow.groupModalPutInfo(1)">
+                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="openModal(0)">
                             <i class="fa fa-plus"></i> 新增
                         </button>
-                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="$.pageShow.groupModalPutInfo(2)">
+                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="openModal(1)">
                             <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
@@ -74,9 +74,18 @@
 -->
 {% block foot_js %}
     <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
     <script>
         $(document).ready(function(){
+            var table=$('#group_tb').bootstrapTable({
+
+            })
+
+
             $('#modal_group_id').click(function(){
+                //$('#modal-error').html("").css('display','none');
+                //var error_modal=document.getElementById('modal-error');
+                 //   error_modal.style.display="";
                 var ajax_option={
                     url:"/api-manager/v1/groupcreate/",
                     type:"post",
@@ -92,5 +101,16 @@
                 $form.ajaxSubmit(ajax_option);
             })
         })
+    function openModal(type) {
+        if(type==0){//ADD
+            $('#id_id').val('#New');
+            $('#id_name').val(null);
+            $('#id_info').val(null);
+            $('#modal-error').css('display','none');
+        }else{//MODIFY
+            var list=$('input:radio:checked').value;
+            $('#modal-error').css('display','none');
+        }
+    }
     </script>
 {% endblock %}

@@ -44,7 +44,7 @@ class Ptrancefrom(object):
         for i in range(self.heigth):
             for j in range(self.width):
                 self.txt += self.get_char(*im.getpixel((j,i)))
-                self.txt += '\n'
+                self.txt += '\r\n'
         print self.txt
     def write_to_file(self):
         '将生成的字符图片写入到文件'
@@ -56,7 +56,8 @@ class Ptrancefrom(object):
                 f.write(self.txt)
 
 
-args = handle_command()
-pic = Ptrancefrom('/root/06.jpeg',291,291)
+#args = handle_command()
+pic = Ptrancefrom('/root/01.png',291,291)
 #pic = Ptrancefrom(args.filename,args.width,args.heigth)
 pic.print_picture()
+pic.write_to_file()

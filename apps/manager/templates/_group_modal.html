@@ -1,6 +1,7 @@
 {% extends '_modal.html' %}
 {% block modal_id %}GroupInfo{% endblock %}
 {% block modal_class %}modal-groupinfo{% endblock %}
+{% block modal_style %}{% endblock %}
 {% block modal_title %}Group Info{% endblock %}
 {% block modal_body %}
                 <form method="post" id="form_group" enctype="application/json">
@@ -21,6 +22,7 @@
                         <div class="form-group">
                             <label>Group Name</label>
                             {{ form.name }}
+                            {{ data.name }}
                         </div>
                     </div>
                 </div>
@@ -29,6 +31,7 @@
                         <div class="form-group">
                             <label>Group Info</label>
                             {{ form.info }}
+                            {{ data.info }}
                         </div>
                     </div>
                 </div>
