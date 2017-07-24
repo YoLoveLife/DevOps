@@ -9,7 +9,7 @@ from .. import api
 #    url(r'^host/(?P<pk>[0-9]+)', api.HostListAPI.as_view()),
 #]
 urlpatterns=[
-    url(r'^v1/group/(?P<pk>[0-9]+)', api.GroupListAPI.as_view()),
+    url(r'^v1/group/', api.GroupListAPI.as_view()),
     url(r'^v1/groupcreate/', api.GroupCreateAPI.as_view()),
     url(r'^v1/hostbygroup/(?P<pk>[0-9]+)',api.HostListByGroupAPI.as_view()),
     url(r'^v1/hostcreate/',api.HostCreateAPI.as_view()),
