@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <!--Content Header-->
 <section class="content-header">
@@ -37,10 +38,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="box-toolbar-btn">
-                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="$.pageShow.hostModalModify(1)">
+                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo">
                                     <i class="fa fa-plus"></i> 新增
                                 </button>
-                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="$.pageShow.hostModalModify(2)">
+                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo">
                                     <i class="fa fa-edit"></i> 修改
                                 </button>
                                 <button class="btn btn-app" disabled>
@@ -63,15 +64,8 @@
                                         <th>外网IP</th>
                                         <th>服务器位置</th>
                                         <th>主机名称</th>
-                                        <th>普通用户</th>
-                                        <th>用户密码</th>
-                                        <th>管理端口</th>
-                                        <th>CPU核数</th>
-                                        <th>内存大小(Mb)</th>
-                                        <th>本地磁盘(Gb)</th>
-                                        <th>共享磁盘(Gb)</th>
-                                        <th>共享磁盘路径</th>
-                                        <th>信息</th>
+                                        <th>详细信息</th>
+                                        <th>用途</th>
                                     </tr>
                                     </thead>
                                     <tbody id="hosttbody">
@@ -87,15 +81,25 @@
                                         <th>外网IP</th>
                                         <th>服务器位置</th>
                                         <th>主机名称</th>
-                                        <th>普通用户</th>
-                                        <th>用户密码</th>
-                                        <th>管理端口</th>
-                                        <th>CPU核数</th>
-                                        <th>内存大小(Mb)</th>
-                                        <th>本地磁盘(Gb)</th>
-                                        <th>共享磁盘(Gb)</th>
-                                        <th>共享磁盘路径</th>
-                                        <th>信息</th>
+                                        <th>详细信息</th>
+                                        <th>用途</th>
+{#                                        <th>#</th>#}
+{#                                        <th>主机ID</th>#}
+{#                                        <th>操作系统</th>#}
+{#                                        <th>管理IP</th>#}
+{#                                        <th>服务IP</th>#}
+{#                                        <th>外网IP</th>#}
+{#                                        <th>服务器位置</th>#}
+{#                                        <th>主机名称</th>#}
+{#                                        <th>普通用户</th>#}
+{#                                        <th>用户密码</th>#}
+{#                                        <th>管理端口</th>#}
+{#                                        <th>CPU核数</th>#}
+{#                                        <th>内存大小(Mb)</th>#}
+{#                                        <th>本地磁盘(Gb)</th>#}
+{#                                        <th>共享磁盘(Gb)</th>#}
+{#                                        <th>共享磁盘路径</th>#}
+{#                                        <th>信息</th>#}
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -112,11 +116,15 @@
 {% include "_host_modal.html" %}
 {% endblock %}
 {% block foot_js %}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
 <script>
     function TbodyInsert(data){
         var string="";
         var tbody=document.getElementById('hosttbody');
         tbody.innerHTML="";
+        if(data.length==0){
+            return ;
+        }
         for(var j=0 ;j<data.length;j++){
             var oTr=document.createElement('tr');
             var oTd=new Array();
@@ -144,30 +152,30 @@
             var oTd8=document.createElement('td');
             oTd8.innerHTML=data[j].hostname;
             oTd.push(oTd8)
-            var oTd9=document.createElement('td');
-            oTd9.innerHTML=data[j].normal_user;
-            oTd.push(oTd9)
-            var oTd10=document.createElement('td');
-            oTd10.innerHTML=data[j].sshpasswd;
-            oTd.push(oTd10)
-            var oTd11=document.createElement('td');
-            oTd11.innerHTML=data[j].sshport;
-            oTd.push(oTd11)
-            var oTd12=document.createElement('td');
-            oTd12.innerHTML=data[j].coreness;
-            oTd.push(oTd12)
-            var oTd13=document.createElement('td');
-            oTd13.innerHTML=data[j].memory;
-            oTd.push(oTd13)
-            var oTd14=document.createElement('td');
-            oTd14.innerHTML=data[j].root_disk;
-            oTd.push(oTd14)
-            var oTd15=document.createElement('td');
-            oTd15.innerHTML=data[j].share_disk;
-            oTd.push(oTd15)
-            var oTd16=document.createElement('td');
-            oTd16.innerHTML=data[j].share_disk_path;
-            oTd.push(oTd16)
+{#            var oTd9=document.createElement('td');#}
+{#            oTd9.innerHTML=data[j].normal_user;#}
+{#            oTd.push(oTd9)#}
+{#            var oTd10=document.createElement('td');#}
+{#            oTd10.innerHTML=data[j].sshpasswd;#}
+{#            oTd.push(oTd10)#}
+{#            var oTd11=document.createElement('td');#}
+{#            oTd11.innerHTML=data[j].sshport;#}
+{#            oTd.push(oTd11)#}
+{#            var oTd12=document.createElement('td');#}
+{#            oTd12.innerHTML=data[j].coreness;#}
+{#            oTd.push(oTd12)#}
+{#            var oTd13=document.createElement('td');#}
+{#            oTd13.innerHTML=data[j].memory;#}
+{#            oTd.push(oTd13)#}
+{#            var oTd14=document.createElement('td');#}
+{#            oTd14.innerHTML=data[j].root_disk;#}
+{#            oTd.push(oTd14)#}
+{#            var oTd15=document.createElement('td');#}
+{#            oTd15.innerHTML=data[j].share_disk;#}
+{#            oTd.push(oTd15)#}
+{#            var oTd16=document.createElement('td');#}
+{#            oTd16.innerHTML=data[j].share_disk_path;#}
+{#            oTd.push(oTd16)#}
             var oTd17=document.createElement('td');
             oTd17.innerHTML=data[j].info
             oTd.push(oTd17)
@@ -184,11 +192,27 @@
             url:"/api-manager/v1/hostbygroup/"+obj,
             type:"get",
             success:function(data,testStatus,jqXHR){
-                for(d in data){
-                    TbodyInsert(data);
-                }
+                TbodyInsert(data);
             }
         });
     }
+
+    $(document).ready(function () {
+        $('#modal_host_id').click(function(){
+                var ajax_option={
+                    url:"/api-manager/v1/hostcreate/",
+                    type:"post",
+                    success:function (data,testStatus,jqXHR) {
+                        if(data.success==true){
+                            window.location.reload();
+                        }else{
+                            $('#modal-error').html(data.msg).css('display','block');
+                        }
+                    }
+                }
+                var $form=$('#form_host');
+                $form.ajaxSubmit(ajax_option);
+            })
+    })
 </script>
 {% endblock %}

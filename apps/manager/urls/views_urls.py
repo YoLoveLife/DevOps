@@ -10,4 +10,5 @@ from .. import views
 urlpatterns = [
     url(r'^group$', views.ManagerGroupListView.as_view(), name='group'),
     url(r'^host$', views.ManagerHostListView.as_view(), name='host'),
+    url(r'^search$',views.ManagerSearchListView.as_view(),name='search'),
 ]
