@@ -26,11 +26,11 @@
                         <table class="table" id="group_tb">
                             <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th data-field="state" data-radio="true">#</th>
                                         <th data-field="id">应用系统ID</th>
                                         <th data-field="name">应用系统名称</th>
                                         <th data-field="info">应用系统信息</th>
-                                        <th>应用系统状态</th>
+                                        <th data-field="state">应用系统状态</th>
                                     </tr>
                             </thead>
                         </table>
@@ -43,10 +43,10 @@
                         <h3 class="box-title" style="text-align: center">操作</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="openModal(0)">
+                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="openModal('add')">
                             <i class="fa fa-plus"></i> 新增
                         </button>
-                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="openModal(1)">
+                        <button class="btn btn-app" data-toggle="modal" data-target="#GroupInfo" onclick="openModal('modify')">
                             <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
@@ -64,30 +64,27 @@
 <!--Modal-->
 {% include "_group_modal.html" %}
 {% endblock %}
-<!--
-<script>
-     $(document).ready(function(){
-        $.pageShow.groupInit();
-    });
-</script>
--->
 {% block foot_js %}
     <script src="{% static 'js/jquery.form.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
         $(document).ready(function(){
             var table=$('#group_tb').bootstrapTable({
                 url : '/api-manager/v1/group/',
                 method  : 'GET',
                 uniqueId :  'id',
-                toolbar : '#item_info_toolbar',
                 search  :   true,
                 sortable    :   false,
                 pagination  :   true,
                 sidePagination  : 'client',
+                clickToSelect:  true,
                 singleSelect    :   true,
                 showRefresh :   true,
                 showColumns :    true,
+                showExport: true,
+                exportDataType : "basic",
                 pageSize    :   15,
                 pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
@@ -110,14 +107,16 @@
                         field:'info',
                         align:'center'
                     },
-                ]
-            })
+                    {
+                        title:'应用系统状态',
+                        field:'state',
+                        align:'center',
 
-            $('#group_tb').bootstrapTable('refresh');
+                    }
+                ]
+            });
+
             $('#modal_group_id').click(function(){
-                //$('#modal-error').html("").css('display','none');
-                //var error_modal=document.getElementById('modal-error');
-                 //   error_modal.style.display="";
                 var ajax_option={
                     url:"/api-manager/v1/groupcreate/",
                     type:"post",
@@ -134,14 +133,36 @@
             })
         })
     function openModal(type) {
-        if(type==0){//ADD
+        if(type=='add'){//ADD
             $('#id_id').val('#New');
             $('#id_name').val(null);
             $('#id_info').val(null);
             $('#modal-error').css('display','none');
-        }else{//MODIFY
-            var list=$('input:radio:checked').value;
+        }else if(type=='modify'){//MODIFY
             $('#modal-error').css('display','none');
+            var a=$('#group_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+            }
+            else{
+                $('#id_id').val(a[0].id);
+                $('#id_name').val(a[0].name);
+                $('#id_info').val(a[0].info);
+            }
+        }else if(type=='delete'){
+            var a=$('#group_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+            }
+            else{
+                $.ajax({
+                    url:'/api-manager/v1/groupdelete/',
+                    type:'POST',
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            }
         }
     }
     </script>
