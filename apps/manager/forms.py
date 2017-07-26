@@ -20,17 +20,17 @@ class GroupForm(forms.Form):
             return False
 
     def clean(self):
+        is_create_modify=self.data['id'];
         is_name_exist=models.Group.objects.filter(name=self.data['name']).exists()
-        if is_name_exist:
+        if is_name_exist and is_create_modify =='#New':
             return {'success':False,'msg':'组已经存在'}
         else:
-            dictMerged=dict({'success':True,'msg':''},**self.data)
-        return dictMerged
+            return {'success':True,'msg':'','data':self.data}
 
 
 class HostForm(forms.Form):
     id = forms.IntegerField(label="ID",
-                            widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'disabled': 'yes'}))
+                            widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}))
     c = models.Group.objects.all().values_list('id','name')
     group=forms.CharField(label="GroupSelect",widget=forms.Select(choices=c,attrs={'class':'form-control'}))
     systemtype=forms.CharField(label="SystemType",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}),error_messages={'msg':'不可以为空'})
@@ -40,7 +40,7 @@ class HostForm(forms.Form):
     server_position=forms.CharField(label="ServerPos",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     hostname=forms.CharField(label="Hostname",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     normal_user=forms.CharField(label="NormalUser",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
-    sshpasswd=forms.CharField(label="Passwd",max_length=100,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+    sshpasswd=forms.CharField(label="Passwd",max_length=100,widget=forms.TextInput(attrs={'type': 'password', 'class': 'form-control'}))
     sshport=forms.CharField(label="Port",max_length=5,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     coreness=forms.IntegerField(label="Coreness",widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     memory=forms.IntegerField(label="Memory",widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
@@ -48,3 +48,16 @@ class HostForm(forms.Form):
     share_disk=forms.IntegerField(label="ShareDisk",widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     share_disk_path=forms.CharField(label="ShareDiskPath",max_length=200,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     info=forms.CharField(label="Info",max_length=200,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+
+    def is_valid(self):
+        if self.data['manage_ip']!="":
+            return True
+        else:
+            return False
+
+    def clean(self):
+        is_manageip_exist=models.Host.objects.filter(manage_ip=self.data['manage_ip']).exists()
+        if is_manageip_exist and self.data['id']=='#New':
+            return {'success':False,'msg':'该管理IP已经登记'}
+        else:
+            return {'success':True,'msg':'','data':self.data,}
