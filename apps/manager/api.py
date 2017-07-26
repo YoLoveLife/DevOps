@@ -22,18 +22,19 @@ class GroupCreateAPI(generics.UpdateAPIView):
         gf=GroupForm(request.POST)
         if gf.is_valid():
             data=gf.clean()
-            if data['id'][0]=='#New':#ADD
-                if data['success'] == True:
-                    group = Group(name=data['name'][0], info=data['info'][0])
-                    group.save()
-                return Response(data, status=status.HTTP_200_OK)
-            else:
-                if data['success'] == True:
-                    group=Group(id=data['id'][0])
-                    group.name=data['name'][0]
-                    group.info=data['info'][0]
-                    group.save()
+            if data['success']==False:
                 return Response(data,status=status.HTTP_200_OK)
+            else :
+                if data['data']['id'] == '#New':
+                    group = Group(name=data['data']['name'], info=data['data']['info'])
+                    group.save()
+                    return Response(data, status=status.HTTP_200_OK)
+                else:
+                    group = Group(id=data['data']['id'])
+                    group.name = data['data']['name']
+                    group.info = data['data']['info']
+                    group.save()
+                    return Response(data, status=status.HTTP_200_OK)
         else:
             data={'success':False,'msg':'存在字段为空'}
             return Response(data,status=status.HTTP_200_OK)
@@ -55,9 +56,42 @@ class HostCreateAPI(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         hf=HostForm(request.POST)
-        data={}
-        #postdata=request.data
-        #if
-        #host=Host()
+        if hf.is_valid():#数据校验
+            data=hf.clean()
+            if data['success']==False:
+                return Response(data,status=status.HTTP_200_OK)
+            else:
+                if data['data']['id'] == '#New':
+                    hostDataClean(data['data'],1)
+                else:
+                    hostDataClean(data['data'],2)
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data={'success':False,'msg':'存在字段错误'}
+            return Response(data,status=status.HTTP_200_OK)
 
-        return Response(data,status=status.HTTP_200_OK)
+
+
+def hostDataClean(data,type):
+    if type==1 : #ADD
+        host=Host(group_id=data['group'],systemtype=data['systemtype'],
+                  manage_ip=data['manage_ip'],service_ip=data['service_ip'],
+                  outer_ip=data['outer_ip'],server_position=data['server_position'],
+                  hostname=data['hostname'],normal_user=data['normal_user'],
+                  sshpasswd=data['sshpasswd'],sshport=data['sshport'],
+                  coreness=data['coreness'],memory=data['memory'],
+                  root_disk=data['root_disk'],share_disk=data['share_disk'],
+                  share_disk_path=data['share_disk_path'],info=data['info'])
+        host.save()
+        return
+    elif type==2 :#EDIT
+        host=Host.objects.filter(id=data['id'])
+        host.update(group_id=data['group'],systemtype=data['systemtype'],
+                  manage_ip=data['manage_ip'],service_ip=data['service_ip'],
+                  outer_ip=data['outer_ip'],server_position=data['server_position'],
+                  hostname=data['hostname'],normal_user=data['normal_user'],
+                  sshpasswd=data['sshpasswd'],sshport=data['sshport'],
+                  coreness=data['coreness'],memory=data['memory'],
+                  root_disk=data['root_disk'],share_disk=data['share_disk'],
+                  share_disk_path=data['share_disk_path'],info=data['info'])
+        return

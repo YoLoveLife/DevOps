@@ -17,7 +17,7 @@
 <!--Main Content-->
 <section class="content container page-search">
     <div class="row">
-        <h1><i class="fa fa-search"></i>devEops</h1>
+        <h1><i class="fa fa-search"></i>  devEops</h1>
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -36,9 +36,9 @@
         </div>
         <div class="col-md-9">
             <div class="input-group">
-                <input type="text" class="form-control manager-search-input">
+                <input type="text" id='manager-search-info' class="form-control manager-search-input">
                 <span class="input-group-btn">
-                <button type="button" class="btn btn-info" onclick="$.pageShow.SearchInfoResult()">Search</button>
+                <button type="button" class="btn btn-info" onclick="searchManager()">Search</button>
             </span>
         </div>
         </div>
@@ -47,5 +47,12 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script>
+        function searchManager(){
+            var Element=document.getElementById('manager-search-info');
+            var string=Element.value;
+            //$.ajax()
+        }
+    </script>
 {% endblock %}
