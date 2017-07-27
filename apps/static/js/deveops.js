@@ -42,10 +42,10 @@ $(function(){
     //_init();
     //$.devEops.pushMenu.activate("[data-toggle='offcanvas']");
     $.devEops.treeMenu('.sidebar');
-    var ajax_url=location.hash.replace(/^#/, '');
-    if(ajax_url.length<1){
-        ajax_url=o.mainPage;
-    }
+    // var ajax_url=location.hash.replace(/^#/, '');
+    // if(ajax_url.length<1){
+    //     ajax_url=o.mainPage;
+    // }
     //$.devEops.loadAjaxContent('static/pages/dashboard.html');
 
     //$.devEops.ajaxContentClickModify('.sidebar');

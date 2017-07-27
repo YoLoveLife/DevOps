@@ -10,9 +10,16 @@ class Group(models.Model):
     name=models.CharField(max_length=100)
     info=models.CharField(max_length=100)
 
+class Storage(models.Model):
+    id=models.AutoField(primary_key=True)#全局ID
+    disk_size=models.CharField(max_length=100,default="0G")
+    disk_path=models.CharField(max_length=100,default="//10.100.100.246/storage")
+    info=models.CharField(max_length=100,default="NoUse")
+
 class Host(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
     group = models.ForeignKey(Group,default=1,related_name='host_set')#所属应用
+    storages = models.ManyToManyField(Storage,related_name='storage_set')
     systemtype=models.CharField(max_length=50,default='centos6.5')#操作系统
     manage_ip = models.CharField(max_length=15, default='10.100.100.246')#管理IP
     service_ip = models.CharField(max_length=15, default='10.100.100.246')#服务IP
@@ -25,6 +32,6 @@ class Host(models.Model):
     coreness = models.IntegerField(default=2)#CPU数
     memory = models.IntegerField(default=2048)#内存
     root_disk=models.IntegerField(default=20)#本地磁盘大小
-    share_disk_path=models.CharField(max_length=200,default="//10.100.100.246")#共享路径
+    share_disk_path=models.CharField(max_length=200)#共享路径
     share_disk=models.IntegerField(default=30)#共享磁盘大小
     info=models.CharField(max_length=200,default="无信息")

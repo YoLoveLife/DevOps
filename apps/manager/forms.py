@@ -33,6 +33,8 @@ class HostForm(forms.Form):
                             widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}))
     c = models.Group.objects.all().values_list('id','name')
     group=forms.CharField(label="GroupSelect",widget=forms.Select(choices=c,attrs={'class':'form-control'}))
+    s = models.Storage.objects.all().values_list('id','disk_path')
+    storage=forms.CharField(label='StorageSelect',widget=forms.Select(choices=s,attrs={'class':'form-control'}))
     systemtype=forms.CharField(label="SystemType",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}),error_messages={'msg':'不可以为空'})
     manage_ip=forms.CharField(label="ManagerID",max_length=15,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     service_ip=forms.CharField(label="ServiceIP",max_length=15,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
@@ -50,7 +52,7 @@ class HostForm(forms.Form):
     info=forms.CharField(label="Info",max_length=200,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
 
     def is_valid(self):
-        if self.data['manage_ip']!="":
+        if self.data['manage_ip']!="" and self.data.has_key('group'):
             return True
         else:
             return False
@@ -61,3 +63,27 @@ class HostForm(forms.Form):
             return {'success':False,'msg':'该管理IP已经登记'}
         else:
             return {'success':True,'msg':'','data':self.data,}
+
+
+class StorageForm(forms.Form):
+    id = forms.IntegerField(label="ID",
+                            widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}))
+    disk_size = forms.CharField(label="DiskSize", max_length=15,
+                                widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+    disk_path = forms.CharField(label="DiskPath", max_length=100,
+                                widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+    info = forms.CharField(label="Info", max_length=15,
+                                widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+
+    def is_valid(self):
+        if self.data['disk_size']!="" and self.data['disk_path']!="" and self.data['info']!="":
+            return True
+        else:
+            return False
+
+    def clean(self):
+        is_storage_exist = models.Storage.objects.filter(disk_path=self.data['disk_path']).exists()
+        if is_storage_exist :
+            return {'success':False,'msg':'该存储已经存在'}
+        else:
+            return {'success':True,'msg':'','data':self.data}

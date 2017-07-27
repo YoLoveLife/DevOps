@@ -1,5 +1,10 @@
-from .models import Host,Group
+from .models import Host,Group,Storage
 from rest_framework import serializers
+
+class StorageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Storage
+        fields = ('id','disk_size','disk_path','info')
 
 class HostSerializer(serializers.ModelSerializer):
     #group_id=serializers.CharField(source="group.id")
@@ -7,7 +12,7 @@ class HostSerializer(serializers.ModelSerializer):
     class Meta:
         model=Host
         fields = ('id','group','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
-                  'normal_user','sshpasswd','sshport','coreness','memory','root_disk','share_disk','share_disk_path','info')
+                  'normal_user','sshpasswd','sshport','coreness','memory','root_disk','share_disk','share_disk_path','info','storage_set')
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     #host_set=HostSerializer(many=True,read_only=True)
@@ -17,6 +22,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
       #            'host_set',
                 )
 
-
+class StorageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Storage
+        fields = ('id','disk_size','disk_path','info')
 
 
