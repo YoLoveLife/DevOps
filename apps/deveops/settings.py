@@ -36,9 +36,9 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'manager.apps.ManagerConfig',
-    'validate.apps.ValidateConfig',
-    'softlib.apps.SoftlibConfig',
-    'magic.apps.MagicConfig',
+    #'validate.apps.ValidateConfig',
+    #'softlib.apps.SoftlibConfig',
+    #'magic.apps.MagicConfig',
     'rest_framework',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -119,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-Hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 

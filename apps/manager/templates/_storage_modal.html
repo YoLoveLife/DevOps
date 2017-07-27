@@ -1,10 +1,10 @@
 {% extends '_modal.html' %}
-{% block modal_id %}GroupInfo{% endblock %}
-{% block modal_class %}modal-groupinfo{% endblock %}
+{% block modal_id %}StorageInfo{% endblock %}
+{% block modal_class %}modal-storageinfo{% endblock %}
 {% block modal_style %}{% endblock %}
-{% block modal_title %}应用组信息{% endblock %}
+{% block modal_title %}存储信息{% endblock %}
 {% block modal_body %}
-                <form method="post" id="form_group" enctype="application/json">
+                <form method="post" id="form_storage" enctype="application/json">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-4">
@@ -12,30 +12,36 @@
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label>应用组ID</label>
+                            <label>存储ID</label>
                             {{ form.id }}
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>应用组名称</label>
-                            {{ form.name }}
-{#                            {{ data.name }}#}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label>应用组信息</label>
+                            <label>存储大小</label>
+                            {{ form.disk_size }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>存储路径</label>
+                            {{ form.disk_path }}
+                        </div>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>存储信息</label>
                             {{ form.info }}
-{#                            {{ data.info }}#}
                         </div>
                     </div>
                 </div>
                 </form>
 {% endblock %}
 
-{% block modal_confirm_id %}modal_group_id{% endblock %}
+{% block modal_confirm_id %}modal_storage_id{% endblock %}

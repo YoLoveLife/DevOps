@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
-from .models import Host,Group
-from .serializers import HostSerializer,GroupSerializer
+from .models import Host,Group,Storage
+from .serializers import HostSerializer,GroupSerializer,StorageSerializer
 from rest_framework.views import Response,status
 from rest_framework import generics
-from .forms import HostForm,GroupForm
+from .forms import HostForm,GroupForm,StorageForm
 from rest_framework.permissions import IsAuthenticated
 
 class GroupListAPI(generics.ListAPIView):
@@ -43,6 +43,7 @@ class HostListByGroupAPI(generics.ListAPIView):
     module = Host
     serializer_class = HostSerializer
     permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         if self.kwargs['pk']=='0':
             return {}
@@ -62,15 +63,13 @@ class HostCreateAPI(generics.CreateAPIView):
                 return Response(data,status=status.HTTP_200_OK)
             else:
                 if data['data']['id'] == '#New':
-                    hostDataClean(data['data'],1)
+                    host=hostDataClean(data['data'],1)
                 else:
                     hostDataClean(data['data'],2)
             return Response(data, status=status.HTTP_200_OK)
         else:
             data={'success':False,'msg':'存在字段错误'}
             return Response(data,status=status.HTTP_200_OK)
-
-
 
 def hostDataClean(data,type):
     if type==1 : #ADD
@@ -95,3 +94,41 @@ def hostDataClean(data,type):
                   root_disk=data['root_disk'],share_disk=data['share_disk'],
                   share_disk_path=data['share_disk_path'],info=data['info'])
         return
+
+
+class StorageListAPI(generics.ListAPIView):
+    module = Storage
+    serializer_class = StorageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset=Storage.objects.all()
+        return queryset
+
+class StorageCreateAPI(generics.CreateAPIView):
+    module = Storage
+    serializer_class = StorageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        sf=StorageForm(request.POST)
+        if sf.is_valid():
+            data=sf.clean()
+            if data['success']==False:
+                return Response(data,status=status.HTTP_200_OK)
+            else:
+                if data['data']['id'] == '#New':
+                    storage=Storage(disk_size=data['data']['disk_size'],
+                                   disk_path=data['data']['disk_path'],
+                                   info=data['data']['info'])
+                    storage.save()
+                else:
+                    storage=Storage.objects.filter(id=data['data']['id'])
+                    storage.update(disk_size=data['data']['disk_size'],
+                                   disk_path=data['data']['disk_path'],
+                                   info=data['data']['info'])
+            return Response(data,status=status.HTTP_200_OK)
+        else:
+            data={'success':False,'msg':'存在字段错误'}
+            return Response(data,status=status.HTTP_200_OK)
+

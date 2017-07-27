@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView,FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from models import Group
-from forms import GroupForm,HostForm
+from forms import GroupForm,HostForm,StorageForm
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
     template_name= 'group.html'
@@ -42,3 +42,10 @@ class ManagerSearchListView(LoginRequiredMixin,TemplateView):
 
     def get(self, request, *args, **kwargs):
         return super(ManagerSearchListView,self).get(request,*args,**kwargs)
+
+class ManagerStorageListView(LoginRequiredMixin,FormView):
+    template_name = 'storage.html'
+    form_class=StorageForm
+
+    def get(self, request, *args, **kwargs):
+        return super(ManagerStorageListView,self).get(request,*args,**kwargs)

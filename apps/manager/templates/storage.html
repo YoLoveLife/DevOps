@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            存储
+            <small>控制台</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+            <li class="active">Manager</li>
+            <li class="active">Storage</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid page-storage">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="box box-default box-storagetb">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">存储列表</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table" id="storage_tb">
+                            <thead>
+                                    <tr>
+                                        <th data-field="state" data-radio="true">#</th>
+                                        <th data-field="id">存储ID</th>
+                                        <th data-field="disk_path">存储路径</th>
+                                        <th data-field="disk_size">存储大小</th>
+                                        <th data-field="info">存储信息</th>
+                                    </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="box box-default">
+                    <div class="box-header">
+                        <h3 class="box-title" style="text-align: center">操作</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-app" data-toggle="modal" data-target="#StorageInfo" onclick="openModal('add')">
+                            <i class="fa fa-plus"></i> 新增
+                        </button>
+                        <button class="btn btn-app" data-toggle="modal" data-target="#StorageInfo" onclick="openModal('modify')">
+                            <i class="fa fa-edit"></i> 修改
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-times"></i> 删除
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-info"></i> 信息
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% include "_storage_modal.html" %}
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script>
+        function cleanForm(form){
+            $(':input',form).each(function(){
+                var type=this.type;
+                var tag=this.tagName.toLowerCase();
+                if(type=='text'||type=='password'||tag=='textarea'){
+                    this.value='';
+                }else if(type=='checkbox'||type=='radio'){
+                    this.checked=false;
+                }else if(tag=='select'){
+                    this.selectedIndex=-1;
+                }
+            });
+        }
+        $(document).ready(function(){
+            $('#StorageInfo').on("hidden.bs.modal",function(e){
+                $(this).removeData('bs.modal');
+            });
+
+            var table=$('#storage_tb').bootstrapTable({
+                url : '/api-manager/v1/storage/',
+                method  : 'GET',
+                uniqueId :  'id',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                showExport: true,
+                exportDataType : "basic",
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                colums  :   [
+                    {
+                        checkbox:true
+                    },
+                    {
+                        title:'存储ID',
+                        field:'id',
+                        align:'center'
+                    },
+                    {
+                        title:'存储路径',
+                        field:'disk_path',
+                        align:'center'
+                    },
+                    {
+                        title:'存储大小',
+                        field:'disk_size',
+                        align:'center'
+                    },
+                    {
+                        title:'存储信息',
+                        field:'info',
+                        align:'center',
+                    }
+                ]
+            });
+
+            $('#modal_storage_id').click(function(){
+                var ajax_option={
+                    url:"/api-manager/v1/storagecreate/",
+                    type:"post",
+                    success:function (data,testStatus,jqXHR) {
+                        if(data.success==true){
+                            window.location.reload();
+                        }else{
+                            $('#modal-error').html(data.msg).css('display','block');
+                        }
+                    }
+                }
+                var $form=$('#form_storage');
+                $form.ajaxSubmit(ajax_option);
+            })
+        })
+
+    function openModal(type) {
+        if(type=='add'){//ADD
+            cleanForm($('#form_storage'));
+            $('#id_id').val('#New');
+            $('#modal-error').css('display','none');
+        }else if(type=='modify'){//MODIFY
+            $('#modal-error').css('display','none');
+            var a=$('#storage_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+            }
+            else{
+                $('#id_id').val(a[0].id);
+                $('#id_disk_path').val(a[0].disk_path);
+                $('#id_disk_size').val(a[0].disk_size);
+                $('#id_info').val(a[0].info);
+            }
+        }
+    }
+    </script>
+{% endblock %}
