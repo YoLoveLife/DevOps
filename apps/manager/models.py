@@ -7,8 +7,8 @@ from django.db import models
 from django.db import models
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
-    name=models.CharField(max_length=100)
-    info=models.CharField(max_length=100)
+    name=models.CharField(max_length=100,default='None')
+    info=models.CharField(max_length=100,default='None')
 
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID

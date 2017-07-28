@@ -70,19 +70,6 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
-        function cleanForm(form){
-            $(':input',form).each(function(){
-                var type=this.type;
-                var tag=this.tagName.toLowerCase();
-                if(type=='text'||type=='password'||tag=='textarea'){
-                    this.value='';
-                }else if(type=='checkbox'||type=='radio'){
-                    this.checked=false;
-                }else if(tag=='select'){
-                    this.selectedIndex=-1;
-                }
-            });
-        }
         $(document).ready(function(){
             $('#GroupInfo').on("hidden.bs.modal",function(e){
                 $(this).removeData('bs.modal');
@@ -148,24 +135,5 @@
                 $form.ajaxSubmit(ajax_option);
             })
         })
-
-    function openModal(type) {
-        if(type=='add'){//ADD
-            cleanForm($('#form_group'));
-            $('#id_id').val('#New');
-            $('#modal-error').css('display','none');
-        }else if(type=='modify'){//MODIFY
-            $('#modal-error').css('display','none');
-            var a=$('#group_tb').bootstrapTable('getSelections');
-            if(a.length<1){
-                alert('请选择数据');
-            }
-            else{
-                $('#id_id').val(a[0].id);
-                $('#id_name').val(a[0].name);
-                $('#id_info').val(a[0].info);
-            }
-        }
-    }
     </script>
 {% endblock %}
