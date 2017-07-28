@@ -32,6 +32,4 @@ class Host(models.Model):
     coreness = models.IntegerField(default=2)#CPU数
     memory = models.IntegerField(default=2048)#内存
     root_disk=models.IntegerField(default=20)#本地磁盘大小
-    share_disk_path=models.CharField(max_length=200)#共享路径
-    share_disk=models.IntegerField(default=30)#共享磁盘大小
     info=models.CharField(max_length=200,default="无信息")

@@ -15,13 +15,13 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>应用组ID</label>
-                            {{ form.id }}
+                            <input id="id_id" name="id" type="text" class="form-control" readonly="yes">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>应用组名称</label>
-                            {{ form.name }}
+                            <input id="id_name" name="name" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label>应用组信息</label>
-                            {{ form.info }}
+                            <input id="id_info" name="info" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,6 @@
 {% endblock %}
 
 {% block modal_confirm_id %}modal_group_id{% endblock %}
-
 
 {% block modal_js %}
 <script>

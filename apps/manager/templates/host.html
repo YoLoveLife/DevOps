@@ -123,26 +123,6 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
 <script>
-
-    function cleanForm(form){
-        $(':input',form).each(function(){
-            var type=this.type;
-            var tag=this.tagName.toLowerCase();
-            var id=this.id;
-            if(type=='text'||type=='password'||tag=='textarea'){
-                if(id=='id_coreness'||id=='id_memory'||id=='id_root_disk'||id=='id_share_disk') {
-                    this.value='0';
-                }else{
-                    this.value='';
-                }
-            }else if(type=='checkbox'||type=='radio'){
-                this.checked=false;
-            }else if(tag=='select'){
-                this.selectedIndex=-1;
-            }
-        });
-    }
-
     function SelectChange(){
         var objSelect = document.getElementById('groupselect');
         var obj=objSelect.options[objSelect.selectedIndex].id;
@@ -151,50 +131,6 @@
             {url :   url}
         );
     }
-
-    function openModal(type) {
-        if(type=='add'){//ADD
-            cleanForm($('#form_host'));
-            $('#id_id').val('#New');
-            $('#modal-error').css('display','none');
-
-        }else if(type=='modify'){//MODIFY
-            $('#modal-error').css('display','none');
-            var a=$('#host_tb').bootstrapTable('getSelections');
-            if(a.length<1){
-                alert('请选择数据');
-            }
-            else{
-                $('#id_id').val(a[0].id);
-                $('#id_systemtype').val(a[0].systemtype);
-                $('#id_group').val(a[0].group);
-                $('#id_manage_ip').val(a[0].manage_ip);
-                $('#id_service_ip').val(a[0].service_ip);
-                $('#id_outer_ip').val(a[0].outer_ip);
-                $('#id_server_position').val(a[0].server_position);
-                $('#id_hostname').val(a[0].hostname);
-                $('#id_normal_user').val(a[0].normal_user);
-                $('#id_sshpasswd').val(a[0].sshpasswd);
-                $('#id_sshport').val(a[0].sshport);
-                $('#id_coreness').val(a[0].coreness);
-                $('#id_memory').val(a[0].memory);
-                $('#id_root_disk').val(a[0].root_disk);
-                $('#id_share_disk_path').val(a[0].share_disk_path);
-                $('#id_share_disk').val(a[0].share_disk);
-                $('#id_info').val(a[0].info);
-            }
-        }
-    }
-
-
-     function selectToSelected() {
-         var objS=document.getElementById('storage-select');
-         var hostid=objS.options[objS.selectedIndex].value;
-         var hostname=objS.options[objS.selectedIndex].label;
-         objS.options.remove(objS.selectedIndex);
-         var objSed=document.getElementById('storage-selected');
-         objSed.options.add(new Option(hostname,hostid));
-     };
     $(document).ready(function () {
         var table=$('#host_tb').bootstrapTable({
                 url : '/api-manager/v1/hostbygroup/0',
@@ -280,6 +216,7 @@
                     }
                 }
                 var $form=$('#form_host');
+
                 $form.ajaxSubmit(ajax_option);
             });
     })

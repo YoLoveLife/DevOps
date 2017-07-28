@@ -15,19 +15,19 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>主机ID</label>
-                            {{ form.id }}
+                            <input id="id_id" name="id" type="text" class="form-control" readonly="yes">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>操作系统</label>
-                            {{ form.systemtype }}
+                            <input id="id_systemtype" name="systemtype" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>应用系统</label>
-                            {{ form.group }}
+                            <select id="id_group" class="form-control" name="group"></select>
                         </div>
                     </div>
                 </div>
@@ -35,19 +35,19 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>管理IP</label>
-                            {{ form.manage_ip }}
+                            <input id="id_manage_ip" name="manage_ip" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>服务IP</label>
-                            {{ form.service_ip }}
+                            <input id="id_service_ip" name="service_ip" type="text" class="form-control">
                         </div>
                     </div>
                         <div class="col-md-2">
                         <div class="form-group">
                             <label>外网IP</label>
-                            {{ form.outer_ip }}
+                            <input id="id_outer_ip" name="outer_ip" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -55,13 +55,13 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>服务器位置</label>
-                            {{ form.server_position }}
+                            <input id="id_server_position" name="server_position" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>主机名称</label>
-                            {{ form.hostname }}
+                            <input id="id_hostname" name="hostname" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -69,13 +69,13 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>普通用户</label>
-                            {{ form.normal_user }}
+                            <input id="id_normal_user" name="normal_user" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>用户密码</label>
-                            {{ form.sshpasswd }}
+                            <input id="id_sshpasswd" name="sshpasswd" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>管理端口</label>
-                            {{ form.sshport }}
+                            <input id="id_sshport" name="sshport" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -91,64 +91,59 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>CPU核数</label>
-                            {{ form.coreness }}
+                            <input id="id_coreness" name="coreness" type="text" class="form-control">
                         </div>
                     </div>
                         <div class="col-md-2">
                         <div class="form-group">
                             <label>内存大小(Mb)</label>
-                            {{ form.memory }}
+                            <input id="id_memory" name="memory" type="text" class="form-control">
                         </div>
                     </div>
                         <div class="col-md-2">
                         <div class="form-group">
                             <label>本地磁盘(Gb)</label>
-                            {{ form.root_disk }}
+                            <input id="id_root_disk" name="root_disk" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
                     <div class="row">
-                        <div class="col-md-2">
-                        <div class="form-group">
-                            <label>共享磁盘(Gb)</label>
-                            {{ form.share_disk }}
+                        <div class="col-md-6">
+                            <hr />
                         </div>
                     </div>
-                        <div class="col-md-2">
-                        <div class="form-group">
-                            <label>共享磁盘路径</label>
-                            {{ form.share_disk_path }}
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>存储</label>
-                            {{ form.storage }}
+                            <label>外挂存储</label>
+                            <select id="storage-select" class="form-control" name="storage-select" multiple="yes"></select>
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button class="btn btn-app" onclick="selectToSelected()">
+                        <button class="btn btn-app" type="button" onclick="selectToSelected()">
                             <i class="fa fa-chevron-circle-right"></i> Select
                         </button>
-                        <button class="btn btn-app">
+                        <button class="btn btn-app" type="button" onclick="select">
                             <i class="fa fa-chevron-circle-left"></i> Remove
                         </button>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Selected</label>
-                            <select multiple class="form-control" id="storage-selected">
-                            </select>
+                            <label>已选择</label>
+                            <select id="id_storage" class="form-control" name="storage" multiple="yes"></select>
                         </div>
                     </div>
                 </div>
                     <div class="row">
+                        <div class="col-md-6">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
                             <label>信息</label>
-                            {{ form.info }}
+                            <input id="id_info" name="info" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -156,3 +151,100 @@
 {% endblock %}
 
 {% block modal_confirm_id %}modal_host_id{% endblock %}
+{% block modal_js %}
+    <script>
+     function selectToSelected() {
+         var objS=document.getElementById('storage-select');
+         var storageid=objS.options[objS.selectedIndex].value;
+         var storagename=objS.options[objS.selectedIndex].label;
+         objS.options.remove(objS.selectedIndex);
+         var objSed=document.getElementById('id_storage');
+         objSed.options.add(new Option(storagename,storageid));
+     }
+
+     function selectedToSelect(){
+         var objSed=document.getElementById('id_storage');
+         var storageid=objSed.options[objSed.selectedIndex].value;
+         var storagename=objSed.options[objSed.selectedIndex].label;
+         objSed.options.remove(objSed.selectedIndex);
+         var objS=document.getElementById('storage-select');
+         objS.options.add(new Option(storagename,storageid))
+     }
+
+     function cleanForm(form){
+        $(':input',form).each(function(){
+            var type=this.type;
+            var tag=this.tagName.toLowerCase();
+            var id=this.id;
+            if(type=='text'||type=='password'||tag=='textarea'){
+                if(id=='id_coreness'||id=='id_memory'||id=='id_root_disk'||id=='id_share_disk') {
+                    this.value='0';
+                }else{
+                    this.value='';
+                }
+            }else if(type=='checkbox'||type=='radio'){
+                this.checked=false;
+            }else if(tag=='select'){
+                this.selectedIndex=-1;
+            }
+        });
+    }
+
+     function openModal(type) {
+         var objS=document.getElementById('id_group');
+         var objStorageS=document.getElementById('storage-select');
+         objS.innerHTML='';
+         $.ajax({
+             url    :   '/api-manager/v1/group/',
+             type   :   'get',
+             success    :   function(data,testStatus,jqXHR){
+                 for(var i=0;i<data.length;i++){
+                     objS.options.add(new Option(data[i].name,data[i].id));
+                 }
+             },
+         })
+         $.ajax({
+             url    :   '/api-manager/v1/storage/',
+             type   :   'get',
+             success    :   function(data,testStatus,jqXHR){
+                for(var i =0;i<data.length;i++){
+                    objStorageS.options.add(new Option(data[i].disk_path,data[i].id));
+                }
+             }
+         })
+        if(type=='add'){//ADD
+            cleanForm($('#form_host'));
+            $('#id_id').val('#New');
+            $('#modal-error').css('display','none');
+
+        }else if(type=='modify'){//MODIFY
+            $('#modal-error').css('display','none');
+            var a=$('#host_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+            }
+            else{
+                $('#id_id').val(a[0].id);
+                $('#id_systemtype').val(a[0].systemtype);
+                objS.selectedIndex=a[0].group - 1;
+                $('#id_manage_ip').val(a[0].manage_ip);
+                $('#id_service_ip').val(a[0].service_ip);
+                $('#id_outer_ip').val(a[0].outer_ip);
+                $('#id_server_position').val(a[0].server_position);
+                $('#id_hostname').val(a[0].hostname);
+                $('#id_normal_user').val(a[0].normal_user);
+                $('#id_sshpasswd').val(a[0].sshpasswd);
+                $('#id_sshport').val(a[0].sshport);
+                $('#id_coreness').val(a[0].coreness);
+                $('#id_memory').val(a[0].memory);
+                $('#id_root_disk').val(a[0].root_disk);
+                $('#id_share_disk_path').val(a[0].share_disk_path);
+                $('#id_share_disk').val(a[0].share_disk);
+                $('#id_info').val(a[0].info);
+            }
+        }
+    }
+    </script>
+
+
+{% endblock %}

@@ -71,10 +71,6 @@
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
         $(document).ready(function(){
-            $('#GroupInfo').on("hidden.bs.modal",function(e){
-                $(this).removeData('bs.modal');
-            });
-
             var table=$('#group_tb').bootstrapTable({
                 url : '/api-manager/v1/group/',
                 method  : 'GET',
