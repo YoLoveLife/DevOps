@@ -79,8 +79,7 @@ def hostDataClean(data,type):
                   hostname=data['hostname'],normal_user=data['normal_user'],
                   sshpasswd=data['sshpasswd'],sshport=data['sshport'],
                   coreness=data['coreness'],memory=data['memory'],
-                  root_disk=data['root_disk'],share_disk=data['share_disk'],
-                  share_disk_path=data['share_disk_path'],info=data['info'])
+                  root_disk=data['root_disk'],info=data['info'])
         host.save()
         return
     elif type==2 :#EDIT
@@ -91,8 +90,7 @@ def hostDataClean(data,type):
                   hostname=data['hostname'],normal_user=data['normal_user'],
                   sshpasswd=data['sshpasswd'],sshport=data['sshport'],
                   coreness=data['coreness'],memory=data['memory'],
-                  root_disk=data['root_disk'],share_disk=data['share_disk'],
-                  share_disk_path=data['share_disk_path'],info=data['info'])
+                  root_disk=data['root_disk'],info=data['info'])
         return
 
 
