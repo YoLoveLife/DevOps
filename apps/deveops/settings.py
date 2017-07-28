@@ -36,9 +36,9 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'manager.apps.ManagerConfig',
-    #'validate.apps.ValidateConfig',
-    #'softlib.apps.SoftlibConfig',
-    #'magic.apps.MagicConfig',
+    'validate.apps.ValidateConfig',
+    'softlib.apps.SoftlibConfig',
+    'magic.apps.MagicConfig',
     'rest_framework',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'deveops',
+        'NAME':'deveopsdb',
         'USER':'root',
         'PASSWORD':'000000',
         'HOST':'',

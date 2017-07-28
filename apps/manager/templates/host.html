@@ -186,8 +186,17 @@
         }
     }
 
+
+     function selectToSelected() {
+         var objS=document.getElementById('storage-select');
+         var hostid=objS.options[objS.selectedIndex].value;
+         var hostname=objS.options[objS.selectedIndex].label;
+         objS.options.remove(objS.selectedIndex);
+         var objSed=document.getElementById('storage-selected');
+         objSed.options.add(new Option(hostname,hostid));
+     };
     $(document).ready(function () {
-            var table=$('#host_tb').bootstrapTable({
+        var table=$('#host_tb').bootstrapTable({
                 url : '/api-manager/v1/hostbygroup/0',
                 method  : 'GET',
                 uniqueId :  'id',

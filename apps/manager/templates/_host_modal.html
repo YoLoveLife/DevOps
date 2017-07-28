@@ -122,6 +122,29 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>存储</label>
+                            {{ form.storage }}
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-app" onclick="selectToSelected()">
+                            <i class="fa fa-chevron-circle-right"></i> Select
+                        </button>
+                        <button class="btn btn-app">
+                            <i class="fa fa-chevron-circle-left"></i> Remove
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Selected</label>
+                            <select multiple class="form-control" id="storage-selected">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
                             <label>信息</label>
@@ -129,7 +152,6 @@
                         </div>
                     </div>
                 </div>
-
                 </form>
 {% endblock %}
 

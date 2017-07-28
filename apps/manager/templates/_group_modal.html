@@ -22,7 +22,6 @@
                         <div class="form-group">
                             <label>应用组名称</label>
                             {{ form.name }}
-{#                            {{ data.name }}#}
                         </div>
                     </div>
                 </div>
@@ -31,7 +30,6 @@
                         <div class="form-group">
                             <label>应用组信息</label>
                             {{ form.info }}
-{#                            {{ data.info }}#}
                         </div>
                     </div>
                 </div>
@@ -39,3 +37,41 @@
 {% endblock %}
 
 {% block modal_confirm_id %}modal_group_id{% endblock %}
+
+
+{% block modal_js %}
+<script>
+    function openModal(type) {
+        if(type=='add'){//ADD
+            cleanForm($('#form_group'));
+            $('#id_id').val('#New');
+            $('#modal-error').css('display','none');
+        }else if(type=='modify'){//MODIFY
+            $('#modal-error').css('display','none');
+            var a=$('#group_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+            }
+            else{
+                $('#id_id').val(a[0].id);
+                $('#id_name').val(a[0].name);
+                $('#id_info').val(a[0].info);
+            }
+        }
+    }
+    function cleanForm(form){
+            $(':input',form).each(function(){
+                var type=this.type;
+                var tag=this.tagName.toLowerCase();
+                if(type=='text'||type=='password'||tag=='textarea'){
+                    this.value='';
+                }else if(type=='checkbox'||type=='radio'){
+                    this.checked=false;
+                }else if(tag=='select'){
+                    this.selectedIndex=-1;
+                }
+            });
+        }
+</script>
+
+{% endblock %}

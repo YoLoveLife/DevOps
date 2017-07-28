@@ -22,6 +22,13 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
 
+class ManagerGroupModalView(LoginRequiredMixin,FormView):
+    template_name = '_group_modal.html'
+    form_class=GroupForm
+
+    def get(self, request, *args, **kwargs):
+        return super(ManagerGroupModalView, self).get(request, *args, **kwargs)
+
 class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='host.html'
     form_class = HostForm
