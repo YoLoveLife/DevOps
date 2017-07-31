@@ -34,6 +34,7 @@ class HostForm(forms.Form):
     c = models.Group.objects.all().values_list('id','name')
     group=forms.CharField(label="GroupSelect",widget=forms.Select(choices=c,attrs={'class':'form-control'}))
     storage=forms.CharField(label="Storage",max_length=100)
+    storagesss=forms.ModelMultipleChoiceField(label="Storagesss",widget=forms.CheckboxSelectMultiple,queryset=models.Storage.objects)
     systemtype=forms.CharField(label="SystemType",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     manage_ip=forms.CharField(label="ManagerID",max_length=15,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     service_ip=forms.CharField(label="ServiceIP",max_length=15,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
@@ -60,7 +61,6 @@ class HostForm(forms.Form):
             return {'success':False,'msg':'该管理IP已经登记'}
         else:
             return {'success':True,'msg':'','data':self.data,}
-
 
 class StorageForm(forms.Form):
     id = forms.IntegerField(label="ID",

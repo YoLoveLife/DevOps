@@ -57,6 +57,8 @@ class HostCreateAPI(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         hf=HostForm(request.POST)
+        print request.POST['storages']
+
         if hf.is_valid():#数据校验
             data=hf.clean()
             if data['success']==False:
@@ -129,4 +131,16 @@ class StorageCreateAPI(generics.CreateAPIView):
         else:
             data={'success':False,'msg':'存在字段错误'}
             return Response(data,status=status.HTTP_200_OK)
+
+
+class StorageListByGroup(generics.ListAPIView):
+    module = Storage
+    serializer_class = StorageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.kwargs['pk']=='0':
+            return {}
+        queryset=Storage.objects.filter(group_id=self.kwargs['pk'])
+        return queryset
 
