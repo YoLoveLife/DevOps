@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends '_base.html' %}
 {% load static %}
 {% block content %}
 <!--Content Header-->
@@ -31,6 +31,7 @@
                                         <th data-field="disk_path">存储路径</th>
                                         <th data-field="disk_size">存储大小</th>
                                         <th data-field="info">存储信息</th>
+                                        <th data-field="storage_name">所属组</th>
                                     </tr>
                             </thead>
                         </table>
@@ -70,19 +71,6 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
-        function cleanForm(form){
-            $(':input',form).each(function(){
-                var type=this.type;
-                var tag=this.tagName.toLowerCase();
-                if(type=='text'||type=='password'||tag=='textarea'){
-                    this.value='';
-                }else if(type=='checkbox'||type=='radio'){
-                    this.checked=false;
-                }else if(tag=='select'){
-                    this.selectedIndex=-1;
-                }
-            });
-        }
         $(document).ready(function(){
             $('#StorageInfo').on("hidden.bs.modal",function(e){
                 $(this).removeData('bs.modal');
@@ -127,7 +115,11 @@
                     {
                         title:'存储信息',
                         field:'info',
-                        align:'center',
+                        align:'center'
+                    },{
+                        title:'所属于组',
+                        field:'storage_name',
+                        align:'center'
                     }
                 ]
             });
@@ -148,25 +140,5 @@
                 $form.ajaxSubmit(ajax_option);
             })
         })
-
-    function openModal(type) {
-        if(type=='add'){//ADD
-            cleanForm($('#form_storage'));
-            $('#id_id').val('#New');
-            $('#modal-error').css('display','none');
-        }else if(type=='modify'){//MODIFY
-            $('#modal-error').css('display','none');
-            var a=$('#storage_tb').bootstrapTable('getSelections');
-            if(a.length<1){
-                alert('请选择数据');
-            }
-            else{
-                $('#id_id').val(a[0].id);
-                $('#id_disk_path').val(a[0].disk_path);
-                $('#id_disk_size').val(a[0].disk_size);
-                $('#id_info').val(a[0].info);
-            }
-        }
-    }
     </script>
 {% endblock %}

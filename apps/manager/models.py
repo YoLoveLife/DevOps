@@ -15,11 +15,12 @@ class Storage(models.Model):
     disk_size=models.CharField(max_length=100,default="0G")
     disk_path=models.CharField(max_length=100,default="//10.100.100.246/storage")
     info=models.CharField(max_length=100,default="NoUse")
+    group = models.ForeignKey(Group,default=1)
 
 class Host(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
-    group = models.ForeignKey(Group,default=1,related_name='host_set')#所属应用
-    storages = models.ManyToManyField(Storage,related_name='storage_set')
+    group = models.ForeignKey(Group,default=1)#所属应用
+    storages = models.ManyToManyField(Storage)
     systemtype=models.CharField(max_length=50,default='centos6.5')#操作系统
     manage_ip = models.CharField(max_length=15, default='10.100.100.246')#管理IP
     service_ip = models.CharField(max_length=15, default='10.100.100.246')#服务IP

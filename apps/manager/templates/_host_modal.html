@@ -1,4 +1,5 @@
 {% extends '_modal.html' %}
+{% load static %}
 {% block modal_id %}HostInfo{% endblock %}
 {% block modal_class %}modal-hostinfo{% endblock %}
 {% block modal_style %}width:600px;{% endblock %}
@@ -27,7 +28,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>应用系统</label>
-                            <select id="id_group" class="form-control" name="group"></select>
+                            <select id="id_group" class="form-control" name="group" onchange="Select2()"></select>
                         </div>
                     </div>
                 </div>
@@ -109,28 +110,15 @@
                 </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <hr />
+                            <hr/>
                         </div>
                     </div>
-                <div class="row">
-                    <div class="col-md-3">
+                    <div class="row">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label>外挂存储</label>
-                            <select id="storage-select" class="form-control" name="storage-select" multiple="yes"></select>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <button class="btn btn-app" type="button" onclick="selectToSelected()">
-                            <i class="fa fa-chevron-circle-right"></i> Select
-                        </button>
-                        <button class="btn btn-app" type="button" onclick="select">
-                            <i class="fa fa-chevron-circle-left"></i> Remove
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>已选择</label>
-                            <select id="id_storage" class="form-control" name="storage" multiple="yes"></select>
+                            <label>存储选择</label>
+                            <select id="id_storages" name="storages" multiple="multiple" class="form-control">
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -152,25 +140,7 @@
 
 {% block modal_confirm_id %}modal_host_id{% endblock %}
 {% block modal_js %}
-    <script>
-     function selectToSelected() {
-         var objS=document.getElementById('storage-select');
-         var storageid=objS.options[objS.selectedIndex].value;
-         var storagename=objS.options[objS.selectedIndex].label;
-         objS.options.remove(objS.selectedIndex);
-         var objSed=document.getElementById('id_storage');
-         objSed.options.add(new Option(storagename,storageid));
-     }
-
-     function selectedToSelect(){
-         var objSed=document.getElementById('id_storage');
-         var storageid=objSed.options[objSed.selectedIndex].value;
-         var storagename=objSed.options[objSed.selectedIndex].label;
-         objSed.options.remove(objSed.selectedIndex);
-         var objS=document.getElementById('storage-select');
-         objS.options.add(new Option(storagename,storageid))
-     }
-
+    <script type="text/javascript">
      function cleanForm(form){
         $(':input',form).each(function(){
             var type=this.type;
@@ -189,35 +159,54 @@
             }
         });
     }
-
-     function openModal(type) {
-         var objS=document.getElementById('id_group');
-         var objStorageS=document.getElementById('storage-select');
-         objS.innerHTML='';
-         $.ajax({
-             url    :   '/api-manager/v1/group/',
-             type   :   'get',
-             success    :   function(data,testStatus,jqXHR){
-                 for(var i=0;i<data.length;i++){
-                     objS.options.add(new Option(data[i].name,data[i].id));
-                 }
-             },
-         })
-         $.ajax({
-             url    :   '/api-manager/v1/storage/',
-             type   :   'get',
-             success    :   function(data,testStatus,jqXHR){
-                for(var i =0;i<data.length;i++){
-                    objStorageS.options.add(new Option(data[i].disk_path,data[i].id));
+    function Select2(){
+         var objSelect = document.getElementById('id_group');
+         var obj=objSelect.options[objSelect.selectedIndex].index+1;
+         var url='/api-manager/v1/storagebygroup/'+obj;
+         var option={
+             placeholder:'请选择',//默认文字提示
+             language: "zh-CN",
+             escapeMarkup: function (markup) { return markup; },
+             ajax: {
+                type:"GET",
+                dataType:"json",
+                url: url,
+                processResults: function (data) {
+                    return {results: $.map(data,function(obj){
+                        return {id: obj.id,text:obj.disk_path};
+                    })};
                 }
-             }
-         })
+                },
+         }
+         $('#id_storages').select2(option);
+         $("#id_storages").on("select2:select select2:unselect", function (e) {
+                //this returns all the selected item
+                var storages= $(this).val();
+                //Gets the last selected item
+
+                console.log(storages)
+{#                #var storages = e.params.data.id;#}
+            })
+     }
+     function openModal(type) {
+        var objS=document.getElementById('id_group');
+        objS.innerHTML='';
+        $.ajax({
+            url    :   '/api-manager/v1/group/',
+            type   :   'get',
+            async:false,
+            success    :   function(data,testStatus,jqXHR){
+                for(var i=0;i<data.length;i++){
+                    objS.options.add(new Option(data[i].name,data[i].id));
+                }
+            },
+        })
         if(type=='add'){//ADD
             cleanForm($('#form_host'));
             $('#id_id').val('#New');
             $('#modal-error').css('display','none');
-
         }else if(type=='modify'){//MODIFY
+            cleanForm($('#form_host'));
             $('#modal-error').css('display','none');
             var a=$('#host_tb').bootstrapTable('getSelections');
             if(a.length<1){
@@ -226,7 +215,7 @@
             else{
                 $('#id_id').val(a[0].id);
                 $('#id_systemtype').val(a[0].systemtype);
-                objS.selectedIndex=a[0].group - 1;
+                objS.selectedIndex=a[0].group.id-1;
                 $('#id_manage_ip').val(a[0].manage_ip);
                 $('#id_service_ip').val(a[0].service_ip);
                 $('#id_outer_ip').val(a[0].outer_ip);

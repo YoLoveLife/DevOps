@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends '_base.html' %}
 {% load static %}
 {% block content %}
 <!--Content Header-->
@@ -34,38 +34,11 @@
                         <i class="fa fa-info"></i> 信息
                     </button>
                     <select id="groupselect" onchange="SelectChange()">
-                        <option id="0">Null</option>#}
                         {% for row in grouplist %}
                             <option id="{{ row.id }}">{{ row.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-{#                    <div class="row">#}
-{#                        <div class="col-sm-6">#}
-{#                            <label class="groupslct">展示#}
-{#                                <select id="groupselect" onchange="SelectChange()">#}
-{#                                <option id="0">Null</option>#}
-{#                                    {% for row in grouplist %}#}
-{#                                    <option id="{{ row.id }}">{{ row.name }}</option>#}
-{#                                    {% endfor %}#}
-{#                                </select>#}
-{#                                主机列表#}
-{#                            </label>#}
-{#                        </div>#}
-{#                        <div class="col-md-6">#}
-{#                            <div class="box-toolbar-btn">#}
-{#                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo">#}
-{#                                    <i class="fa fa-plus"></i> 新增#}
-{#                                </button>#}
-{#                                <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo">#}
-{#                                    <i class="fa fa-edit"></i> 修改#}
-{#                                </button>#}
-{#                                <button class="btn btn-app" disabled>#}
-{#                                    <i class="fa fa-info"></i> 信息#}
-{#                                </button>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
                     <div class="box-body">
                         <div class="row">
                             <div class="col-lg-12">
@@ -86,23 +59,6 @@
                                     <tbody id="hosttbody">
                                     </tbody>
                                     <tfoot>
-{#                                        <th>#</th>#}
-{#                                        <th>主机ID</th>#}
-{#                                        <th>操作系统</th>#}
-{#                                        <th>管理IP</th>#}
-{#                                        <th>服务IP</th>#}
-{#                                        <th>外网IP</th>#}
-{#                                        <th>服务器位置</th>#}
-{#                                        <th>主机名称</th>#}
-{#                                        <th>普通用户</th>#}
-{#                                        <th>用户密码</th>#}
-{#                                        <th>管理端口</th>#}
-{#                                        <th>CPU核数</th>#}
-{#                                        <th>内存大小(Mb)</th>#}
-{#                                        <th>本地磁盘(Gb)</th>#}
-{#                                        <th>共享磁盘(Gb)</th>#}
-{#                                        <th>共享磁盘路径</th>#}
-{#                                        <th>信息</th>#}
                                     </tfoot>
                                 </table>
                             </div>
@@ -122,6 +78,7 @@
     <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script src="{% static 'js/select2.min.js' %}"></script>
 <script>
     function SelectChange(){
         var objSelect = document.getElementById('groupselect');
@@ -215,9 +172,9 @@
                         }
                     }
                 }
-                var $form=$('#form_host');
-
-                $form.ajaxSubmit(ajax_option);
+                var form=$('#form_host');
+                console.log(form);
+                form.ajaxSubmit(ajax_option);
             });
     })
 </script>
