@@ -24,20 +24,23 @@
                 </div>
                 <!-- /.box-header -->
                 <div id="hst-toolbar">
-                    <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="openModal('add')">
+                <form id="toolbar-host">
+                    <button class="btn btn-app" onclick="HostInfo()">
                         <i class="fa fa-plus"></i> 新增
                     </button>
-                    <button class="btn btn-app" data-toggle="modal" data-target="#HostInfo" onclick="openModal('modify')">
+                    <button class="btn btn-app" onclick="HostInfo()">
                         <i class="fa fa-edit"></i> 修改
                     </button>
                     <button class="btn btn-app" disabled>
                         <i class="fa fa-info"></i> 信息
                     </button>
                     <select id="groupselect" onchange="SelectChange()">
+                        <option id="0">Null</option>
                         {% for row in grouplist %}
                             <option id="{{ row.id }}">{{ row.name }}</option>
                         {% endfor %}
                     </select>
+                </form>
                 </div>
                     <div class="box-body">
                         <div class="row">
@@ -53,6 +56,11 @@
                                         <th data-field="outer_ip">外网IP</th>
                                         <th data-field="server_position">服务器位置</th>
                                         <th data-field="hostname">主机名称</th>
+                                        <th data-field="normal_user">普通用户</th>
+                                        <th data-field="sshport">SSH端口</th>
+                                        <th data-field="coreness">逻辑CPU</th>
+                                        <th data-field="memory">内存</th>
+                                        <th data-field="root_disk">根大小</th>
                                         <th data-field="info">用途</th>
                                     </tr>
                                     </thead>
@@ -80,6 +88,15 @@
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script src="{% static 'js/select2.min.js' %}"></script>
 <script>
+    function HostInfo(){
+        var form=$('#toolbar-host');
+        var action='/manager/hostnew/';
+        var objSelect = document.getElementById('groupselect');
+        var obj=objSelect.options[objSelect.selectedIndex].index;
+        form.attr('action',action+obj);
+        location.href(action+obj);
+    }
+
     function SelectChange(){
         var objSelect = document.getElementById('groupselect');
         var obj=objSelect.options[objSelect.selectedIndex].id;
@@ -103,19 +120,11 @@
                 singleSelect    :   true,
                 showRefresh :   true,
                 showColumns :    true,
-                detailView  :   true,
                 pageSize    :   15,
                 pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
                 showExport: true,
                 exportDataType : "basic",
-                onExpandRow :   function(index, row, $Subdetail){
-                    var html=[];
-                    $.each(row,function(key,value) {
-                       html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-                    });
-                    $Subdetail.html(html);
-                },
                 colums  :   [
                     {
                         checkbox:true
@@ -153,6 +162,26 @@
                         field:'hostname',
                         align:'center',
                     },{
+                        title:'普通用户',
+                        field:'normal_user',
+                        align:'center'
+                    },{
+                        title:'SSH端口',
+                        field:'sshport',
+                        align:'center'
+                    },{
+                        title:'逻辑CPU',
+                        field:'coreness',
+                        align:'center'
+                    },{
+                        title:'内存',
+                        field:'memory',
+                        align:'center'
+                    },{
+                        title:'根大小',
+                        field:'root_disk',
+                        align:'center'
+                    },{
                         title:'用途',
                         field:'info',
                         align:'center',
@@ -166,6 +195,9 @@
                     type:"post",
                     success:function (data,testStatus,jqXHR) {
                         if(data.success==true){
+                            //SelectChange();
+                            var objSelect = document.getElementById('groupselect');
+                            objSelect.selectedIndex=0;
                             window.location.reload();
                         }else{
                             $('#modal-error').html(data.msg).css('display','block');
@@ -173,7 +205,6 @@
                     }
                 }
                 var form=$('#form_host');
-                console.log(form);
                 form.ajaxSubmit(ajax_option);
             });
     })

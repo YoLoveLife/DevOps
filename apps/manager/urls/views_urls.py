@@ -9,7 +9,7 @@ from .. import views
 
 urlpatterns = [
     url(r'^group$', views.ManagerGroupListView.as_view(), name='group'),
-    url(r'^groupmodal$',views.ManagerGroupModalView.as_view(),name='groupmodal'),
+    url(r'^hostnew/(?P<pk>[0-9]+)',views.ManagerHostNew.as_view(),name="newhost"),
     url(r'^host$', views.ManagerHostListView.as_view(), name='host'),
     url(r'^search$',views.ManagerSearchListView.as_view(),name='search'),
     url(r'^storage$',views.ManagerStorageListView.as_view(),name='storage'),

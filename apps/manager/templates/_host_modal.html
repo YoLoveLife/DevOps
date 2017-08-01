@@ -97,13 +97,13 @@
                     </div>
                         <div class="col-md-2">
                         <div class="form-group">
-                            <label>内存大小(Mb)</label>
+                            <label>内存大小</label>
                             <input id="id_memory" name="memory" type="text" class="form-control">
                         </div>
                     </div>
                         <div class="col-md-2">
                         <div class="form-group">
-                            <label>本地磁盘(Gb)</label>
+                            <label>本地磁盘</label>
                             <input id="id_root_disk" name="root_disk" type="text" class="form-control">
                         </div>
                     </div>
@@ -183,14 +183,13 @@
                 //this returns all the selected item
                 var storages= $(this).val();
                 //Gets the last selected item
-
-                console.log(storages)
 {#                #var storages = e.params.data.id;#}
             })
      }
      function openModal(type) {
         var objS=document.getElementById('id_group');
         objS.innerHTML='';
+        cleanForm($('#form_host'));
         $.ajax({
             url    :   '/api-manager/v1/group/',
             type   :   'get',
@@ -202,15 +201,14 @@
             },
         })
         if(type=='add'){//ADD
-            cleanForm($('#form_host'));
             $('#id_id').val('#New');
             $('#modal-error').css('display','none');
         }else if(type=='modify'){//MODIFY
-            cleanForm($('#form_host'));
             $('#modal-error').css('display','none');
             var a=$('#host_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
+                return ;
             }
             else{
                 $('#id_id').val(a[0].id);
@@ -232,6 +230,8 @@
                 $('#id_info').val(a[0].info);
             }
         }
+        $("#HostInfo").modal();
+        Select2();
     }
     </script>
 

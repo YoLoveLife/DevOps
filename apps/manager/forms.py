@@ -44,9 +44,9 @@ class HostForm(forms.Form):
     normal_user=forms.CharField(label="NormalUser",max_length=50,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     sshpasswd=forms.CharField(label="Passwd",max_length=100,widget=forms.TextInput(attrs={'type': 'password', 'class': 'form-control'}))
     sshport=forms.CharField(label="Port",max_length=5,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
-    coreness=forms.IntegerField(label="Coreness",widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
-    memory=forms.IntegerField(label="Memory",widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
-    root_disk=forms.IntegerField(label="RootDisk",widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+    coreness=forms.CharField(label="Coreness",max_length=5,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+    memory=forms.CharField(label="Memory",max_length=7,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
+    root_disk=forms.CharField(label="RootDisk",max_length=7,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     info=forms.CharField(label="Info",max_length=200,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
 
     def is_valid(self):
