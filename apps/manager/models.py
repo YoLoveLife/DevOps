@@ -30,7 +30,7 @@ class Host(models.Model):
     normal_user = models.CharField(max_length=15, default='QbDev')#普通用户
     sshpasswd = models.CharField(max_length=100,default='000000')#用户密码
     sshport = models.CharField(max_length=5,default='52000')#用户端口
-    coreness = models.IntegerField(default=2)#CPU数
-    memory = models.IntegerField(default=2048)#内存
-    root_disk=models.IntegerField(default=20)#本地磁盘大小
+    coreness = models.CharField(max_length=5,default='2')#CPU数
+    memory = models.CharField(max_length=7,default='2048M')#内存
+    root_disk=models.CharField(max_length=7,default="30G")#本地磁盘大小
     info=models.CharField(max_length=200,default="无信息")

@@ -41,8 +41,8 @@
 {% block modal_js %}
 <script>
     function openModal(type) {
+        cleanForm($('#form_group'));
         if(type=='add'){//ADD
-            cleanForm($('#form_group'));
             $('#id_id').val('#New');
             $('#modal-error').css('display','none');
         }else if(type=='modify'){//MODIFY
@@ -50,6 +50,7 @@
             var a=$('#group_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
+                return ;
             }
             else{
                 $('#id_id').val(a[0].id);
@@ -57,6 +58,7 @@
                 $('#id_info').val(a[0].info);
             }
         }
+        $("#GroupInfo").modal();
     }
     function cleanForm(form){
             $(':input',form).each(function(){

@@ -1,0 +1,55 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            应用系统
+            <small>控制台</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+            <li class="active">Manager</li>
+            <li class="active">Group</li>
+            <li class="active">New</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid page-group">
+    <form method="post" id="form_group" enctype="application/json">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="alert alert-danger" id="modal-error" style="display: none"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>应用组ID</label>
+                            <input id="id_id" name="id" type="text" class="form-control" readonly="yes">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>应用组名称</label>
+                            <input id="id_name" name="name" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>应用组信息</label>
+                            <input id="id_info" name="info" type="text" value="{{ host.hostname }}" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                </form>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+{% endblock %}
