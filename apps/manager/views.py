@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView,FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from models import Group,Host
+from models import Group,Host,Storage
 from forms import GroupForm,HostForm,StorageForm
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
@@ -15,7 +15,7 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
 
 class ManagerHostNew(LoginRequiredMixin,FormView):
-    template_name = 'newGroup.html'
+    template_name = '_new_host.html'
     form_class=GroupForm
 
     def get_context_data(self, **kwargs):
@@ -24,7 +24,9 @@ class ManagerHostNew(LoginRequiredMixin,FormView):
             context.update({'host':''})
         else:
             host=Host.objects.get(id=self.kwargs['pk'])
-            context.update({'host':host})
+            group=Group.objects.all()
+            storage=Storage.objects.all().filter(group_id=host.group_id)
+            context.update({'host':host,'group_list':group,'storage':storage})
         return context
 
 

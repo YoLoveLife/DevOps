@@ -70,9 +70,6 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
-    function DDR(){
-        window.location.href("/manager/groupnew/");
-    }
         $(document).ready(function(){
             var table=$('#group_tb').bootstrapTable({
                 url : '/api-manager/v1/group/',
