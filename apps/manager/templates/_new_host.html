@@ -1,0 +1,249 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            应用系统
+            <small>控制台</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+            <li class="active">Manager</li>
+            <li class="active">Group</li>
+            <li class="active">New</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid page-group">
+        <div class="row">
+            <div class="col-md-7">
+                <form method="post" id="form_host" enctype="application/json">
+                    {% csrf_token %}
+                    <div class="box box-grouptb" style="display: none">
+                        <div class="box-header">
+                            <h3 class="box-title">主机信息修改提示</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="alert alert-danger" id="modal-error"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box box-grouptb">
+                        <div class="box-header">
+                            <h3 class="box-title">主机逻辑信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>主机ID</label>
+                                        <input id="id_id" name="id" type="text" value="{{ host.id }}" class="form-control" readonly="yes">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>操作系统</label>
+                                        <input id="id_systemtype" name="systemtype" value="{{ host.systemtype }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>应用系统</label>
+                                        <select id="id_group" class="form-control" name="group">
+                                            {% for group in group_list %}
+                                                {% if group.id == host.group.id %}
+                                                    <option id="{{ group.id }}" selected>{{ group.name }}</option>
+                                                {% else %}
+                                                    <option id="{{ group.id }}">{{ group.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box box-grouptb">
+                        <div class="box-header">
+                            <h3 class="box-title">主机管理信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>管理IP</label>
+                                        <input id="id_manage_ip" name="manage_ip" value="{{ host.manage_ip }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>服务IP</label>
+                                        <input id="id_service_ip" name="service_ip" value="{{ host.service_ip }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>外网IP</label>
+                                        <input id="id_outer_ip" name="outer_ip" value="{{ host.outer_ip }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>管理端口</label>
+                                        <input id="id_sshport" name="sshport" value="{{ host.sshport }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>服务器位置</label>
+                                        <input id="id_server_position" name="server_position" value="{{ host.server_position }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box box-grouptb">
+                        <div class="box-header">
+                            <h3 class="box-title">主机配置信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>主机名称</label>
+                                        <input id="id_hostname" name="hostname" value="{{ host.hostname }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>普通用户</label>
+                                        <input id="id_normal_user" name="normal_user" value="{{ host.normal_user }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>用户密码</label>
+                                        <input id="id_sshpasswd" name="sshpasswd" value="{{ host.sshpasswd }}" type="password" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>CPU核数</label>
+                                        <input id="id_coreness" name="coreness" value="{{ host.coreness }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>内存大小</label>
+                                        <input id="id_memory" name="memory" value="{{ host.memory }}"type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>本地磁盘</label>
+                                        <input id="id_root_disk" name="root_disk" value="{{ host.root_disk }}" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>存储选择</label>
+                                        <select id="id_storages" name="storages" multiple="multiple" class="form-control">
+{#                                            {% for row in storage %}#}
+{#                                                <option id="{{ row.id }}">{{ row.disk_path }}</option>#}
+{#                                            {% endfor %}#}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>信息</label>
+                                        <textarea id="id_info" name="info" class="form-control" style="resize: vertical">{{ host.info }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="box box-default">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">操作</h3>
+                        </div>
+                        <div class="box-body">
+                            <button class="btn btn-app" onclick="openModal('add')">
+                                <i class="fa fa-plus"></i> 新增
+                            </button>
+                            <button class="btn btn-app" onclick="openModal('modify')">
+                                <i class="fa fa-edit"></i> 修改
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-times"></i> 删除
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-info"></i> 信息
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box box-default">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">提示</h3>
+                        </div>
+                        <div class="box-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <script>
+    function SelectStorage(){
+
+    }
+    $(document).ready(function () {
+        var objSelect = document.getElementById('id_group');
+        var obj=objSelect.options[objSelect.selectedIndex].index+1;
+        var url='/api-manager/v1/storagebygroup/'+obj;
+        var option={
+             placeholder:'请选择',//默认文字提示
+             language: "zh-CN",
+             escapeMarkup: function (markup) { return markup; },
+             ajax: {
+                type:"GET",
+                dataType:"json",
+                url: url,
+                processResults: function (data) {
+                    return {results: $.map(data,function(obj){
+                        return {id: obj.id,text:obj.disk_path};
+                    })};
+                }
+             }
+         };
+        $('#id_storages').select2(option);
+        $('#id_storages').multiselect('refresh');
+    });
+    </script>
+{% endblock %}

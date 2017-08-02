@@ -25,10 +25,10 @@
                 <!-- /.box-header -->
                 <div id="hst-toolbar">
                 <form id="toolbar-host">
-                    <button class="btn btn-app" onclick="HostInfo()">
+                    <button class="btn btn-app" type="submit" onclick="return HostInfo('add');">
                         <i class="fa fa-plus"></i> 新增
                     </button>
-                    <button class="btn btn-app" onclick="HostInfo()">
+                    <button class="btn btn-app" type="submit" onclick="return HostInfo('modify');">
                         <i class="fa fa-edit"></i> 修改
                     </button>
                     <button class="btn btn-app" disabled>
@@ -88,11 +88,18 @@
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script src="{% static 'js/select2.min.js' %}"></script>
 <script>
-    function HostInfo(){
+    function HostInfo(type){
+        var obj='0';
+        if(type='modify'){
+            var a=$('#host_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            obj=a[0].id;
+        }
         var form=$('#toolbar-host');
         var action='/manager/hostnew/';
-        var objSelect = document.getElementById('groupselect');
-        var obj=objSelect.options[objSelect.selectedIndex].index;
         form.attr('action',action+obj);
         location.href(action+obj);
     }

@@ -4,20 +4,15 @@
     <bookmark url="file://$PROJECT_DIR$/apps/manager/views.py" line="7" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ee007d-5cce-452d-a54e-94fb9407a6b8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/templates/newGroup.html" />
+    <list default="true" id="14ee007d-5cce-452d-a54e-94fb9407a6b8" name="Default" comment="modal change to page">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/templates/_new_host.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/apps/manager/templates/newGroup.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/forms.py" afterPath="$PROJECT_DIR$/apps/manager/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/models.py" afterPath="$PROJECT_DIR$/apps/manager/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/_group_modal.html" afterPath="$PROJECT_DIR$/apps/manager/templates/_group_modal.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/_host_modal.html" afterPath="$PROJECT_DIR$/apps/manager/templates/_host_modal.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/group.html" afterPath="$PROJECT_DIR$/apps/manager/templates/group.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/host.html" afterPath="$PROJECT_DIR$/apps/manager/templates/host.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/storage.html" afterPath="$PROJECT_DIR$/apps/manager/templates/storage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/urls/views_urls.py" afterPath="$PROJECT_DIR$/apps/manager/urls/views_urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/views.py" afterPath="$PROJECT_DIR$/apps/manager/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/static/less/deveops.less" afterPath="$PROJECT_DIR$/apps/static/less/deveops.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/templates/index.html" afterPath="$PROJECT_DIR$/apps/templates/index.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -70,10 +65,11 @@
       <find>multiple</find>
       <find>id_storages</find>
       <find>box</find>
-      <find>id_group</find>
       <find>self.kwargs['pk']</find>
-      <find>grouplist</find>
       <find>ManagerGroupListView</find>
+      <find>grouplist</find>
+      <find>HostForm</find>
+      <find>id_group</find>
     </findStrings>
     <replaceStrings>
       <replace>data['data']</replace>
@@ -109,15 +105,16 @@
         <option value="$PROJECT_DIR$/apps/manager/templates/storage.html" />
         <option value="$PROJECT_DIR$/apps/manager/__init__.py" />
         <option value="$PROJECT_DIR$/apps/manager/models.py" />
-        <option value="$PROJECT_DIR$/apps/manager/forms.py" />
         <option value="$PROJECT_DIR$/apps/manager/templates/newHost.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/_group_modal.html" />
-        <option value="$PROJECT_DIR$/apps/manager/templates/group.html" />
-        <option value="$PROJECT_DIR$/apps/manager/templates/_host_modal.html" />
-        <option value="$PROJECT_DIR$/apps/manager/templates/host.html" />
         <option value="$PROJECT_DIR$/apps/manager/urls/views_urls.py" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/group.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/newGroup.html" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/host.html" />
+        <option value="$PROJECT_DIR$/apps/manager/forms.py" />
         <option value="$PROJECT_DIR$/apps/manager/views.py" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/_host_modal.html" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/_new_host.html" />
       </list>
     </option>
   </component>
@@ -147,6 +144,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -187,7 +185,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="devEops" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="devEops" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -256,7 +276,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -575,7 +594,14 @@
       <option name="project" value="LOCAL" />
       <updated>1501501469484</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="modal change to page">
+      <created>1501588198625</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1501588198625</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -625,23 +651,29 @@
     <MESSAGE value="需要解决form表单的更新问题" />
     <MESSAGE value="未解决form提交与select mulite问题" />
     <MESSAGE value="selet mu" />
-    <option name="LAST_COMMIT_MESSAGE" value="selet mu" />
+    <MESSAGE value="modal change to page" />
+    <option name="LAST_COMMIT_MESSAGE" value="modal change to page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/apps/manager/forms.py</url>
-          <line>52</line>
+          <line>58</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/apps/manager/views.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="24" />
+          <line>23</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/manager/views.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="29" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -651,13 +683,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/util/fun.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="12" column="56" lean-forward="true" selection-start-line="12" selection-start-column="56" selection-end-line="13" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/util/jstack.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -829,24 +854,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/static/less/manager.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="48" column="5" lean-forward="true" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/static/plugins/select2/select2.full.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="824" column="12" lean-forward="false" selection-start-line="824" selection-start-column="8" selection-end-line="824" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -900,7 +911,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -908,14 +918,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/apps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
           <folding />
         </state>
       </provider>
@@ -928,60 +930,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="25" column="37" lean-forward="true" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="31" column="39" lean-forward="true" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
-          <folding>
-            <element signature="e#105#129#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/templates/_left_sidebar.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="48" column="58" lean-forward="false" selection-start-line="48" selection-start-column="58" selection-end-line="48" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/templates/_group_modal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="60" column="32" lean-forward="true" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/static/less/deveops.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-779">
-          <caret line="285" column="7" lean-forward="false" selection-start-line="285" selection-start-column="7" selection-end-line="285" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/templates/_host_modal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="166" column="39" lean-forward="true" selection-start-line="166" selection-start-column="39" selection-end-line="166" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/urls/api_urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="6" column="40" lean-forward="false" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -994,52 +946,138 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/_group_modal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/apps/manager/templates/group.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="57" column="26" lean-forward="true" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
+        <state relative-caret-position="468">
+          <caret line="62" column="23" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="62" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/templates/newGroup.html">
+    <entry file="file://$PROJECT_DIR$/apps/static/less/manager.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="44" column="95" lean-forward="false" selection-start-line="44" selection-start-column="95" selection-end-line="44" selection-end-column="95" />
+        <state relative-caret-position="18">
+          <caret line="1" column="17" lean-forward="false" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/templates/host.html">
+    <entry file="file://$PROJECT_DIR$/apps/static/less/deveops.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="38" column="47" lean-forward="false" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="47" />
+        <state relative-caret-position="193">
+          <caret line="275" column="5" lean-forward="false" selection-start-line="275" selection-start-column="5" selection-end-line="275" selection-end-column="5" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/pages/timeline.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/urls/api_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/manager/urls/views_urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="10" column="46" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="46" />
+        <state relative-caret-position="162">
+          <caret line="11" column="48" lean-forward="true" selection-start-line="11" selection-start-column="48" selection-end-line="11" selection-end-column="48" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/apps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="58" column="33" lean-forward="true" selection-start-line="58" selection-start-column="33" selection-end-line="58" selection-end-column="33" />
+          <folding>
+            <element signature="e#23#61#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="41" column="61" lean-forward="true" selection-start-line="41" selection-start-column="60" selection-end-line="41" selection-end-column="61" />
+          <folding>
+            <element signature="e#105#129#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/manager/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="20" column="24" lean-forward="false" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="24" />
+        <state relative-caret-position="288">
+          <caret line="31" column="0" lean-forward="true" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/api.py">
+    <entry file="file://$PROJECT_DIR$/apps/manager/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="30" column="58" lean-forward="false" selection-start-line="30" selection-start-column="58" selection-end-line="30" selection-end-column="58" />
+        <state relative-caret-position="180">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/host.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/_host_modal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="185" column="53" lean-forward="true" selection-start-line="185" selection-start-column="53" selection-end-line="185" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/_new_host.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="236" column="25" lean-forward="true" selection-start-line="236" selection-start-column="25" selection-end-line="236" selection-end-column="25" />
           <folding />
         </state>
       </provider>
