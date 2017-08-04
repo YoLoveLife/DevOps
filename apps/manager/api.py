@@ -57,7 +57,6 @@ class HostCreateAPI(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         hf=HostForm(request.POST)
-        print request.POST['storages']
 
         if hf.is_valid():#数据校验
             data=hf.clean()
