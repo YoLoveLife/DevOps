@@ -14,8 +14,12 @@ class StorageSerializer(serializers.HyperlinkedModelSerializer):
                   ,'group'
                   )
 
+class StorageListSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
 class HostSerializer(serializers.ModelSerializer):
     group=GroupSerializer()
+    storages=StorageListSerializer(many=True)
     class Meta:
         model=Host
         fields = ('id','group','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',

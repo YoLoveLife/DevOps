@@ -27,7 +27,7 @@
                 <form id="toolbar-host">
                     <button class="btn btn-app" type="submit" onclick="return HostInfo('add');">
                         <i class="fa fa-plus"></i> 新增
-                    </button>
+                    </button>    <script src="{% static 'js/jquery.form.min.js' %}"></script>
                     <button class="btn btn-app" type="submit" onclick="return HostInfo('modify');">
                         <i class="fa fa-edit"></i> 修改
                     </button>
@@ -86,7 +86,6 @@
     <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
-    <script src="{% static 'js/select2.min.js' %}"></script>
 <script>
     function HostInfo(type){
         var obj='0';

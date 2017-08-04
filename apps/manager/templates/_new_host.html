@@ -19,7 +19,7 @@
     <section class="content container-fluid page-group">
         <div class="row">
             <div class="col-md-7">
-                <form method="post" id="form_host" enctype="application/json">
+                <form method="post" action="/api-manager/v1/hostcreate/" id="form_host" enctype="application/json">
                     {% csrf_token %}
                     <div class="box box-grouptb" style="display: none">
                         <div class="box-header">
@@ -55,7 +55,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>应用系统</label>
-                                        <select id="id_group" class="form-control" name="group">
+                                        <select id="id_group" class="form-control" name="group" onchange="ChangeGroup()">
                                             {% for group in group_list %}
                                                 {% if group.id == host.group.id %}
                                                     <option id="{{ group.id }}" selected>{{ group.name }}</option>
@@ -158,19 +158,26 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label>存储选择</label>
-                                        <select id="id_storages" name="storages" multiple="multiple" class="form-control">
+                                <div class="col-md-3">
+                                    <label>存储选择</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+{#                                    <div class="form-group">#}
+                                        <select id="id_storages" name="storages" multiple="multiple">
 {#                                            {% for row in storage %}#}
 {#                                                <option id="{{ row.id }}">{{ row.disk_path }}</option>#}
 {#                                            {% endfor %}#}
                                         </select>
-                                    </div>
+{#                                    </div>#}
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-7">
                                     <div class="form-group">
                                         <label>信息</label>
+                                        <br />
                                         <textarea id="id_info" name="info" class="form-control" style="resize: vertical">{{ host.info }}</textarea>
                                     </div>
                                 </div>
@@ -186,11 +193,11 @@
                             <h3 class="box-title" style="text-align: center">操作</h3>
                         </div>
                         <div class="box-body">
-                            <button class="btn btn-app" onclick="openModal('add')">
-                                <i class="fa fa-plus"></i> 新增
+                            <button class="btn btn-app" onclick="SubmitForm()">
+                                <i class="fa fa-check"></i> 提交
                             </button>
-                            <button class="btn btn-app" onclick="openModal('modify')">
-                                <i class="fa fa-edit"></i> 修改
+                            <button class="btn btn-app" onclick="CleanAll()">
+                                <i class="fa fa-edit"></i> 清空
                             </button>
                             <button class="btn btn-app" disabled>
                                 <i class="fa fa-times"></i> 删除
@@ -218,32 +225,62 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/select2.min.js' %}"></script>
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/multiple-select.js' %}"></script>
     <script>
-    function SelectStorage(){
+    function InitSelect(){
+        var selectObj=document.getElementById('id_storages');
+        selectObj.innerHTML="";
+        var selectGroup=document.getElementById('id_group');
+        var url='/api-manager/v1/storagebygroup/'+selectGroup.options[selectGroup.selectedIndex].id;
+        $.ajax({
+            url :   url,
+            type    :   'GET',
+            async   :   false,
+            dataType    :   'json',
+            success :   function(data,testStatus,jqXHR){
+                for(var i=0;i<data.length;i++) {
+                    var option=new Option(data[i].disk_path, data[i].id);
+                    selectObj.options.add(option);
+                }
+            }
+        });
+{#        $('#id_storages').multipleSelect({#}
+{#            selectAll   :   false,#}
+{#            placeholder :   "请选择存储"#}
+{#        });#}
+    }
 
+    function CleanAll(){
+        $(':input').each(function(){
+            if(this.id!="id_id"){
+                this.value="";
+            }
+
+        })
+    }
+
+    function SubmitForm(){
+        var ajax_option={
+            contentType:"application/json",
+            success:function (data,testStatus,jqXHR) {
+                if(data.success==true){
+                    var objSelect = document.getElementById('groupselect');
+                    objSelect.selectedIndex=0;
+                    window.location.reload();
+                }
+            }
+        }
+        var form=$('#form_host');
+{#        form.submit();#}
+        form.ajaxSubmit(ajax_option);
+    }
+
+    function ChangeGroup() {
+        InitSelect();
     }
     $(document).ready(function () {
-        var objSelect = document.getElementById('id_group');
-        var obj=objSelect.options[objSelect.selectedIndex].index+1;
-        var url='/api-manager/v1/storagebygroup/'+obj;
-        var option={
-             placeholder:'请选择',//默认文字提示
-             language: "zh-CN",
-             escapeMarkup: function (markup) { return markup; },
-             ajax: {
-                type:"GET",
-                dataType:"json",
-                url: url,
-                processResults: function (data) {
-                    return {results: $.map(data,function(obj){
-                        return {id: obj.id,text:obj.disk_path};
-                    })};
-                }
-             }
-         };
-        $('#id_storages').select2(option);
-        $('#id_storages').multiselect('refresh');
+        InitSelect();
     });
     </script>
 {% endblock %}
