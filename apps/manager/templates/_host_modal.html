@@ -1,239 +1,26 @@
 {% extends '_modal.html' %}
 {% load static %}
-{% block modal_id %}HostInfo{% endblock %}
-{% block modal_class %}modal-hostinfo{% endblock %}
+{% block modal_id %}Update-Group{% endblock %}
+{% block modal_class %}modal-hostupdategroup{% endblock %}
 {% block modal_style %}width:600px;{% endblock %}
-{% block modal_title %}主机信息{% endblock %}
+{% block modal_title %}主机应用组修改{% endblock %}
 {% block modal_body %}
                 <form method="post" id="form_host" enctype="application/json">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-4">
-                            <p class="alert alert-danger" id="modal-error" style="display: none"></p>
-                        </div>
-                    </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>主机ID</label>
-                            <input id="id_id" name="id" type="text" class="form-control" readonly="yes">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>操作系统</label>
-                            <input id="id_systemtype" name="systemtype" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>应用系统</label>
-                            <select id="id_group" class="form-control" name="group" onchange="Select2()"></select>
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>管理IP</label>
-                            <input id="id_manage_ip" name="manage_ip" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>服务IP</label>
-                            <input id="id_service_ip" name="service_ip" type="text" class="form-control">
-                        </div>
-                    </div>
                         <div class="col-md-2">
-                        <div class="form-group">
-                            <label>外网IP</label>
-                            <input id="id_outer_ip" name="outer_ip" type="text" class="form-control">
+                            <div class="form-group">
+                                <select name="group" id="groupcg">
+                                    {% for group in grouplist %}
+                                        <option value="{{ group.id }}">{{ group.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>服务器位置</label>
-                            <input id="id_server_position" name="server_position" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>主机名称</label>
-                            <input id="id_hostname" name="hostname" type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>普通用户</label>
-                            <input id="id_normal_user" name="normal_user" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>用户密码</label>
-                            <input id="id_sshpasswd" name="sshpasswd" type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>管理端口</label>
-                            <input id="id_sshport" name="sshport" type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>CPU核数</label>
-                            <input id="id_coreness" name="coreness" type="text" class="form-control">
-                        </div>
-                    </div>
-                        <div class="col-md-2">
-                        <div class="form-group">
-                            <label>内存大小</label>
-                            <input id="id_memory" name="memory" type="text" class="form-control">
-                        </div>
-                    </div>
-                        <div class="col-md-2">
-                        <div class="form-group">
-                            <label>本地磁盘</label>
-                            <input id="id_root_disk" name="root_disk" type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <hr/>
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>存储选择</label>
-                            <select id="id_storages" name="storages" multiple="multiple" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <hr />
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label>信息</label>
-                            <input id="id_info" name="info" type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
                 </form>
 {% endblock %}
 
-{% block modal_confirm_id %}modal_host_id{% endblock %}
+{% block modal_confirm_id %}modal_host_updategroup{% endblock %}
 {% block modal_js %}
-    <script type="text/javascript">
-     function cleanForm(form){
-        $(':input',form).each(function(){
-            var type=this.type;
-            var tag=this.tagName.toLowerCase();
-            var id=this.id;
-            if(type=='text'||type=='password'||tag=='textarea'){
-                if(id=='id_coreness'||id=='id_memory'||id=='id_root_disk'||id=='id_share_disk') {
-                    this.value='0';
-                }else{
-                    this.value='';
-                }
-            }else if(type=='checkbox'||type=='radio'){
-                this.checked=false;
-            }else if(tag=='select'){
-                this.selectedIndex=-1;
-            }
-        });
-    }
-    function Select2(){
-         var objSelect = document.getElementById('id_group');
-         var obj=objSelect.options[objSelect.selectedIndex].index+1;
-         var url='/api-manager/v1/storagebygroup/'+obj;
-         var option={
-             placeholder:'请选择',//默认文字提示
-             language: "zh-CN",
-             escapeMarkup: function (markup) { return markup; },
-             ajax: {
-                type:"GET",
-                dataType:"json",
-                url: url,
-                processResults: function (data) {
-                    return {results: $.map(data,function(obj){
-                        return {id: obj.id,text:obj.disk_path};
-                    })};
-                }
-                },
-         };
-         $('#id_storages').select2(option);
-         $("#id_storages").on("select2:select select2:unselect", function (e) {
-                //this returns all the selected item
-                var storages= $(this).val();
-                //Gets the last selected item
-{#                #var storages = e.params.data.id;#}
-            })
-     }
-     function openModal(type) {
-        var objS=document.getElementById('id_group');
-        objS.innerHTML='';
-        cleanForm($('#form_host'));
-        $.ajax({
-            url    :   '/api-manager/v1/group/',
-            type   :   'get',
-            async:false,
-            success    :   function(data,testStatus,jqXHR){
-                for(var i=0;i<data.length;i++){
-                    objS.options.add(new Option(data[i].name,data[i].id));
-                }
-            },
-        })
-        if(type=='add'){//ADD
-            $('#id_id').val('#New');
-            $('#modal-error').css('display','none');
-        }else if(type=='modify'){//MODIFY
-            $('#modal-error').css('display','none');
-            var a=$('#host_tb').bootstrapTable('getSelections');
-            if(a.length<1){
-                alert('请选择数据');
-                return ;
-            }
-            else{
-                $('#id_id').val(a[0].id);
-                $('#id_systemtype').val(a[0].systemtype);
-                objS.selectedIndex=a[0].group.id-1;
-                $('#id_manage_ip').val(a[0].manage_ip);
-                $('#id_service_ip').val(a[0].service_ip);
-                $('#id_outer_ip').val(a[0].outer_ip);
-                $('#id_server_position').val(a[0].server_position);
-                $('#id_hostname').val(a[0].hostname);
-                $('#id_normal_user').val(a[0].normal_user);
-                $('#id_sshpasswd').val(a[0].sshpasswd);
-                $('#id_sshport').val(a[0].sshport);
-                $('#id_coreness').val(a[0].coreness);
-                $('#id_memory').val(a[0].memory);
-                $('#id_root_disk').val(a[0].root_disk);
-                $('#id_share_disk_path').val(a[0].share_disk_path);
-                $('#id_share_disk').val(a[0].share_disk);
-                $('#id_info').val(a[0].info);
-            }
-        }
-        $("#HostInfo").modal();
-        Select2();
-    }
-    </script>
-
-
 {% endblock %}

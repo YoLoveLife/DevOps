@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from .models import Host,Group,Storage
 from .serializers import HostSerializer,GroupSerializer,StorageSerializer,HostUpdateStorageSerializer
+import serializers
 from rest_framework.views import Response,status
 from rest_framework import generics
 from .forms import HostForm,GroupForm,StorageForm
@@ -77,6 +78,12 @@ class HostUpdateStorageApi(generics.RetrieveUpdateAPIView):
     serializer_class = HostUpdateStorageSerializer
     permission_classes = [IsAuthenticated]
 
+
+
+class HostUpdateGroupApi(generics.RetrieveUpdateAPIView):
+    queryset = Group.objects.all()
+    serializer_class = serializers.HostUpdateGroupSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 def hostDataClean(data,type):

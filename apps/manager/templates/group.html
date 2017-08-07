@@ -43,10 +43,11 @@
                         <h3 class="box-title" style="text-align: center">操作</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-app" onclick="openModal('add')">
+                        <form id="toolbar-group">
+                        <button class="btn btn-app" id="add_group">
                             <i class="fa fa-plus"></i> 新增
                         </button>
-                        <button class="btn btn-app" onclick="openModal('modify')">
+                        <button class="btn btn-app" id="modify_group">
                             <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
@@ -55,6 +56,7 @@
                         <button class="btn btn-app" disabled>
                             <i class="fa fa-info"></i> 信息
                         </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -115,21 +117,40 @@
                 ]
             });
 
-            $('#modal_group_id').click(function(){
-                var ajax_option={
-                    url:"/api-manager/v1/groupcreate/",
-                    type:"post",
-                    success:function (data,testStatus,jqXHR) {
-                        if(data.success==true){
-                            window.location.reload();
-                        }else{
-                            $('#modal-error').html(data.msg).css('display','block');
-                        }
-                    }
-                }
-                var $form=$('#form_group');
-                $form.ajaxSubmit(ajax_option);
-            })
+{#            $('#modal_group_id').click(function(){#}
+{#                var ajax_option={#}
+{#                    url:"/api-manager/v1/groupcreate/",#}
+{#                    type:"post",#}
+{#                    success:function (data,testStatus,jqXHR) {#}
+{#                        if(data.success==true){#}
+{#                            window.location.reload();#}
+{#                        }else{#}
+{#                            $('#modal-error').html(data.msg).css('display','block');#}
+{#                        }#}
+{#                    }#}
+{#                }#}
+{#                var $form=$('#form_group');#}
+{#                $form.ajaxSubmit(ajax_option);#}
+{#            })#}
         })
+            .on('click','#add_group',function () {
+                var form=$('#toolbar-group');
+                var action='/manager/group/create/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#modify_group',function () {
+                var form=$('#toolbar-group');
+                var action='/manager/group/';
+                var a=$('#group_tb').bootstrapTable('getSelections');
+                if(a.length<1){
+                    alert('请选择数据');
+                    return false;
+                }
+                var obj=a[0].id;
+                action+=obj+'/update/';
+                form.attr('action',action);
+                location.href(action);
+            })
     </script>
 {% endblock %}
