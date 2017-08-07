@@ -88,19 +88,23 @@
     <script src="{% static 'js/tableExport.min.js' %}"></script>
 <script>
     function HostInfo(type){
-        var obj='0';
-        if(type='modify'){
+        var form=$('#toolbar-host');
+        var action='';
+        if(type=='add'){
+            action='/manager/host/create/';
+        }
+        else if(type=='modify'){
             var a=$('#host_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
-            obj=a[0].id;
+            var obj=a[0].id;
+            action='/manager/host/'+obj+'/update/';
+
         }
-        var form=$('#toolbar-host');
-        var action='/manager/hostnew/';
-        form.attr('action',action+obj);
-        location.href(action+obj);
+        form.attr('action',action);
+        location.href(action);
     }
 
     function SelectChange(){

@@ -14,12 +14,8 @@ class StorageSerializer(serializers.HyperlinkedModelSerializer):
                   ,'group'
                   )
 
-class StorageListSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-
 class HostSerializer(serializers.ModelSerializer):
     group=GroupSerializer()
-    storages=StorageListSerializer(many=True)
     class Meta:
         model=Host
         fields = ('id','group','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
@@ -28,3 +24,14 @@ class HostSerializer(serializers.ModelSerializer):
                   )
 
 
+class HostUpdateStorageSerializer(serializers.ModelSerializer):
+    storages=serializers.PrimaryKeyRelatedField(many=True,queryset=Storage.objects.all())
+    class Meta:
+        model = Host
+        fields = ['id','storages']
+
+    def create(self, validated_data):
+        return
+
+    def update(self, instance, validated_data):
+        return

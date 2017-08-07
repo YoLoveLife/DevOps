@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from .models import Host,Group,Storage
-from .serializers import HostSerializer,GroupSerializer,StorageSerializer
+from .serializers import HostSerializer,GroupSerializer,StorageSerializer,HostUpdateStorageSerializer
 from rest_framework.views import Response,status
 from rest_framework import generics
 from .forms import HostForm,GroupForm,StorageForm
@@ -71,6 +71,13 @@ class HostCreateAPI(generics.CreateAPIView):
         else:
             data={'success':False,'msg':'存在字段错误'}
             return Response(data,status=status.HTTP_200_OK)
+
+class HostUpdateStorageApi(generics.RetrieveUpdateAPIView):
+    queryset = Host.objects.all()
+    serializer_class = HostUpdateStorageSerializer
+    permission_classes = [IsAuthenticated]
+
+
 
 def hostDataClean(data,type):
     if type==1 : #ADD

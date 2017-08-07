@@ -5,6 +5,7 @@
 # Email YoLoveLife@outlook.com
 from django import forms
 import models
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm
 
 
@@ -27,14 +28,43 @@ class GroupForm(forms.Form):
         else:
             return {'success':True,'msg':'','data':self.data}
 
+class HostCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.Host
+        fields = ['systemtype','manage_ip',
+                  'service_ip','outer_ip','server_position',
+                  'hostname','normal_user','sshport',
+                  'coreness','memory','root_disk','info']
+        widgets = {
+            'info':forms.Textarea(attrs=None)
+        }
+        labels = {
+            'systemtype':'操作系统','manage_ip':'管理IP','sshport':'管理端口',
+            'service_ip':'服务IP','outer_ip':'外网IP','server_position':'服务器位置',
+            'hostname':'主机名称','normal_user':'普通用户','coreness':'CPU核数',
+            'memory':'内存大小','root_disk':'本地磁盘','info':'信息'
+        }
 
 class HostForm(forms.ModelForm):
     class Meta:
         model = models.Host
-        fields = ('id','group','storages','systemtype',
+        fields = ['group','storages','systemtype',
                  'manage_ip','service_ip','outer_ip',
                  'server_position','hostname','normal_user',
-                 'sshpasswd','sshport','coreness','memory','root_disk','info')
+                 'sshpasswd','sshport','coreness','memory','root_disk','info']
+        widgets = {
+            'storages':forms.SelectMultiple(
+                attrs={'class':'select2',
+                       'data-placeholder':_('Select asset storages')}),
+            'sshpasswd':forms.TextInput(attrs={'type':'password'})
+        }
+        labels = {
+            'systemtype':'操作系统','manage_ip':'管理IP','sshport':'管理端口',
+            'service_ip':'服务IP','outer_ip':'外网IP','server_position':'服务器位置',
+            'hostname':'主机名称','normal_user':'普通用户','sshpasswd':'用户密码',
+            'coreness':'CPU核数','memory':'内存大小','root_disk':'本地磁盘',
+            'storages':'存储选择','info':'信息'
+        }
     # id = forms.IntegerField(label="ID",
     #                         widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}))
     # c = models.Group.objects.all().values_list('id','name')
@@ -55,18 +85,19 @@ class HostForm(forms.ModelForm):
     # root_disk=forms.CharField(label="RootDisk",max_length=7,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
     # info=forms.CharField(label="Info",max_length=200,widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}))
 
-    def is_valid(self):
-        if self.data['manage_ip']!="" and self.data.has_key('group'):
-            return True
-        else:
-            return False
-
-    def clean(self):
-        is_manageip_exist=models.Host.objects.filter(manage_ip=self.data['manage_ip']).exists()
-        if is_manageip_exist and self.data['id']=='#New':
-            return {'success':False,'msg':'该管理IP已经登记'}
-        else:
-            return {'success':True,'msg':'','data':self.data,}
+    # def is_valid(self):
+    #     # if self.data['manage_ip']!="" and self.data.has_key('group'):
+    #     #     return True
+    #     # else:
+    #     #     return False
+    #     return True
+    #
+    # def clean(self):
+    #     is_manageip_exist=models.Host.objects.filter(manage_ip=self.data['manage_ip']).exists()
+    #     if is_manageip_exist and self.data['id']=='#New':
+    #         return {'success':False,'msg':'该管理IP已经登记'}
+    #     else:
+    #         return {'success':True,'msg':'','data':self.data,}
 
 class StorageForm(forms.Form):
     id = forms.IntegerField(label="ID",
