@@ -3,9 +3,14 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView,FormView
+from django.views.generic.edit import CreateView,UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from models import Group,Host,Storage
-from forms import GroupForm,HostForm,StorageForm
+from django.urls import reverse_lazy
+from forms import GroupForm,HostForm,StorageForm,HostCreateForm
+from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
     template_name= 'group.html'
@@ -14,24 +19,48 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
 
-class ManagerHostNew(LoginRequiredMixin,FormView):
+class ManagerHostCreateView(LoginRequiredMixin,CreateView):
+    model = Host
+    form_class = HostCreateForm
     template_name = '_new_host.html'
-    form_class=GroupForm
+    success_url = reverse_lazy('manager:host')
+
+    def form_valid(self, form):
+        self.host = host = form.save()
+        host.create_by = self.request.user.username or 'Admin'
+        host.date_created = timezone.now()
+        host.save()
+        return super(ManagerHostCreateView,self).form_invalid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(ManagerHostNew, self).get_context_data(**kwargs)
-        if self.kwargs['pk'] == '0' :
-            context.update({'host':''})
-        else:
-            host=Host.objects.get(id=self.kwargs['pk'])
-            group=Group.objects.all()
-            storage=Storage.objects.all().filter(group_id=host.group_id)
-            context.update({'host':host,'group_list':group,'storage':storage})
-        return context
+        context={
+            'app':'Host',
+            'action':'Create host',
+        }
+        kwargs.update(context)
+        return super(ManagerHostCreateView,self).get_context_data(**kwargs)
+
+    def get_success_url(self):
+        return super(ManagerHostCreateView, self).get_success_url()
 
 
-    def get(self, request, *args, **kwargs):
-        return super(ManagerHostNew, self).get(request, *args, **kwargs)
+
+class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
+    model = Host
+    form_class = HostCreateForm
+    template_name = '_new_host.html'
+    success_url = reverse_lazy('manager:host')
+
+    def get_context_data(self, **kwargs):
+        context={
+            'app':'Host',
+            'action':'Update host',
+        }
+        kwargs.update(context)
+        return super(ManagerHostUpdateView,self).get_context_data(**kwargs)
+
+    def get_success_url(self):
+        return super(ManagerHostUpdateView, self).get_success_url()
 
 
 class ManagerHostListView(LoginRequiredMixin,FormView):

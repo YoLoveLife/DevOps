@@ -9,4 +9,7 @@ urlpatterns=[
     url(r'^v1/storage/',api.StorageListAPI.as_view()),
     url(r'^v1/storagecreate/',api.StorageCreateAPI.as_view()),
     url(r'^v1/storagebygroup/(?P<pk>[0-9]+)',api.StorageListByGroup.as_view()),
+
+    #test
+    url(r'^v1/hostupdate/(?P<pk>[0-9]+)/storages/',api.HostUpdateStorageApi.as_view()),
 ]
