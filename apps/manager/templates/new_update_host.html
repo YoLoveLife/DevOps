@@ -6,14 +6,14 @@
 <!--Content Header-->
     <section class="content-header">
         <h1>
-            应用系统
+            主机
             <small>控制台</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
             <li class="active">Manager</li>
             <li class="active">Host</li>
-            <li class="active">New</li>
+            <li class="active">New/Update</li>
         </ol>
     </section>
     <!--Content Header-->
@@ -21,7 +21,7 @@
     <section class="content container-fluid page-group">
         <div class="row">
             <div class="col-md-7">
-                <form method="post" action="" id="host_form" enctype="multipart/form-data">
+                <form method="post" action="" id="storage_form" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="box box-grouptb" style="display: none">
                         <div class="box-header">
@@ -44,25 +44,21 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_manage_ip" name="manage_ip" value="{{ host.manage_ip }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.manage_ip %}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_service_ip" name="service_ip" value="{{ host.service_ip }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.service_ip %}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_outer_ip" name="outer_ip" value="{{ host.outer_ip }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.outer_ip %}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_sshport" name="sshport" value="{{ host.sshport }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.sshport %}
                                     </div>
                                 </div>
@@ -70,13 +66,11 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_server_position" name="server_position" value="{{ host.server_position }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.server_position %}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_systemtype" name="systemtype" value="{{ host.systemtype }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.systemtype %}
                                     </div>
                                 </div>
@@ -92,61 +86,35 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_hostname" name="hostname" value="{{ host.hostname }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.hostname %}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_normal_user" name="normal_user" value="{{ host.normal_user }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.normal_user %}
                                     </div>
                                 </div>
-{#                                <div class="col-md-3">#}
-{#                                    <div class="form-group">#}
-{#                                        <input id="id_sshpasswd" name="sshpasswd" value="{{ host.sshpasswd }}" type="password" class="form-control">#}
-{#                                        {% bootstrap_field form.sshpasswd %}#}
-{#                                    </div>#}
-{#                                </div>#}
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_coreness" name="coreness" value="{{ host.coreness }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.coreness %}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-{#                                        <input id="id_memory" name="memory" value="{{ host.memory }}"type="text" class="form-control">#}
                                         {% bootstrap_field form.memory %}
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
-{#                                        <input id="id_root_disk" name="root_disk" value="{{ host.root_disk }}" type="text" class="form-control">#}
                                         {% bootstrap_field form.root_disk %}
                                     </div>
                                 </div>
                             </div>
-{#                            <div class="row">#}
-{#                                <div class="col-md-3">#}
-{#                                    {% bootstrap_field form.storages %}#}
-{#                                    <div class="form-group">#}
-{#                                        <select id="id_storages" name="storages" multiple="multiple">#}
-{#                                            {% for row in storage %}#}
-{#                                                <option id="{{ row.id }}">{{ row.disk_path }}</option>#}
-{#                                            {% endfor %}#}
-{#                                        </select>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="form-group">
-{#                                        <label>信息</label>#}
-{#                                        <br />#}
-{#                                        <textarea id="id_info" name="info" class="form-control" style="resize: vertical">{{ host.info }}</textarea>#}
                                         {% bootstrap_field form.info %}
                                     </div>
                                 </div>
@@ -194,66 +162,13 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery.form.min.js' %}"></script>
     <script src="{% static 'js/select2.full.min.js' %}"></script>
     <script>
-{#    function InitSelect(){#}
-{#        var selectObj=document.getElementById('id_storages');#}
-{#        selectObj.innerHTML="";#}
-{#        var selectGroup=document.getElementById('id_group');#}
-{#        var url='/api-manager/v1/storagebygroup/'+selectGroup.options[selectGroup.selectedIndex].id;#}
-{#        $.ajax({#}
-{#            url :   url,#}
-{#            type    :   'GET',#}
-{#            async   :   false,#}
-{#            dataType    :   'json',#}
-{#            success :   function(data,testStatus,jqXHR){#}
-{#                for(var i=0;i<data.length;i++) {#}
-{#                    var option=new Option(data[i].disk_path, data[i].id);#}
-{#                    selectObj.options.add(option);#}
-{#                }#}
-{#            }#}
-{#        });#}
-{#    }#}
-{##}
-{#    function CleanAll(){#}
-{#        $(':input').each(function(){#}
-{#            if(this.id!="id_id"){#}
-{#                this.value="";#}
-{#            }#}
-{##}
-{#        })#}
-{#    }#}
-{##}
-{#    function SubmitForm(){#}
-{#        var ajax_option={#}
-{#            contentType:"application/json",#}
-{#            success:function (data,testStatus,jqXHR) {#}
-{#                if(data.success==true){#}
-{#                    var objSelect = document.getElementById('groupselect');#}
-{#                    objSelect.selectedIndex=0;#}
-{#                    window.location.reload();#}
-{#                }#}
-{#            }#}
-{#        }#}
-{#        var form=$('#form_host');#}
-{#        form.ajaxSubmit(ajax_option);#}
-{#    }#}
-{##}
-{#    function ChangeGroup() {#}
-{#        InitSelect();#}
-{#    }#}
     $(document).ready(function () {
-{#        InitSelect();#}
         $('.select2').select2();
-        $("#id_tags").select2({
-                tags: true,
-                maximumSelectionLength: 8  //最多能够选择的个数
-                //closeOnSelect: false
-        });
-        $('#btn_submit').click(function () {
+    })
+        .on('click','#host_form',function () {
             $('#host_form').submit();
-        });
-    });
+        })
     </script>
 {% endblock %}

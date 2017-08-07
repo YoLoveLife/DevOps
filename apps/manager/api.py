@@ -47,8 +47,8 @@ class HostListByGroupAPI(generics.ListAPIView):
 
     def get_queryset(self):
         if self.kwargs['pk']=='0':
-            return {}
-        queryset=Host.objects.filter(group_id=self.kwargs['pk'])
+            return {} #group_id=self.kwargs['pk']
+        queryset=Group.objects.get(id=self.kwargs['pk']).hosts
         return queryset
 
 
@@ -154,6 +154,7 @@ class StorageListByGroup(generics.ListAPIView):
     def get_queryset(self):
         if self.kwargs['pk']=='0':
             return {}
-        queryset=Storage.objects.filter(group_id=self.kwargs['pk'])
+        #queryset=Storage.objects.filter(group_id=self.kwargs['pk'])
+        queryset ={}
         return queryset
 

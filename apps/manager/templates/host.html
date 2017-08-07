@@ -85,27 +85,11 @@
                         </div>
                     </div>
                 </div>
-{#                <div class="row">#}
-{#                    <div class="box box-default">#}
-{#                        <div class="box-header">#}
-{#                            <h3 class="box-title" style="text-align: center">逻辑维护</h3>#}
-{#                        </div>#}
-{#                        <div class="box-body">#}
-{#                            <button class="btn btn-app" id="chg_group">#}
-{#                                <i class="fa fa-edit"></i> 修改应用组#}
-{#                            </button>#}
-{#                            <button class="btn btn-app" id="modify_host">#}
-{#                                <i class="fa fa-edit"></i> 修改主机#}
-{#                            </button>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
         </div>
     </div>
 </section>
 <!--Main Content-->
-{% include "_host_modal.html" %}
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'js/jquery.form.min.js' %}"></script>
@@ -222,32 +206,5 @@
             form.attr('action',action);
             location.href(action);
         })
-        .on('click','#chg_group',function () {
-            var a=$('#host_tb').bootstrapTable('getSelections');
-            if(a.length<1){
-                alert('请选择数据');
-                return false;
-            }
-            var obj=a[0].id;
-            document.getElementById('groupcg').selectedIndex=a[0].id;
-            $('#Update-Group').modal('show');
-        })
-{#        .on('click','#modal_host_updategroup',function () {#}
-{#            var a=$('#host_tb').bootstrapTable('getSelections');#}
-{#            var obj=a[0].id;#}
-{#            var ajax_option={#}
-{#                url:"/api-manager/v1/host-updategroup/"+obj+"/",#}
-{#                type:"put",#}
-{#                success:function (data,testStatus,jqXHR) {#}
-{#                    if(data.success==true){#}
-{#                        window.location.reload();#}
-{#                    }else{#}
-{#                        $('#modal-error').html(data.msg).css('display','block');#}
-{#                    }#}
-{#                }#}
-{#            }#}
-{#            $form.ajaxSubmit(ajax_option);#}
-{##}
-{#        })#}
 </script>
 {% endblock %}

@@ -4,20 +4,22 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf.urls import url
-from rest_framework import viewsets
-from .. import views
-
+from ..views import group,host,storage,views
 urlpatterns = [
     #Resource host url
-    url(r'^host/$', views.ManagerHostListView.as_view(), name='host'),
-    url(r'^host/create/$',views.ManagerHostCreateView.as_view(),name='hostcreate'),
-    url(r'^host/(?P<pk>[0-9]+)/update/',views.ManagerHostUpdateView.as_view(),name='hostupdate'),
+    url(r'^host/$', host.ManagerHostListView.as_view(), name='host'),
+    url(r'^host/create/$',host.ManagerHostCreateView.as_view(),name='hostcreate'),
+    url(r'^host/(?P<pk>[0-9]+)/update/',host.ManagerHostUpdateView.as_view(),name='hostupdate'),
 
     #Resource group url
-    url(r'^group/$', views.ManagerGroupListView.as_view(), name='group'),
-    url(r'^group/create/$', views.ManagerGroupCreateView.as_view(), name='groupcreate'),
-    url(r'^group/(?P<pk>[0-9]+)/update/', views.ManagerGroupUpdateView.as_view(), name='groupupdate'),
+    url(r'^group/$', group.ManagerGroupListView.as_view(), name='group'),
+    url(r'^group/create/$', group.ManagerGroupCreateView.as_view(), name='groupcreate'),
+    url(r'^group/(?P<pk>[0-9]+)/update/', group.ManagerGroupUpdateView.as_view(), name='groupupdate'),
+
+    #Resource storage url
+    url(r'^storage/$', storage.ManagerStorageListView.as_view(), name='storage'),
+    url(r'^storage/create/$', storage.ManagerStorageCreateView.as_view(), name='storagecreate'),
+    url(r'^storage/(?P<pk>[0-9]+)/update/', storage.ManagerStorageUpdateView.as_view(), name='storageupdate'),
 
     url(r'^search$',views.ManagerSearchListView.as_view(),name='search'),
-    url(r'^storage$',views.ManagerStorageListView.as_view(),name='storage'),
 ]

@@ -31,7 +31,6 @@
                                         <th data-field="disk_path">存储路径</th>
                                         <th data-field="disk_size">存储大小</th>
                                         <th data-field="info">存储信息</th>
-                                        <th data-field="group.name">所属组</th>
                                     </tr>
                             </thead>
                         </table>
@@ -44,10 +43,11 @@
                         <h3 class="box-title" style="text-align: center">操作</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-app" data-toggle="modal" data-target="#StorageInfo" onclick="openModal('add')">
+                        <form id="toolbar-storage">
+                        <button class="btn btn-app" id="add_storage">
                             <i class="fa fa-plus"></i> 新增
                         </button>
-                        <button class="btn btn-app" data-toggle="modal" data-target="#StorageInfo" onclick="openModal('modify')">
+                        <button class="btn btn-app" id="modify_storage">
                             <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
@@ -56,6 +56,7 @@
                         <button class="btn btn-app" disabled>
                             <i class="fa fa-info"></i> 信息
                         </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -63,7 +64,6 @@
     </section>
     <!--Main Content-->
 <!--Modal-->
-{% include "_storage_modal.html" %}
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'js/jquery.form.min.js' %}"></script>
@@ -72,10 +72,6 @@
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
         $(document).ready(function(){
-            $('#StorageInfo').on("hidden.bs.modal",function(e){
-                $(this).removeData('bs.modal');
-            });
-
             var table=$('#storage_tb').bootstrapTable({
                 url : '/api-manager/v1/storage/',
                 method  : 'GET',
@@ -116,29 +112,28 @@
                         title:'存储信息',
                         field:'info',
                         align:'center'
-                    },{
-                        title:'所属于组',
-                        field:'group.name',
-                        align:'center'
                     }
                 ]
             });
-
-            $('#modal_storage_id').click(function(){
-                var ajax_option={
-                    url:"/api-manager/v1/storagecreate/",
-                    type:"post",
-                    success:function (data,testStatus,jqXHR) {
-                        if(data.success==true){
-                            window.location.reload();
-                        }else{
-                            $('#modal-error').html(data.msg).css('display','block');
-                        }
-                    }
-                }
-                var $form=$('#form_storage');
-                $form.ajaxSubmit(ajax_option);
-            })
         })
+            .on('click','#add_storage',function () {
+                var form=$('#toolbar-storage');
+                var action='/manager/storage/create/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#modify_storage',function () {
+                var form=$('#toolbar-storage');
+                var action='/manager/storage/';
+                var a=$('#storage_tb').bootstrapTable('getSelections');
+                if(a.length<1){
+                    alert('请选择数据');
+                    return false;
+                }
+                var obj=a[0].id;
+                action+=obj+'/update/';
+                form.attr('action',action);
+                location.href(action);
+            })
     </script>
 {% endblock %}

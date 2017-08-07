@@ -7,20 +7,18 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
                 )
 
 class StorageSerializer(serializers.HyperlinkedModelSerializer):
-    group=GroupSerializer()
     class Meta:
         model = Storage
         fields = ('id','disk_size','disk_path','info'
-                  ,'group'
                   )
 
 class HostSerializer(serializers.ModelSerializer):
-    group=GroupSerializer()
+    groups=GroupSerializer()
     class Meta:
         model=Host
-        fields = ('id','group','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
+        fields = ('id','groups','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
                   'normal_user','sshpasswd','sshport','coreness','memory','root_disk','info'
-                  ,'storages','group'
+                  ,'storages'
                   )
 
 
