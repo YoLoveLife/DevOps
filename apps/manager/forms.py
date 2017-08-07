@@ -28,7 +28,19 @@ class GroupForm(forms.Form):
         else:
             return {'success':True,'msg':'','data':self.data}
 
-class HostCreateForm(forms.ModelForm):
+class GroupCreateUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.Group
+        fields = ['name','info']
+        widgets = {
+            'info':forms.Textarea(attrs=None)
+        }
+        labels = {
+            'name':'应用组名称',
+            'info':'应用组信息'
+        }
+
+class HostCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Host
         fields = ['systemtype','manage_ip',

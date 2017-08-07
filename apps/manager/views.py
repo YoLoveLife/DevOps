@@ -8,21 +8,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from models import Group,Host,Storage
 from django.urls import reverse_lazy
-from forms import GroupForm,HostForm,StorageForm,HostCreateForm
+import forms
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
     template_name= 'group.html'
-    form_class=GroupForm
+    form_class=forms.GroupForm
 
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
 
 class ManagerHostCreateView(LoginRequiredMixin,CreateView):
     model = Host
-    form_class = HostCreateForm
-    template_name = '_new_host.html'
+    form_class = forms.HostCreateUpdateForm
+    template_name = 'new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
@@ -47,8 +47,8 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
 
 class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
     model = Host
-    form_class = HostCreateForm
-    template_name = '_new_host.html'
+    form_class = forms.HostCreateUpdateForm
+    template_name = 'new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     def get_context_data(self, **kwargs):
@@ -63,14 +63,62 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
         return super(ManagerHostUpdateView, self).get_success_url()
 
 
+class ManagerGroupCreateView(LoginRequiredMixin,CreateView):
+    model = Group
+    form_class = forms.GroupCreateUpdateForm
+    template_name = 'new_update_group.html'
+    success_url = reverse_lazy('manager:group')
+
+    def get_context_data(self, **kwargs):
+        context = super(ManagerGroupCreateView, self).get_context_data(**kwargs)
+        hosts = Host.objects.all()
+        context.update({'hosts':hosts})
+        return context
+
+    def form_valid(self, form):
+        host_group = forms.save()
+        hosts_id_list = self.request.POST.getlist('hosts',[])
+        hosts = Host.objects.filter(id__in=hosts_id_list)
+        host_group.users.add(*hosts)
+        host_group.save()
+        return super(ManagerGroupCreateView,self).form_invalid(form)
+
+    def get_success_url(self):
+        return super(ManagerGroupCreateView,self).get_success_url()
+
+class ManagerGroupUpdateView(LoginRequiredMixin,UpdateView):
+    model = Group
+    form_class = forms.GroupCreateUpdateForm
+    template_name = 'new_update_group.html'
+    success_url = reverse_lazy('manager:group')
+
+    def get_context_data(self, **kwargs):
+        context = super(ManagerGroupUpdateView, self).get_context_data(**kwargs)
+        hosts = Host.objects.all()
+        group_hosts = [host.id for host in self.object.hosts.all()]
+        context.update({
+            'hosts':hosts,
+            'group_hosts':group_hosts
+        })
+        return context
+
+    def form_valid(self, form):
+        host_group = form.save()
+        hosts_id_list = self.request.POST.getlist('hosts',[])
+        hosts = Host.objects.filter(id__in=hosts_id_list)
+        host_group.users.clear()
+        host_group.users.add(*hosts)
+        host_group.save()
+        return super(ManagerGroupUpdateView,self).form_invalid(form)
+
+
 class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='host.html'
-    form_class = HostForm
+    form_class = forms.HostForm
 
     def get_context_data(self, **kwargs):
         context= super(ManagerHostListView, self).get_context_data(**kwargs)
-        grouplist = Group.objects.all()
-        context.update({'grouplist': grouplist,
+        context.update({'grouplist': Group.objects.all(),
                         })
         return context
 
@@ -86,7 +134,7 @@ class ManagerSearchListView(LoginRequiredMixin,TemplateView):
 
 class ManagerStorageListView(LoginRequiredMixin,FormView):
     template_name = 'storage.html'
-    form_class=StorageForm
+    form_class=forms.StorageForm
 
     def get(self, request, *args, **kwargs):
         return super(ManagerStorageListView,self).get(request,*args,**kwargs)

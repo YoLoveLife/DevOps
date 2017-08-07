@@ -35,3 +35,10 @@ class HostUpdateStorageSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         return
+
+
+class HostUpdateGroupSerializer(serializers.ModelSerializer):
+    hosts = serializers.PrimaryKeyRelatedField(many=True,queryset=Host.objects.all())
+    class Meta:
+        model = Group
+        fields = ['id', 'hosts']
