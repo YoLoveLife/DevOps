@@ -7,8 +7,8 @@ from django.db import models
 from django.db import models
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
-    name=models.CharField(max_length=100,default='None')
-    info=models.CharField(max_length=100,default='None')
+    name=models.CharField(max_length=100,default='')
+    info=models.CharField(max_length=100,default='')
 
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
@@ -18,7 +18,7 @@ class Storage(models.Model):
 
 class Host(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
-    group = models.ForeignKey(Group,blank=True,null=True,related_name='hosts',on_delete=models.SET_NULL,verbose_name=_("_Group"))#所属应用
+    groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("_Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host storages'))
     systemtype=models.CharField(max_length=50,default='')#操作系统
     manage_ip = models.CharField(max_length=15, default='')#管理IP

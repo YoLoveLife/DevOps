@@ -6,13 +6,13 @@
 <!--Content Header-->
     <section class="content-header">
         <h1>
-            应用系统
+            存储
             <small>控制台</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
             <li class="active">Manager</li>
-            <li class="active">Group</li>
+            <li class="active">Storage</li>
             <li class="active">New/Update</li>
         </ol>
     </section>
@@ -21,11 +21,11 @@
     <section class="content container-fluid page-group">
         <div class="row">
             <div class="col-md-7">
-                <form method="post" action="" id="group_form" enctype="multipart/form-data">
+                <form method="post" action="" id="storage_form" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="box box-grouptb">
                         <div class="box-header">
-                            <h3 class="box-title">应用组逻辑信息</h3>
+                            <h3 class="box-title">存储基本信息</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
@@ -36,14 +36,14 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        {% bootstrap_field form.name %}
+                                        {% bootstrap_field form.disk_path %}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        {% bootstrap_field form.info %}
+                                        {% bootstrap_field form.disk_size %}
                                     </div>
                                 </div>
                             </div>
@@ -52,12 +52,12 @@
 
                     <div class="box box-grouptb">
                         <div class="box-header">
-                            <h3 class="box-title">应用组主机信息</h3>
+                            <h3 class="box-title">存储逻辑信息</h3>
                         </div>
                         <div class="box-body">
                             <select name="hosts" class="select2 form-control" multiple>
                                 {% for host in hosts %}
-                                    {% if host.id in group_hosts %}
+                                    {% if host.id in storage_hosts %}
                                         <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }}</option>
                                     {% else %}
                                         <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }}</option>
@@ -93,7 +93,7 @@
                             <h3 class="box-title" style="text-align: center">提示</h3>
                         </div>
                         <div class="box-body">
-                            <dd>此处填写数据为基础主机信息，逻辑层次信息在外部维护</dd>
+                            <dd>此处填写数据为基础主机信息，逻辑层次信息在应用组维护</dd>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
         $('.select2').select2();
     })
         .on('click','#btn_submit',function () {
-            $('#group_form').submit();
+            $('#storage_form').submit();
         })
     </script>
 {% endblock %}
