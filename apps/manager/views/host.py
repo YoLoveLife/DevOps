@@ -30,15 +30,15 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
         return super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context={
+        context = super(ManagerHostCreateView,self).get_context_data(**kwargs)
+        context.update({
             'app':'Host',
             'action':'Create host',
-        }
-        kwargs.update(context)
-        return super(ManagerHostCreateView,self).get_context_data(**kwargs)
+        })
+        return context
 
     def get_success_url(self):
-        return super(ManagerHostCreateView, self).get_success_url()
+        return self.success_url
 
 
 
@@ -49,12 +49,12 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy('manager:host')
 
     def get_context_data(self, **kwargs):
-        context={
+        context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
+        context.update({
             'app':'Host',
             'action':'Update host',
-        }
-        kwargs.update(context)
-        return super(ManagerHostUpdateView,self).get_context_data(**kwargs)
+        })
+        return context
 
     def get_success_url(self):
-        return super(ManagerHostUpdateView, self).get_success_url()
+        return self.success_url

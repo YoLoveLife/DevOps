@@ -52,9 +52,9 @@
                             <select name="hosts" class="select2 form-control" multiple>
                                 {% for host in hosts %}
                                     {% if host.id in storage_hosts %}
-                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }}</option>
+                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
                                     {% else %}
-                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }}</option>
+                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
@@ -71,6 +71,9 @@
                         <div class="box-body">
                             <button class="btn btn-app" id="btn_submit">
                                 <i class="fa fa-check"></i> 提交
+                            </button>
+                            <button class="btn btn-app" id="btn_back">
+                                <i class="fa fa-reply"></i> 回退
                             </button>
                             <button class="btn btn-app" disabled>
                                 <i class="fa fa-times"></i> 删除
@@ -105,6 +108,9 @@
     })
         .on('click','#btn_submit',function () {
             $('#storage_form').submit();
+        })
+        .on('click','#btn_back',function () {
+            history.go(-1);
         })
     </script>
 {% endblock %}
