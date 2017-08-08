@@ -47,6 +47,7 @@ class ManagerStorageUpdateView(LoginRequiredMixin,UpdateView):
         host_storage=form.save()
         hosts_id_list=self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
+        host_storage.hosts.clear()
         host_storage.hosts.add(*hosts)
         host_storage.save()
         return super(ManagerStorageUpdateView,self).form_valid(form)

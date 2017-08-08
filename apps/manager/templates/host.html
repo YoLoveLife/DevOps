@@ -24,7 +24,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div id="hst-toolbar">
-                    <select id="groupselect">
+                    <select id="groupselect" class="select2">
                         <option id="0">Null</option>
                         {% for row in grouplist %}
                             <option id="{{ row.id }}">{{ row.name }}</option>
@@ -38,7 +38,7 @@
                                     <thead>
                                     <tr>
                                         <th data-field="state" data-radio="true">#</th>
-                                        <th data-field="id">主机ID</th>
+{#                                        <th data-field="id">主机ID</th>#}
                                         <th data-field="systemtype">操作系统</th>
                                         <th data-field="manage_ip">管理IP</th>
                                         <th data-field="service_ip">服务IP</th>
@@ -92,12 +92,13 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
 <script>
     $(document).ready(function () {
+        $('.select2').select2();
         var table=$('#host_tb').bootstrapTable({
                 url : '/api-manager/v1/hostbygroup/0',
                 method  : 'GET',
@@ -121,11 +122,11 @@
                     {
                         checkbox:true
                     },
-                    {
-                        title:'主机ID',
-                        field:'id',
-                        align:'center'
-                    },
+{#                    {#}
+{#                        title:'主机ID',#}
+{#                        field:'id',#}
+{#                        align:'center'#}
+{#                    },#}
                     {
                         title:'操作系统',
                         field:'systemtype',

@@ -39,6 +39,11 @@ class GroupCreateUpdateForm(forms.ModelForm):
         }
 
 class HostCreateUpdateForm(forms.ModelForm):
+    manage_ip = forms.CharField(required=False,max_length=15)
+    outer_ip = forms.CharField(required=False,max_length=15)
+    coreness = forms.CharField(required=False,max_length=5)
+    memory = forms.CharField(required=False,max_length=7)
+    root_disk = forms.CharField(required=False,max_length=7)
     class Meta:
         model = models.Host
         fields = ['systemtype','manage_ip',
@@ -46,7 +51,8 @@ class HostCreateUpdateForm(forms.ModelForm):
                   'hostname','normal_user','sshport',
                   'coreness','memory','root_disk','info']
         widgets = {
-            'info':forms.Textarea(attrs=None)
+            'info':forms.Textarea(attrs=None),
+            'systemtype': forms.Select(attrs={'type': 'select2 form-control'})
         }
         labels = {
             'systemtype':'操作系统','manage_ip':'管理IP','sshport':'管理端口',
@@ -54,6 +60,8 @@ class HostCreateUpdateForm(forms.ModelForm):
             'hostname':'主机名称','normal_user':'普通用户','coreness':'CPU核数',
             'memory':'内存大小','root_disk':'本地磁盘','info':'信息'
         }
+
+
 
 class HostForm(forms.ModelForm):
     class Meta:
@@ -69,7 +77,7 @@ class HostForm(forms.ModelForm):
             'groups':forms.SelectMultiple(
                 attrs={'class':'select2',
                        'data-placeholder':_('Select host groups')}),
-            'sshpasswd':forms.TextInput(attrs={'type':'password'})
+            'sshpasswd':forms.TextInput(attrs={'type':'password'}),
         }
         labels = {
             'systemtype':'操作系统','manage_ip':'管理IP','sshport':'管理端口','groups':'应用组',

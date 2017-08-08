@@ -47,7 +47,8 @@ class HostListByGroupAPI(generics.ListAPIView):
 
     def get_queryset(self):
         if self.kwargs['pk']=='0':
-            return {} #group_id=self.kwargs['pk']
+            queryset = Host.objects.all()
+            return queryset
         queryset=Group.objects.get(id=self.kwargs['pk']).hosts
         return queryset
 

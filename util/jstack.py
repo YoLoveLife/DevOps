@@ -8,6 +8,7 @@ import psutil
 import re
 import string
 JSTACK="/usr/local/java/bin/jstack"
+DUI="jstack -gcutil 1000 10"
 def getJVMInfo():
     process_list=psutil.process_iter()
     for p in process_list:

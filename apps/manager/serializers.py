@@ -13,10 +13,11 @@ class StorageSerializer(serializers.HyperlinkedModelSerializer):
                   )
 
 class HostSerializer(serializers.ModelSerializer):
-    groups=GroupSerializer()
+    #groups=GroupSerializer()
+    systemtype = serializers.CharField(source='get_systemtype_display')
     class Meta:
         model=Host
-        fields = ('id','groups','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
+        fields = ('id','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
                   'normal_user','sshpasswd','sshport','coreness','memory','root_disk','info'
                   ,'storages'
                   )

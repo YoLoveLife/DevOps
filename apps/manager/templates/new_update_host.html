@@ -21,7 +21,7 @@
     <section class="content container-fluid page-group">
         <div class="row">
             <div class="col-md-7">
-                <form method="post" action="" id="storage_form" enctype="multipart/form-data">
+                <form method="post" action="" id="host_form" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="box box-grouptb" style="display: none">
                         <div class="box-header">
@@ -133,8 +133,8 @@
                             <button class="btn btn-app" id="btn_submit">
                                 <i class="fa fa-check"></i> 提交
                             </button>
-                            <button class="btn btn-app" type="button" onclick="CleanAll()">
-                                <i class="fa fa-edit"></i> 清空
+                            <button class="btn btn-app" id="btn_back">
+                                <i class="fa fa-reply"></i> 回退
                             </button>
                             <button class="btn btn-app" disabled>
                                 <i class="fa fa-times"></i> 删除
@@ -167,8 +167,11 @@
     $(document).ready(function () {
         $('.select2').select2();
     })
-        .on('click','#host_form',function () {
+        .on('click','#btn_submit',function () {
             $('#host_form').submit();
+        })
+        .on('click','#btn_back',function () {
+            history.go(-1);
         })
     </script>
 {% endblock %}
