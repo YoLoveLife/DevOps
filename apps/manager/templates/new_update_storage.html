@@ -30,21 +30,15 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <p class="alert alert-danger" id="modal-error" style="display: none"></p>
+                                    {% bootstrap_field form.disk_size %}
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.disk_path %}
-                                    </div>
+                                    {% bootstrap_field form.disk_path %}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.disk_size %}
-                                    </div>
+                                <div class="col-md-8">
+                                    {% bootstrap_field form.info %}
                                 </div>
                             </div>
                         </div>
@@ -55,15 +49,15 @@
                             <h3 class="box-title">存储逻辑信息</h3>
                         </div>
                         <div class="box-body">
-{#                            <select name="hosts" class="select2 form-control" multiple>#}
-{#                                {% for host in hosts %}#}
-{#                                    {% if host.id in storage_hosts %}#}
-{#                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }}</option>#}
-{#                                    {% else %}#}
-{#                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }}</option>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-{#                            </select>#}
+                            <select name="hosts" class="select2 form-control" multiple>
+                                {% for host in hosts %}
+                                    {% if host.id in storage_hosts %}
+                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }}</option>
+                                    {% else %}
+                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </form>
