@@ -27,7 +27,7 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         self.host = host = form.save()
         host.save()
-        return super(ManagerHostCreateView,self).form_invalid(form)
+        return super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context={

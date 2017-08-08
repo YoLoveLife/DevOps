@@ -19,11 +19,11 @@ class ManagerStorageCreateView(LoginRequiredMixin,CreateView):
     template_name = 'new_update_storage.html'
     success_url = reverse_lazy('manager:storage')
 
-    def get_context_data(self, **kwargs):
-        context = super(ManagerStorageCreateView, self).get_context_data(**kwargs)
-        hosts = models.Host.objects.all()
-        context.update({'hosts':hosts})
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(ManagerStorageCreateView, self).get_context_data(**kwargs)
+    #     hosts = models.Host.objects.all()
+    #     context.update({'hosts':hosts})
+    #     return context
 
     def form_valid(self, form):
         host_storage = form.save()
@@ -31,10 +31,10 @@ class ManagerStorageCreateView(LoginRequiredMixin,CreateView):
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_storage.hosts.add(*hosts)
         host_storage.save()
-        return super(ManagerStorageCreateView,self).form_invalid(form)
+        return super(ManagerStorageCreateView,self).form_valid(form)
 
     def get_success_url(self):
-        return super(ManagerStorageCreateView,self).get_success_url()
+        return self.success_url
 
 class ManagerStorageUpdateView(LoginRequiredMixin,UpdateView):
     model = models.Storage
@@ -59,7 +59,7 @@ class ManagerStorageUpdateView(LoginRequiredMixin,UpdateView):
         host_storage.hosts.clear()
         host_storage.hosts.add(*hosts)
         host_storage.save()
-        return super(ManagerStorageUpdateView,self).form_invalid(form)
+        return super(ManagerStorageUpdateView,self).form_valid(form)
 
     def get_success_url(self):
         return super(ManagerStorageUpdateView,self).get_success_url()
