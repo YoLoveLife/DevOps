@@ -6,6 +6,9 @@
 from django.conf.urls import url
 from ..views import group,host,storage,views
 urlpatterns = [
+    #Resource dashboard url
+    url(r'^dashboard/$',views.ManagerDashboardView.as_view(),name='dashboard'),
+
     #Resource host url
     url(r'^host/$', host.ManagerHostListView.as_view(), name='host'),
     url(r'^host/create/$',host.ManagerHostCreateView.as_view(),name='hostcreate'),

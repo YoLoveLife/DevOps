@@ -55,15 +55,15 @@
                             <h3 class="box-title">存储逻辑信息</h3>
                         </div>
                         <div class="box-body">
-                            <select name="hosts" class="select2 form-control" multiple>
-                                {% for host in hosts %}
-                                    {% if host.id in storage_hosts %}
-                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }}</option>
-                                    {% else %}
-                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
+{#                            <select name="hosts" class="select2 form-control" multiple>#}
+{#                                {% for host in hosts %}#}
+{#                                    {% if host.id in storage_hosts %}#}
+{#                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }}</option>#}
+{#                                    {% else %}#}
+{#                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }}</option>#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+{#                            </select>#}
                         </div>
                     </div>
                 </form>

@@ -19,7 +19,7 @@ class Storage(models.Model):
 class Host(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("_Group"))#所属应用
-    storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host storages'))
+    storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype=models.CharField(max_length=50,default='')#操作系统
     manage_ip = models.CharField(max_length=15, default='')#管理IP
     service_ip = models.CharField(max_length=15, default='')#服务IP
