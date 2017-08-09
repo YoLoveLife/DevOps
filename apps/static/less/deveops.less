@@ -29,11 +29,10 @@ a:hover{
     padding: 0 15px;
     font-weight: 300;
     overflow: hidden;
-    background-color: #3887bc;
+    background-color: @backgd-color;
     color: #FFFFFF;
     border-bottom: 0 solid transparent;
   }
-
   >.logo:hover{
     background-color: @backgd-color;
      //color: @flash-color;
@@ -84,12 +83,13 @@ a:hover{
   -o-transition: -o-transform 0.3s ease-in-out, width 0.3s ease-in-out;
   transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
   box-sizing: border-box;
-  background-color: rgb(249, 250, 252);
+  background-color: rgb(249, 249, 252);
   width: 230px;
   position: absolute;
   z-index: 810;
   border-right:1px solid transparent;
   float: left;
+  border-right: 1px solid #e5e5e5;
   >.sidebar{
     padding-bottom:10px;
     border-color: transparent;
@@ -100,11 +100,19 @@ a:hover{
       >.menu-title{
         color: #848484;
         padding-left: 15px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;
+        border-top: 1px solid #fcfcfc;
+        border-bottom: 1px solid #e5e5e5;
       }
       >.treeview{
         position: relative;
         margin: 0;
         padding: 0;
+        border-top: 1px solid #fcfcfc;
+        border-bottom: 1px solid #e5e5e5;
+        >a:hover{
+          background-color: #FFF;
+          color: #1963aa;
+        }
         >a{
           padding: 12px 5px 12px 15px;
           display: block;
@@ -117,10 +125,15 @@ a:hover{
           }
         }
         >.treeview-menu{
-          padding-left: 30px;
+          padding-left: 20px;
           li{
             list-style-type: none;
             padding: 5px;
+            border-top: 1px dashed #e5e5e5;
+            >a:hover{
+              background-color: #FFF;
+              color: #1963aa;
+            }
             >a{
               display: block;
               color: #444;
@@ -146,13 +159,16 @@ a:hover{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #ECF0F5;
+  background-color: #F2F2F2;
   margin-left: 230px;
   z-index: 800;
   min-height: 916px;
   .content-header{
     position: relative;
-    padding: 15px 15px 0 15px;
+    padding: 15px 15px 15px 15px;
+    border-top: 1px solid #fcfcfc;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #ECF0F5;
     > h1{
       margin: 0;
       font-size: 24px;
@@ -167,14 +183,14 @@ a:hover{
       background: transparent;
       margin-top: 0;
       margin-bottom: 0;
-      font-size: 12px;
-      padding-bottom: 0px;padding-right: 5px;padding-top: 11px;
+      font-size: 15px;
+      padding-bottom: 0px;padding-right: 5px;padding-top: 10px;
       position: absolute;
       top:15px;
       right: 10px;
       border-radius: 2px;
       >li>a{
-        color: #444;
+        //color: #444;
         text-decoration: none;
         display: inline-block;
         >.i{
@@ -262,7 +278,7 @@ Component:Small Box
   position: relative;
   border-radius: 3px;
   background-color:#FFFFFF;
-  border-top: 3px solid #d2d6de;
+  border-top: 3px solid @flash-color;
   width: 100%;
   margin-top:20px;
   margin-bottom:20px;
@@ -303,6 +319,10 @@ Component:Small Box
     border-bottom-left-radius: 3px;
     padding: 10px;
     text-align: center;
+    th,td{
+      text-align: center!important;
+      vertical-align: middle!important;
+    }
   }
 }
 
@@ -506,3 +526,97 @@ Time Line
 .timeline-inverse > li > .timeline-item > .timeline-header {
   border-bottom-color: #ddd;
 }
+
+
+/*Box Label*/
+.box-label{
+  text-align: center;
+    p{
+      //margin: 0 0 10px;
+      font-size: 17px;
+      text-align: center;
+      visibility: hidden;
+      font-weight:bold;
+    }
+    .box-label-logo{
+      padding-top: 10px;
+      text-align: center;
+      color: #989898;
+      border-bottom: 1px solid #989898;
+      span{
+        font-size:50px;
+      }
+      h3{
+        margin-top: 10px;
+        font-size:24px;
+        text-align: center;
+      }
+    }
+}
+.box-label:hover{
+  p{
+      color: #ff333b;
+      visibility: visible;
+  }
+  background: #FFFFFF;
+  box-shadow: 0 2px 1px rgba(0,0,0,0.2);
+  .box-label-logo{
+      border-bottom: 1px solid #FFFFFF;
+    }
+}
+
+.box-label-box{
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+/*Metro Box*/
+.metro-box{
+  color: #FFFFFF;
+  cursor: pointer;
+  display: block;
+  float:left;
+  position: relative;
+  height: 114px;
+  a{
+    padding: 10px 5px;
+    height: 90%;
+    width: 88%;
+    i{
+      font-size:50px;
+      margin-top: 20px;
+      display: inline-block;
+    }
+    .info{
+    font-size:24px;
+    position: absolute;
+    right: 5px;
+    top: 45px;
+    }
+    .status{
+    bottom:-10px;
+    font-size:14px;
+    left:10px;
+    min-height: 30px;
+    position: absolute;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

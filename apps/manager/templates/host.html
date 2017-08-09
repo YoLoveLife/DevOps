@@ -4,21 +4,22 @@
 <!--Content Header-->
 <section class="content-header">
     <h1>
+        <i class="fa fa-laptop"></i>
         主机
-        <small>控制台</small>
+        <small><i class="fa fa-angle-double-right"></i>列表</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+        <i class="fa fa-laptop"></i>
         <li class="active">Manager</li>
-        <li class="active">Host</li>
+        <li><a href="/manager/host/">Host</a></li>
     </ol>
 </section>
 <!--Content Header-->
 <!--Main Content-->
-<section class="content container-fluid page-host">
+<section class="content container-fluid">
     <div class="row">
         <div class="col-lg-10">
-            <div class="box box-hosttb">
+            <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">主机列表</h3>
                 </div>
@@ -51,6 +52,7 @@
                                         <th data-field="memory">内存</th>
                                         <th data-field="root_disk">根大小</th>
                                         <th data-field="info">用途</th>
+                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
                                     </tr>
                                     </thead>
                                     <tbody id="hosttbody">
@@ -66,7 +68,7 @@
             </div>
             <div class="col-md-2">
                 <div class="row">
-                    <div class="box box-default">
+                    <div class="box">
                         <div class="box-header">
                             <h3 class="box-title" style="text-align: center">主机信息</h3>
                         </div>
@@ -97,6 +99,10 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
 <script>
+    function detailFormatter(value,row,index) {
+        var label_a='<a class="btn btn-default" href="/manager/host/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
     $(document).ready(function () {
         $('.select2').select2();
         var table=$('#host_tb').bootstrapTable({
@@ -178,6 +184,10 @@
                         title:'用途',
                         field:'info',
                         align:'center',
+                    },{
+                        title:'细节',
+                        align:'center',
+                        field:'id'
                     }
                 ]
             });
@@ -207,5 +217,6 @@
             form.attr('action',action);
             location.href(action);
         })
+
 </script>
 {% endblock %}

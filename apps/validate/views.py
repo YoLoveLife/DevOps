@@ -29,6 +29,7 @@ class LoginView(FormView):
 
 class LogoutView(View):
     template_name='login.html'
+    form_class= LoginForm
     def get(self,request):
         logout(request)
         return render(request,self.template_name,{'msg':'logout success'})

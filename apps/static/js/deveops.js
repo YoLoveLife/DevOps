@@ -99,7 +99,6 @@ $.devEops.treeMenu=function(menu){
         .on('click',menu+' li a',function(e){
             var $this=$(this);
             var checkElement=$this.next();
-
             if((checkElement.is('.treeview-menu'))&&(checkElement.is(':visible'))){//如果点击的是有子菜单的 并且已展开的
                 checkElement.slideUp(animationSpeed,function(){//以animationSpeed来去除menu-open class
                     checkElement.removeClass('menu-open');

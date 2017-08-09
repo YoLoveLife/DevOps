@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from ..softlib.models import Softlib
-from ..manager.models import Host
+from softlib.models import Softlib
+from manager.models import Host
 from django.db import models
 # Create your models here.
 
