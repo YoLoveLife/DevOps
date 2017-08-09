@@ -4,6 +4,7 @@ from .. import models
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
+from django.views.generic.detail import DetailView
 
 class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='host.html'
@@ -58,3 +59,15 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return self.success_url
+
+class ManagerHostDetailVIew(LoginRequiredMixin,DetailView):
+    model = models.Host
+    template_name = 'detail_host.html'
+
+    def get_context_data(self, **kwargs):
+        context=super(ManagerHostDetailVIew,self).get_context_data(**kwargs)
+        context.update({
+            'groups':{}
+        })
+
+        return context
