@@ -4,10 +4,10 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf.urls import url
-from ..views import group,host,storage,views
+from ..views import group,host,storage,dashboard
 urlpatterns = [
     #Resource dashboard url
-    url(r'^dashboard/$',views.ManagerDashboardView.as_view(),name='dashboard'),
+    url(r'^dashboard/$', dashboard.ManagerDashboardView.as_view(), name='dashboard'),
 
     #Resource host url
     url(r'^host/$', host.ManagerHostListView.as_view(), name='host'),
@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^storage/create/$', storage.ManagerStorageCreateView.as_view(), name='storagecreate'),
     url(r'^storage/(?P<pk>[0-9]+)/update/', storage.ManagerStorageUpdateView.as_view(), name='storageupdate'),
 
-    url(r'^search$',views.ManagerSearchListView.as_view(),name='search'),
+    url(r'^search$', dashboard.ManagerSearchListView.as_view(), name='search'),
 ]

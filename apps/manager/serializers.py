@@ -13,7 +13,6 @@ class StorageSerializer(serializers.HyperlinkedModelSerializer):
                   )
 
 class HostSerializer(serializers.ModelSerializer):
-    #groups=GroupSerializer()
     systemtype = serializers.CharField(source='get_systemtype_display')
     class Meta:
         model=Host
@@ -23,21 +22,16 @@ class HostSerializer(serializers.ModelSerializer):
                   )
 
 
-class HostUpdateStorageSerializer(serializers.ModelSerializer):
-    storages=serializers.PrimaryKeyRelatedField(many=True,queryset=Storage.objects.all())
-    class Meta:
-        model = Host
-        fields = ['id','storages']
-
-    def create(self, validated_data):
-        return
-
-    def update(self, instance, validated_data):
-        return
-
-
 class HostUpdateGroupSerializer(serializers.ModelSerializer):
     hosts = serializers.PrimaryKeyRelatedField(many=True,queryset=Host.objects.all())
     class Meta:
         model = Group
         fields = ['id', 'hosts']
+
+class SystemTypeSerializer(serializers.CharField):
+    name=serializers.CharField()
+    percentage=serializers.IntegerField()
+    class Meta:
+        fields= ['name','percentage']
+
+
