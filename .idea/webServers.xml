@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fac644ef-ffb4-461e-84ff-9f850cc4a14b" name="devEops" url="http://10.100.62.223">
+        <fileTransfer host="10.100.62.223" port="52000" privateKey="$USER_HOME$/.ssh/id_rsa" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="52000" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

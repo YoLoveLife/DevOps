@@ -38,7 +38,6 @@ def tomcat_installplaybook(version='7.0.72',prefix='/usr/local',java_opts='',che
 def tomcat_removeplaybook(prefix='/usr/local'):
     _ext_vars = {
         'prefix': prefix,
-        'basedir': '{{prefix}}/tomcat',
     }
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)

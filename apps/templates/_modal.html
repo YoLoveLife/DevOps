@@ -1,0 +1,19 @@
+<div aria-hidden="true" class="modal fade" id="{% block modal_id %}{% endblock %}" role="dialog" >
+    <div class="modal-dialog {% block modal_class %}{% endblock %}" role="document" style="{% block modal_style %}{% endblock %}">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{% block modal_title %}{% endblock %}</h4>
+            </div>
+            <div class="modal-body container">
+                {% block modal_body %}
+                {% endblock %}
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-white" type="button">Close</button>
+                <button class="btn btn-primary" type="button" id="{% block modal_confirm_id %}{% endblock %}">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% block modal_js %}{% endblock %}

@@ -16,19 +16,11 @@ _ACEOF
 }
 function Start()
 {
-    if [ `ps aux |grep mysql |wc -l` -eq 3 ];then
-        echo mysql_online
-        exit 2
-    fi
     ${COMMDDIR}/mysqld start
 }
 
 function Stop()
 {
-    if [ `netstat -tln |grep 3306 |wc -l` -eq 0 ];then
-        echo mysql_ofline
-        exit 2
-    fi
     ${COMMDDIR}/mysqld stop
 }
 

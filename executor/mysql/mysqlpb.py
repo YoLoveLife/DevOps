@@ -32,18 +32,18 @@ def mysql_installplaybook(version='10.1.12',prefix='/usr/local',checksum='30a862
     personblock.set_playbook(pb)
     personblock.run_block()
 
-def mysql_removeplaybook(prefix='/usr/local'):
+def mysql_removeplaybook(prefix='/usr/local',datadir='/usr/local/mysql/data'):
     _ext_vars = {
         'prefix': prefix,
         'basedir': '{{prefix}}/mysql',
-        'datadir':'{{basedir}}/data',
+        'datadir':datadir,
         'user': 'mysql',
         'conf':'/etc/my.cnf',}
     personblock = PersonBlock()
     personblock.add_extendvars(_ext_vars)
     pb = PersonBook("remove mysql",'no')
     task1 = PersonTask(module="script",
-                       args="../../scripts/mysql/mysql_remove.sh -f {{prefix}} -u {{user}} -d {{datadir}} -c {{conf}}", )
+                       args="%s/mysql/mysql_remove.sh -f {{prefix}} -u {{user}} -d {{datadir}} -c {{conf}}"%SCRIPTS_DIR, )
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()

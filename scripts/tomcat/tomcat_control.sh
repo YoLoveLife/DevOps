@@ -16,19 +16,11 @@ _ACEOF
 }
 function Start()
 {
-    if [ `ps aux |grep java |wc -l` -eq 2 ];then
-        echo mysql_online
-        exit 2
-    fi
     nohup ${COMMDDIR}/catalina.sh start &
 }
 
 function Stop()
 {
-    if [ `ps aux |grep java |wc -l` -eq 1 ];then
-        echo mysql_ofline
-        exit 2
-    fi
     ${COMMDDIR}/catalina.sh stop
 }
 
