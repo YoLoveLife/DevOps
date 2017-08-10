@@ -4,7 +4,7 @@ from .. import models
 from django.urls import reverse_lazy
 from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
-from ..utils import systemtype2json
+from .. import query
 class ManagerDashboardView(LoginRequiredMixin,TemplateView):
     template_name = 'dashboard.html'
     def get_context_data(self, **kwargs):
@@ -12,12 +12,14 @@ class ManagerDashboardView(LoginRequiredMixin,TemplateView):
         numhost=models.Host.objects.count()
         numgroup=models.Group.objects.count()
         numstorage=models.Storage.objects.count()
-        list=systemtype2json()
+        systemlist=query.systemtypeQuery()
+        grouplist=query.groupQuery()
         context.update({
             'numhost':numhost,
             'numgroup':numgroup,
             'numstorage':numstorage,
-            'systemtype':list,
+            'systemlist':systemlist,
+            'grouplist':grouplist,
         })
         return context
 

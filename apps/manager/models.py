@@ -20,7 +20,7 @@ class Host(models.Model):
     # SYSTEM_VALS=(0,1,2,3,4)
     # SYSTEM_CHOICES=tuple(zip(SYSTEM_VALS,SYSTEM_NAMES))
     SYSTEM_CHOICES=(
-        (0,u''),
+        (0,u'未添加'),
         (1,u'Windows Server 2006'),
         (2,u'Windows Server 2008'),
         (3,u'Centos 6.5'),

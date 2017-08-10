@@ -32,4 +32,4 @@ class LogoutView(View):
     form_class= LoginForm
     def get(self,request):
         logout(request)
-        return render(request,self.template_name,{'msg':'logout success'})
+        return HttpResponseRedirect('/')

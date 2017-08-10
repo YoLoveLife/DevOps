@@ -26,15 +26,28 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
-        self.host = host = form.save()
-        host.save()
+        host_storage_group=form.save()
+        hosts_id_list=self.request.POST.getlist('groups',[])
+        storages_id_list=self.request.POST.getlist('storages',[])
+
+        groups = models.Group.objects.filter(id__in=hosts_id_list)
+        storages = models.Storage.objects.filter(id__in=storages_id_list)
+
+        host_storage_group.groups.add(*groups)
+        host_storage_group.storages.add(*storages)
+        host_storage_group.save()
+
         return super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerHostCreateView,self).get_context_data(**kwargs)
+        groups = models.Group.objects.all()
+        storages = models.Storage.objects.all()
         context.update({
-            'app':'Host',
-            'action':'Create host',
+            'groups':groups,
+            'groups_host':{},
+            'storages':storages,
+            'storages_host':{}
         })
         return context
 
@@ -49,11 +62,30 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
+    def form_valid(self, form):
+        host_storage_group=form.save()
+        hosts_id_list=self.request.POST.getlist('groups',[])
+        storages_id_list=self.request.POST.getlist('storages',[])
+
+        groups = models.Group.objects.filter(id__in=hosts_id_list)
+        storages = models.Storage.objects.filter(id__in=storages_id_list)
+
+        host_storage_group.groups.add(*groups)
+        host_storage_group.storages.add(*storages)
+        host_storage_group.save()
+        return super(ManagerHostUpdateView, self).form_valid(form)
+
     def get_context_data(self, **kwargs):
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
+        groups = models.Group.objects.all()
+        groups_host = [group.id for group in self.object.groups.all()]
+        storages = models.Storage.objects.all()
+        storages_host = [storage.id for storage in self.object.storages.all()]
         context.update({
-            'app':'Host',
-            'action':'Update host',
+            'groups':groups,
+            'groups_host':groups_host,
+            'storages':storages,
+            'storages_host':storages_host
         })
         return context
 

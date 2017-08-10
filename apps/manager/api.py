@@ -6,7 +6,7 @@ from rest_framework.views import Response,status
 from rest_framework import generics
 from .forms import HostForm,GroupForm,StorageForm
 from rest_framework.permissions import IsAuthenticated
-import utils
+import query
 class GroupListAPI(generics.ListAPIView):
     module = Group
     serializer_class = GroupSerializer
