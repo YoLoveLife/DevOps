@@ -87,6 +87,7 @@ class HostForm(forms.ModelForm):
             'storages':'存储选择','info':'信息'
         }
 
+
 class StorageForm(forms.Form):
     id = forms.IntegerField(label="ID",
                             widget=forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}))

@@ -17,16 +17,24 @@
     <!--Main Content-->
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-5">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">应用系统列表</h3>
+                        <h3 class="box-title">操作系统占比</h3>
                     </div>
                     <div class="box-body">
-                        {{ numgroup }}
-                        {{ numhost }}
-                        {{ numstorage }}
-                        <div id="echartsPie" style="width: 600px;height:400px;"></div>
+                        <div id="echartsSystem" style="width: 600px;height:400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">应用主机占比</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="echartsGroup" style="width: 600px;height:400px;"></div>
+                        <p></p>
                     </div>
                 </div>
             </div>
@@ -38,34 +46,44 @@
 {% block foot_js %}
     <script src="{% static 'js/echarts.min.js' %}"></script>
     <script type="text/javascript">
-        var echartsPie;
-        var json = [
-                    {value:1,name:'Centos6.5'},
-                    {value:0.26,name:'Centos7.1'},
-                    {value:0.24,name:'Windwos2008'}
-                    ];
-        var option = {
-                title : {
-                    text: '操作系统分布',
-                    x:'center'
-                },
+        var echartsSystem;
+        var echartsGroup;
+        var jsonSystem = {{ systemlist|safe }};
+        var jsonGroup={{ grouplist|safe }};
+        var optionSystem = {
                 tooltip : {
                     trigger: 'item',
-                    formatter: "{b}"
+                    formatter: "{b} - {c}台"
                 },
                 calculable : true,
                 series : [
                     {
                         name:'操作系统',
                         type:'pie',
-                        data:json
+                        data:jsonSystem
                     }
                 ]
-            };
+        };
+        var optionGroup={
+            tooltip : {
+                    trigger: 'item',
+                    formatter: "{b} - {c}台"
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'应用主机数',
+                        type:'pie',
+                        data:jsonGroup
+                    }
+                ]
+        };
 
-        echartsPie = echarts.init(document.getElementById('echartsPie'));
+        echartsSystem = echarts.init(document.getElementById('echartsSystem'));
+        echartsGroup = echarts.init(document.getElementById('echartsGroup'));
         $(function(){
-            echartsPie.setOption(option);
+            echartsSystem.setOption(optionSystem);
+            echartsGroup.setOption(optionGroup);
     });
     </script>
 {% endblock %}
