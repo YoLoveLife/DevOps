@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>devEops - Yo Project</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/deveops.less' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/dashboard.less' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/ansible.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/font-awesome/css/font-awesome.css' %}">
+    {% block single-css %}{% endblock %}
+</head>
+<body>
+<!--Main Page-->
+<div class="wrapper">
+{% include '_top_sidebar.html' %}
+{% include '_left_sidebar.html' %}
+    <div class="content-wrapper">
+        <div id="ajax-content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/less/less.js' %}"></script>
+<script src="{% static 'js/deveops.js' %}"></script>
+{% block foot_js %}
+{% endblock %}
+<!--
+<script src="/anweb/static/js/datarecv.js"></script>
+<script src="/anweb/static/js/pageshow.js"></script>
+-->
+</body>
+</html>

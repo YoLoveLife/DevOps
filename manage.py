@@ -1,14 +1,9 @@
-# -*- coding:utf-8 -*-
-# !/usr/bin/env python
-# Time 09 13:50
-# Author Yo
-# Email YoLoveLife@outlook.com
 #!/usr/bin/env python
 import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "devEops.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError:

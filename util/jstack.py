@@ -8,6 +8,7 @@ import psutil
 import re
 import string
 JSTACK="/usr/local/java/bin/jstack"
+DUI="jstack -gcutil 1000 10"
 def getJVMInfo():
     process_list=psutil.process_iter()
     for p in process_list:
@@ -15,7 +16,6 @@ def getJVMInfo():
             JVMPID=p.pid
             THREADS=p.num_threads()
             return (JVMPID,THREADS)
-
 
 def getThread(JVMPID):
     COMMMD=JSTACK+" -l "+str(JVMPID)

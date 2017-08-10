@@ -8,12 +8,13 @@ from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 from scripts import SCRIPTS_DIR
 from template import TEMPLATEDIR
-def redis_installplaybook(version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8'):
+def redis_installplaybook(version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',datadir='{{prefix}}/redis/data'):
     _ext_vars = {
         'version':version,
         'prefix':prefix,
         'basedir':'{{prefix}}/redis',
         'user':'redis',
+        'datadir':datadir,
         'file':'redis-{{version}}.tar.gz',
         'fro':'http://%s/package/redis/{{file}}'%FTP,
         'checksum':checksum
@@ -24,9 +25,11 @@ def redis_installplaybook(version='3.2.4',prefix='/usr/local',checksum='2f8b49e8
     task1 = PersonTask(module="get_url", args="checksum=md5:{{checksum}} url={{fro}} dest=~", )
     task2 = PersonTask(module="script", args="%s/redis/redis_install.sh -v {{version}} -f {{prefix}} -u {{user}}"%SCRIPTS_DIR, )
     task3 = PersonTask(module="file", args="dest=~/{{file}} state=absent", )
+    task4 = PersonTask(module="file",args="dest={{datadir}} mode=755 owner=root state=directory")
     pb.add_task(task1)
     pb.add_task(task2)
     pb.add_task(task3)
+    pb.add_task(task4)
     personblock.set_playbook(pb)
     personblock.run_block()
 

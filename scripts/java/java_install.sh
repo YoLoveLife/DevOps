@@ -34,7 +34,7 @@ function Avrg()
 {
 	ARGS=`getopt -o yv:f: --long version:,prefix: -n 'java_install' -- "$@"`
 	if [ ! $? -eq 0 ];then
-		echo "003002002"
+		echo "参数错误"
 		exit 2
 	fi
 	eval set -- "${ARGS}"
@@ -59,30 +59,24 @@ function Avrg()
 				break
 				;;
 			*)
-				echo "002002002"
+				echo "参数错误"
 				exit 2
 				;;
 		esac
 	done
 }
 IsAlready
-if [ "$1" == "--help" ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
 BVERSION=`echo ${VERSION}|cut -d"u" -f1`
 MVERSION=`echo ${VERSION}|cut -d"u" -f2`
 FILENAME=jdk-${VERSION}-linux-x64
-if [ -f "./${FILENAME}" ];then
-	echo "003004001"
-	exit 1
-fi
+
 tar -xvzf ${FILENAME}.tar.gz -C ${PREFIX} &>/dev/null
 BASEDIR=${PREFIX}/java
 
 mv ${PREFIX}/jdk1.${BVERSION}.0_${MVERSION}/ ${BASEDIR}
-Confirm > ${BASEDIR}/INSTALL.info
+#Confirm > ${BASEDIR}/INSTALL.info
 
 find ${BASEDIR}/bin -perm -u=x -type f -exec ln -s {} /usr/bin \;
 #find ${BASEDIR}/bin -perm -u=x -type f -exec cp {} /usr/bin \;

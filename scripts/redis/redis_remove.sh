@@ -5,6 +5,7 @@ PATH=/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin
 PREFIX=/usr/local
 BASEDIR=${PREFIX}/redis
 LOGFILE="${BASEDIR}/redis.log"
+CONFFILE=/etc/redis.conf
 DATADIR="${BASEDIR}/data/"
 USER="redis"
 function Help()
@@ -58,16 +59,10 @@ function Avrg()
 			esac
 	done
 }
-if [ "$1" == "--help" ];then
-	Help
-	exit 2
-fi
+
 Avrg $@
 DIRNAME=${PREFIX}/redis
-rm -rf ${LOGFILE} ${DATADIR} ${DIRNAME}
-if [ "`cat /etc/passwd|grep ${USER}|wc -l`" == "1" ];then
-	userdel -r ${USER}
-fi
-if [ "$?" == "0" ];then
-	echo "001000000"
-fi
+rm -rf ${LOGFILE} ${DATADIR} ${DIRNAME} $CONFFILE
+
+echo "001000000"
+

@@ -23,7 +23,7 @@ function Avrg()
 {
 	ARGS=`getopt -o yf: --long prefix: -n 'java_remove' -- "$@"`
 	if [ ! $? -eq 0 ];then
-		echo "003002002"
+		echo "参数错误"
 		exit 2
 	fi
 	eval set -- "${ARGS}"
@@ -44,16 +44,12 @@ function Avrg()
 				break
 				;;
 			*)
-				echo "003002002"
+				echo "参数错误"
 				exit 2
 				;;
 		esac
 	done
 }
-if [ "$1" == "--help" ];then
-	Help
-	exit 2
-fi
 Avrg $@
 
 rm -rf ${PREFIX}/java
