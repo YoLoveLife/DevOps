@@ -10,7 +10,10 @@ urlpatterns=[
 
     # Resource storage api
     url(r'^v1/storage/', api.StorageListAPI.as_view()),
-    url(r'^v1/storagebygroup/(?P<pk>[0-9]+)',api.StorageListByGroup.as_view()),
+    # url(r'^v1/storagebygroup/(?P<pk>[0-9]+)',api.StorageListByGroup.as_view()),
+
+    # Resource systemtype api
+    url(r'^v1/dashboard/systemtype',api.SystemTypeAPI.as_view()),
 
     # url(r'^v1/groupcreate/', api.GroupCreateAPI.as_view()),
     # url(r'^v1/hostcreate/',api.HostCreateAPI.as_view()),

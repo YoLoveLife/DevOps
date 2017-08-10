@@ -38,19 +38,12 @@
                                 <table id="host_tb" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th data-field="state" data-radio="true">#</th>
-{#                                        <th data-field="id">主机ID</th>#}
+                                        <th data-field="check" data-radio="true">#</th>
                                         <th data-field="systemtype">操作系统</th>
                                         <th data-field="manage_ip">管理IP</th>
                                         <th data-field="service_ip">服务IP</th>
                                         <th data-field="outer_ip">外网IP</th>
                                         <th data-field="server_position">服务器位置</th>
-                                        <th data-field="hostname">主机名称</th>
-                                        <th data-field="normal_user">普通用户</th>
-                                        <th data-field="sshport">SSH端口</th>
-                                        <th data-field="coreness">逻辑CPU</th>
-                                        <th data-field="memory">内存</th>
-                                        <th data-field="root_disk">根大小</th>
                                         <th data-field="info">用途</th>
                                         <th data-field="id" data-formatter="detailFormatter">细节</th>
                                     </tr>
@@ -124,72 +117,6 @@
                 dataType    :   'json',
                 showExport: true,
                 exportDataType : "basic",
-                colums  :   [
-                    {
-                        checkbox:true
-                    },
-{#                    {#}
-{#                        title:'主机ID',#}
-{#                        field:'id',#}
-{#                        align:'center'#}
-{#                    },#}
-                    {
-                        title:'操作系统',
-                        field:'systemtype',
-                        align:'center'
-                    },
-                    {
-                        title:'管理IP',
-                        field:'manage_ip',
-                        align:'center'
-                    },
-                    {
-                        title:'服务IP',
-                        field:'service_ip',
-                        align:'center',
-                    },
-                    {
-                        title:'外网IP',
-                        field:'outer_ip',
-                        align:'center',
-                    },{
-                        title:'服务器位置',
-                        field:'server_position',
-                        align:'center',
-                    },{
-                        title:'主机名称',
-                        field:'hostname',
-                        align:'center',
-                    },{
-                        title:'普通用户',
-                        field:'normal_user',
-                        align:'center'
-                    },{
-                        title:'SSH端口',
-                        field:'sshport',
-                        align:'center'
-                    },{
-                        title:'逻辑CPU',
-                        field:'coreness',
-                        align:'center'
-                    },{
-                        title:'内存',
-                        field:'memory',
-                        align:'center'
-                    },{
-                        title:'根大小',
-                        field:'root_disk',
-                        align:'center'
-                    },{
-                        title:'用途',
-                        field:'info',
-                        align:'center',
-                    },{
-                        title:'细节',
-                        align:'center',
-                        field:'id'
-                    }
-                ]
             });
     })
         .on('change','#groupselect',function(){

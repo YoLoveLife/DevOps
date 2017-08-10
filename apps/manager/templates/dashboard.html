@@ -23,7 +23,10 @@
                         <h3 class="box-title">应用系统列表</h3>
                     </div>
                     <div class="box-body">
-
+                        {{ numgroup }}
+                        {{ numhost }}
+                        {{ numstorage }}
+                        <div id="echartsPie" style="width: 600px;height:400px;"></div>
                     </div>
                 </div>
             </div>
@@ -33,4 +36,36 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script type="text/javascript">
+        var echartsPie;
+        var json = [
+                    {value:1,name:'Centos6.5'},
+                    {value:0.26,name:'Centos7.1'},
+                    {value:0.24,name:'Windwos2008'}
+                    ];
+        var option = {
+                title : {
+                    text: '操作系统分布',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{b}"
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'操作系统',
+                        type:'pie',
+                        data:json
+                    }
+                ]
+            };
+
+        echartsPie = echarts.init(document.getElementById('echartsPie'));
+        $(function(){
+            echartsPie.setOption(option);
+    });
+    </script>
 {% endblock %}

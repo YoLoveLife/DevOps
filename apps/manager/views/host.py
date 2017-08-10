@@ -66,8 +66,12 @@ class ManagerHostDetailVIew(LoginRequiredMixin,DetailView):
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostDetailVIew,self).get_context_data(**kwargs)
+        groups=self.object.groups.all()
+        storages=self.object.storages.all()
+        host=self.object
         context.update({
-            'groups':{}
+            'groups':groups,
+            'storages':storages,
+            'host':host
         })
-
         return context
