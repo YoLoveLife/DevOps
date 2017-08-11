@@ -26,9 +26,11 @@ urlpatterns = [
     url(r'^404/',ErrorView.as_view(),name='404'),
     url(r'^login/', include('validate.urls', namespace='validate')),
     url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
-
+    url(r'^operation/',include('operation.urls.views_urls',namespace='operation')),
+    
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
+    url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
 ]
 '''
    

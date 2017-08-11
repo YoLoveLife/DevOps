@@ -1,0 +1,55 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+    <h1>
+        <i class="fa fa-superscript"></i>
+        脚本
+        <small><i class="fa fa-angle-double-right"></i>增加-修改</small>
+    </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-newspaper-o"></i>
+            <li class="active">Operation</li>
+            <li><a href="/operation/script/">Script</a></li>
+            <li class="active">New-Update</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <form method="post" action="" id="script_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12">
+                    {% csrf_token %}
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">脚本书写</h3>
+                        </div>
+                        <div class="box-body">
+                            {% bootstrap_field form.script %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </form>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
+    <script>
+    $(document).ready(function () {
+        $('#id_script').wysihtml5();
+    })
+{#        .on('click','#btn_submit',function () {#}
+{#            $('#host_form').submit();#}
+{#        })#}
+{#        .on('click','#btn_back',function () {#}
+{#            history.go(-1);#}
+{#        })#}
+    </script>
+{% endblock %}
