@@ -5,64 +5,26 @@
     <bookmark url="file://$PROJECT_DIR$/apps/manager/api.py" line="34" />
     <bookmark url="file://$PROJECT_DIR$/apps/operation/templates/detail_script.html" />
     <bookmark url="file://$PROJECT_DIR$/apps/operation/templates/new_update_script.html" />
+    <bookmark url="file://$PROJECT_DIR$/apps/operation/templates/new_update_script.html" line="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ee007d-5cce-452d-a54e-94fb9407a6b8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/magic/migrations/0001_initial.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/magic/migrations/0002_auto_20170810_1658.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0001_initial.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0002_auto_20170727_1953.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0003_auto_20170728_1619.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0004_storage_group.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0005_auto_20170801_1104.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0006_auto_20170801_1533.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0007_remove_storage_group.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0008_auto_20170804_1853.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0009_auto_20170807_1950.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0010_auto_20170808_0850.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0011_auto_20170808_1502.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0012_auto_20170808_1532.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0013_auto_20170808_1842.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/migrations/0014_auto_20170810_1658.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/admin.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/api.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/apps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/forms.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/migrations/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/models.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/serializers.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/templates/_base.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/templates/detail_script.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/templates/new_update_script.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/templates/script.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/tests.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/urls/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/urls/api_urls.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/urls/views_urls.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/utils/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/utils/constant.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/utils/utils.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/views/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/operation/views/script.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/softlib/migrations/0001_initial.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/js/bootstrap3-wysihtml5.all.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/less/bootstrap3-wysihtml5.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/devEops.iml" afterPath="$PROJECT_DIR$/.idea/devEops.iml" />
+    <list default="true" id="14ee007d-5cce-452d-a54e-94fb9407a6b8" name="Default" comment="script maker">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/js/bootstrap-tagsinput.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/js/bootstrap-wysiwyg.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/js/bootstrap3-wysihtml5.all.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/js/operation.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/js/summernote.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/less/bootstrap-tagsinput.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/less/operation.less" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/less/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/static/less/summernote.css" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/apps/operation/templates/_base.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/deveops/settings.py" afterPath="$PROJECT_DIR$/apps/deveops/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/deveops/urls.py" afterPath="$PROJECT_DIR$/apps/deveops/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/_base.html" afterPath="$PROJECT_DIR$/apps/manager/templates/_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/detail_host.html" afterPath="$PROJECT_DIR$/apps/manager/templates/detail_host.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/group.html" afterPath="$PROJECT_DIR$/apps/manager/templates/group.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/host.html" afterPath="$PROJECT_DIR$/apps/manager/templates/host.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/new_update_group.html" afterPath="$PROJECT_DIR$/apps/manager/templates/new_update_group.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/new_update_host.html" afterPath="$PROJECT_DIR$/apps/manager/templates/new_update_host.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/new_update_storage.html" afterPath="$PROJECT_DIR$/apps/manager/templates/new_update_storage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/storage.html" afterPath="$PROJECT_DIR$/apps/manager/templates/storage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/static/less/deveops.less" afterPath="$PROJECT_DIR$/apps/static/less/deveops.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/templates/_left_sidebar.html" afterPath="$PROJECT_DIR$/apps/templates/_left_sidebar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/templates/base.html" afterPath="$PROJECT_DIR$/apps/templates/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/operation/forms.py" afterPath="$PROJECT_DIR$/apps/operation/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/operation/templates/detail_script.html" afterPath="$PROJECT_DIR$/apps/operation/templates/detail_script.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/operation/templates/new_update_script.html" afterPath="$PROJECT_DIR$/apps/operation/templates/new_update_script.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/operation/templates/script.html" afterPath="$PROJECT_DIR$/apps/operation/templates/script.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/operation/views/script.py" afterPath="$PROJECT_DIR$/apps/operation/views/script.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -80,25 +42,30 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="script.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/apps/operation/views/script.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="29" column="35" lean-forward="true" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>HostSerializer</find>
-      <find>login-box-msg</find>
-      <find>login-page</find>
-      <find>login-box-body</find>
-      <find>box-storagetb</find>
-      <find>box-toolbar</find>
-      <find>box-toolbar-btn</find>
       <find>group_tb</find>
       <find>groupselect</find>
       <find>page-tomcat</find>
@@ -122,6 +89,13 @@
       <find>host</find>
       <find>Text</find>
       <find>toolbar</find>
+      <find>defaultOptions</find>
+      <find>bold</find>
+      <find>emphasis</find>
+      <find>option</find>
+      <find>script_while</find>
+      <find>id_script</find>
+      <find>form</find>
     </findStrings>
     <replaceStrings>
       <replace>data['data']</replace>
@@ -139,8 +113,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/apps/manager/urls/views_urls.py" />
-        <option value="$PROJECT_DIR$/apps/magic/models.py" />
         <option value="$PROJECT_DIR$/apps/validate/templates/login.html" />
         <option value="$PROJECT_DIR$/apps/static/less/manager.less" />
         <option value="$PROJECT_DIR$/apps/manager/templates/search.html" />
@@ -166,7 +138,6 @@
         <option value="$PROJECT_DIR$/apps/templates/base.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/_base.html" />
         <option value="$PROJECT_DIR$/apps/operation/templates/group.html" />
-        <option value="$PROJECT_DIR$/apps/operation/forms.py" />
         <option value="$PROJECT_DIR$/apps/deveops/settings.py" />
         <option value="$PROJECT_DIR$/apps/operation/api.py" />
         <option value="$PROJECT_DIR$/apps/operation/urls/api_urls.py" />
@@ -177,19 +148,22 @@
         <option value="$PROJECT_DIR$/apps/operation/utils/constant.py" />
         <option value="$PROJECT_DIR$/apps/operation/utils/utils.py" />
         <option value="$PROJECT_DIR$/apps/operation/urls/views_urls.py" />
-        <option value="$PROJECT_DIR$/apps/operation/views/script.py" />
         <option value="$PROJECT_DIR$/apps/manager/templates/group.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/host.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/new_update_group.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/new_update_host.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/new_update_storage.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/storage.html" />
-        <option value="$PROJECT_DIR$/apps/operation/templates/script.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/detail_host.html" />
-        <option value="$PROJECT_DIR$/apps/operation/templates/detail_script.html" />
         <option value="$PROJECT_DIR$/apps/operation/models.py" />
         <option value="$PROJECT_DIR$/apps/operation/templates/_base.html" />
+        <option value="$PROJECT_DIR$/apps/operation/templates/detail_script.html" />
+        <option value="$PROJECT_DIR$/apps/operation/templates/script.html" />
+        <option value="$PROJECT_DIR$/apps/operation/forms.py" />
+        <option value="$PROJECT_DIR$/apps/static/js/operation.js" />
+        <option value="$PROJECT_DIR$/apps/static/less/operation.less" />
         <option value="$PROJECT_DIR$/apps/operation/templates/new_update_script.html" />
+        <option value="$PROJECT_DIR$/apps/operation/views/script.py" />
       </list>
     </option>
   </component>
@@ -219,8 +193,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -243,38 +217,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="apps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -293,7 +235,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="operation" />
+              <option name="myItemId" value="manager" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -311,11 +253,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="operation" />
+              <option name="myItemId" value="manager" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -344,16 +286,16 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/apps/operation/utils" />
-      <recent name="$PROJECT_DIR$/apps/manager/views" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/apps/static/less" />
       <recent name="$PROJECT_DIR$/apps/static/js" />
       <recent name="$PROJECT_DIR$/apps/operation/templates" />
       <recent name="$PROJECT_DIR$/apps/operation" />
       <recent name="$PROJECT_DIR$/apps/operation/urls" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apps/operation/utils" />
+      <recent name="$PROJECT_DIR$/apps/manager/views" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -611,8 +553,8 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="devEops" />
       <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="127.0.0.1" />
+      <option name="port" value="9999" />
+      <option name="host" value="10.100.62.223" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
@@ -750,10 +692,17 @@
       <option name="project" value="LOCAL" />
       <updated>1502368006936</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="script utils">
+      <created>1502447004987</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1502447004987</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
-  <component name="TodoView">
+  <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -765,18 +714,19 @@
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1020" extended-state="6" />
     <layout>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5083333" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.49791667" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2852423" sideWeight="0.49166667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.49791667" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.49166667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28645834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33920705" sideWeight="0.49375" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34471366" sideWeight="0.49375" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -785,7 +735,6 @@
       <window_info id="manage.py@devEops" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4229075" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -821,7 +770,9 @@
     <MESSAGE value="美化UI detail基础" />
     <MESSAGE value="cmdb基础功能完毕" />
     <MESSAGE value="cmdb关系维护彻底完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="cmdb关系维护彻底完成" />
+    <MESSAGE value="script utils" />
+    <MESSAGE value="script maker" />
+    <option name="LAST_COMMIT_MESSAGE" value="script maker" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -844,7 +795,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="74" />
+      <option name="time" value="78" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Python.DjangoServer">
@@ -857,153 +808,11 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/modules/personbook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/personblock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="12" column="29" lean-forward="true" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
-          <folding>
-            <element signature="e#89#123#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/persontask.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="35" lean-forward="true" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/static/less/manager.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="88" lean-forward="false" selection-start-line="7" selection-start-column="88" selection-end-line="7" selection-end-column="88" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/deveops/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/-1414151350/django/db/models/fields/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-77">
-          <caret line="2135" column="6" lean-forward="false" selection-start-line="2135" selection-start-column="6" selection-end-line="2135" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/playbook/mysql_pb_conf.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/playbook/mysql_pb_remove.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/playbook/mysql_pb_install.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="23" column="36" lean-forward="false" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="2" column="45" lean-forward="false" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/templates/_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="14" lean-forward="true" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/deveops/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="41" column="37" lean-forward="false" selection-start-line="41" selection-start-column="37" selection-end-line="41" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="22" lean-forward="false" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#25#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="14" lean-forward="false" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/deveops/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="31" column="26" lean-forward="true" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/views.py" />
     <entry file="file://$PROJECT_DIR$/apps/anweb/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1019,7 +828,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1027,9 +835,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
           <caret line="48" column="4" lean-forward="false" selection-start-line="48" selection-start-column="4" selection-end-line="48" selection-end-column="4" />
-          <folding>
-            <element signature="e#89#109#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1037,7 +842,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
           <caret line="112" column="23" lean-forward="false" selection-start-line="112" selection-start-column="23" selection-end-line="112" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1045,7 +849,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1053,14 +856,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="14" lean-forward="false" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/utils/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1085,22 +880,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/views/script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="23" column="37" lean-forward="false" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/templates/host.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="29" lean-forward="false" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -1141,15 +920,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="53" column="40" lean-forward="false" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/templates/script.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="39" lean-forward="false" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1165,14 +935,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="14" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manager/views/host.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="39" column="58" lean-forward="false" selection-start-line="39" selection-start-column="58" selection-end-line="39" selection-end-column="58" />
           <folding />
         </state>
       </provider>
@@ -1205,14 +967,85 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/less/bootstrap3-wysihtml5.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/forms.py">
+    <entry file="file://$PROJECT_DIR$/apps/operation/templates/detail_script.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="24" column="43" lean-forward="false" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
+        <state relative-caret-position="0">
+          <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/templates/_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="14" lean-forward="false" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="14249" column="37" lean-forward="true" selection-start-line="14249" selection-start-column="37" selection-end-line="14249" selection-end-column="37" />
+          <folding>
+            <marker date="1501149433182" expanded="true" signature="317844:317850" ph=" " />
+            <marker date="1501149433182" expanded="true" signature="317886:317892" ph=" " />
+            <marker date="1501149433182" expanded="true" signature="317899:317905" ph=" " />
+            <marker date="1501149433182" expanded="true" signature="420785:420813" ph="..." />
+            <marker date="1501149433182" expanded="true" signature="421076:421082" ph=" " />
+            <marker date="1501149433182" expanded="true" signature="540744:540751" ph="×" />
+            <marker date="1501149433182" expanded="true" signature="545002:545009" ph="×" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/less/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="88" lean-forward="false" selection-start-line="7" selection-start-column="88" selection-end-line="7" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/views/host.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-758">
+          <caret line="39" column="58" lean-forward="false" selection-start-line="39" selection-start-column="58" selection-end-line="39" selection-end-column="58" />
           <folding />
         </state>
       </provider>
@@ -1225,9 +1058,91 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/static/less/bootstrap3-wysihtml5.min.css">
+    <entry file="file://$PROJECT_DIR$/apps/static/js/bootstrap-wysiwyg.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/plugins/ckeditor/ckeditor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="980" column="221" lean-forward="true" selection-start-line="980" selection-start-column="221" selection-end-line="980" selection-end-column="221" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/js/bootstrap3-wysihtml5.all.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="13558" column="15" lean-forward="false" selection-start-line="13558" selection-start-column="4" selection-end-line="13558" selection-end-column="15" />
+          <folding>
+            <marker date="1410168726000" expanded="true" signature="310303:310309" ph=" " />
+            <marker date="1410168726000" expanded="true" signature="310345:310351" ph=" " />
+            <marker date="1410168726000" expanded="true" signature="310358:310364" ph=" " />
+            <marker date="1410168726000" expanded="true" signature="412984:413012" ph="..." />
+            <marker date="1410168726000" expanded="true" signature="413275:413281" ph=" " />
+            <marker date="1410168726000" expanded="true" signature="530412:530419" ph="×" />
+            <marker date="1410168726000" expanded="true" signature="534634:534641" ph="×" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/templates/script.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="11" column="16" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/js/deveops.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2268">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="30" column="52" lean-forward="true" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/host.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="71" column="37" lean-forward="true" selection-start-line="69" selection-start-column="28" selection-end-line="71" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/less/bootstrap-tagsinput.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="15" lean-forward="true" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/js/bootstrap-tagsinput.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/less/summernote.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1361">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -1241,34 +1156,70 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/utils/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/js/summernote.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="2" column="20449" lean-forward="false" selection-start-line="2" selection-start-column="20449" selection-end-line="2" selection-end-column="20449" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/js/operation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="11" lean-forward="false" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/static/less/operation.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/apps/manager/templates/new_update_group.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="39" column="40" lean-forward="true" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/templates/_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="93" lean-forward="false" selection-start-line="3" selection-start-column="93" selection-end-line="3" selection-end-column="93" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/templates/detail_script.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="10" lean-forward="true" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        <state relative-caret-position="362">
+          <caret line="116" column="12" lean-forward="false" selection-start-line="116" selection-start-column="12" selection-end-line="116" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/operation/templates/new_update_script.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="24" column="33" lean-forward="false" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+        <state relative-caret-position="292">
+          <caret line="27" column="28" lean-forward="true" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+          <folding>
+            <marker date="1502702267196" expanded="true" signature="4187:4252" ph="                                {% bootstrap_field form.script ... %}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/views/storage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-378">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/operation/views/script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="29" column="35" lean-forward="true" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
           <folding />
         </state>
       </provider>

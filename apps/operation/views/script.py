@@ -27,7 +27,6 @@ class OperationScriptCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         script_form=form.save()
         script_form.save()
-
         return super(OperationScriptCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):

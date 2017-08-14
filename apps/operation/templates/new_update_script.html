@@ -1,5 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block single-css %}
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/summernote.css' %}">
+{% endblock %}
 {% load bootstrap3 %}
 {% load i18n %}
 {% block content %}
@@ -21,17 +25,88 @@
     <!--Main Content-->
     <section class="content container-fluid">
         <form method="post" action="" id="script_form" enctype="multipart/form-data">
+            {% csrf_token %}
         <div class="row">
-            <div class="col-md-12">
-                    {% csrf_token %}
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">脚本书写</h3>
-                        </div>
-                        <div class="box-body">
-                            {% bootstrap_field form.script %}
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box">
+                            <div class="box-header">
+                            <h3 class="box-title">代码块添加</h3>
+                            </div>
+                            <div class="box-body">
+                                <button class="btn btn-app" type="button" id="script_while">
+                                    <i class="fa fa-plus"></i> While循环
+                                </button>
+                                <button class="btn btn-app" type="button" id="script_case">
+                                    <i class="fa fa-plus"></i> Case选择
+                                </button>
+                                <button class="btn btn-app" type="button" id="script_for">
+                                    <i class="fa fa-plus"></i> For循环
+                                </button>
+                                <button class="btn btn-app" type="button" id="script_function">
+                                    <i class="fa fa-plus"></i> Function函数
+                                </button>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-9">
+                        <div class="box">
+                            <div class="box-header">
+                            <h3 class="box-title">文本操作</h3>
+                            </div>
+                            <div class="box-body">
+                                <button class="btn btn-app" type="button" id="script_commit">
+                                    <i class="fa fa-plus"></i> Commit
+                                </button>
+                                <button class="btn btn-app" type="button" id="script_undo">
+                                    <i class="fa fa-plus"></i> Undo
+                                </button>
+                                <button class="btn btn-app" type="button" id="script_redo">
+                                    <i class="fa fa-plus"></i> Redo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                            <h3 class="box-title">可修改参数添加</h3>
+                            </div>
+                            <div class="box-body">
+                                <input id="args_add" data-role="tagsinput">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">脚本书写</h3>
+                            </div>
+                            <div class="box-body">
+                                {% bootstrap_field form.script %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">脚本书写</h3>
+                            </div>
+                            <div class="box-body">
+                                信息提示
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -40,16 +115,50 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/bootstrap3-wysihtml5.all.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-wysiwyg.min.js' %}"></script>
+    <script src="{% static 'js/operation.js' %}"></script>
+    <script src="{% static 'js/summernote.min.js' %}"></script>
     <script>
+    var avrg_list=Args;
+    var Ele_textarea=$('#id_script');
     $(document).ready(function () {
-        $('#id_script').wysihtml5();
+        Ele_textarea.summernote({
+            height:500,
+            maxHeight:500,
+            minHeight:500,
+            toolbar:false,
+            disableDragAndDrop:false,
+            hint: {
+            words: avrg_list,
+            match: /\b(\w{1,})$/,
+            search: function (keyword, callback) {
+                callback($.grep(this.words, function (item) {
+                    return item.indexOf(keyword) === 0;
+                    }));
+                }
+            }
+        });
     })
-{#        .on('click','#btn_submit',function () {#}
-{#            $('#host_form').submit();#}
-{#        })#}
-{#        .on('click','#btn_back',function () {#}
-{#            history.go(-1);#}
-{#        })#}
+        .on('click','#script_while',function () {
+            insertAtTextArea(Ele_textarea,Script['WHILE']);
+        })
+        .on('click','#script_for',function () {
+            insertAtTextArea(Ele_textarea,Script['FOR']);
+        })
+        .on('click','#script_case',function () {
+            insertAtTextArea(Ele_textarea,Script['CASE']);
+        })
+        .on('click','#script_function',function () {
+            insertAtTextArea(Ele_textarea,Script['FUNCTION']);
+        })
+        .on('click','#script_undo',function () {
+            $('#id_script').summernote('undo');
+        })
+        .on('click','#script_redo',function () {
+            $('#id_script').summernote('redo');
+        })
+        .on('click','#script_commit',function(){
+            $('#script_form').submit();
+        })
     </script>
 {% endblock %}
