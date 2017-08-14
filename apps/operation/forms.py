@@ -28,5 +28,5 @@ class ScriptCreateUpdateForm(forms.ModelForm):
         }
         widgets = {
             'id': forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}),
-            'script':forms.Textarea(attrs=None),
+            'script':forms.Textarea(attrs={'style':'height:500px;'}),
         }

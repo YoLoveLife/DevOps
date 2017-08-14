@@ -1,5 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block single-css %}
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/bootstrap3-wysihtml5.min.css' %}">
+{% endblock %}
 {% load bootstrap3 %}
 {% block content %}
 <!--Content Header-->
