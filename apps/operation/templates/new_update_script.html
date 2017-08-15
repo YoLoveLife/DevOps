@@ -76,7 +76,39 @@
                             <h3 class="box-title">可修改参数添加</h3>
                             </div>
                             <div class="box-body">
-                                <input id="args_add" data-role="tagsinput">
+                                <div class="row">
+                                    <div class="col-md-offset-2 col-md-3">
+                                        <label class="control-label" for="id_args_name">参数名称</label>
+                                        <input name="args_name" title="" required="" id="id_args_name" maxlength="100" placeholder="参数名称" class="form-control" type="text">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="args_add">
+                                            <i class="fa fa-plus"></i> ==
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label" for="id_args_value">参数默认数值</label>
+                                        <input name="args_value" title="" required="" id="id_args_value" maxlength="100" placeholder="参数默认" class="form-control" type="text">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="args_remove">
+                                            <i class="fa fa-plus"></i> --
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table id="args_tb" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="check" data-radio="true">#</th>
+                                                <th data-field="args_name">参数名称</th>
+                                                <th data-field="args_value">参数默认数值</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -115,41 +147,58 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/bootstrap-wysiwyg.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
     <script src="{% static 'js/operation.js' %}"></script>
-    <script src="{% static 'js/summernote.min.js' %}"></script>
+    <script src="{% static 'js/summernote.js' %}"></script>
     <script>
-    var avrg_list=Args;
+    var avrg_list=Normal_Args;
     var Ele_textarea=$('#id_script');
+    var Args_Tb=[{"args_name":"prefix","args_value":"/usr/local"}];
     $(document).ready(function () {
+        var table=$('#args_tb').bootstrapTable({
+                clickToSelect:  true,
+                singleSelect    :   true,
+            });
+        $('#args_tb').bootstrapTable('load',Args_Tb);
+
         Ele_textarea.summernote({
             height:500,
             maxHeight:500,
             minHeight:500,
+            fontSizes:50,
             toolbar:false,
             disableDragAndDrop:false,
-            hint: {
-            words: avrg_list,
-            match: /\b(\w{1,})$/,
-            search: function (keyword, callback) {
-                callback($.grep(this.words, function (item) {
-                    return item.indexOf(keyword) === 0;
+            hint: {  // /usr/local /etc/hosts /etc/systemctl/iptables
+                words: avrg_list,
+                match: /((^\/\w{1,}\/\w{1,})$|(\b(\w{1,})$))/,      /*   (\/(\w{1,}\/{0,1}\w{1,})$|\b(\w{1,})$) */
+                search: function (keyword, callback) {
+                    callback($.grep(this.words, function (item) {
+                        if(item[0]=='/'){
+                            if(keyword[0]=='/'){
+                                return item.indexOf(keyword) === 0;
+                            }
+                            return item.indexOf('/'+keyword) === 0;
+                        }else{
+                            return item.indexOf(keyword) === 0;
+                        }
                     }));
                 }
-            }
+            },
         });
     })
         .on('click','#script_while',function () {
-            insertAtTextArea(Ele_textarea,Script['WHILE']);
+            insertAtTextAreaForWhileFunctionCode(Ele_textarea,'WHILE');
         })
         .on('click','#script_for',function () {
-            insertAtTextArea(Ele_textarea,Script['FOR']);
+            //insertAtTextArea(Ele_textarea,Script['FOR']);
+            insertAtTextAreaForWhileFunctionCode(Ele_textarea,'FOR');
         })
         .on('click','#script_case',function () {
-            insertAtTextArea(Ele_textarea,Script['CASE']);
+            //insertAtTextArea(Ele_textarea,Script['CASE']);
+            insertAtTextAreaCaseCode(Ele_textarea);
         })
         .on('click','#script_function',function () {
-            insertAtTextArea(Ele_textarea,Script['FUNCTION']);
+            insertAtTextAreaForWhileFunctionCode(Ele_textarea,'FUNCTION');
         })
         .on('click','#script_undo',function () {
             $('#id_script').summernote('undo');
@@ -158,7 +207,31 @@
             $('#id_script').summernote('redo');
         })
         .on('click','#script_commit',function(){
+            $('.summernote').each( function() {
+                $(this).val($(this).code());
+            });
             $('#script_form').submit();
+        })
+        .on('click','#args_add',function(){
+            var argsname=$('#id_args_name')[0].value;
+            var argsvalue=$('#id_args_value')[0].value;
+            Args_Tb.push({"args_name":argsname,"args_value":argsvalue});
+            avrg_list.push(argsname);
+            $('#args_tb').bootstrapTable('load',Args_Tb);
+        })
+        .on('click','#args_remove',function () {
+            var a=$('#args_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var argsname=a[0].args_name;
+            for(var i =0;i<avrg_list.length;i++){
+                if(avrg_list[i] == argsname){
+                    avrg_list.splice(i,1);
+                    break;
+                }
+            }
         })
     </script>
 {% endblock %}
