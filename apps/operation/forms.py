@@ -41,5 +41,5 @@ class ScriptArgsCreateUpdateForm(forms.ModelForm):
         }
         widgets = {
             'args_name':forms.TextInput(attrs={'type':'text','class':'form-control'}),
-            'args_value':forms.TextInput(attrs={'type':'text','class':'form-control'})
+            'args_value':forms.TextInput(attrs={'type':'text','class':'form-control'} )
         }

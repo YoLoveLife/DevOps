@@ -39,33 +39,61 @@ class OperationScriptCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         return self.success_url
 
+class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
+    template_name = 'new_update_script.html'
+    form_class = forms.ScriptCreateUpdateForm
+    success_url = reverse_lazy('operation:script')
+    model = models.Script
+
+    def get_object(self, queryset=None):
+        if self.kwargs['pk'] == '0':
+            return models.Script.objects.create()
+        else:
+            return models.Script.objects.get(id = self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(OperationScriptUpdateView,self).get_context_data(**kwargs)
+        context.update({
+            'app':'script'
+        })
+        return context
+
 
 
 '''
-class ManagerStorageCreateView(LoginRequiredMixin,CreateView):
-    template_name = 'new_update_storage.html'
-    form_class = forms.StorageCreateUpdateForm
-    success_url = reverse_lazy('manager:storage')
-    model = models.Storage
+class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
+    model = models.Host
+    form_class = forms.HostCreateUpdateForm
+    template_name = 'new_update_host.html'
+    success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
-        host_storage=form.save()
-        hosts_id_list=self.request.POST.getlist('hosts',[])
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-        host_storage.hosts.add(*hosts)
-        host_storage.save()
-        return super(ManagerStorageCreateView, self).form_valid(form)
+        host_storage_group=form.save()
+        hosts_id_list=self.request.POST.getlist('groups',[])
+        storages_id_list=self.request.POST.getlist('storages',[])
+
+        groups = models.Group.objects.filter(id__in=hosts_id_list)
+        storages = models.Storage.objects.filter(id__in=storages_id_list)
+
+        host_storage_group.groups.add(*groups)
+        host_storage_group.storages.add(*storages)
+        host_storage_group.save()
+        return super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(ManagerStorageCreateView, self).get_context_data(**kwargs)
-        hosts = models.Host.objects.all()
+        context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
+        groups = models.Group.objects.all()
+        groups_host = [group.id for group in self.object.groups.all()]
+        storages = models.Storage.objects.all()
+        storages_host = [storage.id for storage in self.object.storages.all()]
         context.update({
-            'hosts':hosts,'storage_hosts':{}
+            'groups':groups,
+            'groups_host':groups_host,
+            'storages':storages,
+            'storages_host':storages_host
         })
         return context
 
     def get_success_url(self):
         return self.success_url
-
-
 '''
