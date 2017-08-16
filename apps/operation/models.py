@@ -17,6 +17,8 @@ class ScriptArgs(models.Model):
     args_value=models.CharField(max_length=100,default='')
     script=models.ForeignKey(Script,default=1,related_name='scriptargs')
 
+
+
 #
 # class Playbook(models.Model):
 #     id=models.AutoField(primary_key=True)

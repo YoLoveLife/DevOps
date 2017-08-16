@@ -22,3 +22,17 @@ class ScriptArgsListAPI(generics.ListAPIView):
             queryset={}
             return queryset
         queryset = Script.objects.get(id=self.kwargs['pk']).scriptargs
+        return queryset
+
+
+class ScriptUpdateArgsAPI(generics.UpdateAPIView):
+    module = Script
+    serializer_class = serializers.ScriptSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        print('a')
+        return
+    def patch(self, request, *args, **kwargs):
+        print('a')
+        return
