@@ -1,5 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block single-css %}
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/bootstrap3-wysihtml5.min.css' %}">
+{% endblock %}
 {% load bootstrap3 %}
 {% block content %}
 <!--Content Header-->
@@ -9,9 +13,9 @@
         <small>详细信息</small>
     </h1>
     <ol class="breadcrumb">
-        <i class="fa fa-truck"></i>
-        <li class="active">Manager</li>
-        <li><a href="/manager/group/">Group</a></li>
+        <i class="fa fa-newspaper-o"></i>
+        <li class="active">Operation</li>
+        <li><a href="/operation/script/">Script</a></li>
         <li class="active">Detail</li>
     </ol>
 </section>
