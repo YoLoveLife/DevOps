@@ -156,10 +156,12 @@
     var Args_Tb=[{"args_name":"prefix","args_value":"/usr/local"}];
     $(document).ready(function () {
         var table=$('#args_tb').bootstrapTable({
+                url : '/api-operate/v1/script/{{ form.id }}/args/',
+                method  : 'GET',
                 clickToSelect:  true,
                 singleSelect    :   true,
             });
-        $('#args_tb').bootstrapTable('load',Args_Tb);
+        //$('#args_tb').bootstrapTable('load',Args_Tb);
 
         Ele_textarea.summernote({
             height:500,
