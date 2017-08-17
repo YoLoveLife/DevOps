@@ -18,43 +18,47 @@ class OperationScriptListView(LoginRequiredMixin,TemplateView):
         return super(OperationScriptListView, self).get(request, *args, **kwargs)
 
 
-class OperationScriptCreateView(LoginRequiredMixin,CreateView):
-    template_name = 'new_update_script.html'
-    form_class = forms.ScriptCreateUpdateForm
-    success_url = reverse_lazy('operation:script')
-    model = models.Script
-    
-    def form_valid(self, form):
-        script_form = form.save()
-        script_form.save()
-        return super(OperationScriptCreateView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(OperationScriptCreateView,self).get_context_data(**kwargs)
-        context.update({
-            'app':'script'
-        })
-        return context
-
-    def get_success_url(self):
-        return self.success_url
+# class OperationScriptCreateView(LoginRequiredMixin,CreateView):
+#     template_name = 'new_update_script.html'
+#     form_class = forms.ScriptCreateUpdateForm
+#     success_url = reverse_lazy('operation:script')
+#     model = models.Script
+#
+#     def form_valid(self, form):
+#         script_form = form.save()
+#         script_form.save()
+#         return super(OperationScriptCreateView, self).form_valid(form)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(OperationScriptCreateView,self).get_context_data(**kwargs)
+#         context.update({
+#             'app':'script'
+#         })
+#         return context
+#
+#     def get_success_url(self):
+#         return self.success_url
 
 class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'new_update_script.html'
     form_class = forms.ScriptCreateUpdateForm
     success_url = reverse_lazy('operation:script')
     model = models.Script
-
+    id = 0
     def get_object(self, queryset=None):
         if self.kwargs['pk'] == '0':
-            return models.Script.objects.create()
+            script=models.Script.objects.create()
+            self.id=script.id
+            return script
         else:
+            id=self.kwargs['pk']
             return models.Script.objects.get(id = self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(OperationScriptUpdateView,self).get_context_data(**kwargs)
+
         context.update({
-            'app':'script'
+            'id':self.id
         })
         return context
 

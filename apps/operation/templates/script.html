@@ -52,7 +52,7 @@
                         <button class="btn btn-app" id="add_script">
                             <i class="fa fa-plus"></i> 新增
                         </button>
-                        <button class="btn btn-app" id="modify_group">
+                        <button class="btn btn-app" id="modify_script">
                             <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
@@ -77,8 +77,8 @@
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
         function scriptFormatter(value,row,index) {
-        var label_a='<a class="btn btn-default" href="/operation/script/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
-        return [label_a].join('');
+            var label_a='<a class="btn btn-default" href="/operation/script/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+            return [label_a].join('');
         }
         $(document).ready(function(){
             var table=$('#script_tb').bootstrapTable({
@@ -102,22 +102,23 @@
         })
             .on('click','#add_script',function () {
                 var form=$('#toolbar-script');
-                var action='/operation/script/create/';
+                var action='/operation/script/';
+                var obj=0;
+                action+=obj+'/update/';
                 form.attr('action',action);
                 location.href(action);
             })
-{#            .on('click','#modify_group',function () {#}
-{#                var form=$('#toolbar-group');#}
-{#                var action='/manager/group/';#}
-{#                var a=$('#group_tb').bootstrapTable('getSelections');#}
-{#                if(a.length<1){#}
-{#                    alert('请选择数据');#}
-{#                    return false;#}
-{#                }#}
-{#                var obj=a[0].id;#}
-{#                action+=obj+'/update/';#}
-{#                form.attr('action',action);#}
-{#                location.href(action);#}
-{#            })#}
+            .on('click','#modify_script',function () {
+                var form=$('#toolbar-script');
+                var action='/operation/script/';
+                var obj=0;
+                var a=$('#group_tb').bootstrapTable('getSelections');
+                if(a.length>=1){
+                    obj=a[0].id;
+                }
+                action+=obj+'/update/';
+                form.attr('action',action);
+                location.href(action);
+            })
     </script>
 {% endblock %}
