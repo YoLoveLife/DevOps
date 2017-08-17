@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+{#    <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">#}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/bootstrap3-wysihtml5.min.css' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-superscript"></i>
+            脚本管理
+            <small><i class="fa fa-angle-double-right"></i>列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-newspaper-o"></i>
+            <li class="active">Operation</li>
+            <li><a href="/operation/script/">Script</a></li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">脚本列表</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table" id="script_tb">
+                            <thead>
+                                    <tr>
+                                        <th data-field="check" data-radio="true">#</th>
+                                        <th data-field="name">脚本名称</th>
+                                        <th data-field="info">脚本信息</th>
+                                        <th data-field="author">作者</th>
+                                        <th data-field="id" data-formatter="scriptFormatter">详细</th>
+                                    </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title" style="text-align: center">操作</h3>
+                    </div>
+                    <div class="box-body">
+                        <form id="toolbar-script">
+                        <button class="btn btn-app" id="add_script">
+                            <i class="fa fa-plus"></i> 新增
+                        </button>
+                        <button class="btn btn-app" id="modify_group">
+                            <i class="fa fa-edit"></i> 修改
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-times"></i> 删除
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-info"></i> 信息
+                        </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script>
+        function scriptFormatter(value,row,index) {
+        var label_a='<a class="btn btn-default" href="/operation/script/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+        }
+        $(document).ready(function(){
+            var table=$('#script_tb').bootstrapTable({
+                url : '/api-operation/v1/script/',
+                method  : 'GET',
+                uniqueId :  'id',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                showExport: true,
+                exportDataType : "basic",
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+            });
+        })
+            .on('click','#add_script',function () {
+                var form=$('#toolbar-script');
+                var action='/operation/script/create/';
+                form.attr('action',action);
+                location.href(action);
+            })
+{#            .on('click','#modify_group',function () {#}
+{#                var form=$('#toolbar-group');#}
+{#                var action='/manager/group/';#}
+{#                var a=$('#group_tb').bootstrapTable('getSelections');#}
+{#                if(a.length<1){#}
+{#                    alert('请选择数据');#}
+{#                    return false;#}
+{#                }#}
+{#                var obj=a[0].id;#}
+{#                action+=obj+'/update/';#}
+{#                form.attr('action',action);#}
+{#                location.href(action);#}
+{#            })#}
+    </script>
+{% endblock %}

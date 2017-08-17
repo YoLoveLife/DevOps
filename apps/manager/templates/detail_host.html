@@ -9,9 +9,9 @@
         <small>详细信息</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+        <i class="fa fa-truck"></i>
         <li class="active">Manager</li>
-        <li class="active">Host</li>
+        <li><a href="/manager/group/">Group</a></li>
         <li class="active">Detail</li>
     </ol>
 </section>
@@ -209,7 +209,11 @@
                                         <span class="info-box-icon info-box-icon-blue"><i class="fa fa-heart"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">CPU核心数</span>
+                                            {% if host.coreness == '' %}
+                                            <span class="info-box-text">无</span>
+                                            {% else %}
                                             <span class="info-box-text">{{ host.coreness }}</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -218,7 +222,11 @@
                                         <span class="info-box-icon info-box-icon-red"><i class="fa fa-microchip"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">内存</span>
+                                            {% if host.memory == '' %}
+                                            <span class="info-box-text">无</span>
+                                            {% else %}
                                             <span class="info-box-text">{{ host.memory }}</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +237,11 @@
                                         <span class="info-box-icon info-box-icon-green"><i class="fa fa-download"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">根磁盘大小</span>
+                                            {% if host.root_disk == '' %}
+                                            <span class="info-box-text">无</span>
+                                            {% else %}
                                             <span class="info-box-text">{{ host.root_disk }}</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

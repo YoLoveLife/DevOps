@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'validate.apps.ValidateConfig',
     'softlib.apps.SoftlibConfig',
     'magic.apps.MagicConfig',
+    'operation.apps.OperationConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
