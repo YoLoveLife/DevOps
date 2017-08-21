@@ -76,6 +76,9 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
         function scriptFormatter(value,row,index) {
             var label_a='<a class="btn btn-default" href="/operation/script/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
             return [label_a].join('');
@@ -112,7 +115,7 @@
                 var form=$('#toolbar-script');
                 var action='/operation/script/';
                 var obj=0;
-                var a=$('#group_tb').bootstrapTable('getSelections');
+                var a=$('#script_tb').bootstrapTable('getSelections');
                 if(a.length>=1){
                     obj=a[0].id;
                 }

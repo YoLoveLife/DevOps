@@ -22,6 +22,7 @@ class ScriptArgsListAPI(generics.ListAPIView):
         queryset = models.Script.objects.get(id=self.kwargs['pk']).scriptargs
         return queryset
 
+
 class ScriptArgsCreateAPI(generics.CreateAPIView):
     serializer_class = serializers.ScriptArgsSerializer
     permission_classes = [AllowAny]
@@ -29,7 +30,10 @@ class ScriptArgsCreateAPI(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(args_name=request.data['args_name']).exists():
+            return Response({'info':'参数在该脚本中已经存在'},status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            serializer.save()
         script = models.Script.objects.get(id=int(kwargs['pk']))
         serializer.instance.script=script
         serializer.save()

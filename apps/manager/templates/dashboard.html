@@ -81,6 +81,9 @@
 
         echartsSystem = echarts.init(document.getElementById('echartsSystem'));
         echartsGroup = echarts.init(document.getElementById('echartsGroup'));
+        function historyBack() {
+            window.history.go('/');
+        }
         $(function(){
             echartsSystem.setOption(optionSystem);
             echartsGroup.setOption(optionGroup);
