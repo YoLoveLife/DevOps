@@ -15,9 +15,6 @@ class Script(models.Model):
     script=models.TextField(default='')
     author = models.ForeignKey(User, default=1, related_name='user')
     status=models.IntegerField(default=0,choices=SCRIPT_STATUS)
-    #author=models.CharField(max_length=100,default='noAuthor')
-
-#   author=models.ForeignKey(User,default=1,related_name='user')
 
 
 class ScriptArgs(models.Model):

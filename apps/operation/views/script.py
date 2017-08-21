@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
@@ -47,11 +48,15 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
     id = 0
     def get_object(self, queryset=None):
         if self.kwargs['pk'] == '0':
-            script=models.Script.objects.create()
+            user = self.request.user
+            if models.Script.objects.filter(author=user,status=0).exists(): #查询未完成脚本
+                script=models.Script.objects.filter(author=user,status=0)[0]
+            else:
+                script=models.Script.objects.create()
             self.id=script.id
             return script
         else:
-            id=self.kwargs['pk']
+            self.id=self.kwargs['pk']
             return models.Script.objects.get(id = self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
@@ -61,9 +66,19 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
             'id':self.id
         })
         return context
+    
+    def form_valid(self, form):
+        script_info=form.save()
+        status=self.request.POST.get('status')
+        if status == '0':
+            script_info.status = 0
+        else:
+            script_info.status = 1
+        script_info.save()
+        return super(OperationScriptUpdateView, self).form_valid(form)
 
-
-
+    def get_success_url(self):
+        return self.success_url
 '''
 class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
     model = models.Host
