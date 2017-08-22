@@ -100,22 +100,22 @@
                             </div>
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-md-offset-2 col-md-3">
+                                    <div class="col-md-3">
                                         <label class="control-label" for="id_args_name">参数名称</label>
                                         <input name="args_name" title="" required="" id="id_args_name" maxlength="100" placeholder="参数名称" class="form-control" type="text">
                                     </div>
-                                    <div class="col-md-2">
-                                        <button class="btn btn-app" type="button" id="args_add">
-                                            <i class="fa fa-plus"></i> ==
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-5">
                                         <label class="control-label" for="id_args_value">参数默认数值</label>
                                         <input name="args_value" title="" required="" id="id_args_value" maxlength="100" placeholder="参数默认" class="form-control" type="text">
                                     </div>
                                     <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="args_add">
+                                            <i class="fa fa-plus"></i> 添加参数
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
                                         <button class="btn btn-app" type="button" id="args_remove">
-                                            <i class="fa fa-plus"></i> --
+                                            <i class="fa fa-remove"></i> 删除参数
                                         </button>
                                     </div>
                                 </div>
@@ -157,7 +157,9 @@
                                 <h3 class="box-title">脚本书写</h3>
                             </div>
                             <div class="box-body">
-                                信息提示
+                                <dd>左上角的功能栏可以添加常用的循环或者选择代码块到脚本内容中</dd>
+                                <dd>通过左下角的功能栏可以添加默认脚本参数，并且脚本参数将会形成可使用长选项修改的函数。</dd>
+                                <dt>脚本分为可使用与未编辑完成状态，未编辑完成脚本无法执行，在脚本保存的时候选定状态</dt>
                                 <input name="status" id="status" type="hidden">
                             </div>
                         </div>
@@ -178,10 +180,17 @@
     <script>
         var avrg_list;
         var Ele_textarea=$('#id_script');
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
     $(document).ready(function () {
         avrg_list=Normal_Args;
         $.ajaxSetup({
-           data:{csrfmiddlewaretoken:'{{ csrf_token }}'}
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
         });
         var table=$('#args_tb').bootstrapTable({
                 url : '/api-operation/v1/script/{{ id }}/args/',
@@ -263,18 +272,45 @@
             });
         })
         .on('click','#args_remove',function () {
+{#            var a=$('#args_tb').bootstrapTable('getSelections');#}
+{#            if(a.length<1){#}
+{#                alert('请选择数据');#}
+{#                return false;#}
+{#            }#}
+{#            var argsname=a[0].args_name;#}
+{#            var argsvalue=a[0].args_value;#}
+{#            var data={'args_name':argsname,'args_value':argsvalue};#}
+{#            $.ajax({#}
+{#                type:"DELETE",#}
+{#                url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/create/",#}
+{#                data:data,#}
+{#                dataType:"json",#}
+{#                success:function(data){#}
+{#                    $('#args_tb').bootstrapTable('refresh');#}
+{#                },#}
+{#                error:function(data){#}
+{#                    alert(data.responseJSON.info);#}
+{#                }#}
+{#            });#}
             var a=$('#args_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
             var argsname=a[0].args_name;
-            for(var i =0;i<avrg_list.length;i++){
-                if(avrg_list[i] == argsname){
-                    avrg_list.splice(i,1);
-                    break;
+            var data={'args_name':argsname}
+            $.ajax({
+                type:"DELETE",
+                url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/remove/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#args_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
                 }
-            }
+            })
         })
     function historyBack() {
          var r=confirm('你要将此脚本保存为可使用状态吗');
