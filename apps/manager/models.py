@@ -34,10 +34,10 @@ class Host(models.Model):
     service_ip = models.CharField(max_length=15, default='')#服务IP
     outer_ip = models.CharField(max_length=15, default='',null=True)#外网IP
     server_position = models.CharField(max_length=50,default='')#服务器位置
-    hostname = models.CharField(max_length=50,default='localhost')#主机名称
+    hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户
     sshpasswd = models.CharField(max_length=100,default='')#用户密码
-    sshport = models.CharField(max_length=5,default='52000')#用户端口
+    sshport = models.CharField(max_length=5,default='')#用户端口
     coreness = models.CharField(max_length=5,default='')#CPU数
     memory = models.CharField(max_length=7,default='')#内存
     root_disk=models.CharField(max_length=7,default="")#本地磁盘大小

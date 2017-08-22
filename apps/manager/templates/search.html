@@ -49,6 +49,9 @@
 {% block foot_js %}
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
         function searchManager(){
             var Element=document.getElementById('manager-search-info');
             var string=Element.value;

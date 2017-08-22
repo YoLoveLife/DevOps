@@ -144,6 +144,9 @@
             form.attr('action',action);
             location.href(action);
         })
+        function historyBack() {
+            window.history.go(-1);
+        }
 
 </script>
 {% endblock %}
