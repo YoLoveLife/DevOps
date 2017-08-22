@@ -11,6 +11,16 @@ devEops是一个django项目，依赖于
 * 基础YUM源
 
 ## Log
+### 2017-8-22
+#### Info
+  完成bash脚本的增改查功能。
+  ![SCRIPT](img/script.png)
+  所有脚本编辑功能跟预期的相同，具有参数列表、书写提醒、代码块添加。
+#### For
+ * 新增添group_detail页面，内容规划为 应用系统架构图、系统开发运维团队联系方式、应用主机列表、存储列表
+ * Ansible底端API重新封装 采用普通用户key+sudo的方式执行anisble脚本
+ * 用户体系权限构思
+
 ### 2017-8-17
 #### Info
   完成CMDB全部的功能。

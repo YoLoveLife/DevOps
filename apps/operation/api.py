@@ -46,5 +46,13 @@ class ScriptRemoveArgsAPI(generics.DestroyAPIView):
         queryset = models.ScriptArgs.objects.all()
 
         def delete(self, request, *args, **kwargs):
-            return self.destroy(request, *args, **kwargs)
+            # return self.destroy(self,request,args,kwargs)
+            if models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(
+                    args_name=request.data['args_name']).exists():
+                models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(
+                    args_name=request.data['args_name']).delete()
+                return Response({'info':'删除成功'},status=status.HTTP_201_CREATED)
+            else:
+                return Response({'info':'参数在脚本中已不存在'},status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
