@@ -111,6 +111,11 @@
                                         {% bootstrap_field form.root_disk %}
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.sshpasswd %}
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-7">
@@ -171,9 +176,6 @@
                             </button>
                             <button class="btn btn-app" id="btn_back">
                                 <i class="fa fa-reply"></i> 回退
-                            </button>
-                            <button class="btn btn-app" disabled>
-                                <i class="fa fa-times"></i> 删除
                             </button>
                             <button class="btn btn-app" disabled>
                                 <i class="fa fa-info"></i> 信息

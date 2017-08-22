@@ -24,6 +24,8 @@
     <!--Content Header-->
     <!--Main Content-->
     <section class="content container-fluid">
+        <form method="post" action="" id="script_form" enctype="multipart/form-data">
+            {% csrf_token %}
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
@@ -49,20 +51,43 @@
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="box">
-                            <div class="box-header">
-                            <h3 class="box-title">文本操作</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+                                    <h3 class="box-title">脚本信息</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {% bootstrap_field form.name %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% bootstrap_field form.info %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="box-body">
-                                <button class="btn btn-app" type="button" id="script_commit">
-                                    <i class="fa fa-check"></i> Commit
-                                </button>
-                                <button class="btn btn-app" type="button" id="script_undo">
-                                    <i class="fa fa-mail-reply"></i> Undo
-                                </button>
-                                <button class="btn btn-app" type="button" id="script_redo">
-                                    <i class="fa fa-mail-forward "></i> Redo
-                                </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+                                    <h3 class="box-title">文本操作</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <button class="btn btn-app" type="button" id="script_commit">
+                                            <i class="fa fa-check"></i> Commit
+                                        </button>
+                                        <button class="btn btn-app" type="button" id="script_undo">
+                                            <i class="fa fa-mail-reply"></i> Undo
+                                        </button>
+                                        <button class="btn btn-app" type="button" id="script_redo">
+                                            <i class="fa fa-mail-forward "></i> Redo
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,8 +138,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <form method="post" action="" id="script_form" enctype="multipart/form-data">
-                    {% csrf_token %}
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
@@ -140,9 +163,9 @@
                         </div>
                     </div>
                 </div>
-                </form>
             </div>
         </div>
+    </form>
     </section>
     <!--Main Content-->
 <!--Modal-->

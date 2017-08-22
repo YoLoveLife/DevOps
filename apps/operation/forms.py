@@ -23,9 +23,9 @@ class ScriptCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Script
         # fields = ['name','script','author','info']
-        fields = ['script']
+        fields = ['script','name','info']
         labels = {
-            'script':'脚本内容'
+            'script':'脚本内容','info':'脚本信息','name':'脚本名称',
         }
         widgets = {
             'script':forms.Textarea(attrs={'style':'height:500px;','class':'summernote'}),
