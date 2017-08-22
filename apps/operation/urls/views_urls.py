@@ -8,6 +8,7 @@ from ..views import script
 urlpatterns = [
     #Resource script url
     url(r'^script/$', script.OperationScriptListView.as_view(), name='script'),
-    url(r'^script/create/$',script.OperationScriptCreateView.as_view(),name='scriptcreate'),
-    url(r'^script/(?P<pk>[0-9]+)/script/',script.OperationScriptUpdateView.as_view(),name='scriptupdate'),
+    # url(r'^script/create/$',script.OperationScriptCreateView.as_view(),name='scriptcreate'),
+    url(r'^script/(?P<pk>[0-9]+)/update/',script.OperationScriptUpdateView.as_view(),name='scriptupdate'),
+    url(r'^script/(?P<pk>[0-9]+)/detail/', script.OperationScriptDetailView.as_view(), name='scriptdetail'),
 ]

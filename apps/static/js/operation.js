@@ -1,8 +1,9 @@
 /**
  * Created by yo on 17-8-14.
  */
-Normal_Args=['/etc/hosts','/etc/systemctl/iptables','/etc/my.cnf','/usr/local','prefix'
-    ,'tar -xvzf','tar -cvzf','service']
+
+Normal_Args=['/etc/hosts','/etc/systemctl/iptables','/etc/my.cnf','/usr/local','/etc/init.d',
+    'tar -xvzf','tar -cvzf','service']
 Script={
     'CASE':['case "${变量}" in','${模式})','${语句}',';;','*)','${语句}',';;','esac'],
     'FOR':['for "${条件}"','do','${语句}','done'],

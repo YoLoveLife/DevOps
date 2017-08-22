@@ -72,6 +72,9 @@
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
     <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
         $(document).ready(function(){
             var table=$('#storage_tb').bootstrapTable({
                 url : '/api-manager/v1/storage/',
