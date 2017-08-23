@@ -1,5 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
 {% block content %}
 <!--Content Header-->
     <section class="content-header">
@@ -31,6 +35,7 @@
                                         <th data-field="name">应用系统名称</th>
                                         <th data-field="info">应用系统信息</th>
                                         <th data-field="status" data-formatter="statusFormatter">应用系统状态</th>
+                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
                                     </tr>
                             </thead>
                         </table>
@@ -73,6 +78,10 @@
     <script>
         function historyBack() {
             window.history.go(-1);
+        }
+        function detailFormatter(value,row,index) {
+            var label_a='<a class="btn btn-default" href="/manager/group/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+            return [label_a].join('');
         }
         function statusFormatter(value,row,index) {
             var label_status='<span class="label label-success">在线</span>'

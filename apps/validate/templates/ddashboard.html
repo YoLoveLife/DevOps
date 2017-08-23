@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+{#    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">#}
+{#    <link rel="stylesheet/less" type="text/css" href="{% static 'less/validate.less' %}">#}
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            人员管理
+            <small>概况</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+            <li class="active">Validate</li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">管理员访问记录</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="echartsSystem" style="width: 600px;height:400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">普通用户访问记录</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="echartsGroup" style="width: 600px;height:400px;"></div>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script type="text/javascript">
+{#        var echartsSystem;#}
+{#        var echartsGroup;#}
+{#        var jsonSystem = {{ systemlist|safe }};#}
+{#        var jsonGroup={{ grouplist|safe }};#}
+{#        var optionSystem = {#}
+{#                tooltip : {#}
+{#                    trigger: 'item',#}
+{#                    formatter: "{b} - {c}台"#}
+{#                },#}
+{#                calculable : true,#}
+{#                series : [#}
+{#                    {#}
+{#                        name:'操作系统',#}
+{#                        type:'pie',#}
+{#                        data:jsonSystem#}
+{#                    }#}
+{#                ]#}
+{#        };#}
+{#        var optionGroup={#}
+{#            tooltip : {#}
+{#                    trigger: 'item',#}
+{#                    formatter: "{b} - {c}台"#}
+{#                },#}
+{#                calculable : true,#}
+{#                series : [#}
+{#                    {#}
+{#                        name:'应用主机数',#}
+{#                        type:'pie',#}
+{#                        data:jsonGroup#}
+{#                    }#}
+{#                ]#}
+{#        };#}
+{##}
+{#        echartsSystem = echarts.init(document.getElementById('echartsSystem'));#}
+{#        echartsGroup = echarts.init(document.getElementById('echartsGroup'));#}
+{#        function historyBack() {#}
+{#            window.history.go('/');#}
+{#        }#}
+{#        $(function(){#}
+{#            echartsSystem.setOption(optionSystem);#}
+{#            echartsGroup.setOption(optionGroup);#}
+{#    });#}
+    </script>
+{% endblock %}
