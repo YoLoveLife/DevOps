@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
+from ..permission import host as HostPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
@@ -19,7 +20,7 @@ class ManagerHostListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerHostListView, self).get(request, *args, **kwargs)
 
-class ManagerHostCreateView(LoginRequiredMixin,CreateView):
+class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
     template_name = 'new_update_host.html'
@@ -56,7 +57,7 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
 
 
 
-class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
+class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
     template_name = 'new_update_host.html'
@@ -92,12 +93,12 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
     def get_success_url(self):
         return self.success_url
 
-class ManagerHostDetailVIew(LoginRequiredMixin,DetailView):
+class ManagerHostDetailView(LoginRequiredMixin,DetailView):
     model = models.Host
     template_name = 'detail_host.html'
 
     def get_context_data(self, **kwargs):
-        context=super(ManagerHostDetailVIew,self).get_context_data(**kwargs)
+        context=super(ManagerHostDetailView,self).get_context_data(**kwargs)
         groups=self.object.groups.all()
         storages=self.object.storages.all()
         host=self.object

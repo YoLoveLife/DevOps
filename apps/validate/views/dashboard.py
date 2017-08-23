@@ -1,11 +1,5 @@
-from django.shortcuts import redirect,render
-from django.views.generic import TemplateView,FormView
-from django.views.generic import View
-from .forms import LoginForm
+from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
-from django.contrib.auth import authenticate,login,logout
-from django.http import HttpResponseRedirect
 
 class ValidateDashBoardView(LoginRequiredMixin,TemplateView):
     template_name = 'ddashboard.html'

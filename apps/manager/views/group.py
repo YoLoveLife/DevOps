@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
+from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
+from django.views.generic.detail import DetailView
+from django.contrib.auth.decorators import permission_required
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
     template_name= 'group.html'
@@ -12,8 +15,7 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)
 
-
-class ManagerGroupCreateView(LoginRequiredMixin,CreateView):
+class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequiredMixin,CreateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
     template_name = 'new_update_group.html'
@@ -25,6 +27,7 @@ class ManagerGroupCreateView(LoginRequiredMixin,CreateView):
         context.update({'hosts':hosts})
         return context
 
+    @permission_required('group.add_group')
     def form_valid(self, form):
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
@@ -36,7 +39,7 @@ class ManagerGroupCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
          return self.success_url
 
-class ManagerGroupUpdateView(LoginRequiredMixin,UpdateView):
+class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequiredMixin,UpdateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
     template_name = 'new_update_group.html'
@@ -63,3 +66,17 @@ class ManagerGroupUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         return self.success_url
+
+class ManagerGroupDetailView(LoginRequiredMixin,DetailView):
+    model = models.Group
+    template_name = 'detail_group.html'
+
+    def get_context_data(self, **kwargs):
+        context=super(ManagerGroupDetailView,self).get_context_data(**kwargs)
+        group=self.object
+        hosts=self.object.hosts.all()
+        context.update({
+            'group':group,
+            'hosts':hosts,
+        })
+        return context

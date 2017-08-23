@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
+from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
@@ -12,7 +13,7 @@ class ManagerStorageListView(LoginRequiredMixin,FormView):
     def get(self, request, *args, **kwargs):
         return super(ManagerStorageListView,self).get(request,*args,**kwargs)
 
-class ManagerStorageCreateView(LoginRequiredMixin,CreateView):
+class ManagerStorageCreateView(LoginRequiredMixin,StoragePermission.StorageAddRequiredMixin,CreateView):
     template_name = 'new_update_storage.html'
     form_class = forms.StorageCreateUpdateForm
     success_url = reverse_lazy('manager:storage')
@@ -37,7 +38,7 @@ class ManagerStorageCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         return self.success_url
 
-class ManagerStorageUpdateView(LoginRequiredMixin,UpdateView):
+class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChangeRequiredMixin,UpdateView):
     template_name = 'new_update_storage.html'
     form_class = forms.StorageCreateUpdateForm
     success_url = reverse_lazy('manager:storage')

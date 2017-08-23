@@ -6,5 +6,5 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 class LoginForm(forms.Form):
-    email=forms.EmailField(label="Username",max_length=100,widget=forms.TextInput(attrs={'type':'email','class':'form-control','placeholder':'Email'}))
-    passwd=forms.CharField(label="Passwd",widget=forms.PasswordInput(attrs={'type':'password','class':'form-control','placeholder':'Password'}))
+    username=forms.CharField(label="用户名",max_length=100,widget=forms.TextInput(attrs={'type':'text','class':'form-control','placeholder':'账户'}))
+    passwd=forms.CharField(label="密码",widget=forms.PasswordInput(attrs={'type':'password','class':'form-control','placeholder':'密码'}))

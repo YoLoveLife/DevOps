@@ -1,5 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
 {% block content %}
 <!--Content Header-->
     <section class="content-header">
