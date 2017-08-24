@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .. import forms
-from .. import models
+from .. import forms,models
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
@@ -9,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
 
 class ManagerGroupListView(LoginRequiredMixin,FormView):
-    template_name= 'group.html'
+    template_name= 'manager/group.html'
     form_class=forms.GroupForm
 
     def get(self,request,*args, **kwargs):
@@ -18,7 +17,7 @@ class ManagerGroupListView(LoginRequiredMixin,FormView):
 class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequiredMixin,CreateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
-    template_name = 'new_update_group.html'
+    template_name = 'manager/new_update_group.html'
     success_url = reverse_lazy('manager:group')
 
     def get_context_data(self, **kwargs):
@@ -27,7 +26,6 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
         context.update({'hosts':hosts})
         return context
 
-    @permission_required('group.add_group')
     def form_valid(self, form):
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
@@ -42,7 +40,7 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
 class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequiredMixin,UpdateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
-    template_name = 'new_update_group.html'
+    template_name = 'manager/new_update_group.html'
     success_url = reverse_lazy('manager:group')
 
     def get_context_data(self, **kwargs):
@@ -69,7 +67,7 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
 
 class ManagerGroupDetailView(LoginRequiredMixin,DetailView):
     model = models.Group
-    template_name = 'detail_group.html'
+    template_name = 'manager/detail_group.html'
 
     def get_context_data(self, **kwargs):
         context=super(ManagerGroupDetailView,self).get_context_data(**kwargs)

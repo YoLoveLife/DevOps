@@ -7,14 +7,14 @@ from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
 
 class ManagerStorageListView(LoginRequiredMixin,FormView):
-    template_name = 'storage.html'
+    template_name = 'manager/storage.html'
     form_class=forms.StorageForm
 
     def get(self, request, *args, **kwargs):
         return super(ManagerStorageListView,self).get(request,*args,**kwargs)
 
 class ManagerStorageCreateView(LoginRequiredMixin,StoragePermission.StorageAddRequiredMixin,CreateView):
-    template_name = 'new_update_storage.html'
+    template_name = 'manager/new_update_storage.html'
     form_class = forms.StorageCreateUpdateForm
     success_url = reverse_lazy('manager:storage')
     model = models.Storage
@@ -39,7 +39,7 @@ class ManagerStorageCreateView(LoginRequiredMixin,StoragePermission.StorageAddRe
         return self.success_url
 
 class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChangeRequiredMixin,UpdateView):
-    template_name = 'new_update_storage.html'
+    template_name = 'manager/new_update_storage.html'
     form_class = forms.StorageCreateUpdateForm
     success_url = reverse_lazy('manager:storage')
     model = models.Storage

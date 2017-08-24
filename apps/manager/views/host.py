@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 
 class ManagerHostListView(LoginRequiredMixin,FormView):
-    template_name='host.html'
+    template_name='manager/host.html'
     form_class = forms.HostForm
 
     def get_context_data(self, **kwargs):
@@ -23,7 +23,7 @@ class ManagerHostListView(LoginRequiredMixin,FormView):
 class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
-    template_name = 'new_update_host.html'
+    template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
@@ -60,7 +60,7 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
 class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
-    template_name = 'new_update_host.html'
+    template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
@@ -95,7 +95,7 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
 class ManagerHostDetailView(LoginRequiredMixin,DetailView):
     model = models.Host
-    template_name = 'detail_host.html'
+    template_name = 'manager/detail_host.html'
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostDetailView,self).get_context_data(**kwargs)

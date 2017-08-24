@@ -4,12 +4,12 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf.urls import url
-
-import apps.validate.views
-from apps.validate.views import loginout as LoginoutViews
-
+from ..views import loginout as LoginoutViews
+from ..views import dashboard as DashboardViews
+from ..views import user as UserViews
 urlpatterns = [
     url(r'^login$', LoginoutViews.ValidateLoginView.as_view(), name='valudatelogin'),
     url(r'^logout$', LoginoutViews.ValidateLogoutView.as_view(), name='valudatelogout'),
-    url(r'^dashboard/', apps.validate.views.ValidateDashBoardView.as_view(), name='valudatedashboard')
+    url(r'^dashboard/', DashboardViews.ValidateDashboardView.as_view(), name='validatedashboard'),
+    url(r'^user/', UserViews.ValidateUserListView.as_view(),name='validateuser'),
 ]

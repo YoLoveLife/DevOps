@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from apps.operation import api
+from .. import api
 urlpatterns=[
     # Resource script api
     url(r'^v1/script/$', api.ScriptListAPI.as_view()),

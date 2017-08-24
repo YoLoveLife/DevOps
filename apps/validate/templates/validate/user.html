@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
-    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{#    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">#}
+{#    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">#}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/bootstrap-editable.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -28,14 +29,6 @@
                     <h3 class="box-title">主机列表</h3>
                 </div>
                 <!-- /.box-header -->
-                <div id="hst-toolbar">
-                    <select id="groupselect" class="select2">
-                        <option id="0">Null</option>
-                        {% for row in grouplist %}
-                            <option id="{{ row.id }}">{{ row.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-lg-12">
@@ -92,35 +85,25 @@
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'js/select2.full.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
-    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
 <script>
     function detailFormatter(value,row,index) {
         var label_a='<a class="btn btn-default" href="/manager/host/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
         return [label_a].join('');
     }
     $(document).ready(function () {
-        $('.select2').select2();
         var table=$('#host_tb').bootstrapTable({
                 url : '/api-manager/v1/hostbygroup/0',
                 method  : 'GET',
-                uniqueId :  'id',
-                toolbar : '#hst-toolbar',
+                idField :  'id',
                 search  :   true,
-                sortable    :   false,
                 pagination  :   true,
-                showExport: true,
                 sidePagination  : 'client',
                 clickToSelect:  true,
-                singleSelect    :   true,
                 showRefresh :   true,
-                showColumns :    true,
                 pageSize    :   15,
                 pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
-                showExport: true,
-                exportDataType : "basic",
             });
     })
         .on('change','#groupselect',function(){

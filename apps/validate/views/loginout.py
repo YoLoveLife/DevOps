@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import FormView
 from django.views.generic import View
-from ..forms import LoginForm
+from .. import forms
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 class ValidateLoginView(FormView):
-    template_name= 'login.html'
-    form_class= LoginForm
+    template_name= 'validate/login.html'
+    form_class= forms.LoginForm
     redirect_field_name='yo'
 
     def get(self,request, *args, **kwargs):
@@ -15,7 +17,7 @@ class ValidateLoginView(FormView):
 
     def post(self,request,*args, **kwargs):
         error = 'nowhere'
-        login_form = LoginForm(request.POST)
+        login_form = forms.LoginForm(request.POST)
         if login_form.is_valid():
             data=login_form.clean()
             user = authenticate(username=data['username'], password=data['passwd'])
@@ -27,9 +29,9 @@ class ValidateLoginView(FormView):
         return render(request,self.template_name, {'error': error, 'form': login_form})
 
 
-class ValidateLogoutView(View):
-    template_name='login.html'
-    form_class= LoginForm
+class ValidateLogoutView(LoginRequiredMixin,View):
+    template_name='validate/login.html'
+    form_class= forms.LoginForm
     def get(self,request):
         logout(request)
         return HttpResponseRedirect('/')

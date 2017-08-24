@@ -3,8 +3,7 @@ import models
 import serializers
 from rest_framework.views import Response,status
 from rest_framework import generics
-from forms import ScriptForm
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated
 class ScriptListAPI(generics.ListAPIView):
     serializer_class = serializers.ScriptSerializer
     permission_classes = [IsAuthenticated]
@@ -25,7 +24,7 @@ class ScriptArgsListAPI(generics.ListAPIView):
 
 class ScriptArgsCreateAPI(generics.CreateAPIView):
     serializer_class = serializers.ScriptArgsSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -42,7 +41,7 @@ class ScriptArgsCreateAPI(generics.CreateAPIView):
 
 class ScriptRemoveArgsAPI(generics.DestroyAPIView):
         serializer_class = serializers.ScriptArgsSerializer
-        permission_classes = [AllowAny]
+        permission_classes = [IsAuthenticated]
         queryset = models.ScriptArgs.objects.all()
 
         def delete(self, request, *args, **kwargs):
