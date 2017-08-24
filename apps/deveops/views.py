@@ -1,11 +1,6 @@
-from django.contrib.auth import authenticate,login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect,render
 from django.views.generic import TemplateView
-from django.views.generic import View
-
+# from django.shortcuts import redirect,render
 
 class IndexView(LoginRequiredMixin,TemplateView):
     template_name = 'index.html'

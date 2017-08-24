@@ -11,7 +11,7 @@ from apps.anweb import service
 
 @require_http_methods(["GET"])
 def login(request):
-    return render(request, '../templates/login.html', {})
+    return render(request, '../templates/validate/login.html', {})
 
 '''
 METHOD:GET

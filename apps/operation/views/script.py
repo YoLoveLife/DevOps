@@ -1,14 +1,13 @@
 # -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .. import forms
-from .. import models
+from .. import forms,models
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 
 class OperationScriptListView(LoginRequiredMixin,TemplateView):
-    template_name='script.html'
+    template_name= 'operation/script.html'
     form_class = forms.ScriptForm
 
     def get_context_data(self, **kwargs):
@@ -20,7 +19,7 @@ class OperationScriptListView(LoginRequiredMixin,TemplateView):
 
 
 class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
-    template_name = 'new_update_script.html'
+    template_name = 'operation/new_update_script.html'
     form_class = forms.ScriptCreateUpdateForm
     success_url = reverse_lazy('operation:script')
     model = models.Script
@@ -62,7 +61,7 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
 
 class OperationScriptDetailView(LoginRequiredMixin,DetailView):
     model = models.Script
-    template_name = 'detail_script.html'
+    template_name = 'operation/detail_script.html'
 
     def get_context_data(self, **kwargs):
         context=super(OperationScriptDetailView,self).get_context_data(**kwargs)

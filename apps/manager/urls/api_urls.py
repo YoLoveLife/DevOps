@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from apps.manager import api
+from .. import api
 urlpatterns=[
     # Resource group api
     url(r'^v1/group/', api.GroupListAPI.as_view()),

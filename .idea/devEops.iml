@@ -24,6 +24,9 @@
         <option value="$MODULE_DIR$/apps/manager/templates" />
         <option value="$MODULE_DIR$/apps/magic/templates" />
         <option value="$MODULE_DIR$/apps/operation/templates" />
+        <option value="$MODULE_DIR$/apps/manager/templates/manager" />
+        <option value="$MODULE_DIR$/apps/operation/templates/operation" />
+        <option value="$MODULE_DIR$/apps/validate/templates/validate" />
       </list>
     </option>
   </component>
