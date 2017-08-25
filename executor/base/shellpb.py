@@ -17,3 +17,6 @@ def shell_book(shell='hostname'):
     pb.add_task(task1)
     personblock.set_playbook(pb)
     personblock.run_block()
+
+if __name__ == "__main__":
+    shell_book()
