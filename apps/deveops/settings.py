@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'softlib.apps.SoftlibConfig',
     'magic.apps.MagicConfig',
     'operation.apps.OperationConfig',
+    'timeline.apps.TimelineConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',

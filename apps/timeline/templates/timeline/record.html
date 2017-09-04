@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/fullcalendar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/fullcalendar.print.css' %}" media="print">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-clock-o"></i>
+            时间线
+            <small><i class="fa fa-angle-double-right"></i>列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-clock-o"></i>
+            <li class="active">TimeLine</li>
+            <li><a href="/timeline/">List</a></li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+            <div class="row">
+        <div class="col-md-3">
+            <!-- The time line -->
+            <ul class="timeline">
+                <!-- timeline time label -->
+                <li class="time-label">
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                {% for history in historys %}
+                    <li>
+                        {% if history.type == 0 %}
+                            <i class="fa fa-truck timeline-fa-blue"></i>
+                            {% elif history.type == 1 %}
+                            <i class="fa fa-newspaper-o timeline-fa-yellow"></i>
+                            {% elif history.type == 2 %}
+                            <i class="fa fa-magic timeline-fa-red"></i>
+                        {% endif %}
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i>{{ history.starttime }}</span>
+                            <h3 class="timeline-header">
+                                <a href="#">{{ history.get_type_display }}</a>
+                                {% if history.status == 0 %}
+                                    <span class='label label-info'>正在运行</span>
+                                    {% elif history.status == 1 %}
+                                    <span class='label label-success'>运行成功</span>
+                                    {% elif history.status == 2 %}
+                                    <span class='label label-danger'>运行失败</span>
+                                {% endif %}
+                            </h3>
+                            <div class="timeline-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        {{ history.user.get_full_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-footer">
+                                <i class="btn btn-primary btn-xs" id="{{ history.id }}" onclick="detailRecord(this)">Read More</i>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+                <li class="time-label">
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
+        </div>
+            <div class="col-md-9">
+                <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">记录信息</h3>
+                        </div>
+                        <div class="box-body" id="detailrecord">
+                            {% include '_404.html' %}
+                        </div>
+                </div>
+            </div>
+        <!-- /.col -->
+    </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <script src="{% static 'js/fullcalendar.js' %}"></script>
+    <script type="text/javascript">
+        function historyBack() {
+            window.history.go('/');
+        }
+        function detailRecord(obj){
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: '/timeline/record/'+obj.id+'/detail',
+                type: 'GET',
+                success: function(data) {
+                    $('#detailrecord').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+        }
+    </script>
+{% endblock %}

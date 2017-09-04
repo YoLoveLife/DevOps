@@ -272,26 +272,6 @@
             });
         })
         .on('click','#args_remove',function () {
-{#            var a=$('#args_tb').bootstrapTable('getSelections');#}
-{#            if(a.length<1){#}
-{#                alert('请选择数据');#}
-{#                return false;#}
-{#            }#}
-{#            var argsname=a[0].args_name;#}
-{#            var argsvalue=a[0].args_value;#}
-{#            var data={'args_name':argsname,'args_value':argsvalue};#}
-{#            $.ajax({#}
-{#                type:"DELETE",#}
-{#                url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/create/",#}
-{#                data:data,#}
-{#                dataType:"json",#}
-{#                success:function(data){#}
-{#                    $('#args_tb').bootstrapTable('refresh');#}
-{#                },#}
-{#                error:function(data){#}
-{#                    alert(data.responseJSON.info);#}
-{#                }#}
-{#            });#}
             var a=$('#args_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');

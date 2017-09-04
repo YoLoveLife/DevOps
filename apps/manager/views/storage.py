@@ -5,6 +5,7 @@ from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
+from timeline.models import History
 
 class ManagerStorageListView(LoginRequiredMixin,FormView):
     template_name = 'manager/storage.html'
@@ -45,12 +46,16 @@ class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChang
     model = models.Storage
 
     def form_valid(self, form):
+        his=History(status=0,type=0,user=self.request.user)
+        his.save()
         host_storage=form.save()
         hosts_id_list=self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_storage.hosts.clear()
         host_storage.hosts.add(*hosts)
         host_storage.save()
+        his.status=1
+        his.save()
         return super(ManagerStorageUpdateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
