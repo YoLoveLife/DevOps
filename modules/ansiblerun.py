@@ -46,12 +46,13 @@ if __name__ == "__main__":
     pb=Playbook('ddr','no')
     pb.push_vars({'prefix':'/usr/local','base_dir':'/usr/local/tomcat'})
 
-    a=Task(module="shell",args="cp /etc/hosts /tmp/hosts")
+    a=Task(module="shell",args="ls")
 
     s=Tasks()
     s.push_task(a)
 
     a=Ansible()
-
+    pb.push_tasks(s)
+    print(pb.pop_playbook())
     a.set_playbook(pb)
     a.run_playbook()
