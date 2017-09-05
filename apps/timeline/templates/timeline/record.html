@@ -21,53 +21,70 @@
     <!--Content Header-->
     <!--Main Content-->
     <section class="content container-fluid">
-            <div class="row">
+        <div class="row">
         <div class="col-md-3">
-            <!-- The time line -->
-            <ul class="timeline">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="timeline">
                 <!-- timeline time label -->
-                <li class="time-label">
-                </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                {% for history in historys %}
-                    <li>
-                        {% if history.type == 0 %}
-                            <i class="fa fa-truck timeline-fa-blue"></i>
-                            {% elif history.type == 1 %}
-                            <i class="fa fa-newspaper-o timeline-fa-yellow"></i>
-                            {% elif history.type == 2 %}
-                            <i class="fa fa-magic timeline-fa-red"></i>
-                        {% endif %}
-                        <div class="timeline-item">
-                            <span class="time"><i class="fa fa-clock-o"></i>{{ history.starttime }}</span>
-                            <h3 class="timeline-header">
-                                <a href="#">{{ history.get_type_display }}</a>
-                                {% if history.status == 0 %}
-                                    <span class='label label-info'>正在运行</span>
-                                    {% elif history.status == 1 %}
-                                    <span class='label label-success'>运行成功</span>
-                                    {% elif history.status == 2 %}
-                                    <span class='label label-danger'>运行失败</span>
+                        <li class="time-label">
+                        </li>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        {% for history in historys %}
+                            <li>
+                                {% if history.type == 0 %}
+                                    <i class="fa fa-truck timeline-fa-blue"></i>
+                                    {% elif history.type == 1 %}
+                                    <i class="fa fa-newspaper-o timeline-fa-yellow"></i>
+                                    {% elif history.type == 2 %}
+                                    <i class="fa fa-magic timeline-fa-red"></i>
                                 {% endif %}
-                            </h3>
-                            <div class="timeline-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        {{ history.user.get_full_name }}
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i>{{ history.starttime }}</span>
+                                    <h3 class="timeline-header">
+                                        <a href="#">{{ history.get_type_display }}</a>
+                                        {% if history.status == 0 %}
+                                            <span class='label label-info'>正在运行</span>
+                                            {% elif history.status == 1 %}
+                                            <span class='label label-success'>运行成功</span>
+                                            {% elif history.status == 2 %}
+                                            <span class='label label-danger'>运行失败</span>
+                                        {% endif %}
+                                    </h3>
+                                    <div class="timeline-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {{ history.info }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-footer">
+                                        <i class="btn btn-primary btn-xs" style="font-style:normal" id="{{ history.id }}" onclick="detailRecord(this)">Read More</i>
+                                        <i class="btn btn-default btn-xs" style="font-style:normal">{{ history.user.get_full_name }}</i>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="timeline-footer">
-                                <i class="btn btn-primary btn-xs" id="{{ history.id }}" onclick="detailRecord(this)">Read More</i>
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
+                            </li>
+                        {% endfor %}
                 <li class="time-label">
                     <i class="fa fa-clock-o bg-gray"></i>
                 </li>
             </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-3 col-md-3">
+                    <button class="btn btn-app">
+                        <i class="fa fa-mail-reply"></i> 前一页
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-app">
+                        <i class="fa fa-mail-forward"></i> 后一页
+                    </button>
+                </div>
+            </div>
+            <!-- The time line -->
         </div>
             <div class="col-md-9">
                 <div class="box">

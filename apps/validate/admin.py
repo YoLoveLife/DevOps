@@ -1,5 +1,6 @@
-# from django.contrib import admin
-# from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from models import ExtendUser
 # import models
 # # Register your models here.
 # class ProfileInline(admin.StackedInline):
@@ -11,3 +12,5 @@
 #     inlines = (ProfileInline,)
 #
 # admin.site
+
+admin.site.register(ExtendUser,UserAdmin)
