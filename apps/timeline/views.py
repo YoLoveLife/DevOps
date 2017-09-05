@@ -12,12 +12,21 @@ class TimeLineRecordView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TimeLineRecordView, self).get_context_data(**kwargs)
-        historys = models.History.objects.all().order_by('starttime')
+        historys = models.History.objects.all().order_by('-starttime')
         context.update({'historys':historys})
         return context
 
     def get(self,request,*args, **kwargs):
         return super(TimeLineRecordView, self).get(request, *args, **kwargs)
+
+class TimeLineRecordListView(LoginRequiredMixin,TemplateView):
+    template_name = 'timeline/record_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TimeLineRecordView, self).get_context_data(**kwargs)
+        historys = models.History.objects.all().order_by('-starttime')
+        context.update({'historys':historys})
+        return context
 
 class TimeLineRecordDetailView(LoginRequiredMixin,DetailView):
     template_name = 'timeline/detail_record.html'

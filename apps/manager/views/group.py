@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms,models
+from timeline.models import History
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
@@ -27,11 +29,17 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
         return context
 
     def form_valid(self, form):
+        his=History(user=self.request.user,type=0,info="创建新的应用组",status=0)
+        his.save()
+
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_group.hosts.add(*hosts)
         host_group.save()
+
+        his.status=1
+        his.save()
         return super(ManagerGroupCreateView,self).form_valid(form)
 
     def get_success_url(self):
@@ -54,12 +62,18 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
         return context
 
     def form_valid(self, form):
+        his=History(user=self.request.user,type=0,info="修改应用组",status=0)
+        his.save()
+
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_group.hosts.clear()
         host_group.hosts.add(*hosts)
         host_group.save()
+
+        his.status=1
+        his.save()
         return super(ManagerGroupUpdateView,self).form_valid(form)
 
     def get_success_url(self):

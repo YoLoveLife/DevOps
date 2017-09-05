@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms,models
+from timeline.models import History
+from ..permission import script as ScriptPermission
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView,UpdateView
@@ -18,7 +20,7 @@ class OperationScriptListView(LoginRequiredMixin,TemplateView):
         return super(OperationScriptListView, self).get(request, *args, **kwargs)
 
 
-class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
+class OperationScriptUpdateView(LoginRequiredMixin,ScriptPermission.ScriptAddRequiredMixin,ScriptPermission.ScriptChangeRequiredMixin,UpdateView):
     template_name = 'operation/new_update_script.html'
     form_class = forms.ScriptCreateUpdateForm
     success_url = reverse_lazy('operation:script')
@@ -46,6 +48,9 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
         return context
     
     def form_valid(self, form):
+        his=History(user=self.request.user,type=1,info="Bash脚本编辑",status=0)
+        his.save()
+
         script_info=form.save()
         status=self.request.POST.get('status')
         if status == '0':
@@ -53,6 +58,9 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
         else:
             script_info.status = 1
         script_info.save()
+
+        his.status=1
+        his.save()
         return super(OperationScriptUpdateView, self).form_valid(form)
 
     def get_success_url(self):

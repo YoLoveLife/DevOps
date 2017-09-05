@@ -1,11 +1,14 @@
+# -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
+from timeline.models import History
 from ..permission import host as HostPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
+from validate.models import ExtendUser
 
 class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='manager/host.html'
@@ -27,6 +30,9 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
+        his=History(user=self.request.user,type=0,info="新增应用主机",status=0)
+        his.save()
+
         host_storage_group=form.save()
         hosts_id_list=self.request.POST.getlist('groups',[])
         storages_id_list=self.request.POST.getlist('storages',[])
@@ -38,6 +44,8 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
         host_storage_group.storages.add(*storages)
         host_storage_group.save()
 
+        his.status=1
+        his.save()
         return super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -64,6 +72,9 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
+        his=History(user=self.request.user,type=0,info="修改应用主机",status=0)
+        his.save()
+
         host_storage_group=form.save()
         hosts_id_list=self.request.POST.getlist('groups',[])
         storages_id_list=self.request.POST.getlist('storages',[])
@@ -74,6 +85,9 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
         host_storage_group.groups.add(*groups)
         host_storage_group.storages.add(*storages)
         host_storage_group.save()
+
+        his.status=1
+        his.save()
         return super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
