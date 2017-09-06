@@ -5,15 +5,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 import models
+PAGE_SIZE=4
 # Create your views here.
 class TimeLineRecordView(LoginRequiredMixin,TemplateView):
     template_name = 'timeline/record.html'
     #form_class = forms.ScriptForm
-
+    page_size=PAGE_SIZE
     def get_context_data(self, **kwargs):
         context = super(TimeLineRecordView, self).get_context_data(**kwargs)
-        historys = models.History.objects.all().order_by('-starttime')
-        context.update({'historys':historys})
+        hiscount = models.History.objects.all().count()
+        pagemax = hiscount/self.page_size
+        if pagemax==0:
+            pagemax=1
+        else:
+            pagemax=pagemax+1
+        context.update({'hiscount':hiscount,
+                        'pagemax':pagemax})
         return context
 
     def get(self,request,*args, **kwargs):
@@ -21,12 +28,16 @@ class TimeLineRecordView(LoginRequiredMixin,TemplateView):
 
 class TimeLineRecordListView(LoginRequiredMixin,TemplateView):
     template_name = 'timeline/record_list.html'
-
+    page_size = PAGE_SIZE
     def get_context_data(self, **kwargs):
-        context = super(TimeLineRecordView, self).get_context_data(**kwargs)
-        historys = models.History.objects.all().order_by('-starttime')
+        context = super(TimeLineRecordListView, self).get_context_data(**kwargs)
+        page = int(kwargs['pk'])
+        historys = models.History.objects.all().order_by('-starttime')[(page-1)*self.page_size:page*self.page_size]
         context.update({'historys':historys})
         return context
+
+    def get(self,request,*args,**kwargs):
+        return super(TimeLineRecordListView, self).get(request,*args,**kwargs)
 
 class TimeLineRecordDetailView(LoginRequiredMixin,DetailView):
     template_name = 'timeline/detail_record.html'

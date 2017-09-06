@@ -11,7 +11,8 @@ class History(models.Model):
     HISTORY_TYPE=(
         (0,u'资产管理'),
         (1,u'脚本修改'),
-        (2,u'运维操作'),
+        (2,u'剧本修改'),
+        (3,u'运维操作'),
     )
     STATUS=(
         (0,u'正在运行'),

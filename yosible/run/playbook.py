@@ -1,5 +1,7 @@
-from tasks import Tasks
-from task import Task
+from yosible.tasks import Task
+from yosible.tasks import Tasks
+
+
 class Playbook():
     def __init__(self,pbname,pbfacts):
         self.name=pbname

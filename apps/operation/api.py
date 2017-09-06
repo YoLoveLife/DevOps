@@ -55,3 +55,21 @@ class ScriptRemoveArgsAPI(generics.DestroyAPIView):
                 return Response({'info':'参数在脚本中已不存在'},status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+
+class PlaybookListAPI(generics.ListAPIView):
+    serializer_class = serializers.PlaybookSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        queryset = models.PlayBook.objects.all()
+        return queryset
+
+
+class PlaybookAdhocsListAPI(generics.ListAPIView):
+    serializer_class = serializers.AdhocSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        if self.kwargs['pk']=='0':
+            queryset={}
+            return queryset
+        queryset = models.PlayBook.objects.get(id=self.kwargs['pk']).adhocs
+        return queryset
