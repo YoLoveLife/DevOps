@@ -13,7 +13,7 @@ class Script(models.Model):
     name=models.CharField(max_length=100,default='noName')
     info=models.CharField(max_length=100,default="noUse")
     script=models.TextField(default='')
-    author = models.ForeignKey(ExtendUser, default=1, related_name='user')
+    author = models.ForeignKey(ExtendUser, default=1, related_name='suser')
     status=models.IntegerField(default=0,choices=SCRIPT_STATUS)
 
 class ScriptArgs(models.Model):
@@ -21,3 +21,23 @@ class ScriptArgs(models.Model):
     args_name=models.CharField(max_length=100,default='')
     args_value=models.CharField(max_length=100,default='')
     script=models.ForeignKey(Script,default=1,related_name='scriptargs')
+
+
+class PlayBook(models.Model):
+    PLAYBOOK_STATUS=(
+        (0,u'未完成'),
+        (1,u'已完成'),
+    )
+    id=models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100,default='noName')
+    author = models.ForeignKey(ExtendUser,default=1,related_name='puser')
+    info = models.CharField(max_length=100,default='noUse')
+    status = models.IntegerField(default=0,choices=PLAYBOOK_STATUS)
+
+class Adhoc(models.Model):
+    id = models.AutoField(primary_key=True)
+    module = models.CharField(default='hostname',max_length=20)
+    args = models.CharField(default='',max_length=100)
+    sort = models.IntegerField(default=0)
+    playbook = models.ForeignKey(PlayBook,default=1,related_name='adhocs')
+

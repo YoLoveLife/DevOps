@@ -10,7 +10,6 @@ from django.views.generic.detail import DetailView
 
 class OperationScriptListView(LoginRequiredMixin,TemplateView):
     template_name= 'operation/script.html'
-    form_class = forms.ScriptForm
 
     def get_context_data(self, **kwargs):
         context= super(OperationScriptListView, self).get_context_data(**kwargs)

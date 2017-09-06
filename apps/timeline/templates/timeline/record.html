@@ -22,70 +22,23 @@
     <!--Main Content-->
     <section class="content container-fluid">
         <div class="row">
-        <div class="col-md-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="timeline">
-                <!-- timeline time label -->
-                        <li class="time-label">
-                        </li>
-                        <!-- /.timeline-label -->
-                        <!-- timeline item -->
-                        {% for history in historys %}
-                            <li>
-                                {% if history.type == 0 %}
-                                    <i class="fa fa-truck timeline-fa-blue"></i>
-                                    {% elif history.type == 1 %}
-                                    <i class="fa fa-newspaper-o timeline-fa-yellow"></i>
-                                    {% elif history.type == 2 %}
-                                    <i class="fa fa-magic timeline-fa-red"></i>
-                                {% endif %}
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fa fa-clock-o"></i>{{ history.starttime }}</span>
-                                    <h3 class="timeline-header">
-                                        <a href="#">{{ history.get_type_display }}</a>
-                                        {% if history.status == 0 %}
-                                            <span class='label label-info'>正在运行</span>
-                                            {% elif history.status == 1 %}
-                                            <span class='label label-success'>运行成功</span>
-                                            {% elif history.status == 2 %}
-                                            <span class='label label-danger'>运行失败</span>
-                                        {% endif %}
-                                    </h3>
-                                    <div class="timeline-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                {{ history.info }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <i class="btn btn-primary btn-xs" style="font-style:normal" id="{{ history.id }}" onclick="detailRecord(this)">Read More</i>
-                                        <i class="btn btn-default btn-xs" style="font-style:normal">{{ history.user.get_full_name }}</i>
-                                    </div>
-                                </div>
-                            </li>
-                        {% endfor %}
-                <li class="time-label">
-                    <i class="fa fa-clock-o bg-gray"></i>
-                </li>
-            </ul>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="timeline" id="listrecord">
+                        </ul>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-3">
+                        <i class="btn btn-primary btn-xs" style="font-style:normal" id="page-before">前一页</i>
+                    </div>
+                    <div class="col-md-3">
+                        <i class="btn btn-primary btn-xs" style="font-style:normal" id="page-after">后一页</i>
+                    </div>
+                </div>
+                <!-- The time line -->
             </div>
-            <div class="row">
-                <div class="col-md-offset-3 col-md-3">
-                    <button class="btn btn-app">
-                        <i class="fa fa-mail-reply"></i> 前一页
-                    </button>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-app">
-                        <i class="fa fa-mail-forward"></i> 后一页
-                    </button>
-                </div>
-            </div>
-            <!-- The time line -->
-        </div>
             <div class="col-md-9">
                 <div class="box">
                         <div class="box-header">
@@ -97,17 +50,18 @@
                 </div>
             </div>
         <!-- /.col -->
-    </div>
+        </div>
     </section>
     <!--Main Content-->
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-
     <script src="{% static 'js/jquery-ui.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
     <script src="{% static 'js/fullcalendar.js' %}"></script>
     <script type="text/javascript">
+        var pageMax={{ pagemax|safe }};
+        var pageIndex=1;
         function historyBack() {
             window.history.go('/');
         }
@@ -126,5 +80,47 @@
                 async: false
             });
         }
+        function listRecord(id){
+            var pageCode;
+            if(id=='page-before'){
+                if(pageIndex-1<1){
+                    pageCode=pageIndex;
+                }else{
+                    pageIndex--;
+                    pageCode=pageIndex;
+                }
+            }else{
+                if(pageIndex+1>pageMax)
+                {
+                    pageCode=pageIndex;
+                }else{
+                    pageIndex++;
+                    pageCode=pageIndex;
+                }
+            }
+            $('#page_numb').html=pageIndex.toString();
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: '/timeline/record/'+pageCode+'/list',
+                type: 'GET',
+                success: function(data) {
+                    $('#listrecord').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+        }
+        $(document).ready(function () {
+            listRecord('page-before');
+        })
+            .on('click','#page-before',function () {
+                listRecord(this.id);
+            })
+            .on('click','#page-after',function(){
+                listRecord(this.id);
+            })
     </script>
 {% endblock %}

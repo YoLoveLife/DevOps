@@ -1,12 +1,14 @@
-from ansible.vars import VariableManager
-from ansible.parsing.dataloader import DataLoader
-from callback import ResultCallback
-from ansible.inventory import Inventory
-from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
-from args import option,HOST_LIST
+from ansible.inventory import Inventory
+from ansible.parsing.dataloader import DataLoader
+from ansible.playbook.play import Play
+from ansible.vars import VariableManager
+from callback import ResultCallback
 from playbook import Playbook
-from tasks import Tasks,Task
+from yosible.tasks import Tasks, Task
+from yosible.vars.args import option, HOST_LIST
+
+
 class Ansible():
     def __init__(self):
         self.options = option
@@ -46,13 +48,14 @@ if __name__ == "__main__":
     pb=Playbook('ddr','no')
     pb.push_vars({'prefix':'/usr/local','base_dir':'/usr/local/tomcat'})
 
-    a=Task(module="shell",args="ls")
+    b=Task(module="shell",args="ls /")
+    c=Task(module="shell", args="ls /root")
 
     s=Tasks()
-    s.push_task(a)
+    s.push_task(b)
+    s.push_task(c)
 
-    a=Ansible()
+    A=Ansible()
     pb.push_tasks(s)
-    print(pb.pop_playbook())
-    a.set_playbook(pb)
-    a.run_playbook()
+    A.set_playbook(pb)
+    A.run_playbook()
