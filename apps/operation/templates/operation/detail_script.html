@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/bootstrap3-wysihtml5.min.css' %}">
+{% endblock %}
+{% load bootstrap3 %}
+{% block content %}
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-superscript"></i>
+        脚本
+        <small><i class="fa fa-angle-double-right"></i>详细</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-newspaper-o"></i>
+        <li class="active">Operation</li>
+        <li><a href="/operation/script/">Script</a></li>
+        <li class="active">Detail</li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">脚本名称</h3>
+                        </div>
+                        <div class="box-body script-body">
+                            <h3>{{ script.name }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">脚本信息</h3>
+                        </div>
+                        <div class="box-body script-body">
+                            <p>{{ script.info }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">脚本状态</h3>
+                        </div>
+                        <div class="box-body script-body">
+                            {% if script.status == 1 %}
+                                <p class="label label-success" style="font-size: 16px">可使用</p>
+                                {% else %}
+                                <p class="label label-danger" style="font-size: 16px">未编辑完成</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">脚本内容</h3>
+                </div>
+                <div class="box-body script-body">
+                    {{ script.script|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">参数列表</h3>
+                        </div>
+                        <div class="box-body script-body">
+                            <table id="args_tb" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th data-field="args_name">参数名称</th>
+                                    <th data-field="args_value">参数默认数值</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">脚本历史</h3>
+                        </div>
+                        <div class="box-body script-body">
+                          {% include '_404.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var table=$('#args_tb').bootstrapTable({
+                url : '/api-operation/v1/script/{{ script.id }}/args/',
+                method  : 'GET',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                dataType    :   'json'
+            });
+    })
+</script>
+{% endblock %}

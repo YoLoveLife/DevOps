@@ -1,15 +1,15 @@
 # -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .. import forms
-from .. import models
+from .. import forms,models
+from timeline.models import History
+from ..permission import script as ScriptPermission
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 
 class OperationScriptListView(LoginRequiredMixin,TemplateView):
-    template_name='script.html'
-    form_class = forms.ScriptForm
+    template_name= 'operation/script.html'
 
     def get_context_data(self, **kwargs):
         context= super(OperationScriptListView, self).get_context_data(**kwargs)
@@ -19,8 +19,8 @@ class OperationScriptListView(LoginRequiredMixin,TemplateView):
         return super(OperationScriptListView, self).get(request, *args, **kwargs)
 
 
-class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
-    template_name = 'new_update_script.html'
+class OperationScriptUpdateView(LoginRequiredMixin,ScriptPermission.ScriptAddRequiredMixin,ScriptPermission.ScriptChangeRequiredMixin,UpdateView):
+    template_name = 'operation/new_update_script.html'
     form_class = forms.ScriptCreateUpdateForm
     success_url = reverse_lazy('operation:script')
     model = models.Script
@@ -47,6 +47,9 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
         return context
     
     def form_valid(self, form):
+        his=History(user=self.request.user,type=1,info="Bash脚本编辑",status=0)
+        his.save()
+
         script_info=form.save()
         status=self.request.POST.get('status')
         if status == '0':
@@ -54,6 +57,9 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
         else:
             script_info.status = 1
         script_info.save()
+
+        his.status=1
+        his.save()
         return super(OperationScriptUpdateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -62,7 +68,7 @@ class OperationScriptUpdateView(LoginRequiredMixin,UpdateView):
 
 class OperationScriptDetailView(LoginRequiredMixin,DetailView):
     model = models.Script
-    template_name = 'detail_script.html'
+    template_name = 'operation/detail_script.html'
 
     def get_context_data(self, **kwargs):
         context=super(OperationScriptDetailView,self).get_context_data(**kwargs)

@@ -14,7 +14,6 @@ class ResultCallback(CallbackBase):
     #OK信息返回
     def v2_runner_on_ok(self, result, **kwargs):
         """Print a json representation of the result
-
         This method could store the result in an instance attribute for retrieval later
         """
         host = result._host

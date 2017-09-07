@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label" for="id_mudule">模块</label>
+            <input id="id_mudule" class="form-control" name="mudule" disabled="yes" value="copy" required="no" max_length="100" placeholder="模块" type="text">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label" for="id_backup">是否备份</label>
+            <select id="id_backup" class="form-control" name="backup">
+                <option id="1" selected>Yes</option>
+                <option id="0">No</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label" for="id_remote_src">是否操作远程目录</label>
+            <select id="id_remote_src" class="form-control" name="remote_src">
+                <option id="1">True</option>
+                <option id="0" selected>False</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label" for="id_src">源文件</label>
+            <input id="id_src" class="form-control" name="src" title="" required="no" max_length="100" placeholder="源文件" type="text">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label" for="id_dest">目标文件</label>
+            <input id="id_dest" class="form-control" name="dest" title="" required="yes" max_length="100" placeholder="目标文件" type="text">
+        </div>
+    </div>
+</div>
