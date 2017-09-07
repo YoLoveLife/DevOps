@@ -1,7 +1,7 @@
 import models
 from rest_framework import serializers
 class ScriptSerializer(serializers.HyperlinkedModelSerializer):
-    author_name=serializers.StringRelatedField(source="author.username",read_only=True)
+    author_name=serializers.StringRelatedField(source="author.get_full_name",read_only=True)
     status=serializers.ChoiceField
     class Meta:
         model = models.Script
@@ -15,7 +15,7 @@ class ScriptArgsSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PlaybookSerializer(serializers.HyperlinkedModelSerializer):
-    author_name=serializers.StringRelatedField(source="author.username",read_only=True)
+    author_name=serializers.StringRelatedField(source="author.get_full_name",read_only=True)
     status=serializers.ChoiceField
     class Meta:
         model = models.PlayBook
@@ -25,4 +25,4 @@ class PlaybookSerializer(serializers.HyperlinkedModelSerializer):
 class AdhocSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Adhoc
-        fields= ('id','module','args','sort')
+        fields= ('id','mudule','args','sort')

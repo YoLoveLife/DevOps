@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label" for="id_mudule">模块</label>
+            <input id="id_mudule" class="form-control" name="mudule" disabled="yes" value="service" required="no" max_length="100" placeholder="模块" type="text">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label" for="id_servicename">应用名称</label>
+            <select id="id_servicename" class="form-control" name="servicename">
+                <option id="sshd" selected>sshd</option>
+                <option id="network">network</option>
+                <option id="network">iptables</option>
+                <option id="ntpd">ntpd</option>
+                <option id="crond">crond</option>crond
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label" for="id_state">操作类型</label>
+            <select id="id_state" class="form-control" name="state">
+                <option id="started" selected>started</option>
+                <option id="stopped">stopped</option>
+                <option id="restarted">restarted</option>
+                <option id="reloaded">reloaded</option>
+            </select>
+        </div>
+    </div>
+</div>

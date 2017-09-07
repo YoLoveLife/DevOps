@@ -15,6 +15,6 @@ urlpatterns=[
     url(r'^v1/playbook/(?P<pk>[0-9]+)/adhocs/', api.PlaybookAdhocsListAPI.as_view()),
     #
     # # Resource ahoc api
-    # url(r'^v1/ahoc/(?P<pk>[0-9]+)/create/',api.AhocCreateAPI.as_view()),
+    url(r'^v1/adhoc/(?P<pk>[0-9]+)/create/',api.AdhocCreateAPI.as_view()),
     # url(r'^v1/ahoc/(?P<pk>[0-9]+)/sort/(?P<pk>[0-9]+)/',api.AhocSortAPI.as_view()),
 ]

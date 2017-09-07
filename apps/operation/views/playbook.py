@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
-
+from .. import MUDULE_OPTION
 class OperationPlaybookListView(LoginRequiredMixin,TemplateView):
     template_name= 'operation/playbook.html'
 
@@ -65,15 +65,15 @@ class OperationPlaybookUpdateView(LoginRequiredMixin,PlaybookPermission.Playbook
     def get_success_url(self):
         return self.success_url
 
-#
-# class OperationScriptDetailView(LoginRequiredMixin,DetailView):
-#     model = models.Script
-#     template_name = 'operation/detail_script.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context=super(OperationScriptDetailView,self).get_context_data(**kwargs)
-#         script=self.object
-#         context.update({
-#             'script':script
-#         })
-#         return context
+class OperationAdhocEditorView(LoginRequiredMixin,TemplateView):
+    template_dir = 'operation/mudule/'
+    postfix = '.html'
+
+    def get_context_data(self, **kwargs):
+        context= super(OperationAdhocEditorView, self).get_context_data(**kwargs)
+        mudule = self.kwargs['pk']
+        self.template_name = self.template_dir + MUDULE_OPTION[mudule]+self.postfix
+        return context
+
+    def get(self,request,*args, **kwargs):
+        return super(OperationAdhocEditorView, self).get(request, *args, **kwargs)

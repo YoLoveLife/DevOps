@@ -2,7 +2,7 @@
 {% load static %}
 {% block single-css %}
     <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'less/summernote.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
 {% endblock %}
 {% load bootstrap3 %}
 {% load i18n %}
@@ -24,26 +24,30 @@
     <!--Content Header-->
     <!--Main Content-->
     <section class="content container-fluid">
-        <form method="post" action="" id="script_form" enctype="multipart/form-data">
+        <form method="post" action="" id="playbook_form" enctype="multipart/form-data">
             {% csrf_token %}
         <div class="row">
-            <div class="col-md-6">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">脚本书写</h3>
-                    </div>
-                    <div class="box-body">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">工具栏</h3>
+                                <h3 class="box-title">剧本信息</h3>
                             </div>
                             <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        {% bootstrap_field form.name %}
+                                    </div>
+                                    <div class="col-md-7">
+                                        {% bootstrap_field form.info %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        {% bootstrap_field form.sudo %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,7 +56,7 @@
                     <div class="col-md-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">脚本书写</h3>
+                                <h3 class="box-title">剧本内容</h3>
                             </div>
                             <div class="box-body">
                                 <table id="adhoc_tb" class="table table-bordered table-striped">
@@ -60,7 +64,7 @@
                                         <tr>
                                             <th data-field="check" data-radio="true">#</th>
                                             <th data-field="sort">剧本顺序</th>
-                                            <th data-field="module">模块名称</th>
+                                            <th data-field="mudule">模块名称</th>
                                             <th data-field="args">模块参数</th>
                                         </tr>
                                     </thead>
@@ -70,7 +74,45 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-offset-4 col-md-8">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">工具栏</h3>
+                            </div>
+                            <div class="box-body">
+                                <button class="btn btn-app" type="button" id="adhoc_add">
+                                    <i class="fa fa-plus"></i> 添加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">剧本书写</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select name="select_module" class="select2 form-control" id="select_module">
+                                            {% include 'operation/ansible_module.html' %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="module_editor">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+            <input name="status" id="status" type="hidden">
     </form>
     </section>
     <!--Main Content-->
@@ -78,17 +120,15 @@
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
     <script src="{% static 'js/operation.js' %}"></script>
     <script>
         function csrfSafeMethod(method){
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
-{#        function moduleFormatter(value,row,index) {#}
-{#            var label_status='<span class="label label-success">'+value+'</span>';#}
-{#            return [label_status].join('');#}
-{#        }#}
     $(document).ready(function () {
+        $('.select2').select2();
         $.ajaxSetup({
            beforeSend: function (xhr,settings) {
                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -102,28 +142,39 @@
                 clickToSelect:  true,
                 singleSelect    :   true,
                 dataType    :   'json',
-                onLoadSuccess:function(data){
-                    avrg_list=Normal_Args;
-                    for(var i=0;i<data.length;i++){
-                        avrg_list.push(data[i].args_name);
-                    }
-                }
             });
     })
-        .on('click','#script_commit',function(){
+        .on('change','#select_module',function(){
+            var obj = this.options[this.selectedIndex].id;
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: '/operation/adhoc/'+obj+'/editor',
+                type: 'GET',
+                success: function(data) {
+                    $('#module_editor').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+        })
+        .on('click','#playbook_commit',function(){
             historyBack();
         })
-        .on('click','#args_add',function(){
-            var argsname=$('#id_args_name')[0].value;
-            var argsvalue=$('#id_args_value')[0].value;
-            var data={'args_name':argsname,'args_value':argsvalue};
+        .on('click','#adhoc_add',function(){
+            var data=commitAgrsSelect();
+            if(JSON.stringify(data) == '{}'){
+                return ;
+            }
             $.ajax({
                 type:"POST",
-                url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/create/",
+                url:"/api-operation/v1/adhoc/"+"{{ id }}"+"/create/",
                 data:data,
                 dataType:"json",
                 success:function(data){
-                    $('#args_tb').bootstrapTable('refresh');
+                    $('#adhoc_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
                     alert(data.responseJSON.info);
@@ -152,13 +203,13 @@
             })
         })
     function historyBack() {
-         var r=confirm('你要将此脚本保存为可使用状态吗');
+         var r=confirm('你要将此剧本保存为可使用状态吗');
          if(r==true){
-            $('#status').val("1");
+             $('#status').val("1");
          }else{
-            $('#status').val("0");
+             $('#status').val("0");
          }
-        $('#script_form').submit();
+         $('#playbook_form').submit();
     }
     </script>
 {% endblock %}

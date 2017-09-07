@@ -28,15 +28,21 @@ class PlayBook(models.Model):
         (0,u'未完成'),
         (1,u'已完成'),
     )
+    SUDO_STATUS=(
+        (0,u'不需要'),
+        (1,u'需要')
+    )
     id=models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,default='noName')
     author = models.ForeignKey(ExtendUser,default=1,related_name='puser')
     info = models.CharField(max_length=100,default='noUse')
+    sort = models.IntegerField(default=0)
+    sudo = models.IntegerField(default=1,choices=SUDO_STATUS)
     status = models.IntegerField(default=0,choices=PLAYBOOK_STATUS)
 
 class Adhoc(models.Model):
     id = models.AutoField(primary_key=True)
-    module = models.CharField(default='hostname',max_length=20)
+    mudule = models.CharField(default='hostname',max_length=20)
     args = models.CharField(default='',max_length=100)
     sort = models.IntegerField(default=0)
     playbook = models.ForeignKey(PlayBook,default=1,related_name='adhocs')

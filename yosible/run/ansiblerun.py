@@ -5,7 +5,7 @@ from ansible.playbook.play import Play
 from ansible.vars import VariableManager
 from callback import ResultCallback
 from playbook import Playbook
-from yosible.tasks import Tasks, Task
+from yosible.tasks.tasks import Task,Tasks
 from yosible.vars.args import option, HOST_LIST
 
 
@@ -49,11 +49,9 @@ if __name__ == "__main__":
     pb.push_vars({'prefix':'/usr/local','base_dir':'/usr/local/tomcat'})
 
     b=Task(module="shell",args="ls /")
-    c=Task(module="shell", args="ls /root")
 
     s=Tasks()
     s.push_task(b)
-    s.push_task(c)
 
     A=Ansible()
     pb.push_tasks(s)

@@ -5,6 +5,7 @@
 # Email YoLoveLife@outlook.com
 from django import forms
 import models
+from django.utils.translation import gettext_lazy as _
 
 class ScriptCreateUpdateForm(forms.ModelForm):
     class Meta:
@@ -34,9 +35,12 @@ class ScriptArgsCreateUpdateForm(forms.ModelForm):
 class PlaybookCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.PlayBook
-        fields = ['name','info']
+        fields = ['name','info','sudo']
         labels = {
-            'info':'脚本信息','name':'脚本名称',
+            'info':'脚本信息','name':'脚本名称','sudo':'管理员权限'
         }
         widgets = {
+            'sudo':forms.Select(
+                attrs={'class':'select2',
+                       'data-placeholder':_('Select host groups')}),
         }
