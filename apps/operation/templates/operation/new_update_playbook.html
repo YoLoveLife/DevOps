@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+{% endblock %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+    <h1>
+        <i class="fa fa-play-circle-o"></i>
+        剧本
+        <small><i class="fa fa-angle-double-right"></i>增加-修改</small>
+    </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-newspaper-o"></i>
+            <li class="active">Operation</li>
+            <li><a href="/operation/script/">Script</a></li>
+            <li class="active">New-Update</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <form method="post" action="" id="playbook_form" enctype="multipart/form-data">
+            {% csrf_token %}
+        <div class="row">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">剧本信息</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        {% bootstrap_field form.name %}
+                                    </div>
+                                    <div class="col-md-7">
+                                        {% bootstrap_field form.info %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        {% bootstrap_field form.sudo %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">剧本内容</h3>
+                            </div>
+                            <div class="box-body">
+                                <table id="adhoc_tb" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="check" data-radio="true">#</th>
+                                            <th data-field="sort">剧本顺序</th>
+                                            <th data-field="mudule">模块名称</th>
+                                            <th data-field="args">模块参数</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-offset-4 col-md-8">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">工具栏</h3>
+                            </div>
+                            <div class="box-body">
+                                <button class="btn btn-app" type="button" id="adhoc_add">
+                                    <i class="fa fa-plus"></i> 添加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">剧本书写</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select name="select_module" class="select2 form-control" id="select_module">
+                                            {% include 'operation/ansible_module.html' %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="module_editor">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <input name="status" id="status" type="hidden">
+    </form>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'js/operation.js' %}"></script>
+    <script>
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+    $(document).ready(function () {
+        $('.select2').select2();
+        $.ajaxSetup({
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
+        });
+        var table=$('#adhoc_tb').bootstrapTable({
+                url : '/api-operation/v1/playbook/{{ id }}/adhocs/',
+                method  : 'GET',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                dataType    :   'json',
+            });
+    })
+        .on('change','#select_module',function(){
+            var obj = this.options[this.selectedIndex].id;
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: '/operation/adhoc/'+obj+'/editor',
+                type: 'GET',
+                success: function(data) {
+                    $('#module_editor').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+        })
+        .on('click','#playbook_commit',function(){
+            historyBack();
+        })
+        .on('click','#adhoc_add',function(){
+            var data=commitAgrsSelect();
+            if(JSON.stringify(data) == '{}'){
+                return ;
+            }
+            $.ajax({
+                type:"POST",
+                url:"/api-operation/v1/adhoc/"+"{{ id }}"+"/create/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#adhoc_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
+                }
+            });
+        })
+        .on('click','#args_remove',function () {
+            var a=$('#args_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var argsname=a[0].args_name;
+            var data={'args_name':argsname}
+            $.ajax({
+                type:"DELETE",
+                url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/remove/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#args_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
+                }
+            })
+        })
+    function historyBack() {
+         var r=confirm('你要将此剧本保存为可使用状态吗');
+         if(r==true){
+             $('#status').val("1");
+         }else{
+             $('#status').val("0");
+         }
+         $('#playbook_form').submit();
+    }
+    </script>
+{% endblock %}

@@ -15,7 +15,7 @@ class PersonBlock():
     def __init__(self):
         Options = namedtuple('Options',
                              ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check'])
-        self.options = Options(connection='smart', module_path='', forks=100, become=None, become_method=None,
+        self.options = Options(connection='smart', module_path='', forks=100, become=None, become_method='sudo',
                           become_user=None, check=False)
 
         self.variable_manager = VariableManager()
@@ -37,6 +37,7 @@ class PersonBlock():
         #ext=self.variable_manager.extra_vars.copy()
         #self.variable_manager.extra_vars=ext.update(newext)
         self.variable_manager.extra_vars=newext
+
 
     def set_playbook(self,pb):
         self.playbook=pb

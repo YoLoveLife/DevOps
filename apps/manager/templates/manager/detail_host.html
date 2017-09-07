@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-laptop"></i>
+        主机 {{ host.hostname }}
+        <small><i class="fa fa-angle-double-right"></i>详细信息</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-truck"></i>
+        <li class="active">Manager</li>
+        <li><a href="/manager/group/">Group</a></li>
+        <li class="active">Detail</li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-wifi"></i>主机网络信息</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon info-box-icon-blue"><i class="fa fa-wifi"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">管理IP地址</span>
+                                    {% if host.manage_ip == '' %}
+                                        <span class="info-box-text">无</span>
+                                    {% else %}
+                                        <span class="info-box-text">{{ host.manage_ip }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon info-box-icon-red"><i class="fa fa-wifi"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">业务IP地址</span>
+                                    <span class="info-box-text">{{ host.service_ip }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon info-box-icon-green"><i class="fa fa-wifi"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">外网IP地址</span>
+                                    {% if host.outer_ip == '' %}
+                                        <span class="info-box-text">无</span>
+                                    {% else %}
+                                        <span class="info-box-text">{{ host.outer_ip }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-phone"></i>管理人员信息</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="info-box">
+                                <span class="info-box-icon info-box-icon-green" style="width: 10%"><i class="fa fa-address-card-o"></i></span>
+                                <div class="info-box-content container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <span class="info-box-text">联系方式</span>
+                                            <span class="info-box-text">18756945032</span>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <span class="info-box-text">电子邮件</span>
+                                            <span class="info-box-text">wq@8531.cn</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title"><i class="fa fa-server"></i>应用组列表</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>应用组名称</th>
+                                        <th>应用组用途</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for group in groups %}
+                                        <tr>
+                                            <td>{{ group.name }}</td>
+                                            <td>{{ group.info }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title"><i class="fa fa-cubes"></i>存储列表</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>存储路径</th>
+                                        <th>存储大小</th>
+                                        <th>存储用途</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for storage in storages %}
+                                            <tr>
+                                                <td>{{ storage.disk_path }}</td>
+                                                <td>{{ storage.disk_size }}</td>
+                                                <td>{{ storage.info }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title"><i class="fa fa-cogs"></i>配置信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-blue"><i class="fa fa-laptop"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">操作系统类型</span>
+                                            <span class="info-box-text">{{ host.get_systemtype_display }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-red"><i class="fa fa-th"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">服务器位置</span>
+                                            <span class="info-box-text">{{ host.server_position }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-green"><i class="fa fa-user"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">普通用户</span>
+                                            <span class="info-box-text">{{ host.normal_user }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-yellow"><i class="fa fa-bullseye"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">SSH访问端口</span>
+                                            <span class="info-box-text">{{ host.sshport }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-blue"><i class="fa fa-heart"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">CPU核心数</span>
+                                            {% if host.coreness == '' %}
+                                            <span class="info-box-text">无</span>
+                                            {% else %}
+                                            <span class="info-box-text">{{ host.coreness }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-red"><i class="fa fa-microchip"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">内存</span>
+                                            {% if host.memory == '' %}
+                                            <span class="info-box-text">无</span>
+                                            {% else %}
+                                            <span class="info-box-text">{{ host.memory }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                     <div class="info-box">
+                                        <span class="info-box-icon info-box-icon-green"><i class="fa fa-download"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">根磁盘大小</span>
+                                            {% if host.root_disk == '' %}
+                                            <span class="info-box-text">无</span>
+                                            {% else %}
+                                            <span class="info-box-text">{{ host.root_disk }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title"><i class="fa fa-life-ring"></i>应用信息</h3>
+                        </div>
+                        <div class="box-body">
+                            {% include '_404.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+{% endblock %}
+{% block foot_js %}
+<script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+</script>
+{% endblock %}

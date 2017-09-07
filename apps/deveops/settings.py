@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'softlib.apps.SoftlibConfig',
     'magic.apps.MagicConfig',
     'operation.apps.OperationConfig',
+    'timeline.apps.TimelineConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    # 'PAGE_SIZE':10,
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
@@ -145,8 +147,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-from django.urls import reverse_lazy
-LOGIN_URL=reverse_lazy('validate:login')
+LOGIN_URL='/validate/login'
+AUTH_USER_MODEL='validate.ExtendUser'
 
 SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True

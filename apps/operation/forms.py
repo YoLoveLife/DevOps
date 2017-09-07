@@ -7,18 +7,6 @@ from django import forms
 import models
 from django.utils.translation import gettext_lazy as _
 
-class ScriptForm(forms.ModelForm):
-    class Meta:
-        model = models.Script
-        fields = ['id','name','script','info']
-        labels = {
-            'id':'脚本ID','name':'脚本名称','script':'脚本内容','info':'脚本信息'
-        }
-        widgets = {
-            'id': forms.TextInput(attrs={'type': 'text', 'class': 'form-control', 'readonly': 'yes'}),
-            'script':forms.Textarea(attrs=None),
-        }
-
 class ScriptCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Script
@@ -33,13 +21,26 @@ class ScriptCreateUpdateForm(forms.ModelForm):
 
 class ScriptArgsCreateUpdateForm(forms.ModelForm):
     class Meta:
-        model = models.ScriptArgs
-        fields = ['args_name','args_value']
+            model = models.ScriptArgs
+            fields = ['args_name', 'args_value']
+            labels = {
+                'args_name': '参数名称',
+                'args_value': '参数默认数值'
+            }
+            widgets = {
+                'args_name': forms.TextInput(attrs={'type': 'text', 'class': 'form-control'}),
+                'args_value': forms.TextInput(attrs={'type': 'text', 'class': 'form-control'})
+            }
+
+class PlaybookCreateUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.PlayBook
+        fields = ['name','info','sudo']
         labels = {
-            'args_name':'参数名称',
-            'args_value':'参数默认数值'
+            'info':'脚本信息','name':'脚本名称','sudo':'管理员权限'
         }
         widgets = {
-            'args_name':forms.TextInput(attrs={'type':'text','class':'form-control'}),
-            'args_value':forms.TextInput(attrs={'type':'text','class':'form-control'} )
+            'sudo':forms.Select(
+                attrs={'class':'select2',
+                       'data-placeholder':_('Select host groups')}),
         }

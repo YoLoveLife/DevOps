@@ -53,3 +53,153 @@ function insertAtTextAreaForWhileFunctionCode(Element,ITEM){
         }
     }
 }
+
+
+/*adhoc commit function*/
+MODULE_LIST={
+    '0':'none',
+    '1': 'shell',
+    '2': 'copy',
+    '3': 'file',
+    '4': 'yum',
+    '5': 'service',
+    '6': 'script',
+    '7': 'get_url'
+}
+function commitAgrsSelect(){
+    var obj=$('#select_module')[0];
+    var id=obj.options[obj.selectedIndex].id;
+    switch(MODULE_LIST[id]){
+        case 'shell':
+            return commitArgsForMuduleShell();break;
+        case 'copy':
+            return commitArgsForMuduleCopy();break;
+        case 'file':
+            return commitArgsForMuduleFile();break;
+        case 'yum':
+            return commitArgsForMuduleYum();break;
+        case 'service':
+            return commitArgsForMuduleService();break;
+        case 'script':
+            return commitArgsForMuduleScript();break;
+        case 'get_url':
+            return commitArgsForMuduleGeturl();break;
+        default:
+            return "";
+    }
+}
+
+
+function commitArgsForMuduleShell(){
+    var args="";
+    args = args + $('#id_args')[0].value + " ";
+    if($('#id_chdir')[0].value!=''){
+        args = args + 'chdir=' + $('#id_chdir')[0].value + " ";
+    }
+    if($('#id_creates')[0].value !=''){
+        args = args + 'creates=' + $('#id_creates')[0].value + " ";
+    }
+    if($('#id_removes')[0].value !=''){
+        args = args + 'removes=' + $('#id_removes')[0].value + " ";
+    }
+    var mudule = $('#id_mudule')[0].value;
+
+    var data={'mudule':mudule,'args':args};
+    return data;
+}
+
+function commitArgsForMuduleCopy(){
+    var args="";
+
+    if($('#id_src')[0].value !=''){
+        args = args + 'src=' + $('#id_src')[0].value + " ";
+    }else{
+        alert('源文件未填写');
+        return {};
+    }
+
+    if($('#id_dest')[0].value !=''){
+        args = args + 'dest=' + $('#id_dest')[0].value + " ";
+    }else{
+        alert('目标文件未填写');
+        return {};
+    }
+
+    var backupObj=$('#id_backup')[0];
+    if(backupObj.options[backupObj.selectedIndex].id==0){
+        args +="backup=no ";
+    }else{
+        args +="backup=yes ";
+    }
+
+    var remote_srcObj=$('#id_remote_src')[0];
+    if(remote_srcObj.options[remote_srcObj.selectedIndex].id==0){
+        args +="remote_src=False ";
+    }else{
+        args +="remote_src=True ";
+    }
+
+
+    var mudule = $('#id_mudule')[0].value;
+    var data={'mudule':mudule,'args':args};
+    return data;
+}
+
+function commitArgsForMuduleFile(){
+    var args="";
+    if($('#id_path')[0].value !=''){
+        args = args + 'path=' + $('#id_path')[0].value + " ";
+    }else{
+        alert('路径未填写');
+        return {};
+    }
+
+    var stateObj=$('#id_state')[0];
+    args +="state=" +stateObj.options[stateObj.selectedIndex].id+" ";
+
+    if($('#id_mode')[0].value !=''){
+        args = args + 'mode=' + $('#id_mode')[0].value + " ";
+    }
+
+
+    if($('#id_group')[0].value !=''){
+        args = args + 'group=' + $('#id_group')[0].value + " ";
+    }
+
+    var mudule = $('#id_mudule')[0].value;
+    var data={'mudule':mudule,'args':args};
+    return data;
+}
+
+function commitArgsForMuduleYum(){
+    var args="";
+
+    if($('#id_yumname')[0].value !=''){
+        args = args + 'name=' + $('#id_yumname')[0].value + " ";
+    }else{
+        alert('处理包名称未填写');
+        return {};
+    }
+
+    var stateObj=$('#id_state')[0];
+    args +="state=" +stateObj.options[stateObj.selectedIndex].id+" ";
+
+
+    var mudule = $('#id_mudule')[0].value;
+    var data={'mudule':mudule,'args':args};
+    return data;
+}
+
+function commitArgsForMuduleService(){
+    var args="";
+
+    var servicenameObj=$('#id_servicename')[0];
+    args +="name=" +servicenameObj.options[servicenameObj.selectedIndex].id+" ";
+
+    var stateObj=$('#id_state')[0];
+    args +="state=" +stateObj.options[stateObj.selectedIndex].id+" ";
+
+    var mudule = $('#id_mudule')[0].value;
+    var data={'mudule':mudule,'args':args};
+    return data;
+}

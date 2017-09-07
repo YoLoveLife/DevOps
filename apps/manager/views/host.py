@@ -1,13 +1,17 @@
+# -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
+from timeline.models import History
+from ..permission import host as HostPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
+from validate.models import ExtendUser
 
 class ManagerHostListView(LoginRequiredMixin,FormView):
-    template_name='host.html'
+    template_name='manager/host.html'
     form_class = forms.HostForm
 
     def get_context_data(self, **kwargs):
@@ -19,13 +23,16 @@ class ManagerHostListView(LoginRequiredMixin,FormView):
     def get(self,request,*args, **kwargs):
         return super(ManagerHostListView, self).get(request, *args, **kwargs)
 
-class ManagerHostCreateView(LoginRequiredMixin,CreateView):
+class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
-    template_name = 'new_update_host.html'
+    template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
+        his=History(user=self.request.user,type=0,info="新增应用主机",status=0)
+        his.save()
+
         host_storage_group=form.save()
         hosts_id_list=self.request.POST.getlist('groups',[])
         storages_id_list=self.request.POST.getlist('storages',[])
@@ -37,6 +44,8 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
         host_storage_group.storages.add(*storages)
         host_storage_group.save()
 
+        his.status=1
+        his.save()
         return super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -56,13 +65,16 @@ class ManagerHostCreateView(LoginRequiredMixin,CreateView):
 
 
 
-class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
+class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
-    template_name = 'new_update_host.html'
+    template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     def form_valid(self, form):
+        his=History(user=self.request.user,type=0,info="修改应用主机",status=0)
+        his.save()
+
         host_storage_group=form.save()
         hosts_id_list=self.request.POST.getlist('groups',[])
         storages_id_list=self.request.POST.getlist('storages',[])
@@ -73,6 +85,9 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
         host_storage_group.groups.add(*groups)
         host_storage_group.storages.add(*storages)
         host_storage_group.save()
+
+        his.status=1
+        his.save()
         return super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -92,12 +107,12 @@ class ManagerHostUpdateView(LoginRequiredMixin,UpdateView):
     def get_success_url(self):
         return self.success_url
 
-class ManagerHostDetailVIew(LoginRequiredMixin,DetailView):
+class ManagerHostDetailView(LoginRequiredMixin,DetailView):
     model = models.Host
-    template_name = 'detail_host.html'
+    template_name = 'manager/detail_host.html'
 
     def get_context_data(self, **kwargs):
-        context=super(ManagerHostDetailVIew,self).get_context_data(**kwargs)
+        context=super(ManagerHostDetailView,self).get_context_data(**kwargs)
         groups=self.object.groups.all()
         storages=self.object.storages.all()
         host=self.object

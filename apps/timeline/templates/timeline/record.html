@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/fullcalendar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/fullcalendar.print.css' %}" media="print">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-clock-o"></i>
+            时间线
+            <small><i class="fa fa-angle-double-right"></i>列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-clock-o"></i>
+            <li class="active">TimeLine</li>
+            <li><a href="/timeline/">List</a></li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="timeline" id="listrecord">
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-3">
+                        <i class="btn btn-primary btn-xs" style="font-style:normal" id="page-before">前一页</i>
+                    </div>
+                    <div class="col-md-3">
+                        <i class="btn btn-primary btn-xs" style="font-style:normal" id="page-after">后一页</i>
+                    </div>
+                </div>
+                <!-- The time line -->
+            </div>
+            <div class="col-md-9">
+                <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">记录信息</h3>
+                        </div>
+                        <div class="box-body" id="detailrecord">
+                            {% include '_404.html' %}
+                        </div>
+                </div>
+            </div>
+        <!-- /.col -->
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <script src="{% static 'js/fullcalendar.js' %}"></script>
+    <script type="text/javascript">
+        var pageMax={{ pagemax|safe }};
+        var pageIndex=1;
+        function historyBack() {
+            window.history.go('/');
+        }
+        function detailRecord(obj){
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: '/timeline/record/'+obj.id+'/detail',
+                type: 'GET',
+                success: function(data) {
+                    $('#detailrecord').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+        }
+        function listRecord(id){
+            var pageCode;
+            if(id=='page-before'){
+                if(pageIndex-1<1){
+                    pageCode=pageIndex;
+                }else{
+                    pageIndex--;
+                    pageCode=pageIndex;
+                }
+            }else{
+                if(pageIndex+1>pageMax)
+                {
+                    pageCode=pageIndex;
+                }else{
+                    pageIndex++;
+                    pageCode=pageIndex;
+                }
+            }
+            $('#page_numb').html=pageIndex.toString();
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: '/timeline/record/'+pageCode+'/list',
+                type: 'GET',
+                success: function(data) {
+                    $('#listrecord').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+        }
+        $(document).ready(function () {
+            listRecord('page-before');
+        })
+            .on('click','#page-before',function () {
+                listRecord(this.id);
+            })
+            .on('click','#page-after',function(){
+                listRecord(this.id);
+            })
+    </script>
+{% endblock %}

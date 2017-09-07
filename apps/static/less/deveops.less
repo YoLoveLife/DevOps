@@ -10,12 +10,16 @@ body{
   font-weight: 400;
   overflow-x: hidden;
   overflow-y: auto;
+  color: #333;
 }
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
   font-family: 'Source Code Pro',sans-serif;
 }
 a:hover{
   text-decoration: none;
+}
+.wrapper{
+  background-color: #222d32;//rgb(249, 249, 252);
 }
 .wrapper > .main-header {
   > .logo{
@@ -81,19 +85,59 @@ a:hover{
   }
 }
 
+/* User Panel*/
+.user-panel{
+  position: relative;
+  width:100%;
+  padding: 10px;
+  overflow: hidden;
+}
+.user-panel:before,.user-panel:after{
+  content: " ";
+  display: table;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.user-panel:after{
+  clear:both;
+}
+.user-panel>.image>img{
+  width: 100%;
+  max-width: 45px;
+  height: auto;
+}
+.user-panel>.info{
+  padding: 5px 5px 5px 15px;
+  line-height: 1;
+  position: absolute;
+  left:55px;
+}
+.user-panel>.info>p{
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 9px;
+}
+.user-panel>.info>a{
+  color: #FFFFFF;
+}
+.user-panel>.info>a>.fa{
+  margin-right: 3px;
+}
+
+
 .wrapper > .main-sidebar{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -o-transition: -o-transform 0.3s ease-in-out, width 0.3s ease-in-out;
   transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
   box-sizing: border-box;
-  background-color: rgb(249, 249, 252);
+  background-color: #222d32;//rgb(249, 249, 252);
   width: 230px;
   position: absolute;
   z-index: 810;
   border-right:1px solid transparent;
   float: left;
-  border-right: 1px solid #e5e5e5;
   >.sidebar{
     padding-bottom:10px;
     border-color: transparent;
@@ -102,25 +146,24 @@ a:hover{
       margin: 0;
       padding: 0;
       >.menu-title{
-        color: #848484;
+        background-color: #1e282c;
         padding-left: 15px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;
-        border-top: 1px solid #fcfcfc;
-        border-bottom: 1px solid #e5e5e5;
       }
       >.treeview{
         position: relative;
         margin: 0;
         padding: 0;
-        border-top: 1px solid #fcfcfc;
-        border-bottom: 1px solid #e5e5e5;
-        >a:hover{
-          background-color: #FFF;
-          color: #1963aa;
+        background-color: #222D32;
+        >a:hover,>a:focus{
+          outline: none;
+          background-color: #1e282c;
+          color: #FFF;
+          border-left: 2px solid #3c8dbc;
         }
         >a{
           padding: 12px 5px 12px 15px;
           display: block;
-          color: #444;
+          color: #b8c7ce;
           >span i{
             float:right;
           }
@@ -130,17 +173,16 @@ a:hover{
         }
         >.treeview-menu{
           padding-left: 20px;
+          background-color: #2c3b41 ;
           li{
             list-style-type: none;
             padding: 5px;
-            border-top: 1px dashed #e5e5e5;
             >a:hover{
-              background-color: #FFF;
-              color: #1963aa;
+              color: #FFF;
             }
             >a{
               display: block;
-              color: #444;
+              color: #b8c7ce;
               >span i{
                 float:right;
               }
@@ -510,6 +552,18 @@ Time Line
   text-align: center;
   left: 18px;
   top: 0;
+}
+.timeline-fa-blue,.timeline-gly-blue{
+  background: @main-color;
+}
+.timeline-fa-yellow,.timeline-gly-yellow{
+  background: @yellow;
+}
+.timeline-fa-green,.timeline-gly-green{
+  background: @green;
+}
+.timeline-fa-red,.timeline-gly-red{
+  background: @red;
 }
 .timeline > .time-label > span {
   font-weight: 600;

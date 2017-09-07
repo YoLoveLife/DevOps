@@ -3,8 +3,7 @@ import models
 import serializers
 from rest_framework.views import Response,status
 from rest_framework import generics
-from forms import ScriptForm
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated
 class ScriptListAPI(generics.ListAPIView):
     serializer_class = serializers.ScriptSerializer
     permission_classes = [IsAuthenticated]
@@ -25,7 +24,7 @@ class ScriptArgsListAPI(generics.ListAPIView):
 
 class ScriptArgsCreateAPI(generics.CreateAPIView):
     serializer_class = serializers.ScriptArgsSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -42,7 +41,7 @@ class ScriptArgsCreateAPI(generics.CreateAPIView):
 
 class ScriptRemoveArgsAPI(generics.DestroyAPIView):
         serializer_class = serializers.ScriptArgsSerializer
-        permission_classes = [AllowAny]
+        permission_classes = [IsAuthenticated]
         queryset = models.ScriptArgs.objects.all()
 
         def delete(self, request, *args, **kwargs):
@@ -56,3 +55,40 @@ class ScriptRemoveArgsAPI(generics.DestroyAPIView):
                 return Response({'info':'参数在脚本中已不存在'},status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+
+class PlaybookListAPI(generics.ListAPIView):
+    serializer_class = serializers.PlaybookSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        queryset = models.PlayBook.objects.all()
+        return queryset
+
+
+class PlaybookAdhocsListAPI(generics.ListAPIView):
+    serializer_class = serializers.AdhocSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        if self.kwargs['pk']=='0':
+            queryset={}
+            return queryset
+        queryset = models.PlayBook.objects.get(id=self.kwargs['pk']).adhocs
+        return queryset
+
+
+
+class AdhocCreateAPI(generics.CreateAPIView):
+    serializer_class = serializers.AdhocSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        playbook = models.PlayBook.objects.get(id=int(kwargs['pk']))
+        serializer.instance.playbook=playbook
+        serializer.instance.sort = playbook.sort
+        playbook.sort=playbook.sort+1
+        playbook.save()
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

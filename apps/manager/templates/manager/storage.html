@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-cubes"></i>
+            存储
+            <small><i class="fa fa-angle-double-right"></i>列表</small>
+        </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-truck"></i>
+            <li class="active">Manager</li>
+            <li><a href="/manager/storage/">Storage</a></li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">存储列表</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table" id="storage_tb">
+                            <thead>
+                                    <tr>
+                                        <th data-field="state" data-radio="true">#</th>
+{#                                        <th data-field="id">存储ID</th>#}
+                                        <th data-field="disk_path">存储路径</th>
+                                        <th data-field="disk_size">存储大小</th>
+                                        <th data-field="info">存储信息</th>
+                                    </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title" style="text-align: center">操作</h3>
+                    </div>
+                    <div class="box-body">
+                        <form id="toolbar-storage">
+                        <button class="btn btn-app" id="add_storage">
+                            <i class="fa fa-plus"></i> 新增
+                        </button>
+                        <button class="btn btn-app" id="modify_storage">
+                            <i class="fa fa-edit"></i> 修改
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-times"></i> 删除
+                        </button>
+                        <button class="btn btn-app" disabled>
+                            <i class="fa fa-info"></i> 信息
+                        </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+        $(document).ready(function(){
+            var table=$('#storage_tb').bootstrapTable({
+                url : '/api-manager/v1/storage/',
+                method  : 'GET',
+                uniqueId :  'id',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                showExport: true,
+                exportDataType : "basic",
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                colums  :   [
+                    {
+                        checkbox:true
+                    },
+{#                    {#}
+{#                        title:'存储ID',#}
+{#                        field:'id',#}
+{#                        align:'center'#}
+{#                    },#}
+                    {
+                        title:'存储路径',
+                        field:'disk_path',
+                        align:'center'
+                    },
+                    {
+                        title:'存储大小',
+                        field:'disk_size',
+                        align:'center'
+                    },
+                    {
+                        title:'存储信息',
+                        field:'info',
+                        align:'center'
+                    }
+                ]
+            });
+        })
+            .on('click','#add_storage',function () {
+                var form=$('#toolbar-storage');
+                var action='/manager/storage/create/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#modify_storage',function () {
+                var form=$('#toolbar-storage');
+                var action='/manager/storage/';
+                var a=$('#storage_tb').bootstrapTable('getSelections');
+                if(a.length<1){
+                    alert('请选择数据');
+                    return false;
+                }
+                var obj=a[0].id;
+                action+=obj+'/update/';
+                form.attr('action',action);
+                location.href(action);
+            })
+    </script>
+{% endblock %}

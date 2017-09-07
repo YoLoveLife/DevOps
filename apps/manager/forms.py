@@ -6,8 +6,6 @@
 from django import forms
 import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.forms import AuthenticationForm
-
 
 class GroupForm(forms.ModelForm):
     class Meta:
@@ -21,10 +19,6 @@ class GroupForm(forms.ModelForm):
             'name':forms.TextInput(attrs={'type':'text','class':'form-control'}),
             'info':forms.TextInput(attrs={'type':'text','class':'form-control'})
         }
-    # id=forms.IntegerField(label="ID",widget=forms.TextInput(attrs={'type':'text','class':'form-control','readonly':'yes'}))
-    # name=forms.CharField(label="Name",max_length=100,widget=forms.TextInput(attrs={'type':'text','class':'form-control'}),error_messages={'msg':'姓名错误'})
-    # info=forms.CharField(label="Info",max_length=100,widget=forms.TextInput(attrs={'type':'text','class':'form-control'}),error_messages={'msg':'信息错误'})
-
 
 class GroupCreateUpdateForm(forms.ModelForm):
     class Meta:
