@@ -28,7 +28,8 @@ urlpatterns = [
     url(r'^validate/', include('validate.urls.views_urls', namespace='validate')),
     url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
     url(r'^operation/',include('operation.urls.views_urls',namespace='operation')),
-    url(r'^timeline/',include('timeline.urls',namespace='timeline')),
+    url(r'^timeline/',include('timeline.urls.views_urls',namespace='timeline')),
+    url(r'^authority/',include('authority.urls.views_urls',namespace='authority')),
 
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
