@@ -29,7 +29,8 @@
         <option value="$MODULE_DIR$/apps/validate/templates/validate" />
         <option value="$MODULE_DIR$/apps/timeline/templates" />
         <option value="$MODULE_DIR$/apps/timeline/templates/timeline" />
-        <option value="$MODULE_DIR$/apps/operation/templates/operation/module" />
+        <option value="$MODULE_DIR$/apps/authority/templates" />
+        <option value="$MODULE_DIR$/apps/authority/templates/operation" />
       </list>
     </option>
   </component>
