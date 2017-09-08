@@ -2,7 +2,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from validate.models import ExtendUser
+from manager.models import Group
 # Create your models here.
 class Script(models.Model):
     SCRIPT_STATUS=(
@@ -39,11 +41,12 @@ class PlayBook(models.Model):
     sort = models.IntegerField(default=0)
     sudo = models.IntegerField(default=1,choices=SUDO_STATUS)
     status = models.IntegerField(default=0,choices=PLAYBOOK_STATUS)
+    groups = models.ManyToManyField(Group,blank=True,related_name='playbooks',verbose_name=_('Playbook'))
 
-class Adhoc(models.Model):
+class Task(models.Model):
     id = models.AutoField(primary_key=True)
     mudule = models.CharField(default='hostname',max_length=20)
     args = models.CharField(default='',max_length=100)
     sort = models.IntegerField(default=0)
-    playbook = models.ForeignKey(PlayBook,default=1,related_name='adhocs')
+    playbook = models.ForeignKey(PlayBook,default=1,related_name='tasks')
 

@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^playbook/$',playbook.OperationPlaybookListView.as_view(),name='playbook'),
     url(r'^playbook/(?P<pk>[0-9]+)/update/', playbook.OperationPlaybookUpdateView.as_view(), name='playbookupdate'),
 
-    #Resource adhoc url
-    url(r'^adhoc/(?P<pk>[0-9]+)/editor/',playbook.OperationAdhocEditorView.as_view(),name='adhoceditor'),
+    #Resource task url
+    url(r'^task/(?P<pk>[0-9]+)/editor/',playbook.OperationTaskEditorView.as_view(),name='taskeditor'),
     # url(r'^script/(?P<pk>[0-9]+)/detail/', script.OperationPlaybookDetailView.as_view(), name='playbookdetail'),
 ]

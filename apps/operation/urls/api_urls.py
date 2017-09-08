@@ -12,9 +12,10 @@ urlpatterns=[
 
     # Resource playbook api
     url(r'^v1/playbook/$', api.PlaybookListAPI.as_view()),
-    url(r'^v1/playbook/(?P<pk>[0-9]+)/adhocs/', api.PlaybookAdhocsListAPI.as_view()),
+    url(r'^v1/playbook/(?P<pk>[0-9]+)/tasks/', api.PlaybookTasksListAPI.as_view()),
     #
-    # # Resource ahoc api
-    url(r'^v1/adhoc/(?P<pk>[0-9]+)/create/',api.AdhocCreateAPI.as_view()),
-    # url(r'^v1/ahoc/(?P<pk>[0-9]+)/sort/(?P<pk>[0-9]+)/',api.AhocSortAPI.as_view()),
+    # # Resource task api
+    url(r'^v1/task/(?P<pk>[0-9]+)/create/',api.TaskCreateAPI.as_view()),
+    url(r'^v1/tsak/(?P<pk>[0-9]+)/remove/',api.TaskRemoveAPI.as_view()),
+    url(r'^v1/task/(?P<pk>[0-9]+)/sort/',api.TaskSortAPI.as_view()),
 ]
