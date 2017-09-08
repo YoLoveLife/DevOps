@@ -42,14 +42,11 @@ class ScriptArgsCreateAPI(generics.CreateAPIView):
 class ScriptRemoveArgsAPI(generics.DestroyAPIView):
         serializer_class = serializers.ScriptArgsSerializer
         permission_classes = [IsAuthenticated]
-        queryset = models.ScriptArgs.objects.all()
 
         def delete(self, request, *args, **kwargs):
             # return self.destroy(self,request,args,kwargs)
-            if models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(
-                    args_name=request.data['args_name']).exists():
-                models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(
-                    args_name=request.data['args_name']).delete()
+            if models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(args_name=request.data['args_name']).exists():
+                models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(args_name=request.data['args_name']).delete()
                 return Response({'info':'删除成功'},status=status.HTTP_201_CREATED)
             else:
                 return Response({'info':'参数在脚本中已不存在'},status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -64,20 +61,20 @@ class PlaybookListAPI(generics.ListAPIView):
         return queryset
 
 
-class PlaybookAdhocsListAPI(generics.ListAPIView):
-    serializer_class = serializers.AdhocSerializer
+class PlaybookTasksListAPI(generics.ListAPIView):
+    serializer_class = serializers.TaskSerializer
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
         if self.kwargs['pk']=='0':
             queryset={}
             return queryset
-        queryset = models.PlayBook.objects.get(id=self.kwargs['pk']).adhocs
+        queryset = models.PlayBook.objects.get(id=self.kwargs['pk']).tasks.order_by("sort")
         return queryset
 
 
 
-class AdhocCreateAPI(generics.CreateAPIView):
-    serializer_class = serializers.AdhocSerializer
+class TaskCreateAPI(generics.CreateAPIView):
+    serializer_class = serializers.TaskSerializer
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
@@ -92,3 +89,30 @@ class AdhocCreateAPI(generics.CreateAPIView):
         serializer.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+class TaskRemoveAPI(generics.DestroyAPIView):
+    serializer_class = serializers.TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+    # return self.destroy(self,request,args,kwargs)
+        if models.PlayBook.objects.get(id=int(kwargs['pk'])).tasks.filter(sort=request.data['sort']).exists():
+            models.PlayBook.objects.get(id=int(kwargs['pk'])).tasks.filter(sort=request.data['sort']).delete()
+            return Response({'info': '删除成功'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'info': '任务在剧本中已不存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+class TaskSortAPI(generics.UpdateAPIView):
+    serializer_class = serializers.TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        tasks = models.PlayBook.objects.get(id=int(kwargs['pk'])).tasks
+        taskA = tasks.get(sort=int(request.data['parta']))
+        taskB = tasks.get(sort=int(request.data['partb']))
+        tempsort=taskA.sort
+        taskA.sort=taskB.sort
+        taskB.sort=tempsort
+        taskA.save()
+        taskB.save()
+        return Response({'info': '转换成功'}, status=status.HTTP_201_CREATED)

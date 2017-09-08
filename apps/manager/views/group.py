@@ -67,6 +67,7 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
 
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
+
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_group.hosts.clear()
         host_group.hosts.add(*hosts)

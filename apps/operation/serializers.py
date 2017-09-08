@@ -22,7 +22,7 @@ class PlaybookSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name', 'info','author_name','status'
                 )
 
-class AdhocSerializer(serializers.HyperlinkedModelSerializer):
+class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = models.Adhoc
+        model = models.Task
         fields= ('id','mudule','args','sort')

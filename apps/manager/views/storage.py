@@ -72,6 +72,7 @@ class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChang
         hosts = models.Host.objects.all()
         storage_hosts=[host.id for host in self.object.hosts.all()]
         context.update({
+
             'hosts':hosts,'storage_hosts':storage_hosts
         })
         return context
