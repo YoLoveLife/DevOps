@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-street-view"></i>
+            人员管理
+            <small><i class="fa fa-angle-double-right"></i>增加-修改</small>
+        </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-street-view"></i>
+            <li class="active">Authority</li>
+            <li><a href="/authority/group/">User</a></li>
+            <li class="active">New-Update</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" action="" id="user_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">新用户信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-4">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.username %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.password %}
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-3">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.email %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.first_name %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.last_name %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-3">
+                                    <div class="form-group">
+                                        {% bootstrap_field form.phone %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_is_active">活跃</label>
+                                        <select name="is_active" class="select2">
+                                            <option id="1">actived</option>
+                                            <option id="0">not actived</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">操作</h3>
+                        </div>
+                        <div class="box-body">
+                            <button class="btn btn-app" id="btn_submit">
+                                <i class="fa fa-check"></i> 提交
+                            </button>
+                            <button class="btn btn-app" id="btn_back">
+                                <i class="fa fa-reply"></i> 回退
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-times"></i> 删除
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-info"></i> 信息
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+    $(document).ready(function () {
+        $('.select2').select2();
+    })
+        .on('click','#btn_submit',function () {
+            $('#user_form').submit();
+        })
+        .on('click','#btn_back',function () {
+            history.go(-1);
+        })
+    </script>
+{% endblock %}

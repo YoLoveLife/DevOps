@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'magic.apps.MagicConfig',
     'operation.apps.OperationConfig',
     'timeline.apps.TimelineConfig',
+    'authority.apps.AuthorityConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',

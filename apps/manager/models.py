@@ -15,9 +15,6 @@ class Storage(models.Model):
     info=models.CharField(max_length=100,default="")
 
 class Host(models.Model):
-    # SYSTEM_NAMES=(u'',u'Windows Server 2006',u'Windows Server 2008',u'Centos 6.5',u'Centos 7.1')
-    # SYSTEM_VALS=(0,1,2,3,4)
-    # SYSTEM_CHOICES=tuple(zip(SYSTEM_VALS,SYSTEM_NAMES))
     SYSTEM_CHOICES=(
         (0,u'未添加'),
         (1,u'Windows Server 2006'),

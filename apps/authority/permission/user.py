@@ -1,8 +1,8 @@
 from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
-class GroupRequiredMixin(AccessMixin):
+class UserRequiredMixin(AccessMixin):
     redirect_url= "/permission"
-    permission_required = u'manager.all'
+    permission_required = u'validate.all'
     permission_denied_message = ''
 
     def has_permission(self):
@@ -16,14 +16,14 @@ class GroupRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not self.has_permission():
             return HttpResponseRedirect(self.redirect_url)
-        return super(GroupRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super(UserRequiredMixin, self).dispatch(request, *args, **kwargs)
 
-class GroupAddRequiredMixin(GroupRequiredMixin):
-    permission_required = u'manager.add_group'
+class UserAddRequiredMixin(UserRequiredMixin):
+    permission_required = u'validate.add_extenduser'
 
-class GroupChangeRequiredMixin(GroupRequiredMixin):
-    permission_required = u'manager.change_group'
+class UserChangeRequiredMixin(UserRequiredMixin):
+    permission_required = u'validate.change_extenduser'
 
-class GroupDeleteRequiredMixin(GroupRequiredMixin):
-    permission_required = u'manager.delete_group'
+class UserDeleteRequiredMixin(UserRequiredMixin):
+    permission_required = u'validate.delete_extenduser'
 

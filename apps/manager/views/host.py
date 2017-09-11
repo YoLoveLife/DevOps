@@ -8,7 +8,6 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
-from validate.models import ExtendUser
 
 class ManagerHostListView(LoginRequiredMixin,FormView):
     template_name='manager/host.html'

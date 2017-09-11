@@ -13,6 +13,7 @@ class History(models.Model):
         (1,u'脚本修改'),
         (2,u'剧本修改'),
         (3,u'运维操作'),
+        (4,u'人员管理'),
     )
     STATUS=(
         (0,u'正在运行'),
