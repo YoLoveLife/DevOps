@@ -4,10 +4,15 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf.urls import url
-from ..views import group as GroupView
+from ..views import user as UserView
 urlpatterns = [
     # url(r'^dashboard/', views.AuthorityDashboardViewView.as_view(), name='authoritydashboard'),
-    url(r'^group/', GroupView.AuthorityGroupView.as_view(), name='authoritygroup'),
-    # url(r'^user/', views.AuthorityUserView.as_view(), name='authorityuser'),
+    #url(r'^group/', GroupView.AuthorityGroupView.as_view(), name='authoritygroup'),
+
+    #user
+    url(r'^user/$', UserView.AuthorityUserView.as_view(), name='user'),
+    url(r'^user/create/$',UserView.AuthorityUserCreateView.as_view(),name='usercreate'),
+    url(r'^user/(?P<pk>[0-9]+)/update/',UserView.AuthorityUserUpdateView.as_view(),name='userupdate'),
+    url(r'^user/(?P<pk>[0-8]+)/remove/',UserView.AuthorityUserDeleteView.as_view(),name='userdelete'),
     # url(r'^permission/', views.AuthorityPermissionView.as_view(),name='authoritypermission'),
 ]

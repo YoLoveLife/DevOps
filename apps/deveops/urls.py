@@ -34,6 +34,7 @@ urlpatterns = [
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
     url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
+    url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),
 ]
 
 '''

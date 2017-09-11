@@ -54,7 +54,6 @@ class TimeLineRecordDetailView(LoginRequiredMixin,DetailView):
         return super(TimeLineRecordDetailView,self).get(request,*args,**kwargs)
 
 class TimeLinePlanView(LoginRequiredMixin,TemplateView):
-
     template_name = 'timeline/plan.html'
 
     def get_context_data(self, **kwargs):

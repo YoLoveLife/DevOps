@@ -30,7 +30,7 @@
         <option value="$MODULE_DIR$/apps/timeline/templates" />
         <option value="$MODULE_DIR$/apps/timeline/templates/timeline" />
         <option value="$MODULE_DIR$/apps/authority/templates" />
-        <option value="$MODULE_DIR$/apps/authority/templates/operation" />
+        <option value="$MODULE_DIR$/apps/authority/templates/authority" />
       </list>
     </option>
   </component>
