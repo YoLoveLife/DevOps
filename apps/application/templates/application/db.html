@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-database"></i>
+        数据库
+        <small><i class="fa fa-angle-double-right"></i>列表</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-truck"></i>
+        <li class="active">Application</li>
+        <li><a href="/application/db/">Database</a></li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">主机列表</h3>
+                </div>
+                <!-- /.box-header -->
+                <div id="db-toolbar">
+                </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table id="db_tb" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="check" data-radio="true">#</th>
+                                        <th data-field="host_name">主机名称</th>
+                                        <th data-field="normal_user">数据库用户</th>
+                                        <th data-field="port">端口</th>
+                                        <th data-field="datadir">数据目录</th>
+                                        <th data-field="service_ip">服务IP</th>
+                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">数据库信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <form id="toolbar-host">
+                            <button class="btn btn-app" id="add_db">
+                                <i class="fa fa-plus"></i> 新增数据库
+                            </button>
+                            <button class="btn btn-app" id="modify_db">
+                                <i class="fa fa-edit"></i> 修改数据库
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-times"></i> 删除数据库
+                            </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'js/tableExport.min.js' %}"></script>
+<script>
+    function detailFormatter(value,row,index) {
+        var label_a='<a class="btn btn-default" href="/application/db/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
+    $(document).ready(function () {
+        $('.select2').select2();
+        var table=$('#db_tb').bootstrapTable({
+                url : '/api-application/v1/db',
+                method  : 'GET',
+                uniqueId :  'id',
+                toolbar : '#db-toolbar',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                showExport: true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                showExport: true,
+                exportDataType : "basic",
+            });
+    })
+        .on('change','#groupselect',function(){
+            var objSelect = document.getElementById('groupselect');
+            var obj=objSelect.options[objSelect.selectedIndex].id;
+            var url='/api-manager/v1/hostbygroup/'+obj;
+            var table=$('#host_tb').bootstrapTable('refresh', {url :   url});
+        })
+        .on('click','#add_host',function () {
+            var form=$('#toolbar-host');
+            var action='/manager/host/create/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#modify_host',function () {
+            var form=$('#toolbar-host');
+            var action='/manager/host/';
+            var a=$('#host_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var obj=a[0].id;
+            action+=obj+'/update/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        function historyBack() {
+            window.history.go(-1);
+        }
+
+</script>
+{% endblock %}

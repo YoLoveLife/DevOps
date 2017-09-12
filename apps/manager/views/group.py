@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms,models
-from timeline.models import History
+# from timeline.models import History
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView

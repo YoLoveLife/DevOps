@@ -17,5 +17,4 @@ urlpatterns = [
 
     #Resource task url
     url(r'^task/(?P<pk>[0-9]+)/editor/',playbook.OperationTaskEditorView.as_view(),name='taskeditor'),
-    # url(r'^script/(?P<pk>[0-9]+)/detail/', script.OperationPlaybookDetailView.as_view(), name='playbookdetail'),
 ]

@@ -3,13 +3,14 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from collections import namedtuple
-from ansible.vars import VariableManager
-from ansible.parsing.dataloader import DataLoader
-from callback import ResultCallback
-from ansible.inventory import Inventory
-from ansible.playbook.play import Play
+
 from ansible.executor.task_queue_manager import TaskQueueManager
-from modules.personbook import PersonBook
+from ansible.inventory import Inventory
+from ansible.parsing.dataloader import DataLoader
+from ansible.playbook.play import Play
+from ansible.vars import VariableManager
+from callback import ResultCallback
+
 HOST_LIST='/tmp/ansible.host'
 class PersonBlock():
     def __init__(self):
