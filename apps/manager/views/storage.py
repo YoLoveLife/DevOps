@@ -2,7 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
-from timeline.models import History
+# from timeline.models import History
 from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView

@@ -83,8 +83,14 @@
                                     <div class="form-group">
                                         <label class="control-label" for="id_is_active">活跃</label>
                                         <select name="is_active" class="select2">
-                                            <option id="1">actived</option>
-                                            <option id="0">not actived</option>
+                                            {% if is_active == 1 %}
+                                                <option id="1" selected>actived</option>
+                                                <option id="0">not actived</option>
+                                                {% else %}
+                                                <option id="1">actived</option>
+                                                <option id="0" selected>not actived</option>
+                                            {% endif %}
+
                                         </select>
                                     </div>
                                 </div>

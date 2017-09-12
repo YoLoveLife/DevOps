@@ -76,9 +76,9 @@ class AuthorityUserUpdateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
 
         is_active = self.request.POST.get('is_active')
         if is_active == 'actived':
-            newuser.is_actuve=1
+            newuser.is_active=1
         else:
-            newuser.is_actuve=0
+            newuser.is_active=0
 
         newuser.save()
 
@@ -88,6 +88,12 @@ class AuthorityUserUpdateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
 
     def get_context_data(self, **kwargs):
         context = super(AuthorityUserUpdateView,self).get_context_data(**kwargs)
+        is_active = 0
+        if self.object.is_active == True:
+            is_active = 1
+        context.update({
+            'is_active':is_active
+        })
         return context
 
     def get_success_url(self):

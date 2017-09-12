@@ -22,7 +22,7 @@
         <option value="$MODULE_DIR$/apps/templates" />
         <option value="$MODULE_DIR$/apps/validate/templates" />
         <option value="$MODULE_DIR$/apps/manager/templates" />
-        <option value="$MODULE_DIR$/apps/magic/templates" />
+        <option value="$MODULE_DIR$/apps/application/templates" />
         <option value="$MODULE_DIR$/apps/operation/templates" />
         <option value="$MODULE_DIR$/apps/manager/templates/manager" />
         <option value="$MODULE_DIR$/apps/operation/templates/operation" />
@@ -31,6 +31,8 @@
         <option value="$MODULE_DIR$/apps/timeline/templates/timeline" />
         <option value="$MODULE_DIR$/apps/authority/templates" />
         <option value="$MODULE_DIR$/apps/authority/templates/authority" />
+        <option value="$MODULE_DIR$/apps/application/templates/application" />
+        <option value="$MODULE_DIR$/apps/application/templates/batch" />
       </list>
     </option>
   </component>

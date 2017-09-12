@@ -14,6 +14,17 @@ class Storage(models.Model):
     disk_path=models.CharField(max_length=100,default="")
     info=models.CharField(max_length=100,default="")
 
+    def get_all_group_name(self):
+        list = []
+        for host in self.hosts.all():
+            for group in host.groups.all():
+                list.append(group.name)
+        result={}.fromkeys(list).keys()
+        str = ""
+        for r in result:
+            str = str + r +','
+        return str[0:-1]
+
 class Host(models.Model):
     SYSTEM_CHOICES=(
         (0,u'未添加'),

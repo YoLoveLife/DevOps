@@ -23,4 +23,6 @@ class ExtendUser(AbstractUser):
         """
         :return: Name of group
         """
+        if self.is_superuser == 1:
+            return "超级管理员"
         return self.groups.all()[0].name
