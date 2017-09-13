@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 class GroupRequiredMixin(AccessMixin):
     redirect_url= "/permission"
     permission_required = u'manager.all'
+    permission_denied_message = ''
 
     def has_permission(self):
         perms = self.permission_required

@@ -26,6 +26,8 @@ class Ansible():
         self.playbook=pb
         self.add_extendvars(self.playbook.ext_vars)
 
+    def set_callback(self,callback):
+        self.results_callback = callback
     def run_playbook(self):
         tqm=pop_TaskqueueManager(self)
         try:
@@ -48,12 +50,16 @@ if __name__ == "__main__":
     pb=Playbook('ddr','no')
     pb.push_vars({'prefix':'/usr/local','base_dir':'/usr/local/tomcat'})
 
-    b=Task(module="shell",args="ls /")
+    b=Task(module="script",args="~/ddr.sh")
 
     s=Tasks()
     s.push_task(b)
-
+    from apps.callback.catch.basic import BasicResultCallback
+    brc=BasicResultCallback()
     A=Ansible()
     pb.push_tasks(s)
     A.set_playbook(pb)
+    A.set_callback(brc)
+    print(brc.info)
     A.run_playbook()
+    print(brc.info)

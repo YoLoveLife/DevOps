@@ -1,9 +1,9 @@
-## devEops
+devEops
+======================
 devEops通过封装Ansible api来处理实际业务运行可能遇到的安装部署运维工作
 
 ## Getting started
 devEops是一个django项目，依赖于
-
 * gradle
 * Python2.7+
 * Ansible2.2+
@@ -11,6 +11,14 @@ devEops是一个django项目，依赖于
 * 基础YUM源
 
 ## Log
+### 2017-9-7
+#### Info
+  重新构建了devEops的用户体系，针对不同的页面添加了访问权限。完善了原本django自带的权限管理与用户管理。
+  美化了页面UI。
+  完成了playbook的编辑功能。
+#### For
+ *
+
 ### 2017-8-22
 #### Info
   完成bash脚本的增改查功能。

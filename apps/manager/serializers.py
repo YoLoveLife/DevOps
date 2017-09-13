@@ -8,9 +8,10 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
                 )
 
 class StorageSerializer(serializers.HyperlinkedModelSerializer):
+    group_name = serializers.StringRelatedField(source="get_all_group_name",read_only=True)
     class Meta:
         model = models.Storage
-        fields = ('id','disk_size','disk_path','info'
+        fields = ('id','disk_size','disk_path','info','group_name',
                   )
 
 class HostSerializer(serializers.ModelSerializer):

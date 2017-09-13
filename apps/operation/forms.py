@@ -35,9 +35,9 @@ class ScriptArgsCreateUpdateForm(forms.ModelForm):
 class PlaybookCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.PlayBook
-        fields = ['name','info','sudo']
+        fields = ['name','info','status','sudo']
         labels = {
-            'info':'脚本信息','name':'脚本名称','sudo':'管理员权限'
+            'info':'脚本信息','name':'脚本名称','sudo':'管理员权限','status':'状态'
         }
         widgets = {
             'sudo':forms.Select(
