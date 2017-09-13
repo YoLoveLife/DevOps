@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from validate.models import ExtendUser
 from manager.models import Group
+from operation.utils import utils
 # Create your models here.
 class Script(models.Model):
     SCRIPT_STATUS=(
@@ -17,6 +18,15 @@ class Script(models.Model):
     script=models.TextField(default='')
     author = models.ForeignKey(ExtendUser, default=1, related_name='suser')
     status=models.IntegerField(default=0,choices=SCRIPT_STATUS)
+    def formatScript(self):
+        string=""
+        kwargs={}
+        for args in self.scriptargs.all():
+            kwargs[args.args_name] = args.args_value
+        string = string + utils.bash_writer(self.author.email,'now',**kwargs)
+        string = string + utils.html2bash(self.script)
+        print(string)
+        return string
 
 class ScriptArgs(models.Model):
     id=models.AutoField(primary_key=True)

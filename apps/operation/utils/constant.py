@@ -30,3 +30,8 @@ CASE_END='\t\t\t\t--)\n' \
          '\t\t\t\t*)\n' \
          '\t\t\t\texit 2\n' \
          '\t\t\t\t;;\n'
+
+
+PATTERN_BR = r'\<br\>'
+PATTERN_P = r'\<p\>'
+PATTERN_F_P = r'\<\/p\>'

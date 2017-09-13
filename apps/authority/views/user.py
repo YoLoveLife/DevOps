@@ -32,7 +32,7 @@ class AuthorityUserCreateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
     success_url = reverse_lazy('authority:user')
 
     def form_valid(self, form):
-        his=History(user=self.request.user,type=4,info="新增用户",status=0)
+        his=History(user=self.request.user,type=3,info="新增用户",status=0)
         his.save()
         groups=Group.objects.filter(id__in=[2,])
         newuser=form.save()
@@ -67,7 +67,7 @@ class AuthorityUserUpdateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
     success_url = reverse_lazy('authority:user')
 
     def form_valid(self, form):
-        his=History(user=self.request.user,type=4,info="新增用户",status=0)
+        his=History(user=self.request.user,type=3,info="修改用户",status=0)
         his.save()
         groups=Group.objects.filter(id__in=[2,])
         newuser=form.save()

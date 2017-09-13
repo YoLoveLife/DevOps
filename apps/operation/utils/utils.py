@@ -1,31 +1,43 @@
 # -*- coding:utf-8 -*-
 import constant
+import re
+
 def bash_writer(*args,**kwargs):
     return bash_head(*args,**kwargs)
 
 def bash_head(author,time,*args,**kwargs):#author time
-    str="#!/bin/bash"+"\n"
-    str+="#Author "+author + "\n"
-    str+="#Time " + time + "\n"
-    return str+args_maker(*args,**kwargs)
+    string = "#!/bin/bash" + "\n"
+    string = string + "# Author "+ author + "\n"
+
+    string += "# Time " + time + "\n"
+
+    return string + args_maker(*args,**kwargs)
 
 def args_maker(*args,**kwargs):
-    str=""
-    OPTIONS=""
-    CASE_ITEMS=""
+    string = ""
+    OPTIONS = ""
+    CASE_ITEMS = ""
     for key in kwargs:
-        if kwargs[key]=="1":
-            OPTIONS+=key+':'
-            CASE_ITEMS+=constant.EXTEND_CASE_ITEM%(key,key)
+        if kwargs[key] == "1":
+            OPTIONS += key+':'
+            CASE_ITEMS += constant.EXTEND_CASE_ITEM%(key,key)
         else:
-            OPTIONS+=key
-            CASE_ITEMS+=constant.SIMPLE_CASE_ITEM%(key,key)
-        OPTIONS+=','
-    command = 'ARGS=`getopt --long %s -- "$@"`'%(OPTIONS)
-    str+=constant.FUNCTION_ARGS%(command,CASE_ITEMS+constant.CASE_END)
-    str+='Args $@\n'
-    return str
+            OPTIONS += key
+            CASE_ITEMS += constant.SIMPLE_CASE_ITEM%(key,key)
+        OPTIONS += ','
+    command = 'ARGS=`getopt -o y --long %s -- "$@"`'%(OPTIONS)
+    string = string + constant.FUNCTION_ARGS%(command,CASE_ITEMS+constant.CASE_END)
+    string = string + 'Args $@\n'
+    return string
+
+def html2bash(str):
+    result , number = re.subn(constant.PATTERN_BR,'\n',str)
+    result , number = re.subn(constant.PATTERN_P,'\n',result)
+    result , number = re.subn(constant.PATTERN_F_P, '\n', result)
+    return result
 
 if __name__ == "__main__":
-    kwargs={'prefix':'1','version':'2','good':'1'}
+    kwargs={}
     print(bash_writer(author='Yo',time='2017-8-11 16:44:13',**kwargs))
+    string = "<p>#!/bin/bash<br># Time 2017-9-12 17:32:27<br># Author Yo<br># Github github.com/YoLoveLife/scrRipt<br># processor</p><p>hostname<br>cat /proc/cpuinfo |grep processor|wc -l<br>free -m|sed -n '2p' |awk '{ print $2 }'<br>df -h |grep '/$' |awk '{ print $2 }'</p>"
+    print(html2bash(string))
