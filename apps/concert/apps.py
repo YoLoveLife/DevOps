@@ -4,5 +4,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class CallbackConfig(AppConfig):
-    name = 'callback'
+class ConcertConfig(AppConfig):
+    name = 'concert'
