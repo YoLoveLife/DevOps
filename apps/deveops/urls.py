@@ -28,11 +28,15 @@ urlpatterns = [
     url(r'^validate/', include('validate.urls.views_urls', namespace='validate')),
     url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
     url(r'^operation/',include('operation.urls.views_urls',namespace='operation')),
-    url(r'^timeline/',include('timeline.urls',namespace='timeline')),
+    url(r'^timeline/',include('timeline.urls.views_urls',namespace='timeline')),
+    url(r'^authority/',include('authority.urls.views_urls',namespace='authority')),
+    url(r'^application/',include('application.urls.views_urls',namespace='application')),
 
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
     url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
+    url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),
+    url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
 ]
 
 '''

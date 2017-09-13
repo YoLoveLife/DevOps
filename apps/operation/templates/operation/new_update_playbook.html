@@ -48,6 +48,19 @@
                                         {% bootstrap_field form.sudo %}
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        <select name="groups" class="select2" multiple>
+                                            {% for group in grouplist %}
+                                                {% if group.id in playbook_groups %}
+                                                    <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                                {% else %}
+                                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -59,7 +72,7 @@
                                 <h3 class="box-title">剧本内容</h3>
                             </div>
                             <div class="box-body">
-                                <table id="adhoc_tb" class="table table-bordered table-striped">
+                                <table id="task_tb" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th data-field="check" data-radio="true">#</th>
@@ -76,15 +89,19 @@
             </div>
             <div class="col-md-7">
                 <div class="row">
-                    <div class="col-md-offset-4 col-md-8">
+                    <div class="col-md-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">工具栏</h3>
+                                <h3 class="box-title">剧本工具栏</h3>
                             </div>
                             <div class="box-body">
-                                <button class="btn btn-app" type="button" id="adhoc_add">
-                                    <i class="fa fa-plus"></i> 添加
-                                </button>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="playbook_commit">
+                                            <i class="fa fa-plus"></i> 剧本提交
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,18 +110,54 @@
                     <div class="col-md-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">剧本书写</h3>
+                                <h3 class="box-title">任务工具栏</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="task_add">
+                                            <i class="fa fa-plus"></i> 任务添加
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="task_remove">
+                                            <i class="fa fa-plus"></i> 任务删除
+                                        </button>
+                                    </div>
+                                    <div class="col-md-offset-2 col-md-2">
+                                        <label class="control-label" for="id_partA">转换任务A</label>
+                                        <input id="id_partA" class="form-control" name="partA" required="no" max_length="100" placeholder="转换任务A" type="text">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="control-label" for="id_partB">转换任务B</label>
+                                        <input id="id_partB" class="form-control" name="partB" required="no" max_length="100" placeholder="转换任务B" type="text">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-app" type="button" id="task_exchange">
+                                            <i class="fa fa-refresh"></i> 任务顺序调换
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">模块书写</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <label class="control-label" for="select_module">选择模块</label>
                                         <select name="select_module" class="select2 form-control" id="select_module">
                                             {% include 'operation/ansible_module.html' %}
                                         </select>
                                     </div>
                                 </div>
                                 <div id="module_editor">
-
                                 </div>
                             </div>
                         </div>
@@ -136,19 +189,19 @@
                }
            }
         });
-        var table=$('#adhoc_tb').bootstrapTable({
-                url : '/api-operation/v1/playbook/{{ id }}/adhocs/',
+        var table=$('#task_tb').bootstrapTable({
+                url : '/api-operation/v1/playbook/{{ id }}/tasks/',
                 method  : 'GET',
                 clickToSelect:  true,
                 singleSelect    :   true,
-                dataType    :   'json',
+                dataType    :   'json'
             });
     })
         .on('change','#select_module',function(){
             var obj = this.options[this.selectedIndex].id;
             $.ajax({
                 mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
-                url: '/operation/adhoc/'+obj+'/editor',
+                url: '/operation/task/'+obj+'/editor/',
                 type: 'GET',
                 success: function(data) {
                     $('#module_editor').html(data);
@@ -163,39 +216,56 @@
         .on('click','#playbook_commit',function(){
             historyBack();
         })
-        .on('click','#adhoc_add',function(){
+        .on('click','#task_add',function(){
             var data=commitAgrsSelect();
             if(JSON.stringify(data) == '{}'){
                 return ;
             }
             $.ajax({
                 type:"POST",
-                url:"/api-operation/v1/adhoc/"+"{{ id }}"+"/create/",
+                url:"/api-operation/v1/task/"+"{{ id }}"+"/create/",
                 data:data,
                 dataType:"json",
                 success:function(data){
-                    $('#adhoc_tb').bootstrapTable('refresh');
+                    $('#task_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
                     alert(data.responseJSON.info);
                 }
             });
         })
-        .on('click','#args_remove',function () {
-            var a=$('#args_tb').bootstrapTable('getSelections');
+        .on('click','#task_exchange',function(){
+            var sorta=$('#id_partA')[0].value;
+            var sortb=$('#id_partB')[0].value;
+            data={'parta':sorta,'partb':sortb};
+            $.ajax({
+                type:"PUT",
+                url:"/api-operation/v1/task/"+"{{ id }}"+"/sort/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#task_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
+                }
+            })
+        })
+        .on('click','#task_remove',function () {
+            var a=$('#task_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
-            var argsname=a[0].args_name;
-            var data={'args_name':argsname}
+            var sort=a[0].sort;
+            var data={'sort':sort}
             $.ajax({
                 type:"DELETE",
-                url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/remove/",
+                url:"/api-operation/v1/task/"+"{{ id }}"+"/remove/",
                 data:data,
                 dataType:"json",
                 success:function(data){
-                    $('#args_tb').bootstrapTable('refresh');
+                    $('#task_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
                     alert(data.responseJSON.info);

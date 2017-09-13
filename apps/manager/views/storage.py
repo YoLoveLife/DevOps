@@ -2,7 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
-from timeline.models import History
+# from timeline.models import History
 from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
@@ -72,6 +72,7 @@ class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChang
         hosts = models.Host.objects.all()
         storage_hosts=[host.id for host in self.object.hosts.all()]
         context.update({
+
             'hosts':hosts,'storage_hosts':storage_hosts
         })
         return context

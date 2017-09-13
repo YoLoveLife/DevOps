@@ -1,7 +1,4 @@
-from yosible.tasks import Task
-from yosible.tasks import Tasks
-
-
+from yosible.tasks.tasks import Task,Tasks
 class Playbook():
     def __init__(self,pbname,pbfacts):
         self.name=pbname

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms,models
-from timeline.models import History
+# from timeline.models import History
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView
@@ -67,6 +67,7 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
 
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
+
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_group.hosts.clear()
         host_group.hosts.add(*hosts)
