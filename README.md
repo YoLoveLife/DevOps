@@ -19,8 +19,8 @@ django & rest-framework & bootstrap</br>
 ## Contents
 * [介绍](#introduce)
 * [平台一览](#looklike)
-* [自运维功能实现](#whatcando)
 * [如何安装](#howtoinstall)
+* [自运维功能实现](#whatcando)
 ## <a name="introduce"> 介绍 </a>
 本开发自运维平台致力于IT资源信息的整合与自动化运维，通过服务、应用配置的信息整合来运维提供帮助。</br>
 
@@ -31,12 +31,34 @@ django & rest-framework & bootstrap</br>
 - 所有资产信息、架构信息都存储在数据库中供所有运维人员操作</br>
 - 开发人员可登陆平台提交工单发起防火墙修改、应用发布、日常运维 :clock9: 等操作,运维人员许可操作进行</br>
 - 所有应用发布、日常运维工作日程展示 :date: </br>
-- 详细权限操作，区分开发人员以及运维人员 </r>
+- 详细权限操作，区分开发人员以及运维人员 </br>
 
 ## <a name="looklike"> 平台一览 </a>
-![LOGIN](img/login.png)
-![HOST](img/host.png)
-![SCRIPT](img/script.png)
-![TIMELINE](img/timeline.png)
-## <a name="whatcando"> 自运维功能实现 </a>
+### 登陆界面
+![LOGIN](img/login.png)</br>
+### 主机管理
+![HOST](img/host.png)</br>
+### 脚本编写
+![SCRIPT](img/script.png)</br>
+### 时间线展示
+![TIMELINE](img/timeline.png)</br>
+
 ## <a name="howtoinstall"> 如何安装 </a>
+devEops依赖于python2.7、诸多python第三方模块以及mysql数据库</br>
+以下操作环境已经拥有python2.7以及mysql数据库
+```bash
+$ cd path/to/project/folder/
+
+#安装python第三方库
+$ pip install -r requirements.txt
+
+#连接本地数据库并创建数据表结构
+$ vim apps/deveops/settings.py #DATABASES中输入数据库连接方法
+$ python apps/manage.py makemigrations
+$ python apps/manage.py migrate
+
+#启动服务
+$ python apps/manage.py runserver &
+#默认启动在9999端口 你可能需要一个nginx做Web服务器
+```
+## <a name="whatcando"> 自运维功能实现 </a>
