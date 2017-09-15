@@ -199,9 +199,14 @@
     })
         .on('change','#select_module',function(){
             var obj = this.options[this.selectedIndex].id;
+
+            var url = '/operation/task/'+obj+'/editor/';
+            if(obj == '6'){
+                url+='0/';
+            }
             $.ajax({
                 mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
-                url: '/operation/task/'+obj+'/editor/',
+                url: url,
                 type: 'GET',
                 success: function(data) {
                     $('#module_editor').html(data);

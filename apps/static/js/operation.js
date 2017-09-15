@@ -203,3 +203,24 @@ function commitArgsForMuduleService(){
     var data={'mudule':mudule,'args':args};
     return data;
 }
+
+function commitArgsForMuduleScript() {
+   var args="";
+
+    var backupObj=$('#id_script_id')[0];
+
+    args = args + "{{ " +backupObj.options[backupObj.selectedIndex].id + " }} ";
+
+    if($('#id_creates')[0].value !=''){
+        args = args + 'creates=' + $('#id_creates')[0].value + " ";
+    }
+    if($('#id_removes')[0].value !=''){
+        args = args + 'removes=' + $('#id_removes')[0].value + " ";
+    }
+
+    var mudule = $('#id_mudule')[0].value;
+
+    var data={'mudule':mudule,'args':args};
+    return data;
+
+}
