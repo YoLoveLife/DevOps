@@ -16,6 +16,6 @@ urlpatterns=[
     #
     # # Resource task api
     url(r'^v1/task/(?P<pk>[0-9]+)/create/',api.TaskCreateAPI.as_view()),
-    url(r'^v1/tsak/(?P<pk>[0-9]+)/remove/',api.TaskRemoveAPI.as_view()),
+    url(r'^v1/task/(?P<pk>[0-9]+)/remove/',api.TaskRemoveAPI.as_view()),
     url(r'^v1/task/(?P<pk>[0-9]+)/sort/',api.TaskSortAPI.as_view()),
 ]

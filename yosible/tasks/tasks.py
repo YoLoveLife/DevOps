@@ -1,4 +1,4 @@
-class Task():
+class Task(object):
     def __init__(self,module="shell",args="",register='shell_out'):
         self.module=module
         self.args=args
@@ -10,7 +10,7 @@ class Task():
     def __str__(self):
         return "[module_name:%s][args:%s][register:%s]"%(self.module,self.args,self.register)
 
-class Tasks():
+class Tasks(object):
     def __init__(self):
         self.task_list=[]
 

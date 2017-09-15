@@ -38,3 +38,6 @@ class ConcertHistory(models.Model):
     status = models.IntegerField(default=0,choices=STATUS)#状态
     music = models.ForeignKey(Music,default=1,related_name='concert_his')#使用的音乐
     callback = models.ForeignKey(Callback,default=1,related_name='concert_back')#执行日志
+    #
+    # def get_last_history(self):
+    #     self.objects.filter(plantime__day= )

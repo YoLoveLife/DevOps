@@ -8,8 +8,8 @@ import json
 from django.forms.models import model_to_dict
 
 from apps.anweb.models import Group, Host, Softlib, Soft, Redis, MySQL, Tomcat, Java, Nginx, History
-from apps.inventory import maker
 from event import allevent
+from inventory import maker
 from util import toJSON
 
 '''
