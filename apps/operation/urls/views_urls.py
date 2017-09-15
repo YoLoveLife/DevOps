@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^playbook/(?P<pk>[0-9]+)/update/', playbook.OperationPlaybookUpdateView.as_view(), name='playbookupdate'),
 
     #Resource task url
-    url(r'^task/(?P<pk>[0-9]+)/editor/',playbook.OperationTaskEditorView.as_view(),name='taskeditor'),
+    url(r'^task/(?P<pk>[0-9]+)/editor/$',playbook.OperationTaskEditorView.as_view(),name='taskeditor'),
+    url(r'^task/(?P<pk>[0-9]+)/editor/(?P<pkp>[0-9]+)/',playbook.OperationTaskEditorView.as_view(),name='taskeditorpkp'),
 ]

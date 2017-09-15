@@ -31,12 +31,14 @@ urlpatterns = [
     url(r'^timeline/',include('timeline.urls.views_urls',namespace='timeline')),
     url(r'^authority/',include('authority.urls.views_urls',namespace='authority')),
     url(r'^application/',include('application.urls.views_urls',namespace='application')),
+    url(r'^concert/',include('concert.urls.views_urls',namespace='concert')),
 
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
     url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
     url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),
     url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
+    url(r'^api-concert/',include('concert.urls.api_urls',namespace='api-concert')),
 ]
 
 '''

@@ -77,14 +77,24 @@ class OperationPlaybookUpdateView(LoginRequiredMixin,PlaybookPermission.Playbook
         return self.success_url
 
 class OperationTaskEditorView(LoginRequiredMixin,TemplateView):
-    template_dir = 'operation/mudule/'
+    template_dir = 'operation/module/'
     postfix = '.html'
 
     def get_context_data(self, **kwargs):
         context= super(OperationTaskEditorView, self).get_context_data(**kwargs)
-        mudule = self.kwargs['pk']
-        self.template_name = self.template_dir + MUDULE_OPTION[mudule]+self.postfix
+        module = self.kwargs['pk']
+        if self.kwargs.has_key('pkp'):
+            scripts = models.Script.objects.filter(author_id__exact=self.request.user.id)
+            context.update({
+                'scripts' : scripts
+            })
+        self.template_name = self.template_dir + MUDULE_OPTION[module]+self.postfix
         return context
 
     def get(self,request,*args, **kwargs):
         return super(OperationTaskEditorView, self).get(request, *args, **kwargs)
+
+    list=[
+        {'id':0},{'id':1},{'id':2}
+    ]
+    list[0].keys
