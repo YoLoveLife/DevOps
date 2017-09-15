@@ -1,13 +1,12 @@
+from yosible.tasks.tasks import Tasks,Task
 from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.inventory import Inventory
 from ansible.parsing.dataloader import DataLoader
 from ansible.playbook.play import Play
 from ansible.vars import VariableManager
-from callback import ResultCallback
+from apps.execute.callback import ResultCallback
 from playbook import Playbook
-from yosible.tasks.tasks import Task,Tasks
 from yosible.vars.args import option, HOST_LIST
-
 
 class Ansible():
     def __init__(self):
@@ -54,12 +53,8 @@ if __name__ == "__main__":
 
     s=Tasks()
     s.push_task(b)
-    from apps.callback.catch.basic import BasicResultCallback
-    brc=BasicResultCallback()
     A=Ansible()
     pb.push_tasks(s)
     A.set_playbook(pb)
-    A.set_callback(brc)
-    print(brc.info)
+
     A.run_playbook()
-    print(brc.info)
