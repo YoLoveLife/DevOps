@@ -1,6 +1,8 @@
 language: python
 python:
   - "2.7"
+services:
+  - mysql
 install:
   - pip install -r requirements.txt
 script:
