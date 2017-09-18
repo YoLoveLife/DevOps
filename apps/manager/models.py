@@ -37,7 +37,7 @@ class Host(models.Model):
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype=models.IntegerField(default=0,choices=SYSTEM_CHOICES)#操作系统
-    manage_ip = models.CharField(max_length=15, default='',null=True)#管理IP
+    manage_ip = models.CharField(max_length=15, default='192.168.0.0',null=True)#管理IP
     service_ip = models.CharField(max_length=15, default='')#服务IP
     outer_ip = models.CharField(max_length=15, default='',null=True)#外网IP
     server_position = models.CharField(max_length=50,default='')#服务器位置
