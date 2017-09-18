@@ -100,7 +100,7 @@ DATABASES={
         'ENGINE':'django.db.backends.mysql',
         'NAME':'deveopsdb',
         'USER':'root',
-        'PASSWORD':'000000',
+        'PASSWORD':'',
         'HOST':'',
         'PORT':'3306',
     }
