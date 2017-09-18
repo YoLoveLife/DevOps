@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     # 'manager.apps.ManagerConfig',
     'validate.apps.ValidateConfig',
-    # 'softlib.apps.SoftlibConfig',
+    'softlib.apps.SoftlibConfig',
     # 'application.apps.MagicConfig',
     # 'operation.apps.OperationConfig',
     # 'timeline.apps.TimelineConfig',
@@ -103,8 +103,9 @@ DATABASES={
         'PASSWORD':'',
         'HOST':'',
         'PORT':'3306',
-    }
+    },
 }
+
 # TEST_DATABASE_NAME='testdeveops123321'
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
