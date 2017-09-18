@@ -2,15 +2,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms
 from .. import models
-# from timeline.models import History
+from timeline.models import History
 from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 
-class ManagerStorageListView(LoginRequiredMixin,FormView):
+class ManagerStorageListView(LoginRequiredMixin,TemplateView):
     template_name = 'manager/storage.html'
-    form_class=forms.StorageForm
 
     def get(self, request, *args, **kwargs):
         return super(ManagerStorageListView,self).get(request,*args,**kwargs)
