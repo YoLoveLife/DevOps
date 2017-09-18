@@ -12,7 +12,7 @@ certifi==2017.7.27.1
 cffi==1.10.0
 chardet==3.0.4
 cryptography==1.9
-django-bootstrap3=9.0.0
+django-bootstrap3==9.0.0
 django-filter==1.0.4
 djangorestframework==3.6.3
 enum34==1.1.6
