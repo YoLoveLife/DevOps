@@ -4,14 +4,13 @@ from .. import forms,models
 from timeline.models import History
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
 
-class ManagerGroupListView(LoginRequiredMixin,FormView):
+class ManagerGroupListView(LoginRequiredMixin,TemplateView):
     template_name= 'manager/group.html'
-    form_class=forms.GroupForm
 
     def get(self,request,*args, **kwargs):
         return super(ManagerGroupListView, self).get(request, *args, **kwargs)

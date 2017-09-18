@@ -35,15 +35,15 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'manager.apps.ManagerConfig',
+    # 'manager.apps.ManagerConfig',
     'validate.apps.ValidateConfig',
-    'softlib.apps.SoftlibConfig',
-    'application.apps.MagicConfig',
-    'operation.apps.OperationConfig',
-    'timeline.apps.TimelineConfig',
-    'authority.apps.AuthorityConfig',
-    'execute.apps.ExecuteConfig',
-    'concert.apps.ConcertConfig',
+    # 'softlib.apps.SoftlibConfig',
+    # 'application.apps.MagicConfig',
+    # 'operation.apps.OperationConfig',
+    # 'timeline.apps.TimelineConfig',
+    # 'authority.apps.AuthorityConfig',
+    # 'execute.apps.ExecuteConfig',
+    # 'concert.apps.ConcertConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
@@ -105,7 +105,7 @@ DATABASES={
         'PORT':'3306',
     }
 }
-
+# TEST_DATABASE_NAME='testdeveops123321'
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
