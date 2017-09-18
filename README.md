@@ -1,6 +1,6 @@
 devEops :laughing: 开发自运维平台
 ================================
-[![Travis Build Status](https://travis-ci.org/redox-os/redox.svg?branch=master)](https://travis-ci.org/redox-os/redox)
+[![Travis Build Status](https://travis-ci.org/YoLoveLife/devEops.svg?branch=master)](https://travis-ci.org/YoLoveLife/devEops)
 [![Downloads](https://img.shields.io/github/downloads/redox-os/redox/total.svg)](https://github.com/redox-os/redox/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)( :yum: 这个是为了好看粘贴的)</br>
 
