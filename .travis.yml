@@ -3,7 +3,9 @@ python:
   - "2.7"
 services:
   - mysql
+before_install:
+  - mysql -e 'DROP DATABASE test_deveopsdb;'
 install:
   - pip install -r requirements.txt
 script:
-  - python apps/manage.py test
+  - python apps/manage.py test --liveserver=localhost:8888-8999
