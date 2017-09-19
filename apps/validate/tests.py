@@ -4,13 +4,13 @@ from validate.models import ExtendUser
 # Create your tests here.
 
 #model test
-class ExtendUserTestCase(TestCase):
-    def setUp(self):
-        ExtendUser.objects.create(username='yz2',first_name='Yu',last_name='Zhou')
-
-    def test_getfullname(self):
-        user = ExtendUser.objects.get(username='yz2')
-        self.assertEqual(user.get_full_name(),'YuZhou')
+# class ExtendUserTestCase(TestCase):
+#     def setUp(self):
+#         ExtendUser.objects.create(username='yz2',first_name='Yu',last_name='Zhou')
+#
+#     def test_getfullname(self):
+#         user = ExtendUser.objects.get(username='yz2')
+#         self.assertEqual(user.get_full_name(),'YuZhou')
 
 #view test
 class LoginPageTestCase(LiveServerTestCase):
