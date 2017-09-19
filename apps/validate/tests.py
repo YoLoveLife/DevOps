@@ -9,3 +9,6 @@ class ExtendUserTestCase(TestCase):
     def test_getfullname(self):
         user = ExtendUser.objects.get(username='yz2')
         self.assertEqual(user.get_full_name(),'YuZhou')
+
+    def tearDown(self):
+        super(ExtendUserTestCase,self).tearDown()
