@@ -6,4 +6,4 @@ services:
 install:
   - pip install -r requirements.txt
 script:
-  - python apps/manage.py test --liveserver=localhost:8888-8999
+  - python apps/manage.py test
