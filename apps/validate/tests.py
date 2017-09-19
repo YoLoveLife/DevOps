@@ -14,12 +14,14 @@ class ExtendUserTestCase(TestCase):
 
 #view test
 class LoginPageTestCase(LiveServerTestCase):
+    port = 8000
     def test_loginpage(self):
         c = Client()
         response = c.get('/validate/login')
         self.assertEqual(response.status_code,200)
 
 class LoginPostTestCase(LiveServerTestCase):
+    port = 8000
     def setUp(self):
         ExtendUser.objects.create(username='yz2',first_name='Yu',last_name='Zhou',password='testlogin')
 

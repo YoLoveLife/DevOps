@@ -6,6 +6,7 @@ from validate.models import ExtendUser
 
 #view test
 class IndexPageTestCase(LiveServerTestCase):
+    port = 8000
     def setUp(self):
         self.user=ExtendUser.objects.create(username='yz2',first_name='Yu',last_name='Zhou')
         self.user.set_password('testuser')

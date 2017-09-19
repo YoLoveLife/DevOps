@@ -6,4 +6,6 @@ services:
 install:
   - pip install -r requirements.txt
 script:
+  - python apps/manage.py makemigrations
+  - python apps/manage.py migrate
   - python apps/manage.py test
