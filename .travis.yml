@@ -3,8 +3,6 @@ python:
   - "2.7"
 services:
   - mysql
-before_install:
-  - mysql -e 'DROP DATABASE test_deveopsdb;'
 install:
   - pip install -r requirements.txt
 script:
