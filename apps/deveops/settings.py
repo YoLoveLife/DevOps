@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     # 'manager.apps.ManagerConfig',
     'validate.apps.ValidateConfig',
-    'softlib.apps.SoftlibConfig',
+    # 'softlib.apps.SoftlibConfig',
     # 'application.apps.MagicConfig',
     # 'operation.apps.OperationConfig',
     # 'timeline.apps.TimelineConfig',
