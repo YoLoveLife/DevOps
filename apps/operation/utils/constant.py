@@ -14,7 +14,7 @@ FUNCTION_ARGS='function Args(){\n' \
               '}\n'
 
 SIMPLE_CASE_ITEM='\t\t\t\t--%s)\n' \
-                 '\t\t\t\t%s="1"\n' \
+                 '\t\t\t\t%s=$1\n' \
                  '\t\t\t\tshift\n' \
                  '\t\t\t\t;;\n'
 
