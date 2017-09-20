@@ -95,18 +95,29 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+# if 'BUILD_ON_TRAVIS' in os.environ:
+#     DATABASES={
+#         'default':{
+#             'ENGINE':'django.db.backends.mysql',
+#             'NAME':'deveops_testdb',
+#             'USER':'root',
+#             'PASSWORD':'',
+#             'HOST':'127.0.0.1',
+#             'PORT':'3306',
+#         },
+#     }
+# else:
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
         'NAME':'deveopsdb',
         'USER':'root',
         'PASSWORD':'',
-        'HOST':'',
+        'HOST':'127.0.0.1',
         'PORT':'3306',
     },
 }
 
-# TEST_DATABASE_NAME='testdeveops123321'
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
