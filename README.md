@@ -10,6 +10,8 @@ Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
 :muscle: 已经努力让它适用于各种可能出现的生产环境</br>
 django & rest-framework & bootstrap</br>
 :muscle: 参考了诸多django项目 代码已经尽量优美</br>
+travis & django TestCase</br>
+:muscle: 单元测试 测试不规范但是努力去做
 
 如果你关注：自动化运维、运维资源管理等内容  :star: 我,[分享](http://www.yolovelife.com)给其他的运维人员</br>
 如果你关注：django开发、rest-framework等内容  :star: 我,[分享](http://www.yolovelife.com)给其他的开发者</br>
