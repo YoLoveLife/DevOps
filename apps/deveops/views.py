@@ -5,8 +5,6 @@ from django.views.generic import TemplateView
 class IndexView(LoginRequiredMixin,TemplateView):
     template_name = '404.html'
     def get(self,request,*args,**kwargs):
-        # if not request.user.is_superuser:
-        #     return redirect('assets:user-asset-list')
         return super(IndexView, self).get(request, *args, **kwargs)
 
 class ErrorView(LoginRequiredMixin,TemplateView):
