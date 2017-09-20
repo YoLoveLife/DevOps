@@ -35,15 +35,15 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'manager.apps.ManagerConfig',
     'validate.apps.ValidateConfig',
-    # 'softlib.apps.SoftlibConfig',
-    # 'application.apps.MagicConfig',
-    # 'operation.apps.OperationConfig',
-    # 'timeline.apps.TimelineConfig',
-    # 'authority.apps.AuthorityConfig',
-    # 'execute.apps.ExecuteConfig',
-    # 'concert.apps.ConcertConfig',
+    'softlib.apps.SoftlibConfig',
+    'manager.apps.ManagerConfig',
+    'operation.apps.OperationConfig',
+    'application.apps.MagicConfig',
+    'authority.apps.AuthorityConfig',
+    'execute.apps.ExecuteConfig',
+    'concert.apps.ConcertConfig',
+    'timeline.apps.TimelineConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
