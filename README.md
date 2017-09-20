@@ -62,6 +62,6 @@ $ python apps/manage.py migrate
 
 #启动服务
 $ python apps/manage.py runserver &
-#默认启动在9999端口 你可能需要一个nginx做Web服务器
+#默认启动在8000端口 你可能需要一个nginx做Web服务器
 ```
 ## <a name="whatcando"> 自运维功能实现 </a>
