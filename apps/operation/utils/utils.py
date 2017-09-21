@@ -39,5 +39,5 @@ def html2bash(str):
 if __name__ == "__main__":
     kwargs={}
     print(bash_writer(author='Yo',time='2017-8-11 16:44:13',**kwargs))
-    string = "<p>#!/bin/bash<br># Time 2017-9-12 17:32:27<br># Author Yo<br># Github github.com/YoLoveLife/scrRipt<br># processor</p><p>hostname<br>cat /proc/cpuinfo |grep processor|wc -l<br>free -m|sed -n '2p' |awk '{ print $2 }'<br>df -h |grep '/$' |awk '{ print $2 }'</p>"
+    string = "<p>hostname<br>cat /proc/cpuinfo |grep processor|wc -l<br>free -m|sed -n '2p' |awk '{ print $2 }'<br>df -h |grep '/$' |awk '{ print $2 }'</p>"
     print(html2bash(string))

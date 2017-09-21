@@ -25,7 +25,6 @@ class Script(models.Model):
             kwargs[args.args_name] = args.args_value
         string = string + utils.bash_writer(self.author.email,'now',**kwargs)
         string = string + utils.html2bash(self.script)
-        print(string)
         return string
 
 class ScriptArgs(models.Model):
@@ -55,7 +54,7 @@ class PlayBook(models.Model):
 
 class Task(models.Model):
     id = models.AutoField(primary_key=True)
-    mudule = models.CharField(default='hostname',max_length=20)
+    module = models.CharField(default='hostname',max_length=20)
     args = models.CharField(default='',max_length=100)
     sort = models.IntegerField(default=0)
     playbook = models.ForeignKey(PlayBook,default=1,related_name='tasks')

@@ -42,3 +42,6 @@ class ResultCallback(CallbackBase):
       #  print(str)
       #   print(json.dumps(result._result))
         return super(ResultCallback,self).v2_runner_on_unreachable(result)
+
+    def ResultExtract(self):
+        pass

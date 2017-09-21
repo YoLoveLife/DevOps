@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
-from .. import MUDULE_OPTION
+from .. import MODULE_OPTION
 class OperationPlaybookListView(LoginRequiredMixin,TemplateView):
     template_name= 'operation/playbook.html'
 
@@ -88,7 +88,7 @@ class OperationTaskEditorView(LoginRequiredMixin,TemplateView):
             context.update({
                 'scripts' : scripts
             })
-        self.template_name = self.template_dir + MUDULE_OPTION[module]+self.postfix
+        self.template_name = self.template_dir + MODULE_OPTION[module]+self.postfix
         return context
 
     def get(self,request,*args, **kwargs):
