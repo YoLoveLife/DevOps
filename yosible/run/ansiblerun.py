@@ -9,13 +9,13 @@ from playbook import Playbook
 from yosible.vars.args import option, HOST_LIST
 
 class Ansible():
-    def __init__(self):
+    def __init__(self,host_file):
         self.options = option
         self.variable_manager = VariableManager()
         self.loader = DataLoader()
         self.passwords = dict(vault_pass='')
         self.results_callback = ResultCallback()
-        self.inventory = Inventory(loader=self.loader, variable_manager=self.variable_manager, host_list=HOST_LIST)
+        self.inventory = Inventory(loader=self.loader, variable_manager=self.variable_manager, host_list=host_file)
         self.variable_manager.set_inventory(self.inventory)
 
     def add_extendvars(self,newext):
@@ -27,10 +27,12 @@ class Ansible():
 
     def set_callback(self,callback):
         self.results_callback = callback
+
     def run_playbook(self):
         tqm=pop_TaskqueueManager(self)
         try:
             result =tqm.run(Play().load(self.playbook.pop_playbook()))
+            return result
         finally:
             if tqm is not None:
                 tqm.cleanup()

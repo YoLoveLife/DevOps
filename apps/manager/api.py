@@ -2,7 +2,6 @@
 import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from execute.service.catch.basic import BasicAnsibleService
 class GroupListAPI(generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
@@ -22,17 +21,6 @@ class HostListByGroupAPI(generics.ListAPIView):
             return queryset
         queryset=models.Group.objects.get(id=self.kwargs['pk']).hosts
         return queryset
-
-class HostFlushAPI(generics.ListAPIView):
-    serializer_class = serializers.HostSerializer
-    permission_classes = [IsAuthenticated]
-    def get(self, request, *args, **kwargs):
-        host = models.Host.objects.get(id=self.kwargs['pk'])
-
-        bas = BasicAnsibleService('update host')
-        bas.run(hostlist=[host],tasklist=[])
-        return self.list(request, *args, **kwargs)
-
 
 class StorageListAPI(generics.ListAPIView):
     module = models.Storage
