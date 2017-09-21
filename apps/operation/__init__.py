@@ -1,4 +1,4 @@
-MUDULE_OPTION = {
+MODULE_OPTION = {
     '0':'none',
     '1': 'shell',
     '2': 'copy',

@@ -6,7 +6,6 @@ urlpatterns=[
 
     # Resource host api
     url(r'^v1/hostbygroup/(?P<pk>[0-9]+)',api.HostListByGroupAPI.as_view()),
-    url(r'^v1/hostflush/(?P<pk>[0-9]+)',api.HostFlushAPI.as_view()),
 
     # Resource storage api
     url(r'^v1/storage/', api.StorageListAPI.as_view()),

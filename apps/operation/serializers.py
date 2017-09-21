@@ -25,4 +25,4 @@ class PlaybookSerializer(serializers.HyperlinkedModelSerializer):
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Task
-        fields= ('id','mudule','args','sort')
+        fields= ('id','module','args','sort')
