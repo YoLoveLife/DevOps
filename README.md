@@ -17,10 +17,10 @@ travis & django TestCase</br>
 如果你关注：django开发、rest-framework等内容  :star: 我,[分享](http://www.yolovelife.com)给其他的开发者</br>
 求求你们 :star: 我吧!!!求求你们 :star: 我吧!!!求求你们 :star: 我吧!!!</br>
 
-*关于我开发中遇到的问题 我会写在issues当中供有需要的朋友查询 :mag: *
-*这些问题都是在查询了诸多资料并亲身尝试大量解决方案 :grimacing: 最后得出的结论*
-*您可以在issues中搜索question和help wanted查看我写的相关问题*
-*如果未找到您关注的问题或者您对我的项目有建议请在issues和我讨论 :heart: 期待收到您的信息*
+*关于我开发中遇到的问题 我会写在issues当中供有需要的朋友 :mag: 查询*</br>
+*这些问题都是在查询了诸多资料并亲身尝试大量解决方案 :grimacing: 最后得出的结论*</br>
+*您可以在issues中搜索question和help wanted查看我写的相关问题*</br>
+*如果未找到您关注的问题或者您对我的项目有建议请在issues和我讨论 :heart: 期待收到您的信息*</br>
 
 ## Contents
 * [介绍](#introduce)
