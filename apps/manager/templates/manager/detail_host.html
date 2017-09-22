@@ -250,6 +250,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-app" id="flush_host">
+                                        <i class="fa fa-plus"></i> 刷新主机信息
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -277,5 +282,22 @@
         function historyBack() {
             window.history.go(-1);
         }
+        $(document).ready(function () {
+        })
+            .on('click','#flush_host',function () {
+                $.ajax({
+                    mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                    url: '/api-execute/v1/update/host/{{ host.id }}/',
+                    type: 'GET',
+                    success: function(data) {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    },
+                    dataType: "html",
+                    async: false
+                });
+            })
 </script>
 {% endblock %}

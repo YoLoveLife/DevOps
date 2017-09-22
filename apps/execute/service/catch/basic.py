@@ -6,10 +6,9 @@ from inventory.maker import Maker
 __metaclass__ = type
 class BasicAnsibleService(AnsibleService):
     def __init__(self,hostlist):
-        maker = Maker()
-        self.maker = maker
+        self.maker = Maker()
         self.maker.inventory_maker(hostlist)
-        super(BasicAnsibleService,self).__init__(maker.filename)
+        super(BasicAnsibleService,self).__init__(self.maker.filename)
 
     def run(self,hostlist,tasklist):
         callback = basic.BasicResultCallback()
