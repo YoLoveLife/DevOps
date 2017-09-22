@@ -50,7 +50,6 @@
                                         <th data-field="server_position">服务器位置</th>
                                         <th data-field="info">用途</th>
                                         <th data-field="id" data-formatter="detailFormatter">细节</th>
-                                        <th data-field="id" data-formatter="flushFormatter">刷新</th>
                                     </tr>
                                     </thead>
                                     <tbody id="hosttbody">
@@ -99,10 +98,6 @@
 <script>
     function detailFormatter(value,row,index) {
         var label_a='<a class="btn btn-default" href="/manager/host/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
-        return [label_a].join('');
-    }
-    function flushFormatter(value,row,index) {
-        var label_a='<a class="btn btn-default" href="/api-execute/v1/update/host/'+value+'/">'+'<i class="fa fa-refresh"></i>'+'</a>';
         return [label_a].join('');
     }
     $(document).ready(function () {
