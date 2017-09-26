@@ -44,7 +44,6 @@ class ScriptRemoveArgsAPI(generics.DestroyAPIView):
         permission_classes = [IsAuthenticated]
 
         def delete(self, request, *args, **kwargs):
-            # return self.destroy(self,request,args,kwargs)
             if models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(args_name=request.data['args_name']).exists():
                 models.Script.objects.get(id=int(kwargs['pk'])).scriptargs.filter(args_name=request.data['args_name']).delete()
                 return Response({'info':'删除成功'},status=status.HTTP_201_CREATED)
