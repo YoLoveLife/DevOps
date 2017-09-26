@@ -30,10 +30,13 @@ class HostUpdateGroupSerializer(serializers.ModelSerializer):
         model = models.Group
         fields = ['id', 'hosts']
 
-class SystemTypeSerializer(serializers.CharField):
-    name=serializers.CharField()
-    percentage=serializers.IntegerField()
+class HostSearchSerializer(serializers.ModelSerializer):
+    groups__name = serializers.CharField()
+    storages__disk_size = serializers.CharField()
+    storages__disk_path = serializers.CharField()
     class Meta:
-        fields= ['name','percentage']
-
-
+        model=models.Host
+        fields = ('manage_ip','service_ip','outer_ip','server_position','hostname','groups__name',
+                  'normal_user','sshpasswd','sshport','coreness','memory','root_disk','info'
+                  ,'storages__disk_size','storages__disk_path'
+                  )
