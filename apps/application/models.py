@@ -18,6 +18,12 @@ class DB(models.Model):
     datadir=models.CharField(max_length=100,default='/storage/mysql')
     softlib=models.ForeignKey(Softlib,default=1,)
     # online=models.BooleanField(default=False)
+
+class DBControl(models.Model):
+    id = models.AutoField(primary_key=True)
+    db = models.ForeignKey(DB,default=1,related_name='dbcontrols')
+
+
 #
 #
 # class Java(models.Model):

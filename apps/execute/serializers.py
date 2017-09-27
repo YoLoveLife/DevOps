@@ -1,6 +1,7 @@
-import models
+from manager import models
 from rest_framework import serializers
-class ExecuteSerializer(serializers.HyperlinkedModelSerializer):
+
+class UpdateHostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Callback
-        fields = ('id')
+        model=models.Host
+        fields = ('id','service_ip')
