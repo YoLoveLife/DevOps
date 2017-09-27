@@ -61,7 +61,7 @@
                             <h3 class="box-title" style="text-align: center">搜索结果</h3>
                         </div>
                         <div class="box-body">
-                            <table id="host_tb" class="table table-bordered table-striped">
+                            <table id="search_tb" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th data-field="service_ip">服务IP</th>
@@ -87,34 +87,36 @@
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
     <script>
-        var result_data={};
+    function detailFormatter(value,row,index) {
+        var label_a='<a class="btn btn-default" href="/manager/host/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
         function historyBack() {
             window.history.go(-1);
         }
         function cleanGetData(string){
-            var data={};
+            var get_data = "?";
             var strs = new Array();
             strs = string.split(';');
             for(var i=0;i<strs.length;i++){
                 var st = strs[i].split('=');
-                data[st[0].replace(/(^\s*)|(\s*$)/g, "")]=st[1].replace(/(^\s*)|(\s*$)/g, "");
+                get_data+= st[0].replace(/(^\s*)|(\s*$)/g, "") + '=' + st[1].replace(/(^\s*)|(\s*$)/g, "");
+                if(i!=strs.length-1){
+                    get_data +="&";
+                }
             }
-            return data;
+            return get_data;
         }
         $(document).ready(function () {
-            var table=$('#host_tb').bootstrapTable({
-                data:result_data,
+            var table=$('#search_tb').bootstrapTable({
+                url : '/api-manager/v1/search/',
                 method  : 'GET',
                 uniqueId :  'id',
                 pagination  :   true,
-                showExport: true,
                 sidePagination  : 'client',
-                clickToSelect:  true,
-                singleSelect    :   true,
-                pageSize    :   15,
-                pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
-                showExport: true,
+                pageSize    :   5,
+                pageList    :   [5],
                 exportDataType : "basic",
             });
         })
@@ -122,19 +124,8 @@
                 var Element=document.getElementById('manager-search-info');
                 var string=Element.value;
                 var data =cleanGetData(string);
-                $.ajax({
-                    type:"GET",
-                    url:"/api-manager/v1/search/",
-                    data:data,
-                    dataType:"json",
-                    success:function(data){
-                        result_data=data;
-                        var table=$('#host_tb').bootstrapTable('refresh');
-                    },
-                    error:function(data){
-                        alert(data.responseJSON.info);
-                    }
-                });
+                var url = '/api-manager/v1/search/'+data;
+                var table=$('#search_tb').bootstrapTable('refresh', {url :   url});
             })
     </script>
 {% endblock %}

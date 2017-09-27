@@ -51,7 +51,11 @@ class ManagerSearchAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # if len(self.request.query_params) == 0:
-        #     return {}
-        # else:
-        return hostQuery(**self.request.query_params.dict())
+        query_list = self.request.query_params.dict()
+        del query_list['order']
+        del query_list['offset']
+        del query_list['limit']
+        if len(query_list) == 0:
+            return {}
+        else:
+            return hostQuery(**query_list)
