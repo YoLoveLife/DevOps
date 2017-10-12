@@ -7,22 +7,33 @@ from django.db import models
 # Create your models here.
 #
 class DB(models.Model):
+    IS_SLAVE=(
+        (0,u'否'),
+        (1,u'是'),
+    )
     id=models.AutoField(primary_key=True)
     host=models.ForeignKey(Host,default=1)
     prefix=models.CharField(max_length=100,default='/usr/local/mysql')
     root_passwd=models.CharField(max_length=100,default='000000')
-    normal_user = models.CharField(max_length=100,default='NorUser')
-    normal_passwd = models.CharField(max_length=100,default='000000')
     port=models.IntegerField(default='3306')
     socket=models.CharField(max_length=100,default='/tmp/mysql.sock')
     datadir=models.CharField(max_length=100,default='/storage/mysql')
     softlib=models.ForeignKey(Softlib,default=1,)
+    is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
     # online=models.BooleanField(default=False)
 
-class DBControl(models.Model):
+class DBDetail(models.Model):
     id = models.AutoField(primary_key=True)
-    db = models.ForeignKey(DB,default=1,related_name='dbcontrols')
+    db = models.ForeignKey(DB,default=1,related_name='dbdetail')
+    com_insert = models.CharField(max_length=100,default=0)
+    com_update = models.CharField(max_length=100,default=0)
+    max_connections = models.CharField(max_length=100,default=0)
+    thread_running = models.CharField(max_length=100,default=0)
 
+class DBUser(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.CharField(max_length=100,default='')
+    ip = models.CharField(max_length=16,default='')
 
 #
 #
