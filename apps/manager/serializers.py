@@ -20,7 +20,7 @@ class HostSerializer(serializers.ModelSerializer):
         model=models.Host
         fields = ('id','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
                   'normal_user','sshpasswd','sshport','coreness','memory','root_disk','info'
-                  ,'storages'
+                  ,'storages','status',
                   )
 
 
