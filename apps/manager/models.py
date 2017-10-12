@@ -33,6 +33,11 @@ class Host(models.Model):
         (3,u'Centos 6.5'),
         (4,u'Centos 7.1'),
     )
+    SYSTEM_STATUS=(
+        (0,'错误'),
+        (1,'正常'),
+        (2,'不可达'),
+    )
     id=models.AutoField(primary_key=True) #全局ID
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
@@ -47,5 +52,6 @@ class Host(models.Model):
     sshport = models.CharField(max_length=5,default='')#用户端口
     coreness = models.CharField(max_length=5,default='')#CPU数
     memory = models.CharField(max_length=7,default='')#内存
-    root_disk=models.CharField(max_length=7,default="")#本地磁盘大小
-    info=models.CharField(max_length=200,default="")
+    root_disk = models.CharField(max_length=7,default="")#本地磁盘大小
+    info = models.CharField(max_length=200,default="")
+    status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态

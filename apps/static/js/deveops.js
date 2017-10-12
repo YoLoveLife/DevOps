@@ -23,7 +23,6 @@ $.devEops={};
 * */
 $.devEops.options={
     animationSpeed:500,
-    mainPage:'static/pages/dashboard.html'
 }
 
 /**
@@ -32,16 +31,17 @@ $.devEops.options={
  * @Desc: Some init for this object
  * */
 $(function(){
-    if (typeof devEopsOptions !=="undefined"){
-        $.extend(true,
-            $.devEops.options,
-            devEopsOptions
-        );
-    }
-    var o=$.devEops.options;
+    // if (typeof devEopsOptions !=="undefined"){
+    //     $.extend(true,
+    //         $.devEops.options,
+    //         devEopsOptions
+    //     );
+    // }
+    // var o=$.devEops.options;
     //_init();
     //$.devEops.pushMenu.activate("[data-toggle='offcanvas']");
     $.devEops.treeMenu('.sidebar');
+    //treeMenu('.sidebar');
     // var ajax_url=location.hash.replace(/^#/, '');
     // if(ajax_url.length<1){
     //     ajax_url=o.mainPage;
@@ -93,6 +93,7 @@ $.devEops.pushMenu={
  * @Desc: Modify the click function abount the tree-menu.
  * */
 $.devEops.treeMenu=function(menu){
+//treeMenu=function(menu){
     var _this=this;
     var animationSpeed=$.devEops.options.animationSpeed;
     $(document).off('click',menu+' li a')
