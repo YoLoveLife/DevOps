@@ -9,4 +9,5 @@ from ..views import db as DBView
 urlpatterns = [
     #Resource dashboard url
     url(r'^db/$',DBView.ApplicationDBListView.as_view(),name='appdb'),
+    url(r'^db/(?P<pk>[0-9]+)/detail/', DBView.ApplicationDBDetailView.as_view(), name='dbdetail'),
 ]
