@@ -4,7 +4,7 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from execute.service import AnsibleService
-from execute.callback.catch import db
+from execute.callback import ResultCallback
 from execute.models import Callback
 from inventory.maker import Maker
 __metaclass__ = type
@@ -15,7 +15,7 @@ class DBAnsibleService(AnsibleService):
         super(DBAnsibleService,self).__init__(self.maker.filename)
 
     def run(self,hostlist,tasklist):
-        callback = db.DBResultCallback()
+        callback = ResultCallback()
         self.push_callback(callback)
 
         super(DBAnsibleService,self).run(tasklist,self.maker)
