@@ -22,6 +22,10 @@ class DB(models.Model):
     is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
     # online=models.BooleanField(default=False)
 
+    def get_all_user(self):
+        return self.dbuser.all()
+
+
 class DBDetail(models.Model):
     id = models.AutoField(primary_key=True)
     db = models.ForeignKey(DB,default=1,related_name='dbdetail')
@@ -34,6 +38,16 @@ class DBUser(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.CharField(max_length=100,default='')
     ip = models.CharField(max_length=16,default='')
+    db = models.ForeignKey(DB,default=1,related_name='dbuser')
+
+    def full_auth_name(self):
+        return self.user +'@'+ self.ip
+
+    def set_user(self,full_name):
+        list = full_name.split('@')
+        self.user = list[0]
+        self.ip = list[1]
+        self.save()
 
 #
 #

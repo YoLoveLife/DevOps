@@ -40,7 +40,7 @@ class TimeLineRecordListView(LoginRequiredMixin,TemplateView):
         return super(TimeLineRecordListView, self).get(request,*args,**kwargs)
 
 class TimeLineRecordDetailView(LoginRequiredMixin,DetailView):
-    template_name = 'timeline/detail_record.html'
+    template_name = 'timeline/_detail_record.html'
     model = models.History
     def get_context_data(self, **kwargs):
         context = super(TimeLineRecordDetailView,self).get_context_data(**kwargs)

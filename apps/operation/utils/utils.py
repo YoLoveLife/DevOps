@@ -13,24 +13,29 @@ def bash_head(author,time,*args,**kwargs):#author time
 
     return string + args_maker(*args,**kwargs)
 
-def args_maker(*args,**kwargs):
+# def args_maker(*args,**kwargs):
+#     string = ""
+#     OPTIONS = ""
+#     CASE_ITEMS = ""
+#     for key in kwargs:
+#         if kwargs[key] == "1":
+#             OPTIONS += key+':'
+#             CASE_ITEMS += constant.EXTEND_CASE_ITEM%(key,key)
+#         else:
+#             OPTIONS += key
+#             CASE_ITEMS += constant.SIMPLE_CASE_ITEM%(key,key)
+#         OPTIONS += ','
+#     command = 'ARGS=`getopt -o y --long %s -- "$@"`'%(OPTIONS)
+#     string = string + constant.FUNCTION_ARGS%(command,CASE_ITEMS+constant.CASE_END)
+#     string = string + 'Args $@\n'
+#     return string
+def args_maker( *args, **kwargs):
     string = ""
-    OPTIONS = ""
-    CASE_ITEMS = ""
     for key in kwargs:
-        if kwargs[key] == "1":
-            OPTIONS += key+':'
-            CASE_ITEMS += constant.EXTEND_CASE_ITEM%(key,key)
-        else:
-            OPTIONS += key
-            CASE_ITEMS += constant.SIMPLE_CASE_ITEM%(key,key)
-        OPTIONS += ','
-    command = 'ARGS=`getopt -o y --long %s -- "$@"`'%(OPTIONS)
-    string = string + constant.FUNCTION_ARGS%(command,CASE_ITEMS+constant.CASE_END)
-    string = string + 'Args $@\n'
+        string += key + '=' + kwargs[key] +'\n'
     return string
 
-def html2bash(str):
+def html2bash(str):#去除HTML p选项
     result , number = re.subn(constant.PATTERN_BR,'\n',str)
     result , number = re.subn(constant.PATTERN_P,'\n',result)
     result , number = re.subn(constant.PATTERN_F_P, '\n', result)
