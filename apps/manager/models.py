@@ -2,7 +2,9 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from softlib.models import Softlib
 # Create your models here.
+list= ['db_set','redis_set','nginx_set']
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
     name=models.CharField(max_length=100,default='')
@@ -55,3 +57,11 @@ class Host(models.Model):
     root_disk = models.CharField(max_length=7,default="")#本地磁盘大小
     info = models.CharField(max_length=200,default="")
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
+
+    def application_get(self):
+        id_list=[]
+        for attr in list:
+            if hasattr(self,attr):
+                id_list.append(int(getattr(self,attr).get().softlib_id))
+        softlibs = Softlib.objects.filter(id__in=id_list)
+        return softlibs
