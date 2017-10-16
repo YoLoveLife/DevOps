@@ -6,7 +6,6 @@ from application.models import DB
 from softlib.models import Softlib
 from manager.models import Host
 # Create your tests here.
-
 # class DBTestCase(TestCase):
 #     def setUp(self):
 #         softlib = Softlib.objects.create(soft_type=2,soft_version='1.10.3')

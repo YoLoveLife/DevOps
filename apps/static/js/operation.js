@@ -71,26 +71,26 @@ function commitAgrsSelect(){
     var id=obj.options[obj.selectedIndex].id;
     switch(MODULE_LIST[id]){
         case 'shell':
-            return commitArgsForMuduleShell();break;
+            return commitArgsForModuleShell();break;
         case 'copy':
-            return commitArgsForMuduleCopy();break;
+            return commitArgsForModuleCopy();break;
         case 'file':
-            return commitArgsForMuduleFile();break;
+            return commitArgsForModuleFile();break;
         case 'yum':
-            return commitArgsForMuduleYum();break;
+            return commitArgsForModuleYum();break;
         case 'service':
-            return commitArgsForMuduleService();break;
+            return commitArgsForModuleService();break;
         case 'script':
-            return commitArgsForMuduleScript();break;
+            return commitArgsForModuleScript();break;
         case 'get_url':
-            return commitArgsForMuduleGeturl();break;
+            return commitArgsForModuleGeturl();break;
         default:
             return "";
     }
 }
 
 
-function commitArgsForMuduleShell(){
+function commitArgsForModuleShell(){
     var args="";
     args = args + $('#id_args')[0].value + " ";
     if($('#id_chdir')[0].value!=''){
@@ -102,13 +102,13 @@ function commitArgsForMuduleShell(){
     if($('#id_removes')[0].value !=''){
         args = args + 'removes=' + $('#id_removes')[0].value + " ";
     }
-    var mudule = $('#id_mudule')[0].value;
+    var module = $('#id_module')[0].value;
 
-    var data={'mudule':mudule,'args':args};
+    var data={'module':module,'args':args};
     return data;
 }
 
-function commitArgsForMuduleCopy(){
+function commitArgsForModuleCopy(){
     var args="";
 
     if($('#id_src')[0].value !=''){
@@ -140,12 +140,12 @@ function commitArgsForMuduleCopy(){
     }
 
 
-    var mudule = $('#id_mudule')[0].value;
-    var data={'mudule':mudule,'args':args};
+    var module = $('#id_module')[0].value;
+    var data={'module':module,'args':args};
     return data;
 }
 
-function commitArgsForMuduleFile(){
+function commitArgsForModuleFile(){
     var args="";
     if($('#id_path')[0].value !=''){
         args = args + 'path=' + $('#id_path')[0].value + " ";
@@ -166,12 +166,12 @@ function commitArgsForMuduleFile(){
         args = args + 'group=' + $('#id_group')[0].value + " ";
     }
 
-    var mudule = $('#id_mudule')[0].value;
-    var data={'mudule':mudule,'args':args};
+    var module = $('#id_module')[0].value;
+    var data={'module':module,'args':args};
     return data;
 }
 
-function commitArgsForMuduleYum(){
+function commitArgsForModuleYum(){
     var args="";
 
     if($('#id_yumname')[0].value !=''){
@@ -185,12 +185,12 @@ function commitArgsForMuduleYum(){
     args +="state=" +stateObj.options[stateObj.selectedIndex].id+" ";
 
 
-    var mudule = $('#id_mudule')[0].value;
-    var data={'mudule':mudule,'args':args};
+    var module = $('#id_module')[0].value;
+    var data={'module':module,'args':args};
     return data;
 }
 
-function commitArgsForMuduleService(){
+function commitArgsForModuleService(){
     var args="";
 
     var servicenameObj=$('#id_servicename')[0];
@@ -199,17 +199,17 @@ function commitArgsForMuduleService(){
     var stateObj=$('#id_state')[0];
     args +="state=" +stateObj.options[stateObj.selectedIndex].id+" ";
 
-    var mudule = $('#id_mudule')[0].value;
-    var data={'mudule':mudule,'args':args};
+    var module = $('#id_module')[0].value;
+    var data={'module':module,'args':args};
     return data;
 }
 
-function commitArgsForMuduleScript() {
+function commitArgsForModuleScript() {
    var args="";
 
     var backupObj=$('#id_script_id')[0];
 
-    args = args + "{{ " +backupObj.options[backupObj.selectedIndex].id + " }} ";
+    args = args+backupObj.options[backupObj.selectedIndex].id;
 
     if($('#id_creates')[0].value !=''){
         args = args + 'creates=' + $('#id_creates')[0].value + " ";
@@ -218,9 +218,9 @@ function commitArgsForMuduleScript() {
         args = args + 'removes=' + $('#id_removes')[0].value + " ";
     }
 
-    var mudule = $('#id_mudule')[0].value;
+    var module = $('#id_module')[0].value;
 
-    var data={'mudule':mudule,'args':args};
+    var data={'module':module,'args':args};
     return data;
 
 }
