@@ -10,7 +10,7 @@
 <section class="content-header">
     <h1>
         <i class="fa fa-laptop"></i>
-        主机 {{ host.hostname }}
+        主机 {{ object.hostname }}
         <small><i class="fa fa-angle-double-right"></i>详细信息</small>
     </h1>
     <ol class="breadcrumb">
@@ -36,10 +36,10 @@
                                 <span class="info-box-icon info-box-icon-blue"><i class="fa fa-wifi"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">管理IP地址</span>
-                                    {% if host.manage_ip == '' %}
+                                    {% if object.manage_ip == '' %}
                                         <span class="info-box-text">无</span>
                                     {% else %}
-                                        <span class="info-box-text">{{ host.manage_ip }}</span>
+                                        <span class="info-box-text">{{ object.manage_ip }}</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                 <span class="info-box-icon info-box-icon-red"><i class="fa fa-wifi"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">业务IP地址</span>
-                                    <span class="info-box-text">{{ host.service_ip }}</span>
+                                    <span class="info-box-text">{{ object.service_ip }}</span>
                                 </div>
                             </div>
                         </div>
@@ -58,10 +58,10 @@
                                 <span class="info-box-icon info-box-icon-green"><i class="fa fa-wifi"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">外网IP地址</span>
-                                    {% if host.outer_ip == '' %}
+                                    {% if object.outer_ip == '' %}
                                         <span class="info-box-text">无</span>
                                     {% else %}
-                                        <span class="info-box-text">{{ host.outer_ip }}</span>
+                                        <span class="info-box-text">{{ object.outer_ip }}</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                                         <span class="info-box-icon info-box-icon-blue"><i class="fa fa-laptop"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">操作系统类型</span>
-                                            <span class="info-box-text">{{ host.get_systemtype_display }}</span>
+                                            <span class="info-box-text">{{ object.get_systemtype_display }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
                                         <span class="info-box-icon info-box-icon-red"><i class="fa fa-th"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">服务器位置</span>
-                                            <span class="info-box-text">{{ host.server_position }}</span>
+                                            <span class="info-box-text">{{ object.server_position }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                         <span class="info-box-icon info-box-icon-green"><i class="fa fa-user"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">普通用户</span>
-                                            <span class="info-box-text">{{ host.normal_user }}</span>
+                                            <span class="info-box-text">{{ object.normal_user }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +205,7 @@
                                         <span class="info-box-icon info-box-icon-yellow"><i class="fa fa-bullseye"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">SSH访问端口</span>
-                                            <span class="info-box-text">{{ host.sshport }}</span>
+                                            <span class="info-box-text">{{ object.sshport }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -214,10 +214,10 @@
                                         <span class="info-box-icon info-box-icon-blue"><i class="fa fa-heart"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">CPU核心数</span>
-                                            {% if host.coreness == '' %}
+                                            {% if object.coreness == '' %}
                                             <span class="info-box-text">无</span>
                                             {% else %}
-                                            <span class="info-box-text">{{ host.coreness }}</span>
+                                            <span class="info-box-text">{{ object.coreness }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -227,10 +227,10 @@
                                         <span class="info-box-icon info-box-icon-red"><i class="fa fa-microchip"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">内存</span>
-                                            {% if host.memory == '' %}
+                                            {% if object.memory == '' %}
                                             <span class="info-box-text">无</span>
                                             {% else %}
-                                            <span class="info-box-text">{{ host.memory }}</span>
+                                            <span class="info-box-text">{{ object.memory }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -242,10 +242,10 @@
                                         <span class="info-box-icon info-box-icon-green"><i class="fa fa-download"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text">根磁盘大小</span>
-                                            {% if host.root_disk == '' %}
+                                            {% if object.root_disk == '' %}
                                             <span class="info-box-text">无</span>
                                             {% else %}
-                                            <span class="info-box-text">{{ host.root_disk }}</span>
+                                            <span class="info-box-text">{{ object.root_disk }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -267,7 +267,24 @@
                             <h3 class="box-title"><i class="fa fa-life-ring"></i>应用信息</h3>
                         </div>
                         <div class="box-body">
-                            {% include '_404.html' %}
+                            <table class="table table-bordered" style="word-break:break-all; word-wrap:break-all;">
+                                    <thead>
+                                    <tr>
+                                        <th>应用类型</th>
+                                        <th>应用版本</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for softlib in softlibs %}
+                                            <tr>
+                                                <td>{{ softlib.get_soft_type_display }}</td>
+                                                <td>{{ softlib.soft_version }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -287,7 +304,7 @@
             .on('click','#flush_host',function () {
                 $.ajax({
                     mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
-                    url: '/api-execute/v1/update/host/{{ host.id }}/',
+                    url: '/api-execute/v1/update/host/{{ object.id }}/',
                     type: 'GET',
                     success: function(data) {
                         location.reload();

@@ -6,5 +6,5 @@ class DBSerializer(serializers.HyperlinkedModelSerializer):
     service_ip = serializers.CharField(source='host.service_ip',read_only=True)
     class Meta:
         model = models.DB
-        fields = ('id','host_name','normal_user','port','datadir','service_ip',
+        fields = ('id','host_name','port','datadir','service_ip',
                 )

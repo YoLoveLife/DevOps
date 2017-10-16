@@ -113,10 +113,10 @@ class ManagerHostDetailView(LoginRequiredMixin,DetailView):
         context=super(ManagerHostDetailView,self).get_context_data(**kwargs)
         groups=self.object.groups.all()
         storages=self.object.storages.all()
-        host=self.object
+        softlibs = self.object.application_get()
         context.update({
             'groups':groups,
             'storages':storages,
-            'host':host
+            'softlibs':softlibs,
         })
         return context

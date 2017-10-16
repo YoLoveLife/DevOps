@@ -14,19 +14,19 @@ class DBAnsibleService(AnsibleService):
         self.maker.inventory_maker(hostlist)
         super(DBAnsibleService,self).__init__(self.maker.filename)
 
-    def run(self,db,tasklist):
+    def run(self,hostlist,tasklist):
         callback = ResultCallback()
         self.push_callback(callback)
 
         super(DBAnsibleService,self).run(tasklist,self.maker)
 
         list = callback.ResultExtract()
-        self.update(list,db)
+        self.update(list,hostlist)
 
-    def update(self,list,db):
-        detail = db.dbdetail.get()
-        detail.com_insert = list[0].strip()
-        detail.com_update = list[1].strip()
-        detail.max_connections = list[2].strip()
-        detail.thread_running = list[3].strip()
-        detail.save()
+    def update(self,list,hostlist):
+        for host in hostlist:
+            host.coreness = list[0]
+            host.memory = list[1]
+            host.root_disk = list[2]
+            host.hostname = list[3]
+            host.save()
