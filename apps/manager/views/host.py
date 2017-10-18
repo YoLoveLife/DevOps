@@ -92,6 +92,7 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
         groups = models.Group.objects.all()
         groups_host = [group.id for group in self.object.groups.all()]
+
         storages = models.Storage.objects.all()
         storages_host = [storage.id for storage in self.object.storages.all()]
         context.update({
