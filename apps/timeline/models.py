@@ -18,6 +18,7 @@ HISTORY_TYPE = (
     (1, u'脚本修改'),
     (2, u'剧本修改'),
     (3, u'人员管理'),
+    (4, u'应用管理'),
 )
 class History(models.Model):
     id = models.AutoField(primary_key=True)

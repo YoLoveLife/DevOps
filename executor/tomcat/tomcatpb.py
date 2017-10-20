@@ -2,7 +2,7 @@
 # !/usr/bin/env python
 # Author Yo
 # Email YoLoveLife@outlook.com
-from util import FTP
+from utils import FTP
 from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock

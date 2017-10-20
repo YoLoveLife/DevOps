@@ -12,11 +12,11 @@ class UserListAPI(generics.ListAPIView):
         return queryset
 
 
-class AuthListAPI(generics.ListAPIView):
-    module = models.Group
-    serializer_class = serializers.AuthSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        queryset =  models.Group.objects.all()
-        return queryset
+# class AuthListAPI(generics.ListAPIView):
+#     module = models.Group
+#     serializer_class = serializers.AuthSerializer
+#     permission_classes = [IsAuthenticated]
+#
+#     def get_queryset(self):
+#         queryset =  models.Group.objects.all()
+#         return queryset

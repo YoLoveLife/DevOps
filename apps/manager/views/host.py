@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
-
+from utils import aes
 class ManagerHostListView(LoginRequiredMixin,TemplateView):
     template_name='manager/host.html'
 
@@ -40,6 +40,7 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
 
         host_storage_group.groups.add(*groups)
         host_storage_group.storages.add(*storages)
+        host_storage_group.sshpasswd = aes.encrypt(host_storage_group.sshpasswd)
         host_storage_group.save()
 
         his.status=1
@@ -82,6 +83,7 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
         host_storage_group.groups.add(*groups)
         host_storage_group.storages.add(*storages)
+        host_storage_group.sshpasswd = aes.encrypt(host_storage_group.sshpasswd)
         host_storage_group.save()
 
         his.status=1
