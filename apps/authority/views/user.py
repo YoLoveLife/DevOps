@@ -56,7 +56,7 @@ class AuthorityUserCreateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
     def get_context_data(self, **kwargs):
         context = super(AuthorityUserCreateView,self).get_context_data(**kwargs)
         auths = Group.objects.all()
-        auths_user = [group.id for group in self.object.groups.all()]
+        auths_user = []
         context.update({
             'auths':auths,
             'auths_user':auths_user,
