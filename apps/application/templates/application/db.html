@@ -59,7 +59,7 @@
                             <h3 class="box-title" style="text-align: center">数据库信息</h3>
                         </div>
                         <div class="box-body">
-                            <form id="toolbar-host">
+                            <form id="toolbar-db">
                             <button class="btn btn-app" id="add_db">
                                 <i class="fa fa-plus"></i> 新增数据库
                             </button>
@@ -112,22 +112,16 @@
                 exportDataType : "basic",
             });
     })
-        .on('change','#groupselect',function(){
-            var objSelect = document.getElementById('groupselect');
-            var obj=objSelect.options[objSelect.selectedIndex].id;
-            var url='/api-manager/v1/hostbygroup/'+obj;
-            var table=$('#host_tb').bootstrapTable('refresh', {url :   url});
-        })
-        .on('click','#add_host',function () {
-            var form=$('#toolbar-host');
-            var action='/manager/host/create/';
+        .on('click','#add_db',function () {
+            var form=$('#toolbar-db');
+            var action='/application/db/create/';
             form.attr('action',action);
             location.href(action);
         })
-        .on('click','#modify_host',function () {
-            var form=$('#toolbar-host');
-            var action='/manager/host/';
-            var a=$('#host_tb').bootstrapTable('getSelections');
+        .on('click','#modify_db',function () {
+            var form=$('#toolbar-db');
+            var action='/application/db/';
+            var a=$('#db_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;

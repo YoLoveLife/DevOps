@@ -22,8 +22,6 @@ class UpdateHostAPI(generics.ListAPIView):
         bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
         return super(UpdateHostAPI,self).get(request,*args,**kwargs)
 
-
-
 class CatchDBStatusAPI(generics.ListAPIView):
     serializer_class = serializers.CatchDBStatusSerializer
     permission_classes = [IsAuthenticated]
