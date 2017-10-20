@@ -5,6 +5,7 @@
 # Email YoLoveLife@outlook.com
 import os
 import time
+from utils import aes
 FILENAME = r"/tmp/%s%s"
 SSHPORT = "ansible_ssh_port="
 SSHUSER = "ansible_ssh_user="
@@ -25,7 +26,7 @@ class Maker():
             str = host.service_ip + \
             " " + SSHPORT + host.sshport + \
             " " + SSHUSER + host.normal_user + \
-            " " + SUDOPASS + host.sshpasswd + '\n'
+            " " + SUDOPASS + aes.decrypt(host.sshpasswd) + '\n'
             output.writelines(str)
         output.close()
         return self.filename

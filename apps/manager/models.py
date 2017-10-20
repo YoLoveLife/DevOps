@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
 # Create your models here.
-list= ['db_set','redis_set','nginx_set']
+list= ['db_set']#,'redis_set','nginx_set']
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
     name=models.CharField(max_length=100,default='')
@@ -61,7 +61,12 @@ class Host(models.Model):
     def application_get(self):
         id_list=[]
         for attr in list:
-            if hasattr(self,attr):
+            if getattr(self,attr).count() == 0:
+                pass
+            else:
                 id_list.append(int(getattr(self,attr).get().softlib_id))
-        softlibs = Softlib.objects.filter(id__in=id_list)
+        if Softlib.objects.filter(id__in=id_list).count() == 0:
+            softlibs = []
+        else:
+            softlibs = Softlib.objects.filter(id__in=id_list)
         return softlibs
