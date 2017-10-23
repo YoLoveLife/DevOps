@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+    {% if object.is_slave == 1 %}
+        {% include 'application/_is_slave.html' %}
+    {% else %}
+
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-database"></i>
+        主机 {{ object.host.hostname }}的数据库实例
+        <small><i class="fa fa-angle-double-right"></i>权限管理</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-joomla"></i>
+        <li class="active">Application</li>
+        <li><a href="/application/db/">DB</a></li>
+        <li class="active">Auth</li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-cogs"></i>权限管理</h3>
+                </div>
+                <div class="box-body">
+                    <table id="tb_dbauth" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th data-field="check" data-radio="true">#</th>
+                            <th data-field="user">用户</th>
+                            <th data-field="ip">IP地址</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-cogs"></i>工具栏</h3>
+                </div>
+                <div class="box-body">
+                    <form id="toolbar-db">
+                        <button class="btn btn-app" id="add_auth">
+                            <i class="fa fa-plus"></i> 新增权限
+                        </button>
+                        <button class="btn btn-app" id="delete_auth">
+                            <i class="fa fa-times"></i> 删除权限
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-cogs"></i>工具栏</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label" for="id_db_user">数据库用户</label>
+                            <input name="args_name" title="" required="" id="id_db_user" maxlength="100" placeholder="数据库用户" class="form-control" type="text">
+                        </div>
+                        <div class="col-md-1">
+                            <label class="control-label" for="id_args_name">&nbsp;</label>
+                            <input name="args_value" value="@" id="id_db_ip" maxlength="100" disabled class="form-control" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label" for="id_db_ip">访问地址</label>
+                            <input name="args_value" title="" required="" id="id_db_ip" maxlength="100" placeholder="访问地址" class="form-control" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+        {% endif %}
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+<script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+    $(document).ready(function () {
+         $.ajaxSetup({
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
+        });
+        var table=$('#tb_dbauth').bootstrapTable({
+                url : '/api-application/v1/db/{{ object.id }}/auth',
+                method  : 'GET',
+                uniqueId :  'id',
+                toolbar : '#hst-toolbar',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                showExport: true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                showExport: true,
+                exportDataType : "basic",
+            });
+    })
+        .on('click','#add_auth',function(){
+            var dbuser=$('#id_db_user')[0].value;
+            var dbip=$('#id_db_ip')[0].value;
+            var data={'user':dbuser,'ip':dbip};
+            $.ajax({
+                type:"POST",
+                url:"/api-application/v1/db/{{ id }}/auth/create/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#tb_dbauth').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
+                }
+            });
+        })
+        .on('click','#delete_auth',function(){
+            var a=$('#args_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var dbuser=$('#id_db_user')[0].value;
+            var dbip=$('#id_db_ip')[0].value;
+            var data={'user':dbuser,'ip':dbip};
+            $.ajax({
+                type:"DELETE",
+                url:"/api-application/v1/db/{{ id }}/auth/remove/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#tb_dbauth').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
+                }
+            })
+        })
+</script>
+
+{% endblock %}

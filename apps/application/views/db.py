@@ -8,6 +8,7 @@ from django.views.generic import TemplateView,CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from ..permission import db as DBPermission
 from django.urls import reverse_lazy
+from utils import aes
 # Create your views here.
 class ApplicationDBListView(LoginRequiredMixin,TemplateView):
     template_name= 'application/db.html'
@@ -17,11 +18,11 @@ class ApplicationDBListView(LoginRequiredMixin,TemplateView):
 
 class ApplicationDBDetailView(LoginRequiredMixin,DetailView):
     model = models.DB
-    template_name = 'application/detail_mariadb.html'
+    template_name = 'application/detail_db.html'
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBDetailView,self).get_context_data(**kwargs)
-        detail = self.object.dbdetail.all()[0]
+        detail = self.object.dbdetail.get()
         context.update({
             'detail':detail
         })
@@ -39,12 +40,15 @@ class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin
 
         db=form.save()
         service_ip = self.request.POST.get('service_ip')
+        db.root_passwd =  aes.encrypt(db.root_passwd)
         if Host.objects.filter(service_ip = service_ip).count() == 1:
             host = Host.objects.filter(service_ip=service_ip).get()
             db.host = host
         else:
             pass
-
+        dbdetail = models.DBDetail()
+        dbdetail.db=db
+        dbdetail.save()
         db.save()
         his.status=1
         his.save()
@@ -53,7 +57,7 @@ class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBCreateView,self).get_context_data(**kwargs)
         context.update({
-            'service_ip' : self.object.host.service_ip
+            'service_ip' : ''
         })
         return context
 
@@ -74,6 +78,7 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
 
         db=form.save()
         service_ip = self.request.POST.get('service_ip')
+        db.root_passwd =  aes.encrypt(db.root_passwd)
         if Host.objects.filter(service_ip = service_ip).count() == 1:
             host = Host.objects.filter(service_ip=service_ip).get()
             db.host = host
@@ -87,7 +92,18 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBUpdateView,self).get_context_data(**kwargs)
+        context.update({
+            'service_ip' : self.object.host.service_ip
+        })
         return context
 
     def get_success_url(self):
         return self.success_url
+
+class ApplicationDBAuthView(LoginRequiredMixin,DBPermission.DBAuthRequiredMixin,DetailView):
+    model = models.DB
+    template_name = 'application/auth_db.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ApplicationDBAuthView,self).get_context_data(**kwargs)
+        return context

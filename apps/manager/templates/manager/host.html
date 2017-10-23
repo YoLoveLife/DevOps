@@ -29,12 +29,12 @@
                 </div>
                 <!-- /.box-header -->
                 <div id="hst-toolbar">
-                    <select id="groupselect" class="select2">
-                        <option id="0">Null</option>
-                        {% for row in grouplist %}
-                            <option id="{{ row.id }}">{{ row.name }}</option>
-                        {% endfor %}
-                    </select>
+                            <select id="groupselect" class="select2" style="width:100%;">
+                                <option id="0">全部应用主机</option>
+                                {% for row in grouplist %}
+                                    <option id="{{ row.id }}">{{ row.name }}</option>
+                                {% endfor %}
+                            </select>
                 </div>
                     <div class="box-body">
                         <div class="row">

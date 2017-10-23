@@ -26,3 +26,6 @@ class DBChangeRequiredMixin(DBRequiredMixin):
 class DBDeleteRequiredMixin(DBRequiredMixin):
     permission_required = u'application.delete_db'
 
+class DBAuthRequiredMixin(DBRequiredMixin):
+    permission_required = u'application.auth_db'
+

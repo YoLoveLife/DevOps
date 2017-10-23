@@ -278,7 +278,7 @@
                 return false;
             }
             var argsname=a[0].args_name;
-            var data={'args_name':argsname}
+            var data={'args_name':argsname};
             $.ajax({
                 type:"DELETE",
                 url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/remove/",
