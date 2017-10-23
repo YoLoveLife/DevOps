@@ -138,7 +138,7 @@
                             <h3 class="box-title" style="text-align: center">应用组关系</h3>
                         </div>
                         <div class="box-body">
-                            <select name="groups" class="select2 form-control" multiple>
+                            <select name="groups" class="select2 form-control" multiple style="width:100%;">
                                 {% for group in groups %}
                                     {% if group.id in groups_host %}
                                         <option value="{{ group.id }}" selected>{{ group.name }}</option>
@@ -156,7 +156,7 @@
                             <h3 class="box-title" style="text-align: center">存储</h3>
                         </div>
                         <div class="box-body">
-                            <select name="storages" class="select2 form-control" multiple>
+                            <select name="storages" class="select2 form-control" multiple style="width:100%;">
                                 {% for storage in storages %}
                                     {% if storage.id in storages_host %}
                                         <option value="{{ storage.id }}" selected>{{ storage.disk_path }} - {{ storage.info }}</option>
