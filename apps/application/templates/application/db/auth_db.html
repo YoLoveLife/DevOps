@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
     {% if object.is_slave == 1 %}
-        {% include 'application/_is_slave.html' %}
+        {% include 'application/db/_is_slave.html' %}
     {% else %}
 
 <!--Content Header-->
@@ -52,14 +52,12 @@
                     <h3 class="box-title"><i class="fa fa-cogs"></i>工具栏</h3>
                 </div>
                 <div class="box-body">
-                    <form id="toolbar-db">
                         <button class="btn btn-app" id="add_auth">
                             <i class="fa fa-plus"></i> 新增权限
                         </button>
                         <button class="btn btn-app" id="delete_auth">
                             <i class="fa fa-times"></i> 删除权限
                         </button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -76,7 +74,7 @@
                         </div>
                         <div class="col-md-1">
                             <label class="control-label" for="id_args_name">&nbsp;</label>
-                            <input name="args_value" value="@" id="id_db_ip" maxlength="100" disabled class="form-control" type="text">
+                            <input name="args_value" value="@" id="id_args_name" maxlength="100" disabled class="form-control" type="text">
                         </div>
                         <div class="col-md-3">
                             <label class="control-label" for="id_db_ip">访问地址</label>
@@ -92,7 +90,7 @@
         {% endif %}
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
 <script>
         function historyBack() {
             window.history.go(-1);
@@ -109,10 +107,10 @@
            }
         });
         var table=$('#tb_dbauth').bootstrapTable({
-                url : '/api-application/v1/db/{{ object.id }}/auth',
+                url : '/api-application/v1/db/{{ object.id }}/auth/',
                 method  : 'GET',
                 uniqueId :  'id',
-                toolbar : '#hst-toolbar',
+                toolbar : '#db-toolbar',
                 search  :   true,
                 sortable    :   false,
                 pagination  :   true,
@@ -135,7 +133,7 @@
             var data={'user':dbuser,'ip':dbip};
             $.ajax({
                 type:"POST",
-                url:"/api-application/v1/db/{{ id }}/auth/create/",
+                url:"/api-application/v1/db/{{ object.id }}/auth/create/",
                 data:data,
                 dataType:"json",
                 success:function(data){
@@ -147,17 +145,17 @@
             });
         })
         .on('click','#delete_auth',function(){
-            var a=$('#args_tb').bootstrapTable('getSelections');
+            var a=$('#tb_dbauth').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
-            var dbuser=$('#id_db_user')[0].value;
-            var dbip=$('#id_db_ip')[0].value;
+            var dbuser=a[0].user;
+            var dbip=a[0].ip;
             var data={'user':dbuser,'ip':dbip};
             $.ajax({
                 type:"DELETE",
-                url:"/api-application/v1/db/{{ id }}/auth/remove/",
+                url:"/api-application/v1/db/{{ object.id }}/auth/remove/",
                 data:data,
                 dataType:"json",
                 success:function(data){
