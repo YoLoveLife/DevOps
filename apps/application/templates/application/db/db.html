@@ -36,10 +36,10 @@
                                     <tr>
                                         <th data-field="check" data-radio="true">#</th>
                                         <th data-field="host_name">主机名称</th>
-                                        <th data-field="normal_user">数据库用户</th>
                                         <th data-field="port">端口</th>
                                         <th data-field="datadir">数据目录</th>
                                         <th data-field="service_ip">服务IP</th>
+                                        <th data-field="id" data-formatter="authFormatter">用户权限</th>
                                         <th data-field="id" data-formatter="detailFormatter">细节</th>
                                     </tr>
                                     </thead>
@@ -66,7 +66,7 @@
                             <button class="btn btn-app" id="modify_db">
                                 <i class="fa fa-edit"></i> 修改数据库
                             </button>
-                            <button class="btn btn-app" disabled>
+                            <button class="btn btn-app" id="delete_db">
                                 <i class="fa fa-times"></i> 删除数据库
                             </button>
                             </form>
@@ -81,16 +81,20 @@
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'js/select2.full.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/tableExport.min.js' %}"></script>
 <script>
+    function authFormatter(value,row,index){
+        var label_a='<a class="btn btn-default" href="/application/db/'+value+'/auth/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
     function detailFormatter(value,row,index) {
         var label_a='<a class="btn btn-default" href="/application/db/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
         return [label_a].join('');
     }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
         var table=$('#db_tb').bootstrapTable({
                 url : '/api-application/v1/db',
                 method  : 'GET',
@@ -130,6 +134,25 @@
             action+=obj+'/update/';
             form.attr('action',action);
             location.href(action);
+        })
+        .on('click','#delete_db',function () {
+            var a=$('#db_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            $.ajax({
+                type:"DELETE",
+                url:"/api-application/v1/db/{{ id }}/remove/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#db_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.info);
+                }
+            })
         })
         function historyBack() {
             window.history.go(-1);
