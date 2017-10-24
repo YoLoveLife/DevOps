@@ -11,14 +11,14 @@ from django.urls import reverse_lazy
 from utils import aes
 # Create your views here.
 class ApplicationDBListView(LoginRequiredMixin,TemplateView):
-    template_name= 'application/db.html'
+    template_name= 'application/db/db.html'
 
     def get(self,request,*args, **kwargs):
         return super(ApplicationDBListView, self).get(request, *args, **kwargs)
 
 class ApplicationDBDetailView(LoginRequiredMixin,DetailView):
     model = models.DB
-    template_name = 'application/detail_db.html'
+    template_name = 'application/db/detail_db.html'
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBDetailView,self).get_context_data(**kwargs)
@@ -31,7 +31,7 @@ class ApplicationDBDetailView(LoginRequiredMixin,DetailView):
 class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin,CreateView):
     model = models.DB
     form_class = forms.DBCreateUpdateForm
-    template_name = 'application/new_update_db.html'
+    template_name = 'application/db/new_update_db.html'
     success_url = reverse_lazy('application:db')
 
     def form_valid(self, form):
@@ -69,7 +69,7 @@ class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin
 class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMixin,UpdateView):
     model = models.DB
     form_class = forms.DBCreateUpdateForm
-    template_name = 'application/new_update_db.html'
+    template_name = 'application/db/new_update_db.html'
     success_url = reverse_lazy('application:db')
 
     def form_valid(self, form):
@@ -102,7 +102,7 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
 
 class ApplicationDBAuthView(LoginRequiredMixin,DBPermission.DBAuthRequiredMixin,DetailView):
     model = models.DB
-    template_name = 'application/auth_db.html'
+    template_name = 'application/db/auth_db.html'
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBAuthView,self).get_context_data(**kwargs)
