@@ -23,12 +23,12 @@
     <!--Main Content-->
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-md-offset-5 col-md-7">
+            <div class="col-md-offset-2 col-md-7">
                 <form method="post" action="" id="group_form" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">应用组逻辑信息</h3>
+                            <h3 class="box-title">数据库信息</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
@@ -69,7 +69,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label class="control-label" for="id_service_ip">业务IP</label>
-                                        <input name="service_ip" value="{{ object.host.service_ip }}" title="" required="" id="id_service_ip" maxlength="100" placeholder="业务IP" class="form-control" type="text">
+                                        <input name="service_ip" value="{{ service_ip }}" title="" required="" id="id_service_ip" maxlength="100" placeholder="业务IP" class="form-control" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-offset-2 col-md-7">
                 <div class="row">
                     <div class="box">
                         <div class="box-header">
@@ -122,7 +122,7 @@
             window.history.go(-1);
         }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
     })
         .on('click','#btn_submit',function () {
             $('#group_form').submit();
