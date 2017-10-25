@@ -19,10 +19,8 @@ class UpdateHostAPI(generics.ListAPIView):
         host = Host.objects.get(id=self.kwargs['pk'])
         playbook = PlayBook.objects.get(id = 1)
         bas = BasicAnsibleService(hostlist=[host])
-        bas.run(tasklist=playbook.tasks.all().order_by('-sort'),hostlist=[host])
+        bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
         return super(UpdateHostAPI,self).get(request,*args,**kwargs)
-
-
 
 class CatchDBStatusAPI(generics.ListAPIView):
     serializer_class = serializers.CatchDBStatusSerializer
@@ -36,5 +34,5 @@ class CatchDBStatusAPI(generics.ListAPIView):
         # dbdetail = db.dbdetail.all()[0]
         playbook = PlayBook.objects.get(id = 3)
         bas = DBAnsibleService(hostlist = [db.host] )
-        bas.run(tasklist=playbook.tasks.all().order_by('-sort'),hostlist=[db.host])
+        bas.run(tasklist=playbook.tasks.all().order_by('-sort'),db=db)
         return super(CatchDBStatusAPI,self).get(request, *args, **kwargs)
