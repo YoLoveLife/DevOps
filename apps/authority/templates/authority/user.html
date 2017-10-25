@@ -56,13 +56,13 @@
                         <button class="btn btn-app" id="modify_user">
                             <i class="fa fa-edit"></i> 修改
                         </button>
+                        </form>
                         <button class="btn btn-app" id="delete_user">
                             <i class="fa fa-times"></i> 删除
                         </button>
                         <button class="btn btn-app" disabled>
                             <i class="fa fa-info"></i> 信息
                         </button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -80,6 +80,9 @@
         function historyBack() {
             window.history.go(-1);
         }
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
         function activeFormatter(value,row,index) {
             var label_status;
             if(value==1){
@@ -90,6 +93,14 @@
             return [label_status].join('');
         }
         $(document).ready(function(){
+            $.ajaxSetup({
+               beforeSend: function (xhr,settings) {
+                   if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+                   }
+               }
+            });
+
             var table=$('#user_tb').bootstrapTable({
                 url : '/api-authority/v1/user/',
                 method  : 'GET',
@@ -128,16 +139,27 @@
                 location.href(action);
             })
             .on('click','#delete_user',function () {
-                var form=$('#toolbar-user');
-                var action='/authority/user/';
-                var obj=0;
-                var a=$('#user_tb').bootstrapTable('getSelections');
-                if(a.length>=1){
-                    obj=a[0].id;
-                }
-                action+=obj+'/remove/';
-                form.attr('action',action);
-                location.href(action);
+                var r=confirm('你确定要删除该用户吗?');
+                 if(r == true){
+                     var a=$('#user_tb').bootstrapTable('getSelections');
+                    if(a.length<1){
+                        alert('请选择数据');
+                        return false;
+                    }
+                    $.ajax({
+                        type:"DELETE",
+                        url:"/api-authority/v1/user/"+a[0].id+"/remove/",
+                        dataType:"json",
+                        success:function(data){
+                            $('#user_tb').bootstrapTable('refresh');
+                        },
+                        error:function(data){
+                            alert(data.responseJSON.info);
+                        }
+                    })
+                 }else{
+                    return ;
+                 }
             })
     </script>
 {% endblock %}

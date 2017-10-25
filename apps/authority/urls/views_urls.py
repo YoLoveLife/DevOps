@@ -10,5 +10,4 @@ urlpatterns = [
     url(r'^user/$', UserView.AuthorityUserView.as_view(), name='user'),
     url(r'^user/create/$',UserView.AuthorityUserCreateView.as_view(),name='usercreate'),
     url(r'^user/(?P<pk>[0-9]+)/update/',UserView.AuthorityUserUpdateView.as_view(),name='userupdate'),
-    url(r'^user/(?P<pk>[0-8]+)/remove/',UserView.AuthorityUserDeleteView.as_view(),name='userdelete'),
 ]

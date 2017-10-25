@@ -186,8 +186,8 @@ AUTH_LDAP_GROUP_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(objectClass=groupOfN
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
 AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
 AUTH_LDAP_USER_ATTR_MAP = {
-    "first_name":"givenName",
-    "last_name":"sn",
+    "first_name":"sn",
+    "last_name":"givenName",
     "email":"userPrincipalName",
     "phone":"mobile",
 }
