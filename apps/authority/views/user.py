@@ -108,7 +108,3 @@ class AuthorityUserUpdateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
 
     def get_success_url(self):
         return self.success_url
-
-class AuthorityUserDeleteView(LoginRequiredMixin,UserPermission.UserDeleteRequiredMixin,DeleteView):
-    model = ExtendUser
-    success_url = reverse_lazy('authority:user')

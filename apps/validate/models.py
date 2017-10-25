@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10,default='user.jpg')
-    phone = models.CharField(max_length=11,default='18458409298',)
+    phone = models.CharField(max_length=11,default='无',)
     # groups = models.ManyToManyField(
     #     PermissionGroup,
     #     verbose_name=_('groups'),
@@ -23,12 +23,14 @@ class ExtendUser(AbstractUser):
     #     related_name="user_set",
     #     related_query_name="user",
     # )
+    def get_9531email(self):
+        return self.email.split('@')[0] + '@8531.cn'
 
     def get_full_name(self):
         """
         Returns the first_name plus the last_name, with a space in between.
         """
-        full_name = '%s' % (self.first_name,)# self.last_name)
+        full_name = '%s' % (self.last_name,)# self.first_name)
         return full_name.strip()
 
     def get_group_name(self):
