@@ -16,7 +16,7 @@ class ExtendUser(AbstractUser):
         """
         Returns the first_name plus the last_name, with a space in between.
         """
-        full_name = '%s%s' % (self.first_name, self.last_name)
+        full_name = '%s' % (self.first_name,)# self.last_name)
         return full_name.strip()
 
     def get_group_name(self):
@@ -25,4 +25,7 @@ class ExtendUser(AbstractUser):
         """
         if self.is_superuser == 1:
             return "超级管理员"
-        return self.groups.all()[0].name
+        elif self.groups.count() == 0 :
+            return "无"
+        else:
+            return self.groups.all()[0].name
