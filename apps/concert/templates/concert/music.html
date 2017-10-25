@@ -91,7 +91,7 @@
         return [label_a].join('');
     }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
         var table=$('#music_tb').bootstrapTable({
                 url : '/api-concert/v1/music',
                 method  : 'GET',

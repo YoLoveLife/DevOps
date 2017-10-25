@@ -6,11 +6,10 @@ from django.shortcuts import render
 
 # Create your views here.
 class AuthorityGroupView(LoginRequiredMixin,TemplateView):
-    template_name = 'authority/group.html'
+    template_name = 'authority/auth.html'
 
     def get_context_data(self, **kwargs):
         context = super(AuthorityGroupView, self).get_context_data(**kwargs)
-
         return context
 
     def get(self,request,*args, **kwargs):

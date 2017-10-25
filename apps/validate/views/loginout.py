@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ValidateLoginView(FormView):
-    template_name= 'validate/login.html'
+    template_name = 'validate/login.html'
     form_class= forms.LoginForm
     redirect_field_name='yo'
 

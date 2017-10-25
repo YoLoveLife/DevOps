@@ -39,13 +39,19 @@
                                         {% bootstrap_field form.username %}
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.password %}
-                                    </div>
-                                </div>
                                 <div class="col-md-5">
-
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_auths">权限组</label>
+                                        <select name="auths" class="select2 form-control" multiple>
+                                        {% for auth in auths %}
+                                            {% if auth.id in auths_user %}
+                                                <option value="{{ auth.id }}" selected>{{ auth.name }}</option>
+                                            {% else %}
+                                               <option value="{{ auth.id }}">{{ auth.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -83,14 +89,13 @@
                                     <div class="form-group">
                                         <label class="control-label" for="id_is_active">活跃</label>
                                         <select name="is_active" class="select2">
-                                            {% if is_active == 1 %}
+                                            {% if object.is_active == 1 %}
                                                 <option id="1" selected>actived</option>
                                                 <option id="0">not actived</option>
                                                 {% else %}
                                                 <option id="1">actived</option>
                                                 <option id="0" selected>not actived</option>
                                             {% endif %}
-
                                         </select>
                                     </div>
                                 </div>
@@ -134,7 +139,7 @@
             window.history.go(-1);
         }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
     })
         .on('click','#btn_submit',function () {
             $('#user_form').submit();

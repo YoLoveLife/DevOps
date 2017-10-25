@@ -20,7 +20,7 @@ class DB(models.Model):
     datadir=models.CharField(max_length=100,default='/storage/mysql')
     softlib=models.ForeignKey(Softlib,default=1,)
     is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
-    # online=models.BooleanField(default=False)
+    online=models.BooleanField(default=False)
 
     def get_all_user(self):
         return self.dbuser.all()

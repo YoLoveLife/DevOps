@@ -8,3 +8,8 @@ class DBSerializer(serializers.HyperlinkedModelSerializer):
         model = models.DB
         fields = ('id','host_name','port','datadir','service_ip',
                 )
+
+class DBAuthSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.DBUser
+        fields = ('user','ip')

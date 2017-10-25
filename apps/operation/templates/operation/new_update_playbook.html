@@ -181,7 +181,7 @@
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
         $.ajaxSetup({
            beforeSend: function (xhr,settings) {
                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
