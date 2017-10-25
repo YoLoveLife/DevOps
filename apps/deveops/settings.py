@@ -17,6 +17,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import django.db.backends.mysql
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
@@ -169,3 +170,26 @@ SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SESSION_COOKIE_AGE=15*60
 
+#LDAP
+from django_auth_ldap.config import LDAPSearch,GroupOfNamesType
+import ldap
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+AUTH_LDAP_SERVER_URI = "ldap://10.100.61.6:389"
+AUTH_LDAP_BIND_DN = "cn=tools,ou=Zabbix,ou=TEST,dc=zbjt,dc=com"
+AUTH_LDAP_BIND_PASSWORD = "7a$LIOOwxNO"
+
+OU = unicode('ou=信息安全与运维中心,ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(objectClass=groupOfNames)")
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
+AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name":"givenName",
+    "last_name":"sn",
+    "email":"userPrincipalName",
+    "phone":"mobile",
+}
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
+AUTH_LDAP_MIRROR_GROUPS = True
