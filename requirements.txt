@@ -41,3 +41,5 @@ billiard==3.3.0.23
 anyjson==0.3.3
 celery==3.1.25
 django-celery==3.2.1
+celery-with-redis==3.0
+redis==2.10.6

@@ -6,6 +6,7 @@
 
 from celery.schedules import crontab
 from celery.task import periodic_task
+from celery import shared_task
 @periodic_task(
     run_every=(crontab(minute='*/2')),
     name="ddr",
@@ -17,3 +18,7 @@ def ddr():
     host = Host.objects.all()[0]
     host.info = str(time.time())
     host.save()
+
+@shared_task
+def add(x,y):
+    return x + y
