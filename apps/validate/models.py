@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10,default='user.jpg')
-    phone = models.CharField(max_length=11,default='无',)
+    phone = models.CharField(max_length=11,default='None',)
     # groups = models.ManyToManyField(
     #     PermissionGroup,
     #     verbose_name=_('groups'),

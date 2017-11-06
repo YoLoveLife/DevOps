@@ -17,14 +17,23 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import django.db.backends.mysql
-
+# from __future__ import absolute_import,unicode_literals
 # #环境确认
 # if os.environ['HOSTNAME'] == 'yz-ywpt-01':
 #     ENVIRONMENT = 'DEVEL'
 # else:
 #     ENVIRONMENT = 'TRAVIS'
 ENVIRONMENT='DEVEL'
-print(ENVIRONMENT)
+
+# celery
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = 'django://'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Shanghai'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +48,6 @@ SECRET_KEY = '1x$!#dwp2_6^tdgs1nv8pwgutbc#4m%#qaz!m!0h_f*%6fp+vt'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -206,21 +214,3 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_MIRROR_GROUPS = True
 else:
     pass
-
-
-
-if ENVIRONMENT != 'TRAVIS':
-    #celery
-    import djcelery
-    djcelery.setup_loader()
-    BROKER_URL = 'django://'
-    from django.apps import apps
-    from celery import Celery
-    app = Celery('django_celery')
-    from django.conf import settings
-    app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-    CELERY_ACCEPT_CONTENT = ['json']
-    CELERY_TASK_SERIALIZER = 'json'
-    CELERY_RESULT_SERIALIZER = 'json'
-
-
