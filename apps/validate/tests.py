@@ -10,7 +10,7 @@ class ExtendUserTestCase(TestCase):
 
     def test_getfullname(self):
         user = ExtendUser.objects.get(username='yz2')
-        self.assertEqual(user.get_full_name(),'YuZhou')
+        self.assertEqual(user.get_full_name(),'Zhou')
 
 #view test
 class LoginPageTestCase(LiveServerTestCase):
