@@ -17,7 +17,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import django.db.backends.mysql
-from __future__ import absolute_import,unicode_literals
+# from __future__ import absolute_import,unicode_literals
 # #环境确认
 # if os.environ['HOSTNAME'] == 'yz-ywpt-01':
 #     ENVIRONMENT = 'DEVEL'
@@ -26,8 +26,10 @@ from __future__ import absolute_import,unicode_literals
 ENVIRONMENT='DEVEL'
 
 # celery
-CELERY_BROKER_URL = 'redis://localhost:6379//'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379//'
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = 'django://'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
