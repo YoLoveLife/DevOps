@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>upload</title>
+        <meta http-equiv="description" content="this is my page">
+        <meta http-equiv="content-type" content="text/html; charset=GB18030">
+    </head>
+
+    <body>
+        <form action="/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+            <input type="file" name="vars" />
+            <input type="submit" value="上传" />
+        </form>
+    </body>
+</html>

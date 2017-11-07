@@ -7,6 +7,9 @@ from execute.service.catch.db import DBAnsibleService
 from operation.models import PlayBook
 from manager.models import Host
 from application.models import DBDetail,DB
+
+from yosible.runner import AdHocRunner
+from execute.callback import ResultCallback
 from service.catch.basic import BasicAnsibleService
 class UpdateHostAPI(generics.ListAPIView):
     serializer_class = serializers.UpdateHostSerializer
@@ -16,10 +19,15 @@ class UpdateHostAPI(generics.ListAPIView):
         return Host.objects.filter(id=self.kwargs['pk'])
 
     def get(self, request, *args, **kwargs):
-        host = Host.objects.get(id=self.kwargs['pk'])
-        playbook = PlayBook.objects.get(id = 1)
-        bas = BasicAnsibleService(hostlist=[host])
-        bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
+        # host = Host.objects.get(id=self.kwargs['pk'])
+        # playbook = PlayBook.objects.get(id = 1)
+        # bas = BasicAnsibleService(hostlist=[host])
+        # bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
+        hosts = Host.objects.all()
+        runner = AdHocRunner(hosts=hosts)
+        runner.set_callback(ResultCallback())
+        playbook = PlayBook.objects.all()[0]
+        ret = runner.run(playbook.tasks.all())
         return super(UpdateHostAPI,self).get(request,*args,**kwargs)
 
 class CatchDBStatusAPI(generics.ListAPIView):
