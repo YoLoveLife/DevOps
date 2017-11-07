@@ -20,6 +20,7 @@ class Playbook():
         return self.tasks.pop_tasks()
 
     def pop_playbook(self):
+        print(dict(name=self.name,hosts=self.hosts,gather_facts=self.gather_facts,tasks=self.tasks.pop_tasks()))
         return dict(name=self.name,hosts=self.hosts,gather_facts=self.gather_facts,tasks=self.tasks.pop_tasks())
 
 if __name__ == "__main__":
