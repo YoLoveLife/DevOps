@@ -6,6 +6,7 @@
 from ansible.inventory import Host,Group,Inventory
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
+from utils.aes import decrypt
 class YoHost(Host):
     def __init__(self,host):
         self.host = host
@@ -22,8 +23,7 @@ class YoHost(Host):
         self.set_variable("ansible_become", True)
         self.set_variable("ansible_become_method", 'sudo')
         self.set_variable("ansible_become_user", 'root')
-        self.set_variable("ansible_become_pass", self.host.sshpasswd)
-
+        self.set_variable("ansible_become_pass", decrypt(self.host.sshpasswd))
 
 class YoInventory(Inventory):
     def __init__(self,host_list):
