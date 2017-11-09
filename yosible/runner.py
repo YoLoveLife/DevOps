@@ -7,12 +7,14 @@ from collections import namedtuple
 import ansible.constants as C
 from ansible.vars import VariableManager
 from ansible.parsing.dataloader import DataLoader
-from ansible.executor.playbook_executor import PlaybookExecutor
 from ansible.utils.vars import load_extra_vars
 from ansible.utils.vars import load_options_vars
-from yosible.inventory import YoHost,YoInventory
+from yosible.inventory import YoInventory
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
+import time
+import os
+FILENAME = r"/tmp/%s%s"
 
 class AdHocRunner(object):
     Options = namedtuple("Options", [
@@ -56,6 +58,7 @@ class AdHocRunner(object):
         )
         self.variable_manager.extra_vars = load_extra_vars(self.loader,
                                                            options=self.options)
+        print(self.variable_manager.extra_vars)
         self.variable_manager.options_vars = load_options_vars(self.options)
         self.passwords = passwords or {}
         self.inventory = YoInventory(hosts)
@@ -64,6 +67,8 @@ class AdHocRunner(object):
         self.play_source = None
         self.play = None
         self.runner = None
+        self.timestamp = str(time.time())
+        self.filename=FILENAME%(self.timestamp,'')
 
     def set_callback(self,callback):
         self.results_callback=callback
@@ -76,11 +81,11 @@ class AdHocRunner(object):
             return False
         return True
 
-    def run(self, task_tuple, pattern='all', task_name='Ansible Ad-hoc'):
+    def run(self, task_tuple, pattern='all'):
         """
         :param task_tuple:  (('shell', 'ls'), ('ping', ''))
         :param pattern:
-        :param task_name:
+        :param timestamp:
         :return:
         """
         for task in task_tuple:
@@ -94,7 +99,7 @@ class AdHocRunner(object):
             )
 
         self.play_source = dict(
-            name=task_name,
+            name=self.timestamp,
             hosts=pattern,
             gather_facts=self.gather_facts,
             tasks=self.tasks
@@ -148,3 +153,6 @@ class AdHocRunner(object):
                 msg.get('msg', '')) for msg in msgs])
             result['failed'].append((host, msg))
         return result
+
+#
+# class PlayBookRunner(object):

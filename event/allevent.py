@@ -3,14 +3,14 @@
 # Time 08 11:35
 # Author Yo
 # Email YoLoveLife@outlook.com
-from executor.base import basepb
-from executor.mysql import mysqlpb
-from executor.java import javapb
-from executor.nginx import nginxpb
-from executor.tomcat import tomcatpb
-from executor.redis import redispb
-from executor.base import shellpb
-from executor.dispatch import dispatchpb
+from _executor.base import basepb
+from _executor.mysql import mysqlpb
+from _executor.java import javapb
+from _executor.nginx import nginxpb
+from _executor.tomcat import tomcatpb
+from _executor.redis import redispb
+from _executor.base import shellpb
+from _executor.dispatch import dispatchpb
 '''
     info:基础配置 包含gcc make libio libselinux except
 '''
