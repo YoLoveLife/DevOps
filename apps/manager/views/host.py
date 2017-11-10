@@ -123,3 +123,16 @@ class ManagerHostDetailView(LoginRequiredMixin,DetailView):
             'softlibs':softlibs,
         })
         return context
+
+# class ManagerHostUploadView(LoginRequiredMixin,FormView):
+#
+#     template_name = 'manager/upload.html'
+#     form_class =
+#     success_url = reverse_lazy('manager:host')
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         return super(ManagerHostUploadView,self).dispatch(request,*args,**kwargs)
+#
+#     def form_valid(self, form):
+#         form.instance.creator = self.request.user
+#         return super(ManagerHostUploadView, self).form_valid(form)

@@ -52,3 +52,6 @@ class StorageCreateUpdateForm(forms.ModelForm):
         labels = {
             'disk_size':'存储大小','disk_path':'存储路径','info':'信息'
         }
+
+# class FileUploadForm(forms.BaseForm):
+#     file =
