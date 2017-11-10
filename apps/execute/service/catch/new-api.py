@@ -4,10 +4,12 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 
-from yosible.runner import AdHocRunner
-from manager.models import Host
 from execute.callback import ResultCallback
+from manager.models import Host
 from operation.models import PlayBook
+
+from apps.execute.ansible.runner import AdHocRunner
+
 __metaclass__ = type
 
 def test_task():
