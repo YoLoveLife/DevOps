@@ -682,7 +682,7 @@ $.Widget.prototype = {
 		// so we need to reset the target on the new event
 		event.target = this.element[ 0 ];
 
-		// Copy original event properties over to the new event
+		// Copy original event properties over to the new _event
 		orig = event.originalEvent;
 		if ( orig ) {
 			for ( prop in orig ) {
@@ -7217,7 +7217,7 @@ function datepicker_getZindex( elem ) {
 
 function Datepicker() {
 	this._curInst = null; // The current instance in use
-	this._keyEvent = false; // If the last event was a key event
+	this._keyEvent = false; // If the last event was a key _event
 	this._disabledInputs = []; // List of date picker inputs that have been disabled
 	this._datepickerShowing = false; // True if the popup picker is showing , false if not
 	this._inDialog = false; // True if showing within a "dialog", false if not

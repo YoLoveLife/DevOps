@@ -5210,7 +5210,7 @@ var Grid = FC.Grid = ChronoComponent.extend({
 	},
 
 
-	// Given an event's span (unzoned start/end and other misc data), and the event itself,
+	// Given an event's span (unzoned start/end and other misc data), and the _event itself,
 	// slices into segments and attaches event-derived properties to them.
 	// eventSpan - { start, end, isStart, isEnd, otherthings... }
 	// constraintRange allow additional clipping. optional. eventually remove this.
@@ -5602,7 +5602,7 @@ Grid.mixin({
 
 	// Compute the text that should be displayed on an event's element.
 	// `range` can be the Event object itself, or something range-like, with at least a `start`.
-	// If event times are disabled, or the event has no time, will return a blank string.
+	// If event times are disabled, or the _event has no time, will return a blank string.
 	// If not specified, formatStr will default to the eventTimeFormat setting,
 	// and displayEnd will default to the displayEventEnd setting.
 	getEventTimeText: function(eventFootprint, formatStr, displayEnd) {
@@ -5803,7 +5803,7 @@ Grid.mixin({
 	},
 
 
-	// Attaches event-element-related handlers for *all* rendered event segments of the view.
+	// Attaches event-element-related handlers for *all* rendered _event segments of the view.
 	bindSegHandlers: function() {
 		this.bindSegHandlersToEl(this.el);
 	},
@@ -6514,7 +6514,7 @@ Grid.mixin({
 	listenToExternalDrag: function(el, ev, ui) {
 		var _this = this;
 		var view = this.view;
-		var meta = getDraggedElMeta(el); // extra data about event drop, including possible event to create
+		var meta = getDraggedElMeta(el); // extra data about event drop, including possible _event to create
 		var singleEventDef; // a null value signals an unsuccessful drag
 
 		// listener that tracks mouse movement over date-associated pixel regions
@@ -6662,7 +6662,7 @@ Grid.mixin({
 ----------------------------------------------------------------------------------------------------------------------*/
 
 // Require all HTML5 data-* attributes used by FullCalendar to have this prefix.
-// A value of '' will query attributes like data-event. A value of 'fc' will query attributes like data-fc-event.
+// A value of '' will query attributes like data-event. A value of 'fc' will query attributes like data-fc-_event.
 FC.dataAttrPrefix = '';
 
 // Given a jQuery element that might represent a dragged FullCalendar event, returns an intermediate data structure
@@ -7842,7 +7842,7 @@ DayGrid.mixin({
 		var timeText;
 		var titleHtml;
 
-		classes.unshift('fc-day-grid-event', 'fc-h-event');
+		classes.unshift('fc-day-grid-event', 'fc-h-_event');
 
 		// Only display a timed events time if it is the starting segment
 		if (seg.isStart) {
@@ -8829,7 +8829,7 @@ var TimeGrid = FC.TimeGrid = Grid.extend(DayTableMixin, {
 	renderDrag: function(eventFootprints, seg) {
 		var i;
 
-		if (seg) { // if there is event information for this drag, render a helper event
+		if (seg) { // if there is event information for this drag, render a helper _event
 
 			// returns mock event elements
 			// signal that a helper has been rendered
@@ -9255,7 +9255,7 @@ TimeGrid.mixin({
 		var fullTimeText; // more verbose time text. for the print stylesheet
 		var startTimeText; // just the start time text
 
-		classes.unshift('fc-time-grid-event', 'fc-v-event');
+		classes.unshift('fc-time-grid-event', 'fc-v-_event');
 
 		// if the event appears to span more than one day...
 		if (view.isMultiDayRange(componentFootprint.unzonedRange)) {
@@ -10318,7 +10318,7 @@ var View = FC.View = ChronoComponent.extend({
 	// TODO: move this to ChronoComponent
 
 
-	// Hides all rendered event segments linked to the given event
+	// Hides all rendered event segments linked to the given _event
 	showEventsWithId: function(eventDefId) {
 		this.getEventSegs().forEach(function(seg) {
 			if (
@@ -10331,7 +10331,7 @@ var View = FC.View = ChronoComponent.extend({
 	},
 
 
-	// Shows all rendered event segments linked to the given event
+	// Shows all rendered event segments linked to the given _event
 	hideEventsWithId: function(eventDefId) {
 		this.getEventSegs().forEach(function(seg) {
 			if (

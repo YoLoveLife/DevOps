@@ -17,7 +17,7 @@ from apps.execute.ansible.inventory import YoInventory
 import os,glob
 from operation.models import Script
 FILENAME = r"/tmp/%s%s"
-
+__all__ = ['YoRunner']
 class YoRunner(object):
     Options = namedtuple("Options", [
         'connection', 'module_path', 'private_key_file', "remote_user",

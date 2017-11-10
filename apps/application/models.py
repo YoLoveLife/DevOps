@@ -6,6 +6,8 @@ from softlib.models import Softlib
 from django.db import models
 # Create your models here.
 #
+__all__=['DB','DBDetail','DBUser']
+
 class DB(models.Model):
     IS_SLAVE=(
         (0,u'否'),

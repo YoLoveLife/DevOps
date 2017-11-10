@@ -477,7 +477,7 @@ temporary rendered events).
 
 /* DayGrid events
 ----------------------------------------------------------------------------------------------------
-We use the full "fc-day-grid-event" class instead of using descendants because the event won't
+We use the full "fc-day-grid-event" class instead of using descendants because the _event won't
 be a descendant of the grid when it is being dragged.
 */
 
@@ -874,7 +874,7 @@ a.fc-more:hover {
 
 /* TimeGrid Event Styling
 ----------------------------------------------------------------------------------------------------
-We use the full "fc-time-grid-event" class instead of using descendants because the event won't
+We use the full "fc-time-grid-event" class instead of using descendants because the _event won't
 be a descendant of the grid when it is being dragged.
 */
 

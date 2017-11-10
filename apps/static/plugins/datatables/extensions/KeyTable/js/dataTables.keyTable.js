@@ -320,8 +320,8 @@ KeyTable = function ( oInit )
 	 * Purpose:  Add an event to the internal cache
 	 * Returns:  -
 	 * Inputs:   string:sType - type of event to add, given by the available elements in _oaoEvents
-	 *           int:x - x-coords to add event to - can be null for "blanket" event
-	 *           int:y - y-coords to add event to - can be null for "blanket" event
+	 *           int:x - x-coords to add event to - can be null for "blanket" _event
+	 *           int:y - y-coords to add event to - can be null for "blanket" _event
 	 *           function:fn - callback function for when triggered
 	 */
 	function _fnEventAdd( sType, x, y, fn )
@@ -336,7 +336,7 @@ KeyTable = function ( oInit )
 
 	/*
 	 * Function: _fnEventRemove
-	 * Purpose:  Remove an event from the event cache
+	 * Purpose:  Remove an event from the _event cache
 	 * Returns:  int: - number of matching events removed
 	 * Inputs:   string:sType - type of event to look for
 	 *           node:nTarget - target table cell
@@ -614,7 +614,7 @@ KeyTable = function ( oInit )
 	 * Function: _fnClick
 	 * Purpose:  Focus on the element that has been clicked on by the user
 	 * Returns:  -
-	 * Inputs:   event:e - click event
+	 * Inputs:   event:e - click _event
 	 */
 	function _fnClick ( e )
 	{
@@ -638,7 +638,7 @@ KeyTable = function ( oInit )
 	 * Function: _fnKey
 	 * Purpose:  Deal with a key events, be it moving the focus or return etc.
 	 * Returns:  bool: - allow browser default action
-	 * Inputs:   event:e - key event
+	 * Inputs:   event:e - key _event
 	 */
 	function _fnKey ( e )
 	{

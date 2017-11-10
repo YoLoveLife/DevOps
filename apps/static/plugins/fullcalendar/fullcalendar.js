@@ -3489,7 +3489,7 @@ Grid.mixin({
 	},
 
 
-	// Given the cell an event drag began, and the cell event was dropped, calculates the new start/end/allDay
+	// Given the cell an event drag began, and the cell _event was dropped, calculates the new start/end/allDay
 	// values for the event. Subclasses may override and set additional properties to be used by renderDrag.
 	// A falsy returned value indicates an invalid drop.
 	computeEventDrop: function(startCell, endCell, event) {
@@ -3560,7 +3560,7 @@ Grid.mixin({
 	// Called when a jQuery UI drag starts and it needs to be monitored for cell dropping
 	startExternalDrag: function(el, ev, ui) {
 		var _this = this;
-		var meta = getDraggedElMeta(el); // extra data about event drop, including possible event to create
+		var meta = getDraggedElMeta(el); // extra data about event drop, including possible _event to create
 		var dragListener;
 		var dropLocation; // a null value signals an unsuccessful drag
 
@@ -3813,7 +3813,7 @@ Grid.mixin({
 	------------------------------------------------------------------------------------------------------------------*/
 
 
-	// Converts an array of event objects into an array of event segment objects.
+	// Converts an array of event objects into an array of _event segment objects.
 	// A custom `rangeToSegsFunc` may be given for arbitrarily slicing up events.
 	eventsToSegs: function(events, rangeToSegsFunc) {
 		var eventRanges = this.eventsToRanges(events);
@@ -4007,7 +4007,7 @@ fc.compareSegs = compareSegs; // export
 ----------------------------------------------------------------------------------------------------------------------*/
 
 // Require all HTML5 data-* attributes used by FullCalendar to have this prefix.
-// A value of '' will query attributes like data-event. A value of 'fc' will query attributes like data-fc-event.
+// A value of '' will query attributes like data-event. A value of 'fc' will query attributes like data-fc-_event.
 fc.dataAttrPrefix = '';
 
 // Given a jQuery element that might represent a dragged FullCalendar event, returns an intermediate data structure
@@ -5521,7 +5521,7 @@ var TimeGrid = Grid.extend({
 	renderDrag: function(dropLocation, seg) {
 		var opacity;
 
-		if (seg) { // if there is event information for this drag, render a helper event
+		if (seg) { // if there is event information for this drag, render a helper _event
 			this.renderRangeHelper(dropLocation, seg);
 
 			opacity = this.view.opt('dragOpacity');
@@ -5693,7 +5693,7 @@ var TimeGrid = Grid.extend({
 
 TimeGrid.mixin({
 
-	eventSkeletonEl: null, // has cells with event-containers, which contain absolutely positioned event elements
+	eventSkeletonEl: null, // has cells with event-containers, which contain absolutely positioned _event elements
 
 
 	// Renders the given foreground event segments onto the grid
@@ -6499,7 +6499,7 @@ var View = fc.View = Class.extend({
 	},
 
 
-	// Hides all rendered event segments linked to the given event
+	// Hides all rendered event segments linked to the given _event
 	showEvent: function(event) {
 		this.eventSegEach(function(seg) {
 			seg.el.css('visibility', '');
@@ -6507,7 +6507,7 @@ var View = fc.View = Class.extend({
 	},
 
 
-	// Shows all rendered event segments linked to the given event
+	// Shows all rendered event segments linked to the given _event
 	hideEvent: function(event) {
 		this.eventSegEach(function(seg) {
 			seg.el.css('visibility', 'hidden');
@@ -6516,7 +6516,7 @@ var View = fc.View = Class.extend({
 
 
 	// Iterates through event segments. Goes through all by default.
-	// If the optional `event` argument is specified, only iterates through segments linked to that event.
+	// If the optional `event` argument is specified, only iterates through segments linked to that _event.
 	// The `this` value of the callback function will be the view.
 	eventSegEach: function(func, event) {
 		var segs = this.getEventSegs();
@@ -8309,7 +8309,7 @@ function EventManager(options) { // assumed to be a calendar
 
 
 	// Given a raw object with key/value properties, returns an "abstract" Event object.
-	// An "abstract" event is an event that, if recurring, will not have been expanded yet.
+	// An "abstract" event is an _event that, if recurring, will not have been expanded yet.
 	// Will return `false` when input is invalid.
 	// `source` is optional
 	function buildEventFromInput(input, source) {
@@ -8469,8 +8469,8 @@ function EventManager(options) { // assumed to be a calendar
 	}
 
 
-	// If the given event is a recurring event, break it down into an array of individual instances.
-	// If not a recurring event, return an array with the single original event.
+	// If the given event is a recurring _event, break it down into an array of individual instances.
+	// If not a recurring event, return an array with the single original _event.
 	// If given a falsy input (probably because of a failed buildEventFromInput call), returns an empty array.
 	// HACK: can override the recurring window by providing custom rangeStart/rangeEnd (for businessHours).
 	function expandEvent(abstractEvent, _rangeStart, _rangeEnd) {
@@ -8867,7 +8867,7 @@ function EventManager(options) { // assumed to be a calendar
 					return false;
 				}
 
-				// if we are computing if the given range is allowable for an event, consider the other event's
+				// if we are computing if the given range is allowable for an event, consider the other _event's
 				// EventObject-specific or Source-specific `overlap` property
 				if (event) {
 					otherOverlap = firstDefined(
@@ -8889,7 +8889,7 @@ function EventManager(options) { // assumed to be a calendar
 	}
 
 
-	// Given an event input from the API, produces an array of event objects. Possible event inputs:
+	// Given an event input from the API, produces an array of _event objects. Possible _event inputs:
 	// 'businessHours'
 	// An event ID (number or string)
 	// An object with specific start/end dates or a recurring event (like what businessHours accepts)

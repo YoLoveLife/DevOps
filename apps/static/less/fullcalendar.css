@@ -565,7 +565,7 @@ temporary rendered events).
 
 /* DayGrid events
 ----------------------------------------------------------------------------------------------------
-We use the full "fc-day-grid-event" class instead of using descendants because the event won't
+We use the full "fc-day-grid-event" class instead of using descendants because the _event won't
 be a descendant of the grid when it is being dragged.
 */
 
@@ -1252,7 +1252,7 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* TimeGrid Event Styling
 ----------------------------------------------------------------------------------------------------
-We use the full "fc-time-grid-event" class instead of using descendants because the event won't
+We use the full "fc-time-grid-event" class instead of using descendants because the _event won't
 be a descendant of the grid when it is being dragged.
 */
 

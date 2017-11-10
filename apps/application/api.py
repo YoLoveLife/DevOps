@@ -3,7 +3,7 @@ import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
-
+__all__ = ['DBListAPI','DBAuthAPI','DBAuthCreateAPI','DBAuthRemoveAPI','DBRemoveAPI']
 class DBListAPI(generics.ListAPIView):
     serializer_class = serializers.DBSerializer
     permission_classes = [IsAuthenticated]
