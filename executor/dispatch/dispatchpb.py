@@ -8,7 +8,7 @@ from modules.persontask import PersonTask
 from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
 import time,os
-from executor.dispatch import REDIS_CONF,MYSQL_CONF,NGINX_CONF,TOMCAT_CONF
+from _executor.dispatch import REDIS_CONF,MYSQL_CONF,NGINX_CONF,TOMCAT_CONF
 FILENAME=r'/tmp/%s'
 BACK_NAME='\'%s.*.[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\@[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\~\''
 def dispatch_getcnf(cnffile):

@@ -33,6 +33,8 @@
         <option value="$MODULE_DIR$/apps/authority/templates/authority" />
         <option value="$MODULE_DIR$/apps/application/templates/application" />
         <option value="$MODULE_DIR$/apps/application/templates/batch" />
+        <option value="$MODULE_DIR$/apps/operation/templates/operation/module" />
+        <option value="$MODULE_DIR$/apps/application/templates/application/db" />
       </list>
     </option>
   </component>
