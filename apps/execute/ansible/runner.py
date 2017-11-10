@@ -3,20 +3,22 @@
 # Time 17-11-7
 # Author Yo
 # Email YoLoveLife@outlook.com
+import time
 from collections import namedtuple
+
 import ansible.constants as C
-from ansible.vars import VariableManager
+from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.parsing.dataloader import DataLoader
+from ansible.playbook.play import Play
 from ansible.utils.vars import load_extra_vars
 from ansible.utils.vars import load_options_vars
-from yosible.inventory import YoInventory
-from ansible.playbook.play import Play
-from ansible.executor.task_queue_manager import TaskQueueManager
-import time
-import os
+from ansible.vars import VariableManager
+from apps.execute.ansible.inventory import YoInventory
+import os,glob
+from operation.models import Script
 FILENAME = r"/tmp/%s%s"
 
-class AdHocRunner(object):
+class YoRunner(object):
     Options = namedtuple("Options", [
         'connection', 'module_path', 'private_key_file', "remote_user",
         'timeout', 'forks', 'become', 'become_method', 'become_user',
@@ -56,9 +58,9 @@ class AdHocRunner(object):
             extra_vars=extra_vars or [],
             private_key_file=private_key_file,
         )
-        self.variable_manager.extra_vars = load_extra_vars(self.loader,
-                                                           options=self.options)
-        print(self.variable_manager.extra_vars)
+        # self.variable_manager.extra_vars = load_extra_vars(self.loader,
+        #                                                    options=self.options)
+        self.variable_manager.extra_vars = extra_vars
         self.variable_manager.options_vars = load_options_vars(self.options)
         self.passwords = passwords or {}
         self.inventory = YoInventory(hosts)
@@ -68,7 +70,8 @@ class AdHocRunner(object):
         self.play = None
         self.runner = None
         self.timestamp = str(time.time())
-        self.filename=FILENAME%(self.timestamp,'')
+        self.filename = FILENAME%(self.timestamp,'')
+        self.have_script = 0
 
     def set_callback(self,callback):
         self.results_callback=callback
@@ -81,26 +84,39 @@ class AdHocRunner(object):
             return False
         return True
 
-    def run(self, task_tuple, pattern='all'):
+    def task_add(self,task_tuple):
+        for task in task_tuple:
+            if not self.check_module_args(task.module,task.args):
+                return
+            if task.module == u'script':
+                self.have_script = 1
+                script = Script.objects.filter(id=task.args)
+                if os.path.exists(self.filename):
+                    os.remove(self.filename)
+                script_name = FILENAME % (self.timestamp, '-' + str(script.get().id))
+                output = open(script_name, 'w')
+                output.writelines(script.get().formatScript())
+                output.close()
+
+            self.tasks.append(
+                dict(action=dict(
+                    module=task.module,
+                    args=script_name,
+                ))
+            )
+
+    def run(self, task_tuple,):# pattern='all'):
         """
         :param task_tuple:  (('shell', 'ls'), ('ping', ''))
         :param pattern:
         :param timestamp:
         :return:
         """
-        for task in task_tuple:
-            if not self.check_module_args(task.module,task.args):
-                return
-            self.tasks.append(
-                dict(action=dict(
-                    module=task.module,
-                    args=task.args,
-                ))
-            )
+        self.task_add(task_tuple)
 
         self.play_source = dict(
             name=self.timestamp,
-            hosts=pattern,
+            hosts='all',
             gather_facts=self.gather_facts,
             tasks=self.tasks
         )
@@ -134,25 +150,32 @@ class AdHocRunner(object):
                 self.runner.cleanup()
             if self.loader:
                 self.loader.cleanup_all_tmp_files()
+            if self.have_script:
+                self.cleanup_script()
 
-    def clean_result(self):
-        """
-        :return: {
-            "success": ['hostname',],
-            "failed": [('hostname', 'msg'), {}],
-        }
-        """
-        result = {'success': [], 'failed': []}
-        for host in self.results_callback.result_q['contacted']:
-            result['success'].append(host)
-
-        for host, msgs in self.results_callback.result_q['dark'].items():
-            msg = '\n'.join(['{} {}: {}'.format(
-                msg.get('module_stdout', ''),
-                msg.get('invocation', {}).get('module_name'),
-                msg.get('msg', '')) for msg in msgs])
-            result['failed'].append((host, msg))
-        return result
-
-#
-# class PlayBookRunner(object):
+    def cleanup_script(self):
+        # if os.path.exists(self.filename):
+        #     os.remove(self.filename)
+        # return self.filename
+        for name in glob.glob(self.filename+'*'):
+            if os.path.exists(name):
+                print(name)
+                os.remove(name)
+    # def clean_result(self):
+    #     """
+    #     :return: {
+    #         "success": ['hostname',],
+    #         "failed": [('hostname', 'msg'), {}],
+    #     }
+    #     """
+    #     result = {'success': [], 'failed': []}
+    #     for host in self.results_callback.result_q['contacted']:
+    #         result['success'].append(host)
+    #
+    #     for host, msgs in self.results_callback.result_q['dark'].items():
+    #         msg = '\n'.join(['{} {}: {}'.format(
+    #             msg.get('module_stdout', ''),
+    #             msg.get('invocation', {}).get('module_name'),
+    #             msg.get('msg', '')) for msg in msgs])
+    #         result['failed'].append((host, msg))
+    #     return result

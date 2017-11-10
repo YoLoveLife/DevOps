@@ -1,16 +1,15 @@
 # -*- coding:utf-8 -*-
-import models,serializers
+from application.models import DB
+from execute.callback import ResultCallback
+# from execute.service.catch.db import DBAnsibleService
+from manager.models import Host
+from operation.models import PlayBook
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from execute.service.catch.basic import BasicAnsibleService
-from execute.service.catch.db import DBAnsibleService
-from operation.models import PlayBook
-from manager.models import Host
-from application.models import DBDetail,DB
 
-from yosible.runner import AdHocRunner
-from execute.callback import ResultCallback
-from service.catch.basic import BasicAnsibleService
+import serializers
+from execute.ansible.runner import YoRunner
+
 class UpdateHostAPI(generics.ListAPIView):
     serializer_class = serializers.UpdateHostSerializer
     permission_classes = [IsAuthenticated]
@@ -24,7 +23,7 @@ class UpdateHostAPI(generics.ListAPIView):
         # bas = BasicAnsibleService(hostlist=[host])
         # bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
         hosts = Host.objects.all()
-        runner = AdHocRunner(hosts=hosts)
+        runner = YoRunner(hosts=hosts,extra_vars={'ddr':'ls','zzc':'hostname'})
         runner.set_callback(ResultCallback())
         playbook = PlayBook.objects.all()[0]
         ret = runner.run(playbook.tasks.all())
