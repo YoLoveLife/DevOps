@@ -427,7 +427,7 @@
 				// If the target element is a child of a scrollable layer (using -webkit-overflow-scrolling: touch) and:
 				// 1) the user does a fling scroll on the scrollable layer
 				// 2) the user stops the fling scroll with another tap
-				// then the event.target of the last 'touchend' event will be the element that was under the user's finger
+				// then the event.target of the last 'touchend' _event will be the element that was under the user's finger
 				// when the fling scroll was started, causing FastClick to send a click event to that layer - unless a check
 				// is made to ensure that a parent layer was not scrolled before sending a synthetic click (issue #42).
 				this.updateScrollParent(targetElement);
@@ -629,7 +629,7 @@
 	 */
 	FastClick.prototype.onMouse = function(event) {
 
-		// If a target element was never set (because a touch event was never fired) allow the event
+		// If a target element was never set (because a touch event was never fired) allow the _event
 		if (!this.targetElement) {
 			return true;
 		}

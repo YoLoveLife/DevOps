@@ -315,7 +315,7 @@ ZeroClipboard_TableTools.Client.prototype = {
 	},
 
 	addEventListener: function(eventName, func) {
-		// add user event listener for event
+		// add user event listener for _event
 		// event types: load, queueStart, fileStart, fileComplete, queueComplete, progress, error, cancel
 		eventName = eventName.toString().toLowerCase().replace(/^on/, '');
 		if (!this.handlers[eventName]) {

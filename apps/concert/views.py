@@ -6,7 +6,7 @@ from permission import music as MusicPermisson
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 # Create your views here.
-
+__all__ = ['ConcertMusicListView']
 class ConcertMusicListView(LoginRequiredMixin,TemplateView):
     template_name='concert/music.html'
 

@@ -10,6 +10,7 @@ from ..permission import db as DBPermission
 from django.urls import reverse_lazy
 from utils import aes
 # Create your views here.
+__all__ = ['ApplicationDBCreateView','ApplicationDBListView','ApplicationDBAuthView','ApplicationDBDetailView','ApplicationDBUpdateView']
 class ApplicationDBListView(LoginRequiredMixin,TemplateView):
     template_name= 'application/db/db.html'
 
