@@ -17,7 +17,7 @@ from apps.execute.ansible.inventory import YoInventory
 import os,glob
 from operation.models import Script
 FILENAME = r"/tmp/%s%s"
-__all__ = ['YoRunner']
+#__all__ = ['YoRunner']
 class YoRunner(object):
     Options = namedtuple("Options", [
         'connection', 'module_path', 'private_key_file', "remote_user",
@@ -97,13 +97,21 @@ class YoRunner(object):
                 output = open(script_name, 'w')
                 output.writelines(script.get().formatScript())
                 output.close()
+            if self.have_script == 1:
+                self.tasks.append(
+                    dict(action=dict(
+                        module=task.module,
+                        args=script_name,
+                    ))
+                )
+            else:
+                self.tasks.append(
+                    dict(action=dict(
+                        module=task.module,
+                        args=task.args,
+                    ))
+                )
 
-            self.tasks.append(
-                dict(action=dict(
-                    module=task.module,
-                    args=script_name,
-                ))
-            )
 
     def run(self, task_tuple,):# pattern='all'):
         """

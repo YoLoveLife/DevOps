@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
-__all__ = ['MusicAddRequiredMixin','MusicChangeRequiredMixin','MusicDeleteRequiredMixin']
+#__all__ = ['MusicAddRequiredMixin','MusicChangeRequiredMixin','MusicDeleteRequiredMixin']
 class MusicRequiredMixin(AccessMixin):
     redirect_url= "/permission"
     permission_required = u'concert.all'

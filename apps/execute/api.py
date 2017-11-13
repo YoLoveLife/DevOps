@@ -1,14 +1,12 @@
 # -*- coding:utf-8 -*-
 from application.models import DB
-from execute.callback import ResultCallback
-# from execute.service.catch.db import DBAnsibleService
 from manager.models import Host
 from operation.models import PlayBook
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-
+from execute.service.base import PingOnlineService
 import serializers
-from execute.ansible.runner import YoRunner
+
 
 class UpdateHostAPI(generics.ListAPIView):
     serializer_class = serializers.UpdateHostSerializer
@@ -22,11 +20,7 @@ class UpdateHostAPI(generics.ListAPIView):
         # playbook = PlayBook.objects.get(id = 1)
         # bas = BasicAnsibleService(hostlist=[host])
         # bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
-        hosts = Host.objects.all()
-        runner = YoRunner(hosts=hosts,extra_vars={'ddr':'ls','zzc':'hostname'})
-        runner.set_callback(ResultCallback())
-        playbook = PlayBook.objects.all()[0]
-        ret = runner.run(playbook.tasks.all())
+        PingOnlineService()
         return super(UpdateHostAPI,self).get(request,*args,**kwargs)
 
 class CatchDBStatusAPI(generics.ListAPIView):
