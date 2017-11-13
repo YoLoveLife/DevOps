@@ -6,7 +6,7 @@
 from django import forms
 import models
 from django.utils.translation import gettext_lazy as _
-__all__ = ['DBCreateUpdateForm']
+#__all__ = ['DBCreateUpdateForm']
 class DBCreateUpdateForm(forms.ModelForm):
     service_ip = forms.CharField(required=True,max_length=13,label='业务IP')
     class Meta:

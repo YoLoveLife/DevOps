@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
-__all__ = ['DBChangeRequiredMixin','DBAddRequiredMixin','DBAuthRequiredMixin','DBDeleteRequiredMixin']
 class DBRequiredMixin(AccessMixin):
     redirect_url= "/permission"
     permission_required = u'application.all'

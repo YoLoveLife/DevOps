@@ -6,9 +6,10 @@
 
 from __future__ import absolute_import,unicode_literals
 import os
-from celery import Celery
+from celery import Celery,platforms
+from execute.service import base as BaseTask
 os.environ.setdefault('DJANGO_SETTINGS_MODULE','deveops.settings')
-
+platforms.C_FORCE_ROOT = True
 app = Celery('deveops')
 app.config_from_object('django.conf:settings')
 from django.conf import settings
@@ -18,13 +19,9 @@ from celery.schedules import crontab
 from celery.task import periodic_task
 
 @periodic_task(
-    run_every=(crontab(minute='*/2')),
-    name="ddr",
+    run_every=(crontab(minute='*',hour='*')),
+    name="PingOnlineTask",
     ignore_result=True
 )
-def ddr():
-    from manager.models import Host
-    import time
-    host = Host.objects.all()[0]
-    host.info = str(time.time())
-    host.save()
+def PingOnlineTask():
+    BaseTask.PingOnlineService()

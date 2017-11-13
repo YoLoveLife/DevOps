@@ -3,12 +3,15 @@
 # Time 07 14:41
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
 from scripts import SCRIPTS_DIR
 from template import TEMPLATEDIR
+
+from apps.utils import FTP
+
+
 def nginx_installplaybook(version='1.10.1',prefix='/usr/local',checksum='088292d9caf6059ef328aa7dda332e44'):
     _ext_vars = {
         'version': version,

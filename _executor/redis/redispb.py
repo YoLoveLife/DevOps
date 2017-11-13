@@ -2,12 +2,15 @@
 # !/usr/bin/env python
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
 from scripts import SCRIPTS_DIR
 from template import TEMPLATEDIR
+
+from apps.utils import FTP
+
+
 def redis_installplaybook(version='3.2.4',prefix='/usr/local',checksum='2f8b49e8004fbbfc807ca7f5faeabec8',datadir='{{prefix}}/redis/data'):
     _ext_vars = {
         'version':version,

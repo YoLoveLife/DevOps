@@ -2,12 +2,13 @@
 # !/usr/bin/python2.6
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
-from scripts import SCRIPTS_DIR
-from template import TEMPLATEDIR
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
+
+from apps.utils import FTP
+
+
 def base_personplaybook():
     _ext_vars={'yum_repo':'/etc/yum.repos.d',
                'md5sum':'ccd96d70ecfe3b1655c98d8dabd8dcb5',

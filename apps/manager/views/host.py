@@ -1,14 +1,16 @@
 # -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
+from timeline.models import History
+
 from .. import forms
 from .. import models
-from timeline.models import History
 from ..permission import host as HostPermission
-from django.urls import reverse_lazy
-from django.views.generic import FormView,TemplateView
-from django.views.generic.edit import CreateView,UpdateView
-from django.views.generic.detail import DetailView
 from utils import aes
+
 class ManagerHostListView(LoginRequiredMixin,TemplateView):
     template_name='manager/host.html'
 

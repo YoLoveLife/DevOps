@@ -2,12 +2,15 @@
 # !/usr/bin/env python
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
 from scripts import SCRIPTS_DIR
 from template import TEMPLATEDIR
+
+from apps.utils import FTP
+
+
 def mysql_installplaybook(version='10.1.12',prefix='/usr/local',checksum='30a86202c8fe30ad3548988a7ddbf5a3',datadir='/usr/local/mysql/data'):
     _ext_vars = {
         'version': version,

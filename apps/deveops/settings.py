@@ -17,12 +17,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import django.db.backends.mysql
-# from __future__ import absolute_import,unicode_literals
-# #环境确认
-# if os.environ['HOSTNAME'] == 'yz-ywpt-01':
-#     ENVIRONMENT = 'DEVEL'
-# else:
-#     ENVIRONMENT = 'TRAVIS'
 ENVIRONMENT='DEVEL'
 
 # celery
@@ -114,18 +108,6 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-# if 'BUILD_ON_TRAVIS' in os.environ:
-#     DATABASES={
-#         'default':{
-#             'ENGINE':'django.db.backends.mysql',
-#             'NAME':'deveops_testdb',
-#             'USER':'root',
-#             'PASSWORD':'',
-#             'HOST':'127.0.0.1',
-#             'PORT':'3306',
-#         },
-#     }
-# else:
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
@@ -181,15 +163,18 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+#LOGIN
 LOGIN_URL='/validate/login'
 AUTH_USER_MODEL='validate.ExtendUser'
 
+#SESSION
 SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SESSION_COOKIE_AGE=15*60
 
+
+# LDAP
 if ENVIRONMENT != 'TRAVIS':
-    #LDAP
     from django_auth_ldap.config import LDAPSearch,GroupOfNamesType
     import ldap
     AUTHENTICATION_BACKENDS = (
@@ -214,3 +199,7 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_MIRROR_GROUPS = True
 else:
     pass
+
+
+#Default devEops Env
+PING_PLAYBOOK_TASK_ID=1

@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from validate.models import ExtendUser
 from manager.models import Host
-from concert.models import Music
+# from concert.models import Music
 from execute.models import Callback
 # Create your models here.
 STATUS = (
@@ -37,7 +37,7 @@ class ConcertHistory(models.Model):
     endtime = models.DateTimeField(auto_now=True,blank=True)#历史结束时间
     info = models.TextField(default='')#信息
     status = models.IntegerField(default=0,choices=STATUS)#状态
-    music = models.ForeignKey(Music,default=1,related_name='concert_his')#使用的音乐
+    # music = models.ForeignKey(Music,default=1,related_name='concert_his')#使用的音乐
     callback = models.ForeignKey(Callback,default=1,related_name='concert_back')#执行日志
     #
     # def get_last_history(self):

@@ -3,12 +3,12 @@
 # Time 01 08:36
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
+import time
+
 from modules.personblock import PersonBlock
-import time,os
-from _executor.dispatch import REDIS_CONF,MYSQL_CONF,NGINX_CONF,TOMCAT_CONF
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
+
 FILENAME=r'/tmp/%s'
 BACK_NAME='\'%s.*.[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\@[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\~\''
 def dispatch_getcnf(cnffile):

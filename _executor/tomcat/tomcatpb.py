@@ -2,12 +2,15 @@
 # !/usr/bin/env python
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
 from scripts import SCRIPTS_DIR
 from template import TEMPLATEDIR
+
+from apps.utils import FTP
+
+
 def tomcat_installplaybook(version='7.0.72',prefix='/usr/local',java_opts='',checksum='c24bfae15bb9c510451a05582aae634d'):
     _ext_vars = {
         'version':version,

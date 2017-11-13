@@ -2,12 +2,14 @@
 # !/usr/bin/env python
 # Author Yo
 # Email YoLoveLife@outlook.com
-from utils import FTP
-from modules.persontask import PersonTask
-from modules.personbook import PersonBook
 from modules.personblock import PersonBlock
+from modules.personbook import PersonBook
+from modules.persontask import PersonTask
 from scripts import SCRIPTS_DIR
-from template import TEMPLATEDIR
+
+from apps.utils import FTP
+
+
 def java_installplaybook(version='7u79',prefix='/usr/local',checksum='9222e097e624800fdd9bfb568169ccad'):
     _ext_vars = {
         'version':version,
