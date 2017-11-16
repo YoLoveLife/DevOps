@@ -19,7 +19,7 @@ travis & django TestCase</br>
 
 *关于我开发中遇到的问题 我会写在issues当中供有需要的朋友 :mag: 查询*</br>
 *这些问题都是在查询了诸多资料并亲身尝试大量解决方案 :grimacing: 最后得出的结论*</br>
-*您可以在issues中搜索question和help wanted查看我写的相关问题*</br>
+*您可以在issues中搜索helper查看我写的相关问题*</br>
 *如果未找到您关注的问题或者您对我的项目有建议请在issues和我讨论 :heart: 期待收到您的信息*</br>
 
 ## Contents

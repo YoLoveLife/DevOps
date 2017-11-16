@@ -14,20 +14,10 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-
+from __future__ import absolute_import
 import os
 import django.db.backends.mysql
 ENVIRONMENT='DEVEL'
-
-# celery
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# BROKER_URL = 'redis://localhost:6379/0'
-BROKER_URL = 'django://'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Shanghai'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +29,7 @@ PROJECT_DIR = os.path.dirname(BASE_DIR)
 SECRET_KEY = '1x$!#dwp2_6^tdgs1nv8pwgutbc#4m%#qaz!m!0h_f*%6fp+vt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -203,3 +193,68 @@ else:
 
 #Default devEops Env
 PING_PLAYBOOK_TASK_ID=1
+
+
+
+# celery
+import djcelery
+djcelery.setup_loader()
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = 'django://'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'django://'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+#DJANGO LOG
+if DEBUG == True:
+    LOGGING_LEVEL = 'DEBUG'
+else:
+    LOGGING_LEVEL = 'WARNING'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+       'standard': {
+           # 'format': '%(levelname)s-%(asctime)s-'
+           'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'  #日志格式
+       }
+    },
+    'filters': {
+    },
+    'handlers': {
+        'default': {
+            'level':LOGGING_LEVEL,
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/django.log',     #日志输出文件
+            'maxBytes': 1024*1024*5,                  #文件大小
+            'backupCount': 5,                         #备份份数
+            'formatter':'standard',                   #使用哪种formatters日志格式
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['default'],
+            'level': LOGGING_LEVEL,
+            'propagate': False
+        }
+    }
+}
+
+#PERSON LOG
+import logging
+import logging.config
+# logging.basicConfig(level=logging.DEBUG,
+#                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+#                     datefmt='%a, %d %b %Y %H:%M:%S',
+#                     filename='logs/myapp.log',
+#                     filemode='w')
+
+logging.config.fileConfig('logging.ini')
+logger = logging.getLogger("deveops.api")
+logging.debug('This is debug message')
+logging.info('This is info message')
+logging.warning('This is warning message')
