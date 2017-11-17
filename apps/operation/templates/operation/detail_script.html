@@ -2,7 +2,6 @@
 {% load static %}
 {% block single-css %}
     <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'less/bootstrap3-wysihtml5.min.css' %}">
 {% endblock %}
 {% load bootstrap3 %}
 {% block content %}
@@ -114,7 +113,7 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'js/../../../static/js_back/bootstrap-table.min.js' %}"></script>
 <script>
     $(document).ready(function () {
         var table=$('#args_tb').bootstrapTable({

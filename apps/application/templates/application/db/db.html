@@ -80,10 +80,10 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/select2.full.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table-export/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'plugins/tableExport/tableExport.min.js' %}"></script>
 <script>
     function authFormatter(value,row,index){
         var label_a='<a class="btn btn-default" href="/application/db/'+value+'/auth/">'+'<i class="fa fa-paperclip"></i>'+'</a>';

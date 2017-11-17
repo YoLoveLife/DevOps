@@ -7,8 +7,7 @@ from django.views.generic.detail import DetailView
 from manager.models import Host
 from timeline.models import History
 from application.permission import db as DBPermission
-
-# from application import aes
+from utils import aes
 from .. import models, forms
 
 

@@ -51,6 +51,17 @@ class DBUser(models.Model):
         self.ip = list[1]
         self.save()
 
+class Redis(models.Model):
+    id=models.AutoField(primary_key=True)
+    host=models.ForeignKey(Host,default=1)
+    prefix=models.CharField(max_length=100,default='/usr/local/redis')
+    redis_passwd=models.CharField(max_length=100,default='000000')
+    port=models.IntegerField(default='6379')
+    pidfile=models.CharField(max_length=100,default='/var/run/redis.pid')
+    softlib=models.ForeignKey(Softlib,default=1,)
+    logfile = models.CharField(max_length=100,default='')
+    online=models.BooleanField(default=False)
+
 #
 #
 # class Java(models.Model):
