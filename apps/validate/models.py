@@ -23,7 +23,7 @@ class ExtendUser(AbstractUser):
     #     related_name="user_set",
     #     related_query_name="user",
     # )
-    def get_9531email(self):
+    def get_8531email(self):
         return self.email.split('@')[0] + '@8531.cn'
 
     def get_full_name(self):

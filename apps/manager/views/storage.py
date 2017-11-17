@@ -7,6 +7,7 @@ from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
+from timeline.decorator.manager import decorator_manager
 
 class ManagerStorageListView(LoginRequiredMixin,TemplateView):
     template_name = 'manager/storage.html'
@@ -20,19 +21,14 @@ class ManagerStorageCreateView(LoginRequiredMixin,StoragePermission.StorageAddRe
     success_url = reverse_lazy('manager:storage')
     model = models.Storage
 
+    @decorator_manager(0,u'新增存储')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="新增存储",status=0)
-        his.save()
-
         host_storage=form.save()
         hosts_id_list=self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_storage.hosts.add(*hosts)
         host_storage.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerStorageCreateView, self).form_valid(form)
+        return self.request.user,super(ManagerStorageCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerStorageCreateView, self).get_context_data(**kwargs)
@@ -51,20 +47,15 @@ class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChang
     success_url = reverse_lazy('manager:storage')
     model = models.Storage
 
+    @decorator_manager(0,u'更新存储')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="新增存储",status=0)
-        his.save()
-
         host_storage=form.save()
         hosts_id_list=self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_storage.hosts.clear()
         host_storage.hosts.add(*hosts)
         host_storage.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerStorageUpdateView,self).form_valid(form)
+        return self.request.user,super(ManagerStorageUpdateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerStorageUpdateView,self).get_context_data(**kwargs)
