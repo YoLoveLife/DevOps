@@ -7,7 +7,7 @@
                     <img class="img-circle" src="{% static "img/" %}{{ request.user.img }}" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>{{ request.user.email }}</p>
+                    <p>{{ request.user.get_8531email }}</p>
                     <a href="#">
                         <i class="fa fa-circle text-success">
                         </i>

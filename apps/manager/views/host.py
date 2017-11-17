@@ -10,6 +10,7 @@ from .. import forms
 from .. import models
 from ..permission import host as HostPermission
 from utils import aes
+from timeline.decorator.manager import decorator_manager
 
 class ManagerHostListView(LoginRequiredMixin,TemplateView):
     template_name='manager/host.html'
@@ -29,10 +30,8 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
     template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
+    @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="新增应用主机",status=0)
-        his.save()
-
         host_storage_group=form.save()
         hosts_id_list=self.request.POST.getlist('groups',[])
         storages_id_list=self.request.POST.getlist('storages',[])
@@ -45,9 +44,8 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
         host_storage_group.sshpasswd = aes.encrypt(host_storage_group.sshpasswd)
         host_storage_group.save()
 
-        his.status=1
-        his.save()
-        return super(ManagerHostCreateView,self).form_valid(form)
+        super(ManagerHostCreateView,self).form_valid(form)
+        return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerHostCreateView,self).get_context_data(**kwargs)
@@ -65,17 +63,14 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
         return self.success_url
 
 
-
 class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
     form_class = forms.HostCreateUpdateForm
     template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
+    @decorator_manager(0,u'修改应用主机')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="修改应用主机",status=0)
-        his.save()
-
         host_storage_group=form.save()
         hosts_id_list=self.request.POST.getlist('groups',[])
         storages_id_list=self.request.POST.getlist('storages',[])
@@ -88,9 +83,7 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
         host_storage_group.sshpasswd = aes.encrypt(host_storage_group.sshpasswd)
         host_storage_group.save()
 
-        his.status=1
-        his.save()
-        return super(ManagerHostUpdateView, self).form_valid(form)
+        return self.request.user,super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
@@ -119,10 +112,12 @@ class ManagerHostDetailView(LoginRequiredMixin,DetailView):
         groups=self.object.groups.all()
         storages=self.object.storages.all()
         softlibs = self.object.application_get()
+        manage_user = self.object.manage_user_get()
         context.update({
             'groups':groups,
             'storages':storages,
             'softlibs':softlibs,
+            'manage_user':manage_user,
         })
         return context
 
