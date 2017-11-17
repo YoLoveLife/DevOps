@@ -53,3 +53,11 @@ class DBAuthRemoveAPI(generics.DestroyAPIView):
             return Response({'info': '删除成功'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'info': '该数据库用户不存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class RedisListAPI(generics.ListAPIView):
+    serializer_class = serializers.RedisSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        queryset = models.Redis.objects.all()
+        return queryset

@@ -4,8 +4,6 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from timeline.models import History
-
 from .. import forms
 from .. import models
 from ..permission import host as HostPermission
