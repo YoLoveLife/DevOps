@@ -2,8 +2,8 @@
 {% load static %}
 {% load bootstrap3 %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
-    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -76,25 +76,26 @@
                     <h3 class="box-title"><i class="fa fa-phone"></i>管理人员信息</h3>
                 </div>
                 <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="info-box">
-                                <span class="info-box-icon info-box-icon-green" style="width: 10%"><i class="fa fa-address-card-o"></i></span>
-                                <div class="info-box-content container-fluid">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <span class="info-box-text">联系方式</span>
-                                            <span class="info-box-text">18756945032</span>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <span class="info-box-text">电子邮件</span>
-                                            <span class="info-box-text">wq@8531.cn</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table table-bordered" style="word-break:break-all; word-wrap:break-all;">
+                        <thead>
+                        <tr>
+                            <th>管理员名称</th>
+                            <th>联系方式</th>
+                            <th>电子邮件</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in manage_user %}
+                            <tr>
+                                <td>{{ user.get_full_name }}</td>
+                                <td>{{ user.get_8531email }}</td>
+                                <td>{{ user.phone }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>

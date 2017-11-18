@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .. import models,forms
-from timeline.models import History
-from manager.models import Host
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView,CreateView,UpdateView
-from django.views.generic.detail import DetailView
-from ..permission import db as DBPermission
 from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic.detail import DetailView
+from manager.models import Host
+from timeline.models import History
+from application.permission import db as DBPermission
 from utils import aes
+from .. import models, forms
+
+
 # Create your views here.
 class ApplicationDBListView(LoginRequiredMixin,TemplateView):
     template_name= 'application/db/db.html'

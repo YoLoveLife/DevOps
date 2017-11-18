@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block single-css %}
-    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -83,8 +83,8 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
+    <script src="{% static 'plugins/jQuery/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
     <script>
     function detailFormatter(value,row,index) {
         var label_a='<a class="btn btn-default" href="/manager/host/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
