@@ -3,7 +3,7 @@ import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
-
+#__all__ = ['DBListAPI','DBAuthAPI','DBAuthCreateAPI','DBAuthRemoveAPI','DBRemoveAPI']
 class DBListAPI(generics.ListAPIView):
     serializer_class = serializers.DBSerializer
     permission_classes = [IsAuthenticated]
@@ -53,3 +53,11 @@ class DBAuthRemoveAPI(generics.DestroyAPIView):
             return Response({'info': '删除成功'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'info': '该数据库用户不存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class RedisListAPI(generics.ListAPIView):
+    serializer_class = serializers.RedisSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        queryset = models.Redis.objects.all()
+        return queryset

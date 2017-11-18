@@ -2,7 +2,7 @@
 {% load static %}
 {% block single-css %}
     <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
 {% endblock %}
 {% load bootstrap3 %}
 {% load i18n %}
@@ -172,9 +172,9 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery.form.min.js' %}"></script>
-    <script src="{% static 'js/select2.full.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'plugins/jQuery-form/jquery.form.min.js' %}"></script>
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
     <script src="{% static 'js/operation.js' %}"></script>
     <script>
         function csrfSafeMethod(method){

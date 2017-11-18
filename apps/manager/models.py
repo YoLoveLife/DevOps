@@ -3,12 +3,14 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
+from validate.models import ExtendUser
 # Create your models here.
 list= ['db_set']#,'redis_set','nginx_set']
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
     name=models.CharField(max_length=100,default='')
     info=models.CharField(max_length=100,default='')
+    users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
 
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
@@ -70,3 +72,13 @@ class Host(models.Model):
         else:
             softlibs = Softlib.objects.filter(id__in=id_list)
         return softlibs
+
+    def manage_user_get(self):
+        dist = {}
+        for group in self.groups.all():
+            for user in group.users.all():
+                dist[user.email]=user
+        list = []
+        for key in dist:
+            list.append(dist[key])
+        return list

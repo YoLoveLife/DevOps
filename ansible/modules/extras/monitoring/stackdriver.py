@@ -73,7 +73,7 @@ options:
     default: 'INFO'
   instance_id:
     description:
-      - id of an EC2 instance that this event should be attached to, which will limit the contexts where this event is shown
+      - id of an EC2 instance that this event should be attached to, which will limit the contexts where this _event is shown
     required: false
     default: null
   event_epoch:

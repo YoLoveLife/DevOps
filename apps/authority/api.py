@@ -3,7 +3,7 @@ import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
-
+#__all__ = ['UserListAPI','UserRemoveAPI']
 class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer

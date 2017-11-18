@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
+#__all__ = ['UserDeleteRequiredMixin','UserAddRequiredMixin','UserChangeRequiredMixin']
 class UserRequiredMixin(AccessMixin):
     redirect_url= "/permission"
     permission_required = u'validate.all'

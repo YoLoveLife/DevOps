@@ -6,7 +6,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from validate.models import ExtendUser
-
+#__all__ = ['UserCreateUpdateForm']
 class UserCreateUpdateForm(forms.ModelForm):
     email = forms.CharField(required=True,max_length=15,label='电子邮箱',help_text=_('必填. 请输入8531集团邮箱'),)
     first_name = forms.CharField(required=True,max_length=15,label='姓')

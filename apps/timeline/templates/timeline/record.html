@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/fullcalendar.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'less/fullcalendar.print.css' %}" media="print">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/fullcalendar/fullcalendar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/fullcalendar/fullcalendar.print.css' %}" media="print">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -56,9 +56,9 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery-ui.js' %}"></script>
-    <script src="{% static 'js/moment.js' %}"></script>
-    <script src="{% static 'js/fullcalendar.js' %}"></script>
+    <script src="{% static 'plugins/jQueryUI/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'plugins/moment/moment.js' %}"></script>
+    <script src="{% static 'plugins/fullcalendar/fullcalendar.js' %}"></script>
     <script type="text/javascript">
         var pageMax={{ pagemax|safe }};
         var pageIndex=1;

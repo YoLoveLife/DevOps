@@ -8,6 +8,7 @@ from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
+from timeline.decorator.manager import decorator_manager
 
 class ManagerGroupListView(LoginRequiredMixin,TemplateView):
     template_name= 'manager/group.html'
@@ -27,19 +28,14 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
         context.update({'hosts':hosts})
         return context
 
+    @decorator_manager(0,u'新增应用组')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="创建新的应用组",status=0)
-        his.save()
-
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         host_group.hosts.add(*hosts)
         host_group.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerGroupCreateView,self).form_valid(form)
+        return self.request.user,super(ManagerGroupCreateView,self).form_valid(form)
 
     def get_success_url(self):
          return self.success_url
@@ -60,10 +56,8 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
         })
         return context
 
+    @decorator_manager(0,u'修改应用组')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="修改应用组",status=0)
-        his.save()
-
         host_group = form.save()
         hosts_id_list = self.request.POST.getlist('hosts',[])
 
@@ -71,10 +65,7 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
         host_group.hosts.clear()
         host_group.hosts.add(*hosts)
         host_group.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerGroupUpdateView,self).form_valid(form)
+        return self.request.user,super(ManagerGroupUpdateView,self).form_valid(form)
 
     def get_success_url(self):
         return self.success_url

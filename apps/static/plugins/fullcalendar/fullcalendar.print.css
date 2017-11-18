@@ -1,7 +1,7 @@
 /*!
- * FullCalendar v2.2.5 Print Stylesheet
- * Docs & License: http://arshaw.com/fullcalendar/
- * (c) 2013 Adam Shaw
+ * FullCalendar v3.5.0 Print Stylesheet
+ * Docs & License: https://fullcalendar.io/
+ * (c) 2017 Adam Shaw
  */
 
 /*
@@ -32,21 +32,27 @@
 /* Table & Day-Row Restyling
 --------------------------------------------------------------------------------------------------*/
 
-th,
-td,
-hr,
-thead,
-tbody,
+.fc th,
+.fc td,
+.fc hr,
+.fc thead,
+.fc tbody,
 .fc-row {
 	border-color: #ccc !important;
 	background: #fff !important;
 }
 
-/* kill the overlaid, absolutely-positioned common components */
+/* kill the overlaid, absolutely-positioned components */
+/* common... */
 .fc-bg,
 .fc-bgevent-skeleton,
 .fc-highlight-skeleton,
-.fc-helper-skeleton {
+.fc-helper-skeleton,
+/* for timegrid. within cells within table skeletons... */
+.fc-bgevent-container,
+.fc-business-container,
+.fc-highlight-container,
+.fc-helper-container {
 	display: none;
 }
 
@@ -122,7 +128,7 @@ tbody,
 	height: 4em;
 }
 
-/* kill the horizontal spacing made by the event container. event margins will be done below */
+/* kill the horizontal spacing made by the event container. _event margins will be done below */
 .fc-time-grid .fc-event-container {
 	margin: 0 !important;
 }
