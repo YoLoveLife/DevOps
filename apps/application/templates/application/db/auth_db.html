@@ -9,7 +9,6 @@
     {% if object.is_slave == 1 %}
         {% include 'application/db/_is_slave.html' %}
     {% else %}
-
 <!--Content Header-->
 <section class="content-header">
     <h1>
@@ -140,7 +139,7 @@
                     $('#tb_dbauth').bootstrapTable('refresh');
                 },
                 error:function(data){
-                    alert(data.responseJSON.info);
+                    alert(data.responseJSON.detail);
                 }
             });
         })

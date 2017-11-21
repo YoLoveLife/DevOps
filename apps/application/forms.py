@@ -5,10 +5,10 @@
 # Email YoLoveLife@outlook.com
 from django import forms
 import models
-from django.utils.translation import gettext_lazy as _
-#__all__ = ['DBCreateUpdateForm']
+from deveops.utils import aes
+from manager.models import Host
 class DBCreateUpdateForm(forms.ModelForm):
-    service_ip = forms.CharField(required=True,max_length=13,label='业务IP')
+    service_ip = forms.CharField(required=True,max_length=15,label='业务IP')
     class Meta:
         model = models.DB
         fields = ['prefix','root_passwd',
@@ -20,3 +20,28 @@ class DBCreateUpdateForm(forms.ModelForm):
             'prefix':'prefix','root_passwd':'管理密码','port':'服务端口',
             'socket':'Socket','datadir':'数据目录',
         }
+
+    def before_save(self,request,commit):
+        service_ip = request.POST.get('service_ip')
+        self.instance.root_passwd = aes.encrypt(self.instance.root_passwd)
+        if Host.objects.filter(service_ip = service_ip).count() == 1:
+            host = Host.objects.filter(service_ip=service_ip).get()
+            self.instance.host = host
+        else:
+            pass
+        return self.save(commit=commit)
+
+class RedisCreateUpdateForm(forms.ModelForm):
+    service_ip = forms.CharField(required=True,max_length=13,label='业务IP')
+    logfile = forms.CharField(required=False,max_length=100,label='日志文件')
+    class Meta:
+        model = models.Redis
+        fields = ['prefix','redis_passwd','port','pidfile','logfile','service_ip']
+        widgets = {
+            'redis_passwd': forms.TextInput(attrs={'type':'password'})
+        }
+        labels = {
+            'prefix':'prefix','redis_passwd':'访问密码','port':'服务端口',
+            'pidfile':'进程文件'
+        }
+

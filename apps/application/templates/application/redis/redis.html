@@ -38,6 +38,7 @@
                                         <th data-field="host_name">主机名称</th>
                                         <th data-field="port">端口</th>
                                         <th data-field="service_ip">服务IP</th>
+                                        <th data-field="online" data-formatter="statusFormatter">状态</th>
                                         <th data-field="id" data-formatter="detailFormatter">细节</th>
                                     </tr>
                                     </thead>
@@ -86,6 +87,15 @@
     function detailFormatter(value,row,index) {
         var label_a='<a class="btn btn-default" href="/application/redis/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
         return [label_a].join('');
+    }
+    function statusFormatter(value,row,index) {
+        var label_status;
+        if(value=='1'){
+            label_status='<span class="label label-success">在线</span>'
+        }else{
+            label_status='<span class="label label-danger">离线</span>'
+        }
+        return [label_status].join('');
     }
     $(document).ready(function () {
         $('.select2').select2({dropdownAutoWidth : true});
@@ -144,7 +154,7 @@
                     $('#redis_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
-                    alert(data.responseJSON.info);
+                    alert(data.responseJSON.detail);
                 }
             })
         })

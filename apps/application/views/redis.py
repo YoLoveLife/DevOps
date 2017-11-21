@@ -7,7 +7,8 @@ from django.views.generic.detail import DetailView
 from manager.models import Host
 from timeline.models import History
 from application.permission import redis as RedisPermission
-# from application import aes
+from timeline.decorator.manager import decorator_manager
+from deveops.utils import aes
 from .. import models, forms
 
 
@@ -30,41 +31,25 @@ class ApplicationRedisListView(LoginRequiredMixin,TemplateView):
 #         })
 #         return context
 #
-# class ApplicationDBCreateView(LoginRequiredMixin,RedisPermission.RedisAddRequiredMixin,CreateView):
-#     model = models.DB
-#     form_class = forms.DBCreateUpdateForm
-#     template_name = 'application/db/new_update_db.html'
-#     success_url = reverse_lazy('application:db')
-#
-#     def form_valid(self, form):
-#         his=History(user=self.request.user,type=4,info="新增应用",status=0)
-#         his.save()
-#
-#         db=form.save()
-#         service_ip = self.request.POST.get('service_ip')
-#         db.root_passwd =  aes.encrypt(db.root_passwd)
-#         if Host.objects.filter(service_ip = service_ip).count() == 1:
-#             host = Host.objects.filter(service_ip=service_ip).get()
-#             db.host = host
-#         else:
-#             pass
-#         dbdetail = models.DBDetail()
-#         dbdetail.db=db
-#         dbdetail.save()
-#         db.save()
-#         his.status=1
-#         his.save()
-#         return super(ApplicationDBCreateView,self).form_valid(form)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ApplicationDBCreateView,self).get_context_data(**kwargs)
-#         context.update({
-#             'service_ip' : ''
-#         })
-#         return context
-#
-#     def get_success_url(self):
-#         return self.success_url
+class ApplicationRedisCreateView(LoginRequiredMixin,RedisPermission.RedisAddRequiredMixin,CreateView):
+    model = models.Redis
+    form_class = forms.RedisCreateUpdateForm
+    template_name = 'application/redis/new_update_redis.html'
+    success_url = reverse_lazy('application:redis')
+
+    @decorator_manager(4,u'新增Redis应用')
+    def form_valid(self, form):
+        redis = form.save()
+        service_ip = self.request.POST.get('service_ip')
+        redis.root_passwd =  aes.encrypt(redis.root_passwd)
+        return self.request.user,super(ApplicationRedisCreateView,self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ApplicationRedisCreateView,self).get_context_data(**kwargs)
+        return context
+
+    def get_success_url(self):
+        return self.success_url
 #
 #
 #

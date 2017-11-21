@@ -19,4 +19,4 @@ class RedisSerializer(serializers.HyperlinkedModelSerializer):
     service_ip = serializers.CharField(source='host.service_ip',read_only=True)
     class Meta:
         model = models.Redis
-        fields = ('id','host_name','service_ip','port',)
+        fields = ('id','host_name','service_ip','port','online')
