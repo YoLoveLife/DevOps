@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'utils.apps.UtilsConfig',
     'validate.apps.ValidateConfig',
     'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',

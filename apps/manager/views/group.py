@@ -30,11 +30,7 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
 
     @decorator_manager(0,u'新增应用组')
     def form_valid(self, form):
-        host_group = form.save()
-        hosts_id_list = self.request.POST.getlist('hosts',[])
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-        host_group.hosts.add(*hosts)
-        host_group.save()
+        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerGroupCreateView,self).form_valid(form)
 
     def get_success_url(self):
@@ -58,13 +54,7 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
 
     @decorator_manager(0,u'修改应用组')
     def form_valid(self, form):
-        host_group = form.save()
-        hosts_id_list = self.request.POST.getlist('hosts',[])
-
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-        host_group.hosts.clear()
-        host_group.hosts.add(*hosts)
-        host_group.save()
+        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerGroupUpdateView,self).form_valid(form)
 
     def get_success_url(self):

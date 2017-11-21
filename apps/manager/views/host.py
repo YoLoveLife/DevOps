@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .. import forms
 from .. import models
 from ..permission import host as HostPermission
-from utils import aes
+from deveops.utils import aes
 from timeline.decorator.manager import decorator_manager
 
 class ManagerHostListView(LoginRequiredMixin,TemplateView):
@@ -30,19 +30,8 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
 
     @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
-        host_storage_group=form.save()
-        hosts_id_list=self.request.POST.getlist('groups',[])
-        storages_id_list=self.request.POST.getlist('storages',[])
-
-        groups = models.Group.objects.filter(id__in=hosts_id_list)
-        storages = models.Storage.objects.filter(id__in=storages_id_list)
-
-        host_storage_group.groups.add(*groups)
-        host_storage_group.storages.add(*storages)
-        host_storage_group.sshpasswd = aes.encrypt(host_storage_group.sshpasswd)
-        host_storage_group.save()
-
-        super(ManagerHostCreateView,self).form_valid(form)
+        form.before_save(request=self.request,commit=True)
+        # super(ManagerHostCreateView,self).form_valid(form)
         return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -69,18 +58,7 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
     @decorator_manager(0,u'修改应用主机')
     def form_valid(self, form):
-        host_storage_group=form.save()
-        hosts_id_list=self.request.POST.getlist('groups',[])
-        storages_id_list=self.request.POST.getlist('storages',[])
-
-        groups = models.Group.objects.filter(id__in=hosts_id_list)
-        storages = models.Storage.objects.filter(id__in=storages_id_list)
-
-        host_storage_group.groups.add(*groups)
-        host_storage_group.storages.add(*storages)
-        host_storage_group.sshpasswd = aes.encrypt(host_storage_group.sshpasswd)
-        host_storage_group.save()
-
+        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -118,16 +96,3 @@ class ManagerHostDetailView(LoginRequiredMixin,DetailView):
             'manage_user':manage_user,
         })
         return context
-
-# class ManagerHostUploadView(LoginRequiredMixin,FormView):
-#
-#     template_name = 'manager/upload.html'
-#     form_class =
-#     success_url = reverse_lazy('manager:host')
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         return super(ManagerHostUploadView,self).dispatch(request,*args,**kwargs)
-#
-#     def form_valid(self, form):
-#         form.instance.creator = self.request.user
-#         return super(ManagerHostUploadView, self).form_valid(form)

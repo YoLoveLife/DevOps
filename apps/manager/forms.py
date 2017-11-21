@@ -5,7 +5,7 @@
 # Email YoLoveLife@outlook.com
 from django import forms
 import models
-from django.utils.translation import gettext_lazy as _
+from deveops.utils import aes
 class GroupCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Group
@@ -17,6 +17,16 @@ class GroupCreateUpdateForm(forms.ModelForm):
             'name':'应用组名称',
             'info':'应用组信息'
         }
+
+    def before_save(self,request,commit):
+        hosts_id_list = request.POST.getlist('hosts',[])
+        hosts = models.Host.objects.filter(id__in=hosts_id_list)
+        group = self.save(commit=commit)
+        group.hosts.clear()
+        group.hosts.add(*hosts)
+        group.save()
+        return group
+
 
 class HostCreateUpdateForm(forms.ModelForm):
     manage_ip = forms.CharField(required=False,max_length=15,label="管理IP")
@@ -42,6 +52,20 @@ class HostCreateUpdateForm(forms.ModelForm):
             'memory':'内存大小','root_disk':'本地磁盘','info':'信息','sshpasswd':'管理密码'
         }
 
+    def before_save(self,request,commit):
+        hosts_id_list=request.POST.getlist('groups',[])
+        storages_id_list=request.POST.getlist('storages',[])
+        self.instance.sshpasswd = aes.encrypt(self.instance.sshpasswd)
+        host = self.save()
+        host.groups.clear()
+        host.storages.clear()
+        groups = models.Group.objects.filter(id__in=hosts_id_list)
+        storages = models.Storage.objects.filter(id__in=storages_id_list)
+        host.groups.add(*groups)
+        host.storages.add(*storages)
+
+        return
+
 class StorageCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Storage
@@ -52,6 +76,10 @@ class StorageCreateUpdateForm(forms.ModelForm):
         labels = {
             'disk_size':'存储大小','disk_path':'存储路径','info':'信息'
         }
-
-# class FileUploadForm(forms.BaseForm):
-#     file =
+    def before_save(self,request,commit):
+        hosts_id_list=self.request.POST.getlist('hosts',[])
+        hosts = models.Host.objects.filter(id__in=hosts_id_list)
+        storage = self.save()
+        storage.clear()
+        storage.hosts.add(*hosts)
+        return self.save()

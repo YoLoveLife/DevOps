@@ -6,7 +6,7 @@ from softlib.models import Softlib
 from django.db import models
 # Create your models here.
 #
-#__all__=['DB','DBDetail','DBUser']
+__all__=['DB','DBDetail','DBUser']
 
 class DB(models.Model):
     IS_SLAVE=(
@@ -23,6 +23,14 @@ class DB(models.Model):
     softlib=models.ForeignKey(Softlib,default=1,)
     is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
     online=models.BooleanField(default=False)
+
+    #集联更新
+    def save(self):
+        result = super(DB, self).save()
+        dbdetail = DBDetail()
+        dbdetail.db=self
+        dbdetail.save()
+        return result
 
     def get_all_user(self):
         return self.dbuser.all()
