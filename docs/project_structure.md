@@ -15,8 +15,6 @@
 │   │   ├── admin.py
 │   │   ├── apps.py
 │   │   ├── api.py                       // api请求
-{#│   │   ├── migrations              // models Migrations版本控制目录#}
-{#│   │   │   └── __init__.py#}
 │   │   ├── models.py                    // 应用模型 存储所有应用的资产信息
 │   │   ├── templates                    // app下模板目录
 │   │   │   ├── application              // 资源引用区分
@@ -30,7 +28,7 @@
 │   │   ├── utils
 │   │   │   ├── constant.py              // Bash代码格式维护
 │   │   │   └── utils.py                 // Bash数据库到文本转化
-│   │   └── views                        // 视图请求区分
+│   │   ├── views                        // 视图请求区分
 │   │   │   └── db.py                    // 关于数据库的视图请求
 {#│   ├── common#}
 {#│   │   ├── templatetags                 // 通用template tag#}

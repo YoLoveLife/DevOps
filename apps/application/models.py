@@ -6,7 +6,7 @@ from softlib.models import Softlib
 from django.db import models
 # Create your models here.
 #
-#__all__=['DB','DBDetail','DBUser']
+__all__=['DB','DBDetail','DBUser']
 
 class DB(models.Model):
     IS_SLAVE=(
@@ -16,13 +16,17 @@ class DB(models.Model):
     id=models.AutoField(primary_key=True)
     host=models.ForeignKey(Host,default=1)
     prefix=models.CharField(max_length=100,default='/usr/local/mysql')
-    root_passwd=models.CharField(max_length=100,default='000000')
+    root_passwd=models.CharField(max_length=100,default='')
     port=models.IntegerField(default='3306')
     socket=models.CharField(max_length=100,default='/tmp/mysql.sock')
     datadir=models.CharField(max_length=100,default='/storage/mysql')
     softlib=models.ForeignKey(Softlib,default=1,)
     is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
     online=models.BooleanField(default=False)
+
+    #集联更新
+    def save(self):
+        return super(DB, self).save()
 
     def get_all_user(self):
         return self.dbuser.all()

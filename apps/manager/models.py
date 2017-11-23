@@ -5,7 +5,7 @@ from django.db import models
 from softlib.models import Softlib
 from validate.models import ExtendUser
 # Create your models here.
-list= ['db_set']#,'redis_set','nginx_set']
+application_list= ['db_set','redis_set']#,'nginx_set']
 class Group(models.Model):
     id=models.AutoField(primary_key=True)
     name=models.CharField(max_length=100,default='')
@@ -62,11 +62,15 @@ class Host(models.Model):
 
     def application_get(self):
         id_list=[]
-        for attr in list:
+        for attr in application_list:
             if getattr(self,attr).count() == 0:
                 pass
             else:
-                id_list.append(int(getattr(self,attr).get().softlib_id))
+                if getattr(self,attr).count() == 1:
+                    id_list.append(int(getattr(self,attr).get().softlib_id))
+                else:
+                    for mols in getattr(self,attr).all():
+                        id_list.append(int(mols.softlib_id))
         if Softlib.objects.filter(id__in=id_list).count() == 0:
             softlibs = []
         else:
