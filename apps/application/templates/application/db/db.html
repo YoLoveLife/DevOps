@@ -66,10 +66,10 @@
                             <button class="btn btn-app" id="modify_db">
                                 <i class="fa fa-edit"></i> 修改数据库
                             </button>
+                            </form>
                             <button class="btn btn-app" id="delete_db">
                                 <i class="fa fa-times"></i> 删除数据库
                             </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,17 @@
         var label_a='<a class="btn btn-default" href="/application/db/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
         return [label_a].join('');
     }
+    function csrfSafeMethod(method){
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
     $(document).ready(function () {
+        $.ajaxSetup({
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
+        });
         $('.select2').select2({dropdownAutoWidth : true});
         var table=$('#db_tb').bootstrapTable({
                 url : '/api-application/v1/db',
@@ -141,16 +151,17 @@
                 alert('请选择数据');
                 return false;
             }
+            var data={};
             $.ajax({
                 type:"DELETE",
-                url:"/api-application/v1/db/{{ id }}/remove/",
+                url:"/api-application/v1/db/"+a[0].id+"/remove/",
                 data:data,
                 dataType:"json",
                 success:function(data){
                     $('#db_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
-                    alert(data.responseJSON.info);
+                    alert(data.responseJSON.detail);
                 }
             })
         })

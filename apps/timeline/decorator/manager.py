@@ -15,6 +15,6 @@ def decorator_manager(asset_id,api_name):#host group storage
             his.user = user
             his.status = 1
             his.save()
-            return response
+            return response #别碰 这是魔法
         return inner_wrapper
     return wrapper

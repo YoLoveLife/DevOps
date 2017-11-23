@@ -17,7 +17,7 @@ urlpatterns = [
 
     #Resource redis url
     url(r'^redis/$',RedisView.ApplicationRedisListView.as_view(),name='redis'),
-    # url(r'^redis/create/$',RedisView.ApplicationRedisCreateView.as_view(),name='rediscreate'),
+    url(r'^redis/create/$',RedisView.ApplicationRedisCreateView.as_view(),name='rediscreate'),
     # url(r'^redis/(?P<pk>[0-9]+)/update/',RedisView.ApplicationRedisUpdateView.as_view(),name='redisupdate'),
     # url(r'^redis/(?P<pk>[0-9]+)/detail/', RedisView.ApplicationRedisDetailView.as_view(), name='redisdetail'),
 ]

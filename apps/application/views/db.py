@@ -7,9 +7,9 @@ from django.views.generic.detail import DetailView
 from manager.models import Host
 from timeline.models import History
 from application.permission import db as DBPermission
-from utils import aes
+from deveops.utils import aes
 from .. import models, forms
-
+from timeline.decorator.manager import decorator_manager
 
 # Create your views here.
 class ApplicationDBListView(LoginRequiredMixin,TemplateView):
@@ -36,31 +36,19 @@ class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin
     template_name = 'application/db/new_update_db.html'
     success_url = reverse_lazy('application:db')
 
+    @decorator_manager(4,u'新增DB应用')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=4,info="新增应用",status=0)
-        his.save()
-
-        db=form.save()
-        service_ip = self.request.POST.get('service_ip')
-        db.root_passwd =  aes.encrypt(db.root_passwd)
-        if Host.objects.filter(service_ip = service_ip).count() == 1:
-            host = Host.objects.filter(service_ip=service_ip).get()
-            db.host = host
-        else:
-            pass
-        dbdetail = models.DBDetail()
-        dbdetail.db=db
-        dbdetail.save()
-        db.save()
-        his.status=1
-        his.save()
-        return super(ApplicationDBCreateView,self).form_valid(form)
+        # db = form.before_save(self.request,commit=True)
+        # dbdetail = models.DBDetail()
+        # dbdetail.db=db
+        # dbdetail.save()
+        return self.request.user,super(ApplicationDBCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBCreateView,self).get_context_data(**kwargs)
-        context.update({
-            'service_ip' : ''
-        })
+        # context.update({
+        #     'service_ip' : ''
+        # })
         return context
 
     def get_success_url(self):
@@ -74,23 +62,15 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
     template_name = 'application/db/new_update_db.html'
     success_url = reverse_lazy('application:db')
 
+    def get_form(self, form_class=None):
+        form = super(ApplicationDBUpdateView, self).get_form(form_class)
+        form.initial['root_passwd'] = aes.decrypt(form.instance.root_passwd)
+        return form
+
+    @decorator_manager(4,u'修改DB应用')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=4,info="修改应用",status=0)
-        his.save()
-
-        db=form.save()
-        service_ip = self.request.POST.get('service_ip')
-        db.root_passwd =  aes.encrypt(db.root_passwd)
-        if Host.objects.filter(service_ip = service_ip).count() == 1:
-            host = Host.objects.filter(service_ip=service_ip).get()
-            db.host = host
-        else:
-            pass
-
-        db.save()
-        his.status=1
-        his.save()
-        return super(ApplicationDBUpdateView,self).form_valid(form)
+        db = form.before_save(self.request,commit=True)
+        return self.request.user,super(ApplicationDBUpdateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBUpdateView,self).get_context_data(**kwargs)
