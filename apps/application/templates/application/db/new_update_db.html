@@ -71,6 +71,7 @@
 {#                                        <label class="control-label" for="id_service_ip">业务IP</label>#}
 {#                                        <input name="service_ip" value="{{ service_ip }}" title="" required="" id="id_service_ip" maxlength="100" placeholder="业务IP" class="form-control" type="text">#}
                                         {% bootstrap_field form.service_ip %}
+                                        {{ form.non_field_errors }}
                                     </div>
                                 </div>
                             </div>

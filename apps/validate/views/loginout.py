@@ -21,9 +21,11 @@ class ValidateLoginView(FormView):
         login_form = forms.LoginForm(request.POST)
         if login_form.is_valid():
             data=login_form.clean()
+
             if data['verify'] != request.session.get('verifycode'):
                 error = u'错误的验证码'
                 return render(request, self.template_name, {'error': error, 'form': login_form})
+
             user = authenticate(username=data['username'], password=data['passwd'])
             if user is not None:
                 login(request, user)
