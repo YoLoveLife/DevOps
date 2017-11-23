@@ -38,10 +38,10 @@ class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin
 
     @decorator_manager(4,u'新增DB应用')
     def form_valid(self, form):
-        db = form.before_save(self.request,commit=True)
-        dbdetail = models.DBDetail()
-        dbdetail.db=db
-        dbdetail.save()
+        # db = form.before_save(self.request,commit=True)
+        # dbdetail = models.DBDetail()
+        # dbdetail.db=db
+        # dbdetail.save()
         return self.request.user,super(ApplicationDBCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
