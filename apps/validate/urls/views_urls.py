@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^logout$', LoginoutViews.ValidateLogoutView.as_view(), name='valudatelogout'),
     url(r'^dashboard/', DashboardViews.ValidateDashboardView.as_view(), name='validatedashboard'),
     url(r'^user/', UserViews.ValidateUserListView.as_view(),name='validateuser'),
+    url(r'^validecode/',LoginoutViews.ValidateCodeView.as_view(),name='validatecode'),
 ]
