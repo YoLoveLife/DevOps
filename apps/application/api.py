@@ -16,7 +16,7 @@ class DBRemoveAPI(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
-        if models.DB.objects.get(id=int(kwargs['pk'])).exists():
+        if models.DB.objects.filter(id=int(kwargs['pk'])).exists():
             models.DB.objects.get(id=int(kwargs['pk'])).delete()
             return Response({'info': '删除成功'}, status=status.HTTP_201_CREATED)
         else:

@@ -16,7 +16,7 @@ class DB(models.Model):
     id=models.AutoField(primary_key=True)
     host=models.ForeignKey(Host,default=1)
     prefix=models.CharField(max_length=100,default='/usr/local/mysql')
-    root_passwd=models.CharField(max_length=100,default='000000')
+    root_passwd=models.CharField(max_length=100,default='')
     port=models.IntegerField(default='3306')
     socket=models.CharField(max_length=100,default='/tmp/mysql.sock')
     datadir=models.CharField(max_length=100,default='/storage/mysql')
@@ -26,11 +26,7 @@ class DB(models.Model):
 
     #集联更新
     def save(self):
-        result = super(DB, self).save()
-        dbdetail = DBDetail()
-        dbdetail.db=self
-        dbdetail.save()
-        return result
+        return super(DB, self).save()
 
     def get_all_user(self):
         return self.dbuser.all()

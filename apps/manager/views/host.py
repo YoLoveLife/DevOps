@@ -31,7 +31,6 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
     @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
         form.before_save(request=self.request,commit=True)
-        # super(ManagerHostCreateView,self).form_valid(form)
         return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -60,6 +59,11 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
     def form_valid(self, form):
         form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerHostUpdateView, self).form_valid(form)
+
+    def get_form(self, form_class=None):
+        form = super(ManagerHostUpdateView,self).get_form(form_class)
+        form.initial['sshpasswd'] = aes.decrypt(form.instance.sshpasswd)
+        return form
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)

@@ -20,6 +20,17 @@ class DBCreateUpdateForm(forms.ModelForm):
             'prefix':'prefix','root_passwd':'管理密码','port':'服务端口',
             'socket':'Socket','datadir':'数据目录',
         }
+        error_messages={
+            'service_ip':'ddr'
+        }
+    def clean(self):
+        try:
+            service_ip = self.cleaned_data['service_ip']
+            host = Host.objects.filter(service_ip=service_ip).get()
+            self.cleaned_data.update({'service_ip':host})
+        except Exception as e:
+            raise forms.ValidationError(u'该主机不存在')
+        return super(DBCreateUpdateForm,self).clean()
 
     def before_save(self,request,commit):
         service_ip = request.POST.get('service_ip')
