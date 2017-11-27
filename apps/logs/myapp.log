@@ -1,0 +1,3 @@
+2017-11-16 17:37:00,568 [MainThread:140113612257024] [root:258] [settings:<module>] [DEBUG]- This is debug message
+2017-11-16 17:37:00,568 [MainThread:140113612257024] [root:259] [settings:<module>] [INFO]- This is info message
+2017-11-16 17:37:00,568 [MainThread:140113612257024] [root:260] [settings:<module>] [WARNING]- This is warning message
