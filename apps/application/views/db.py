@@ -9,7 +9,7 @@ from timeline.models import History
 from application.permission import db as DBPermission
 from utils import aes
 from .. import models, forms
-
+from timeline.decorator.manager import decorator_manager
 
 # Create your views here.
 class ApplicationDBListView(LoginRequiredMixin,TemplateView):
@@ -74,23 +74,9 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
     template_name = 'application/db/new_update_db.html'
     success_url = reverse_lazy('application:db')
 
+    @decorator_manager(4,u'修改DB应用')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=4,info="修改应用",status=0)
-        his.save()
-
-        db=form.save()
-        service_ip = self.request.POST.get('service_ip')
-        db.root_passwd =  aes.encrypt(db.root_passwd)
-        if Host.objects.filter(service_ip = service_ip).count() == 1:
-            host = Host.objects.filter(service_ip=service_ip).get()
-            db.host = host
-        else:
-            pass
-
-        db.save()
-        his.status=1
-        his.save()
-        return super(ApplicationDBUpdateView,self).form_valid(form)
+        return self.request.user,super(ApplicationDBUpdateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBUpdateView,self).get_context_data(**kwargs)

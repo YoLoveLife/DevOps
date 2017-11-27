@@ -8,10 +8,12 @@ import os
 import sys
 
 if __name__ == "__main__":
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
     PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(PROJECT_DIR)
-    print(sys.path)
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
