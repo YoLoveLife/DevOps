@@ -5,8 +5,10 @@
 # Email YoLoveLife@outlook.com
 from Crypto.Cipher import AES
 from binascii import b2a_hex,a2b_hex
-from deveops.settings import SECRET_KEY
+# from deveops.settings import SECRET_KEY
+SECRET_KEY = '1x$!#dwp2_6^tdgs1nv8pwgutbc#4m%#qaz!m!0h_f*%6fp+vt'
 KEY = SECRET_KEY
+
 cryptor = AES.new(KEY[0:16], AES.MODE_CBC, KEY[0:16])
 def encrypt(text):
     # 这里密钥key 长度必须为16（AES-128）、24（AES-192）、或32（AES-256）Bytes 长度.目前AES-128足够用
@@ -26,5 +28,5 @@ def decrypt(text):
 
 if __name__ == '__main__':
     e = encrypt("daiSgmiku2")
-    d = decrypt(e)
+    d = decrypt('508ffea1e80ee020d151d81b25fc56db')
     print e, d

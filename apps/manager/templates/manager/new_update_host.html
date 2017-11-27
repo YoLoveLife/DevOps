@@ -47,36 +47,24 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.manage_ip %}
-                                    </div>
+                                    {% bootstrap_field form.manage_ip %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.service_ip %}
-                                    </div>
+                                    {% bootstrap_field form.service_ip %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.outer_ip %}
-                                    </div>
+                                    {% bootstrap_field form.outer_ip %}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.sshport %}
-                                    </div>
+                                    {% bootstrap_field form.sshport %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.server_position %}
-                                    </div>
+                                    {% bootstrap_field form.server_position %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.systemtype %}
-                                    </div>
+                                    {% bootstrap_field form.systemtype %}
                                 </div>
                             </div>
                         </div>
@@ -89,43 +77,29 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.hostname %}
-                                    </div>
+                                    {% bootstrap_field form.hostname %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.normal_user %}
-                                    </div>
+                                    {% bootstrap_field form.normal_user %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.coreness %}
-                                    </div>
+                                    {% bootstrap_field form.coreness %}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.memory %}
-                                    </div>
+                                    {% bootstrap_field form.memory %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.root_disk %}
-                                    </div>
+                                    {% bootstrap_field form.root_disk %}
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.sshpasswd %}
-                                    </div>
+                                    {% bootstrap_field form.sshpasswd %}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-7">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.info %}
-                                    </div>
+                                    {% bootstrap_field form.info %}
                                 </div>
                             </div>
                         </div>
@@ -138,7 +112,7 @@
                             <h3 class="box-title" style="text-align: center">应用组关系</h3>
                         </div>
                         <div class="box-body">
-                            <select name="groups" class="select2 form-control" multiple style="width:100%;">
+                            <select id="storages" name="groups" class="select2 form-control" multiple="yes" style="width:100%;">
                                 {% for group in groups %}
                                     {% if group.id in groups_host %}
                                         <option value="{{ group.id }}" selected>{{ group.name }}</option>
@@ -156,7 +130,7 @@
                             <h3 class="box-title" style="text-align: center">存储</h3>
                         </div>
                         <div class="box-body">
-                            <select name="storages" class="select2 form-control" multiple style="width:100%;">
+                            <select id="storages" name="storages" class="select2 form-control" multiple style="width:100%;">
                                 {% for storage in storages %}
                                     {% if storage.id in storages_host %}
                                         <option value="{{ storage.id }}" selected>{{ storage.disk_path }} - {{ storage.info }}</option>

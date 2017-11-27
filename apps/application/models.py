@@ -25,12 +25,11 @@ class DB(models.Model):
     online=models.BooleanField(default=False)
 
     #集联更新
-    def save(self):
-        return super(DB, self).save()
+    # def save(self):
+    #     return super(DB, self).save()
 
     def get_all_user(self):
         return self.dbuser.all()
-
 
 class DBDetail(models.Model):
     id = models.AutoField(primary_key=True)
