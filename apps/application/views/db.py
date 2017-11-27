@@ -38,17 +38,11 @@ class ApplicationDBCreateView(LoginRequiredMixin,DBPermission.DBAddRequiredMixin
 
     @decorator_manager(4,u'新增DB应用')
     def form_valid(self, form):
-        # db = form.before_save(self.request,commit=True)
-        # dbdetail = models.DBDetail()
-        # dbdetail.db=db
-        # dbdetail.save()
+        form.before_save(self.request)
         return self.request.user,super(ApplicationDBCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBCreateView,self).get_context_data(**kwargs)
-        # context.update({
-        #     'service_ip' : ''
-        # })
         return context
 
     def get_success_url(self):
@@ -64,12 +58,12 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
 
     def get_form(self, form_class=None):
         form = super(ApplicationDBUpdateView, self).get_form(form_class)
-        form.initial['root_passwd'] = aes.decrypt(form.instance.root_passwd)
+        root_passwd = form.initial['root_passwd']
+        form.initial['root_passwd'] = aes.decrypt(root_passwd)
         return form
 
     @decorator_manager(4,u'修改DB应用')
     def form_valid(self, form):
-        db = form.before_save(self.request,commit=True)
         return self.request.user,super(ApplicationDBUpdateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
