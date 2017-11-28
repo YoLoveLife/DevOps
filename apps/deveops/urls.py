@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^authority/',include('authority.urls.views_urls',namespace='authority')),
     url(r'^application/',include('application.urls.views_urls',namespace='application')),
     url(r'^concert/',include('concert.urls.views_urls',namespace='concert')),
+    url(r'^upload/',include('upload.urls.views_urls',namespace='upload')),
 
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
