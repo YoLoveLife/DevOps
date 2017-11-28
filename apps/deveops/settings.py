@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'execute.apps.ExecuteConfig',
     'concert.apps.ConcertConfig',
     'timeline.apps.TimelineConfig',
+    'upload.apps.UploadConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
@@ -158,6 +159,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+MEDIA_ROOT = PROJECT_DIR + '/upload'
+
 #LOGIN
 LOGIN_URL='/validate/login'
 AUTH_USER_MODEL='validate.ExtendUser'
@@ -199,8 +202,6 @@ else:
 #Default devEops Env
 PING_PLAYBOOK_TASK_ID=1
 
-
-
 # celery
 import djcelery
 djcelery.setup_loader()
@@ -213,6 +214,14 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+
+#FileUpload
+# FILE_UPLOAD_HANDLERS=(
+#     "django.core.files.uploadhandler.MemoryFileUploadHandler",
+#     "django.core.files.uploadhandler.TemporaryFileUploadHandler"
+# )
+# import django.core.files.uploadhandler
 
 #DJANGO LOG
 # if DEBUG == True:

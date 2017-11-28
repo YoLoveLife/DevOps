@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-fileinput/css/fileinput.min.css' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+    <h1>
+        <i class="fa fa-laptop"></i>
+        主机
+        <small><i class="fa fa-angle-double-right"></i>增加-修改</small>
+    </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-truck"></i>
+            <li class="active">Manager</li>
+            <li><a href="/manager/host/">Host</a></li>
+            <li class="active">New-Update</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <form method="post" action="" id="host_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-offset-3 col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title" style="text-align: center">应用组关系</h3>
+                            </div>
+                            <div class="box-body">
+                                <select id="storages" name="groups" class="select2 form-control" style="width:100%;">
+                                    {% for group in groups %}
+                                        {% if group.id in groups_host %}
+                                            <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                        {% else %}
+                                           <option value="{{ group.id }}">{{ group.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title" style="text-align: center">上传文件</h3>
+                            </div>
+                            <div class="box-body">
+{#                                <label class="control-label">Select File</label>#}
+                                <input id="input-b5" name="file" type="file" multiple data-allowed-file-extensions='["xls"]'>
+{#                                {% bootstrap_field form.file %}#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{#            <div class="col-md-2">#}
+{#                <div class="box">#}
+{#                    <div class="box-header">#}
+{#                        <h3 class="box-title" style="text-align: center">操作</h3>#}
+{#                    </div>#}
+{#                    <div class="box-body">#}
+{#                         <button class="btn btn-app" id="btn_submit">#}
+{#                            <i class="fa fa-check"></i> 提交#}
+{#                        </button>#}
+{#                        <button class="btn btn-app" id="btn_back">#}
+{#                            <i class="fa fa-reply"></i> 回退#}
+{#                        </button>#}
+{#                        <button class="btn btn-app" disabled>#}
+{#                            <i class="fa fa-info"></i> 信息#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+    </form>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-fileinput/js/fileinput.min.js' %}"></script>
+    <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+    $(document).ready(function () {
+        $('.select2').select2();
+        $("#input-b5").fileinput({showCaption: false});
+    })
+        .on('click','#btn_submit',function () {
+            $('#host_form').submit();
+        })
+        .on('click','#btn_back',function () {
+            history.go(-1);
+        })
+    </script>
+{% endblock %}

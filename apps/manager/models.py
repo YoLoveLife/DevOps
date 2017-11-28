@@ -12,6 +12,9 @@ class Group(models.Model):
     info=models.CharField(max_length=100,default='')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
 
+def upload_dir_path(instance,filename):
+    return u'group_{0}/{1}'.format(instance.group.id,filename)
+
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
     disk_size=models.CharField(max_length=100,default="")

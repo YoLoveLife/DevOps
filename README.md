@@ -7,7 +7,7 @@ devEops :laughing: 开发自运维平台
 Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
 
 运维体系解决方案</br>
-:muscle: 已经努力让它适用于各种可能出现的生产环境</br>
+:muscle: 实践以资产、应用信息未中心的运维平台</br>
 django & rest-framework & bootstrap</br>
 :muscle: 参考了诸多django项目 我的Django用的真的很棒</br>
 travis & django TestCase</br>
@@ -35,8 +35,8 @@ travis & django TestCase</br>
 - 可临时搜集应用上的信息(如MySQL的status等信息)</br>
 - 所有运维操作(脚本 | 剧本)在提交的时候会自动注入资产信息并通过ansible远程执行</br>
 - 所有资产信息、架构信息都存储在数据库中供所有运维人员操作</br>
-- 开发人员可登陆平台提交工单发起防火墙修改、应用发布、日常运维 :clock9: 等操作,运维人员许可操作进行</br>
-- 所有应用发布、日常运维工作日程展示 :date: </br>
+- ~~开发人员可登陆平台提交工单发起防火墙修改、应用发布、日常运维 :clock9: 等操作,运维人员许可操作进行~~</br>
+- ~~所有应用发布、日常运维工作日程展示 :date:~~ </br>
 - 详细权限操作，区分开发人员以及运维人员 </br>
 
 ## <a name="looklike"> 平台一览 </a>
