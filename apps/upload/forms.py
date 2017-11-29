@@ -10,3 +10,6 @@ class GroupUploadFileForm(forms.ModelForm):
     class Meta:
         model = models.GroupUpload
         fields = ['file']
+
+    def before_save(self,request,commit):
+        return request.POST.get('groups')

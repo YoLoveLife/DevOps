@@ -5,13 +5,13 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from timeline.models import History
-from django.contrib.auth.models import Group
 from ..permission import user as UserPermission
 from .. import models,forms
 from validate.models import ExtendUser
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 #__all__ = ['AuthorityUserCreateView','AuthorityUserUpdateView','AuthorityUserView']
 # Create your views here.
+from timeline.decorator.manager import decorator_manager
 class AuthorityUserView(LoginRequiredMixin,TemplateView):
     template_name = 'authority/user.html'
 
@@ -31,27 +31,10 @@ class AuthorityUserCreateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
     template_name = 'authority/new_update_user.html'
     success_url = reverse_lazy('authority:user')
 
+    @decorator_manager(3,u'新增用户')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=3,info="新增用户",status=0)
-        his.save()
-
-        newuser=form.save()
-
-        auths_id_list = self.request.POST.getlist('auths',[])
-        auths = Group.objects.filter(id__in = auths_id_list)
-        newuser.groups.add(*auths)
-
-        is_active = self.request.POST.get('is_active')
-        if is_active == 'actived':
-            newuser.is_actuve=1
-        else:
-            newuser.is_actuve=0
-
-        newuser.save()
-
-        his.status=1
-        his.save()
-        return super(AuthorityUserCreateView,self).form_valid(form)
+        form.before_save(request=self.request,commit=True)
+        return self.request.user,super(AuthorityUserCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(AuthorityUserCreateView,self).get_context_data(**kwargs)
@@ -73,6 +56,7 @@ class AuthorityUserUpdateView(LoginRequiredMixin,UserPermission.UserAddRequiredM
     form_class = forms.UserCreateUpdateForm
     template_name = 'authority/new_update_user.html'
     success_url = reverse_lazy('authority:user')
+
 
     def form_valid(self, form):
         his=History(user=self.request.user,type=3,info="修改用户",status=0)

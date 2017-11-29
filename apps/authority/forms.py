@@ -6,8 +6,10 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from validate.models import ExtendUser
+from django.contrib.auth.models import Group
 #__all__ = ['UserCreateUpdateForm']
 class UserCreateUpdateForm(forms.ModelForm):
+    is_active = forms.IntegerField(required=True)
     email = forms.CharField(required=True,max_length=15,label='电子邮箱',help_text=_('必填. 请输入8531集团邮箱'),)
     first_name = forms.CharField(required=True,max_length=15,label='姓')
     last_name = forms.CharField(required=True,max_length=15,label='名')
@@ -23,3 +25,13 @@ class UserCreateUpdateForm(forms.ModelForm):
             'is_active':'是否通行',
             'phone':'电话号码',
         }
+
+    def before_save(self,request,commit):
+        auths_id_list = self.request.POST.getlist('auths', [])
+        auths = Group.objects.filter(id__in=auths_id_list)
+        self.groups.add(*auths)
+        is_active = self.request.POST.get('is_active')
+        if is_active == 'actived':
+            self.is_actuve = 1
+        else:
+            self.is_actuve = 0

@@ -19,4 +19,4 @@ class GroupUpload(models.Model):
     status = models.IntegerField(default=0)
 
     def get_full_path(self):
-        return settings.MEDIA_ROOT+'/group_%s/%s'%(self.group_id,self.file)
+        return settings.MEDIA_ROOT+'/%s'%(self.file)

@@ -55,12 +55,12 @@
                         <button class="btn btn-app" id="modify_group">
                             <i class="fa fa-edit"></i> 修改
                         </button>
+                            <button class="btn btn-app" id="upload_group">
+                            <i class="fa fa-info"></i> 批量导入主机
+                        </button>
                         </form>
                         <button class="btn btn-app" id="remove_group">
                             <i class="fa fa-times"></i> 删除
-                        </button>
-                        <button class="btn btn-app" disabled>
-                            <i class="fa fa-info"></i> 信息
                         </button>
                     </div>
                 </div>
@@ -133,6 +133,12 @@
                 }
                 var obj=a[0].id;
                 action+=obj+'/update/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#upload_group',function () {
+                var form=$('#toolbar-group');
+                var action='/upload/group/';
                 form.attr('action',action);
                 location.href(action);
             })

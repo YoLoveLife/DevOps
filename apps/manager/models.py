@@ -12,9 +12,6 @@ class Group(models.Model):
     info=models.CharField(max_length=100,default='')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
 
-def upload_dir_path(instance,filename):
-    return u'group_{0}/{1}'.format(instance.group.id,filename)
-
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
     disk_size=models.CharField(max_length=100,default="")
@@ -56,7 +53,7 @@ class Host(models.Model):
     hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户
     sshpasswd = models.CharField(max_length=100,default='')#用户密码
-    sshport = models.CharField(max_length=5,default='52000')#用户端口
+    sshport = models.IntegerField(default='52000')#用户端口
     coreness = models.CharField(max_length=5,default='')#CPU数
     memory = models.CharField(max_length=7,default='')#内存
     root_disk = models.CharField(max_length=7,default="")#本地磁盘大小
