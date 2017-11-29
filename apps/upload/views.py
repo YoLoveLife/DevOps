@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from manager.models import Group
 from django.views.generic.edit import CreateView
 from timeline.decorator.manager import decorator_manager
+from utils.excel import AnalyzeHostFromExcel
 
 class UploadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin,CreateView):
     model = models.GroupUpload
@@ -23,8 +24,12 @@ class UploadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin
 
     @decorator_manager(0,u'批量导入主机信息')
     def form_valid(self, form):
-        result = self.request.user,super(UploadGroupFile,self).form_valid(form)
-        return result
+        group_id = form.before_save(request=self.request,commit=True)
+        result = super(UploadGroupFile, self).form_valid(form)
+        AnalyzeHostFromExcel(group_id,form.instance.file)
+        return self.request.user,result
 
     def get_success_url(self):
         return self.success_url
+
+# class DownLoadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin,)

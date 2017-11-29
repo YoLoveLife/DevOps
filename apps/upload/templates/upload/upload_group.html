@@ -25,9 +25,9 @@
     <!--Content Header-->
     <!--Main Content-->
     <section class="content container-fluid">
-        <form method="post" action="" id="host_form" enctype="multipart/form-data">
-        {% csrf_token %}
         <div class="row">
+            <form method="post" action="" id="host_form" enctype="multipart/form-data">
+        {% csrf_token %}
             <div class="col-md-offset-3 col-md-5">
                 <div class="row">
                     <div class="col-md-12">
@@ -36,6 +36,7 @@
                                 <h3 class="box-title" style="text-align: center">应用组关系</h3>
                             </div>
                             <div class="box-body">
+                                <a href="/static/demo.xls"><i class="fa fa-check">上传模板下载</i></a>
                                 <select id="storages" name="groups" class="select2 form-control" style="width:100%;">
                                     {% for group in groups %}
                                         {% if group.id in groups_host %}
@@ -64,26 +65,20 @@
                     </div>
                 </div>
             </div>
+            </form>
 {#            <div class="col-md-2">#}
 {#                <div class="box">#}
 {#                    <div class="box-header">#}
 {#                        <h3 class="box-title" style="text-align: center">操作</h3>#}
 {#                    </div>#}
 {#                    <div class="box-body">#}
-{#                         <button class="btn btn-app" id="btn_submit">#}
-{#                            <i class="fa fa-check"></i> 提交#}
-{#                        </button>#}
-{#                        <button class="btn btn-app" id="btn_back">#}
-{#                            <i class="fa fa-reply"></i> 回退#}
-{#                        </button>#}
-{#                        <button class="btn btn-app" disabled>#}
-{#                            <i class="fa fa-info"></i> 信息#}
-{#                        </button>#}
+{#                        <button class="btn btn-app" href="">#}
+{##}
+{#                            </button>#}
 {#                    </div>#}
 {#                </div>#}
 {#            </div>#}
         </div>
-    </form>
     </section>
     <!--Main Content-->
 <!--Modal-->

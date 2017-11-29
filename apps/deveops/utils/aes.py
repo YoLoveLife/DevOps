@@ -8,11 +8,11 @@ from binascii import b2a_hex,a2b_hex
 # from deveops.settings import SECRET_KEY
 SECRET_KEY = '1x$!#dwp2_6^tdgs1nv8pwgutbc#4m%#qaz!m!0h_f*%6fp+vt'
 KEY = SECRET_KEY
-
-cryptor = AES.new(KEY[0:16], AES.MODE_CBC, KEY[0:16])
+KEY_LENGTH=16
 def encrypt(text):
     # 这里密钥key 长度必须为16（AES-128）、24（AES-192）、或32（AES-256）Bytes 长度.目前AES-128足够用
-    length = 16
+    cryptor = AES.new(KEY[0:KEY_LENGTH], AES.MODE_CBC, KEY[0:KEY_LENGTH])
+    length = KEY_LENGTH
     count = len(text)
     add = length - (count % length)
     text = text + ('\0' * add)
