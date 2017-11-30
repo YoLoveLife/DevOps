@@ -37,6 +37,7 @@ def AnalyzeHostFromExcel(group_id,filename):
     table = workbook.sheets()[0]
     for i in range(table.nrows)[3:]:
         dict = ToDictFromExcel(table.row(i))
+        print(dict)
         if dict:
             host = Host(**dict)
             host.save()
