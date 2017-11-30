@@ -45,3 +45,7 @@ django-celery==3.2.1
 celery-with-redis==3.0
 redis==2.10.6
 xlrd==1.1.0
+click==6.7
+itsdangerous==0.24
+Werkzeug==0.12.2
+Flask==0.12.2

@@ -6,8 +6,8 @@ devEops :laughing: 开发自运维平台
 
 Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
 
-运维体系解决方案</br>
-:muscle: 实践以资产、应用信息未中心的运维平台</br>
+运维体系解决方案(正在成长中)</br>
+:muscle: 实践以资产、应用信息为中心的运维平台</br>
 django & rest-framework & bootstrap</br>
 :muscle: 参考了诸多django项目 我的Django用的真的很棒</br>
 travis & django TestCase</br>
@@ -29,7 +29,7 @@ travis & django TestCase</br>
 * [自运维功能实现](#whatcando)
 ## <a name="introduce"> 介绍 </a>
 本开发自运维平台致力于IT资源信息的整合与自动化运维，通过服务、应用配置的信息整合来运维提供帮助。</br>
-
+devEops正在不断成长
 - 所有运维操作都基于信息整合的正确性和一致性(资产信息管理) :floppy_disk: </br>
 - :bar_chart: 提供资产信息的统计,应用系统的占比、脚本|剧本的调用次数等</br>
 - 可临时搜集应用上的信息(如MySQL的status等信息)</br>
