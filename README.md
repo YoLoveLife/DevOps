@@ -44,6 +44,8 @@ devEops正在不断成长
 ![LOGIN](img/login.png)</br>
 ### 主机管理
 ![HOST](img/host.png)</br>
+### 批量主机信息上传
+![UPLOAD](img/upload.png)</br>
 ### 脚本编写
 ![SCRIPT](img/script.png)</br>
 ### 时间线展示
