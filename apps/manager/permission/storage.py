@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
+from rest_framework.permissions import BasePermission
 class StorageRequiredMixin(AccessMixin):
     redirect_url= "/permission"
     permission_required = u'manager.all'
@@ -23,6 +24,15 @@ class StorageAddRequiredMixin(StorageRequiredMixin):
 class StorageChangeRequiredMixin(StorageRequiredMixin):
     permission_required = u'manager.change_storage'
 
-class StorageDeleteRequiredMixin(StorageRequiredMixin):
+class StorageDeleteRequiredMixin(BasePermission):
     permission_required = u'manager.delete_storage'
+
+    def has_permission(self, request, view):
+        perms = self.permission_required
+        perm_list=list(request.user.get_all_permissions())
+        if perms in perm_list:
+            return True
+        else:
+            return False
+
 

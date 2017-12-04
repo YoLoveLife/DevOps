@@ -11,6 +11,7 @@ urlpatterns=[
 
     # Resource storage api
     url(r'^v1/storage/', api.ManagerStorageListAPI.as_view()),
+    url(r'^v1/storage/(?P<pk>[0-9]+)/remove/', api.ManagerStorageRemoveAPI.as_view()),
 
     # Resource search api
     url(r'^v1/search/',api.ManagerSearchAPI.as_view()),
