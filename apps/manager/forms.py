@@ -64,7 +64,7 @@ class HostBaseForm(forms.ModelForm):
     def clean_service_ip(self):
         pass
 
-    def before_save(self,request):
+    def before_save(self,request,commit):
         groups=request.POST.getlist('groups',[])
         storages=request.POST.getlist('storages',[])
         host = self.save()
@@ -99,9 +99,9 @@ class StorageCreateUpdateForm(forms.ModelForm):
             'disk_size':'存储大小','disk_path':'存储路径','info':'信息'
         }
     def before_save(self,request,commit):
-        hosts_id_list=self.request.POST.getlist('hosts',[])
+        hosts_id_list=request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
         storage = self.save()
-        storage.clear()
+        storage.hosts.clear()
         storage.hosts.add(*hosts)
         return self.save()
