@@ -1,6 +1,6 @@
 import models
 from rest_framework import serializers
-from validate.models import ExtendUser
+from authority.models import ExtendUser,Group,Permission
 #__all__ = ['UserSerializer','AuthSerializer']
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     group_name = serializers.StringRelatedField(source="get_group_name",read_only=True)
@@ -11,8 +11,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','email', 'is_active', 'last_login','phone','username','fullname','group_name',
                 )
 
-
-class AuthSerializer(serializers.HyperlinkedModelSerializer):
+class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Group
-        fields = ('id',)
+        model = Permission
+        fields = ('name','codename')
+
+class AuthSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('id','name')

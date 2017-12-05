@@ -61,18 +61,18 @@
                         </div>
                         <div class="box-body">
                             <table id="search_tb" class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th data-field="service_ip">服务IP</th>
-                                        <th data-field="info">用途</th>
-                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="hosttbody">
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
+                                <thead>
+                                <tr>
+                                    <th data-field="service_ip">服务IP</th>
+                                    <th data-field="info">用途</th>
+                                    <th data-field="id" data-formatter="detailFormatter">细节</th>
+                                </tr>
+                                </thead>
+{#                                <tbody id="hosttbody">#}
+{#                                </tbody>#}
+                                <tfoot>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -119,12 +119,12 @@
                 exportDataType : "basic",
             });
         })
-            .on('click','#btn-search',function () {
-                var Element=document.getElementById('manager-search-info');
-                var string=Element.value;
-                var data =cleanGetData(string);
-                var url = '/api-manager/v1/search/'+data;
-                var table=$('#search_tb').bootstrapTable('refresh', {url :   url});
-            })
+        .on('click','#btn-search',function () {
+            var Element=document.getElementById('manager-search-info');
+            var string=Element.value;
+            var data =cleanGetData(string);
+            var url = '/api-manager/v1/search/'+data;
+            var table=$('#search_tb').bootstrapTable('refresh', {url :   url});
+        })
     </script>
 {% endblock %}

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
-from validate.models import ExtendUser
+from authority.models import ExtendUser
 from manager.models import Host
 # from concert.models import Music
 from execute.models import Callback

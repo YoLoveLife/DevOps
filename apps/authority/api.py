@@ -24,11 +24,20 @@ class UserRemoveAPI(generics.DestroyAPIView):
         else:
             return Response({'info': '该用户不存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-# class AuthListAPI(generics.ListAPIView):
-#     module = models.Group
-#     serializer_class = serializers.AuthSerializer
-#     permission_classes = [IsAuthenticated]
-#
-#     def get_queryset(self):
-#         queryset =  models.Group.objects.all()
-#         return queryset
+class AuthListAPI(generics.ListAPIView):
+    module = models.Group
+    serializer_class = serializers.AuthSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset =  models.Group.objects.all()
+        return queryset
+
+class PermissionListAPI(generics.ListAPIView):
+    module = models.Permission
+    serializer_class = serializers.PermissionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = models.Permission.objects.all()
+        return queryset
