@@ -5,8 +5,7 @@
 # Email YoLoveLife@outlook.com
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from validate.models import ExtendUser
-from django.contrib.auth.models import Group
+from authority.models import ExtendUser,Permission,Group
 #__all__ = ['UserCreateUpdateForm']
 class UserCreateUpdateForm(forms.ModelForm):
     is_active = forms.IntegerField(required=True)
@@ -35,3 +34,13 @@ class UserCreateUpdateForm(forms.ModelForm):
             self.is_actuve = 1
         else:
             self.is_actuve = 0
+
+class AuthGroupCreateUpdate(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name']
+
+    def before_save(self,request,commit):
+        auth_id_list = self.request.POST.getlist('auths', [])
+        auths = Permission.objects.filter(id__in=auth_id_list)
+        self.permissions.add(*auths)

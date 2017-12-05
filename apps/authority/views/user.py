@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from timeline.models import History
 from ..permission import user as UserPermission
 from .. import models,forms
-from validate.models import ExtendUser
+from authority.models import ExtendUser
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 #__all__ = ['AuthorityUserCreateView','AuthorityUserUpdateView','AuthorityUserView']
 # Create your views here.

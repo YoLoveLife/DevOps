@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
-from validate.models import ExtendUser
+from authority.models import ExtendUser
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
 class Group(models.Model):
