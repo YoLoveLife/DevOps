@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.test import TestCase
 from operation.models import Script,ScriptArgs
-from validate.models import ExtendUser
+from authority.models import ExtendUser
 # Create your tests here.
 class ScriptTestCase(TestCase):
     def setUp(self):

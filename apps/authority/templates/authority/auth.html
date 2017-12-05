@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block single-css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -20,28 +21,24 @@
     <!--Main Content-->
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-3">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">权限组列表</h3>
+                        <h3 class="box-title">权限组配置</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table" id="script_tb">
+                        <table class="table" id="auth_tb">
                             <thead>
                                     <tr>
-                                        <th data-field="check" data-radio="true">#</th>
                                         <th data-field="name">权限组名称</th>
-                                        <th data-field="info">脚本信息</th>
-                                        <th data-field="author_name">作者</th>
-                                        <th data-field="status" data-formatter="statusFormatter">状态</th>
-                                        <th data-field="id" data-formatter="scriptFormatter">详细</th>
+                                        <th data-field="id" data-formatter="statusFormatter">配置</th>
                                     </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title" style="text-align: center">操作</h3>
@@ -64,54 +61,67 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-8">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title" style="text-align: center">操作</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="auth_editor">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <!--Main Content-->
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/../../../static/js_back/jquery.form.min.js' %}"></script>
-    <script src="{% static 'js/../../../static/js_back/bootstrap-table.min.js' %}"></script>
-    <script src="{% static 'js/../../../static/js_back/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'js/../../../static/js_back/tableExport.min.js' %}"></script>
+    <script src="{% static 'plugins/jQuery-form/jquery.form.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
     <script>
         function historyBack() {
             window.history.go(-1);
         }
         function statusFormatter(value,row,index) {
-            var label_status;
-            if(value==1){
-                label_status='<span class="label label-success">可使用</span>';
-            }else{
-                label_status='<span class="label label-danger">未编辑完成</span>';
-            }
-            return [label_status].join('');
-        }
-        function scriptFormatter(value,row,index) {
-            var label_a='<a class="btn btn-default" href="/operation/script/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+            var label_a='<button class="btn btn-default" onclick=UpdateAuth('+value+')>'+'<i class="fa fa-paperclip"></i>'+'</button>';
             return [label_a].join('');
         }
+        function UpdateAuth(value) {
+            var url = '/authority/auth/'+value+'/update/';
+            $.ajax({
+                mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                url: url,
+                type: 'GET',
+                success: function(data) {
+                    $('#auth_editor').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                dataType: "html",
+                async: false
+            });
+            $('.select2').select2();
+        }
         $(document).ready(function(){
-            var table=$('#script_tb').bootstrapTable({
-                url : '/api-operation/v1/script/',
+            $('.select2').select2();
+            var table=$('#auth_tb').bootstrapTable({
+                url : '/api-authority/v1/auth/',
                 method  : 'GET',
                 uniqueId :  'id',
-                search  :   true,
                 sortable    :   false,
                 pagination  :   true,
                 sidePagination  : 'client',
-                clickToSelect:  true,
-                singleSelect    :   true,
-                showRefresh :   true,
-                showColumns :    true,
-                showExport: true,
                 exportDataType : "basic",
-                pageSize    :   15,
+                pageSize    :   20,
                 pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
             });
         })
-            .on('click','#add_script',function () {
+            .on('click','#add_auth',function () {
                 var form=$('#toolbar-script');
                 var action='/operation/script/';
                 var obj=0;
@@ -119,11 +129,11 @@
                 form.attr('action',action);
                 location.href(action);
             })
-            .on('click','#modify_script',function () {
+            .on('click','#modify_auth',function () {
                 var form=$('#toolbar-script');
                 var action='/operation/script/';
                 var obj=0;
-                var a=$('#script_tb').bootstrapTable('getSelections');
+                var a=$('#auth_tb').bootstrapTable('getSelections');
                 if(a.length>=1){
                     obj=a[0].id;
                 }

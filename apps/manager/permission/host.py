@@ -26,6 +26,7 @@ class HostChangeRequiredMixin(HostRequiredMixin):
 
 class HostDeleteRequiredMixin(BasePermission):
     permission_required = u'manager.delete_host'
+
     def has_permission(self, request, view):
         perms = self.permission_required
         perm_list=list(request.user.get_all_permissions())
