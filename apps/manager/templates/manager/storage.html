@@ -56,13 +56,10 @@
                         <button class="btn btn-app" id="modify_storage">
                             <i class="fa fa-edit"></i> 修改
                         </button>
-                        <button class="btn btn-app" disabled>
+                        </form>
+                        <button class="btn btn-app" id="remove_storage">
                             <i class="fa fa-times"></i> 删除
                         </button>
-                        <button class="btn btn-app" disabled>
-                            <i class="fa fa-info"></i> 信息
-                        </button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -80,7 +77,18 @@
         function historyBack() {
             window.history.go(-1);
         }
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
         $(document).ready(function(){
+            $.ajaxSetup({
+               beforeSend: function (xhr,settings) {
+                   if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+                   }
+               }
+            });
+
             var table=$('#storage_tb').bootstrapTable({
                 url : '/api-manager/v1/storage/',
                 method  : 'GET',
@@ -143,6 +151,30 @@
                 action+=obj+'/update/';
                 form.attr('action',action);
                 location.href(action);
+            })
+            .on('click','#remove_storage',function () {
+                var a=$('#storage_tb').bootstrapTable('getSelections');
+                if(a.length<1){
+                    alert('请选择数据');
+                    return false;
+                }
+                var data={};
+                if(confirm("您确认要删除该存储吗？")){
+                    $.ajax({
+                        type:"DELETE",
+                        url:"/api-manager/v1/storage/"+a[0].id+"/remove/",
+                        data:data,
+                        dataType:"json",
+                        success:function(data){
+                            $('#storage_tb').bootstrapTable('refresh');
+                        },
+                        error:function(data){
+                            alert(data.responseJSON.detail);
+                        }
+                    })
+                }else{
+
+                }
             })
     </script>
 {% endblock %}

@@ -37,12 +37,12 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'utils.apps.UtilsConfig',
+    'authority.apps.AuthorityConfig',
     'validate.apps.ValidateConfig',
     'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',
     'operation.apps.OperationConfig',
     'application.apps.MagicConfig',
-    'authority.apps.AuthorityConfig',
     'execute.apps.ExecuteConfig',
     'concert.apps.ConcertConfig',
     'timeline.apps.TimelineConfig',
@@ -163,8 +163,8 @@ MEDIA_ROOT = PROJECT_DIR + '/upload'
 
 #LOGIN
 LOGIN_URL='/validate/login'
-AUTH_USER_MODEL='validate.ExtendUser'
-
+AUTH_USER_MODEL='authority.ExtendUser'
+AUTH_GROUP_MODEL='authority.ExtendGroup'
 #SESSION
 SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True

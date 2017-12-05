@@ -149,18 +149,20 @@
                     return false;
                 }
                 var data={};
-                $.ajax({
-                    type:"DELETE",
-                    url:"/api-manager/v1/group/"+a[0].id+"/remove/",
-                    data:data,
-                    dataType:"json",
-                    success:function(data){
-                        $('#group_tb').bootstrapTable('refresh');
-                    },
-                    error:function(data){
-                        alert(data.responseJSON.detail);
-                    }
-                })
+                if(confirm("您确认要删除该应用组吗？")){
+                    $.ajax({
+                        type:"DELETE",
+                        url:"/api-manager/v1/group/"+a[0].id+"/remove/",
+                        data:data,
+                        dataType:"json",
+                        success:function(data){
+                            $('#group_tb').bootstrapTable('refresh');
+                        },
+                        error:function(data){
+                            alert(data.responseJSON.detail);
+                        }
+                    })
+                }
             })
     </script>
 {% endblock %}

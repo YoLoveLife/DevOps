@@ -180,18 +180,22 @@
                 return false;
             }
             var data={};
-            $.ajax({
-                type:"DELETE",
-                url:"/api-manager/v1/host/"+a[0].id+"/remove/",
-                data:data,
-                dataType:"json",
-                success:function(data){
-                    $('#host_tb').bootstrapTable('refresh');
-                },
-                error:function(data){
-                    alert(data.responseJSON.detail);
-                }
-            })
+            if(confirm("您确认要删除该主机吗？")){
+                $.ajax({
+                    type:"DELETE",
+                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",
+                    data:data,
+                    dataType:"json",
+                    success:function(data){
+                        $('#host_tb').bootstrapTable('refresh');
+                    },
+                    error:function(data){
+                        alert(data.responseJSON.detail);
+                    }
+                })
+            }else{
+
+            }
         })
 </script>
 {% endblock %}
