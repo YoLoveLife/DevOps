@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from manager.models import Group
 from django.views.generic.edit import CreateView
 from timeline.decorator.manager import decorator_manager
-from utils.excel import AnalyzeHostFromExcel
+from utils.excel import AnalyzeHostFromExcel,AnalyzeStorageFromExcel
 
 class UploadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin,CreateView):
     model = models.GroupUpload
@@ -32,4 +32,23 @@ class UploadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin
     def get_success_url(self):
         return self.success_url
 
-# class DownLoadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin,)
+
+class UploadStorageFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin,CreateView):
+    model = models.StorageUpload
+    form_class = forms.StorageUploadFileForm
+    template_name = "upload/upload_storage.html"
+    success_url = reverse_lazy('manager:storage')
+
+    def get_context_data(self, **kwargs):
+        context = super(UploadStorageFile,self).get_context_data(**kwargs)
+        return context
+
+    @decorator_manager(0,u'批量导入存储信息')
+    def form_valid(self, form):
+        # form.before_save(request=self.request,commit=True)
+        result = super(UploadStorageFile, self).form_valid(form)
+        AnalyzeStorageFromExcel(form.instance.file)
+        return self.request.user,result
+
+    def get_success_url(self):
+        return self.success_url
