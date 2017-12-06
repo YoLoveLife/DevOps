@@ -8,4 +8,5 @@ from .. import views
 urlpatterns = [
     #Resource group url
     url(r'^group/$', views.UploadGroupFile.as_view(), name='groupupload'),
+    url(r'^storage/$',views.UploadStorageFile.as_view(),name='storageload'),
 ]
