@@ -24,7 +24,7 @@ class GroupUpload(Upload,models.Model):
         (1,u'解析完毕'),
     )
     id=models.AutoField(primary_key=True)
-    file = models.FileField(upload_to=upload_group_dir,default='user_default/default.xls')
+    file = models.FileField(upload_to=upload_group_dir,default='')
     group = models.ForeignKey(Group,default=1)
     status = models.IntegerField(default=0,choices=STATUS_CHOICES)
 

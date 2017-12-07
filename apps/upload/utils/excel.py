@@ -53,8 +53,8 @@ def ToDictFromExcelForStorage(rowdata):
     disk_path=1
     info=2
     host=3
-    if Host.objects.filter(service_ip=rowdata[host].value).exists():
-        if not Storage.objects.filter(disk_size=rowdata[disk_size].value,
+    if Host.objects.filter(service_ip=rowdata[host].value).exists():#判断Host是否存在 如果不存在则不增加该存储
+        if not Storage.objects.filter(disk_size=rowdata[disk_size].value, #判断该存储是否存在 不存在返回对应的数据
                                   disk_path=rowdata[disk_path].value,
                                   info=rowdata[info].value).exists():
             return {
@@ -62,7 +62,9 @@ def ToDictFromExcelForStorage(rowdata):
                 "disk_path":rowdata[disk_path].value,
                 "info":rowdata[info].value
             },Host.objects.filter(service_ip=rowdata[host].value).get()
-        else:
+        else:#如果存储存在 判断host中是否有这个存储
+            # host = Host.objects.filter(service_ip=rowdata[host].value).get()
+            # host.storages.
             return {}
     else:
         return {}
