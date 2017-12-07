@@ -68,8 +68,10 @@ class ManagerGroupDetailView(LoginRequiredMixin,DetailView):
         context=super(ManagerGroupDetailView,self).get_context_data(**kwargs)
         group=self.object
         hosts=self.object.hosts.all()
+        manage_user = self.object.users.all()
         context.update({
             'group':group,
             'hosts':hosts,
+            'manage_user':manage_user,
         })
         return context

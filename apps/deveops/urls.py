@@ -19,6 +19,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url,include
+from django.views.static import serve
+from django.conf import settings
 import views
 urlpatterns = [
     # VIEW
@@ -41,6 +43,8 @@ urlpatterns = [
     url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
     url(r'^api-concert/',include('concert.urls.api_urls',namespace='api-concert')),
     url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
+
+    url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
 
 '''
