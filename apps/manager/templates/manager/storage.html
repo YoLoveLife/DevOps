@@ -56,6 +56,9 @@
                         <button class="btn btn-app" id="modify_storage">
                             <i class="fa fa-edit"></i> 修改
                         </button>
+                        <button class="btn btn-app" id="upload_storage">
+                            <i class="fa fa-info"></i> 批量导入主机
+                        </button>
                         </form>
                         <button class="btn btn-app" id="remove_storage">
                             <i class="fa fa-times"></i> 删除
@@ -149,6 +152,12 @@
                 }
                 var obj=a[0].id;
                 action+=obj+'/update/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#upload_storage',function () {
+                var form=$('#toolbar-storage');
+                var action='/upload/storage/';
                 form.attr('action',action);
                 location.href(action);
             })
