@@ -35,6 +35,7 @@
                         <tr>
                             <th>主机名</th>
                             <th>用途</th>
+                            <th>详细</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,6 +43,48 @@
                             <tr>
                                 <td>{{ host.hostname }}</td>
                                 <td>{{ host.info }}</td>
+                                <td>
+                                    <a class="btn btn-default" href="/manager/host/{{ host.id }}/detail/"><i class="fa fa-paperclip"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-wifi"></i>主机列表</h3>
+                </div>
+                <div class="box-body">
+                    <img src="{{ object.framework.url }}" style="width: 100%;height: 100%;">
+                </div>
+            </div>
+        </div>
+            <div class="col-md-5">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-phone"></i>管理人员信息</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered" style="word-break:break-all; word-wrap:break-all;">
+                        <thead>
+                        <tr>
+                            <th>管理员名称</th>
+                            <th>电子邮件</th>
+                            <th>联系方式</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in manage_user %}
+                            <tr>
+                                <td>{{ user.get_full_name }}</td>
+                                <td>{{ user.get_8531email }}</td>
+                                <td>{{ user.phone }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

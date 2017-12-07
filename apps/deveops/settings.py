@@ -155,11 +155,15 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+# Media files
+MEDIA_ROOT = PROJECT_DIR + '/media'
 
-MEDIA_ROOT = PROJECT_DIR + '/upload'
+MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_DIR, "static"),
+    os.path.join(PROJECT_DIR, "media"),
+)
 
 #LOGIN
 LOGIN_URL='/validate/login'

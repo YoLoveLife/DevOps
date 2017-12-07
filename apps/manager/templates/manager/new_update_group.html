@@ -5,6 +5,7 @@
 {% block single-css %}
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-fileinput/css/fileinput.min.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -33,23 +34,25 @@
                             <h3 class="box-title">应用组逻辑信息</h3>
                         </div>
                         <div class="box-body">
+{#                            <div class="row">#}
+{#                                <div class="col-md-4">#}
+{#                                    <p class="alert alert-danger" id="modal-error" style="display: none"></p>#}
+{#                                </div>#}
+{#                            </div>#}
                             <div class="row">
-                                <div class="col-md-4">
-                                    <p class="alert alert-danger" id="modal-error" style="display: none"></p>
+                                <div class="col-md-6">
+                                    {% bootstrap_field form.name %}
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_framework">架构图片</label>
+                                        <input id="input-b5" name="framework" type="file" multiple data-allowed-file-extensions='["jpg","png"]'>
+                                   </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.name %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.info %}
-                                    </div>
+                                <div class="col-md-12">
+                                    {% bootstrap_field form.info %}
                                 </div>
                             </div>
                         </div>
@@ -113,12 +116,18 @@
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-fileinput/js/fileinput.min.js' %}"></script>
     <script>
         function historyBack() {
             window.history.go(-1);
         }
     $(document).ready(function () {
         $('.select2').select2({dropdownAutoWidth : true});
+        $("#input-b5").fileinput({
+            showCaption: false,
+            showUpload: false,
+            showPreview: true,
+        });
     })
         .on('click','#btn_submit',function () {
             $('#group_form').submit();
