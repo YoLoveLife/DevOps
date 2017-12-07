@@ -9,7 +9,7 @@ from deveops.utils import aes,checkpass
 class GroupCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Group
-        fields = ['name','info']
+        fields = ['name','info','framework']
         widgets = {
             'info':forms.Textarea(attrs=None)
         }

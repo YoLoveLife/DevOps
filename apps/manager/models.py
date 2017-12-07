@@ -6,10 +6,16 @@ from softlib.models import Softlib
 from authority.models import ExtendUser
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
+
+def upload_dir_path(instance, filename):
+    #instance.group.id,
+    return u'framework/{0}'.format(filename)
+
 class Group(models.Model):
-    id=models.AutoField(primary_key=True)
-    name=models.CharField(max_length=100,default='')
-    info=models.CharField(max_length=100,default='')
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100,default='')
+    info = models.CharField(max_length=100,default='')
+    framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
 
     def _name(self):
