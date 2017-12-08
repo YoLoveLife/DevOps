@@ -1,5 +1,6 @@
 <div class="row">
     <div class="col-md-12">
+        <label class="control-label" for="id_hosts">{{ object.name }}</label>
         <select id="storages" name="groups" class="select2 form-control" multiple="yes" style="width:100%;">
             {% for permission in permissions %}
                 {% if permission.id in permissions_group %}

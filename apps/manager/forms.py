@@ -22,9 +22,15 @@ class GroupCreateUpdateForm(forms.ModelForm):
     def before_save(self,request,commit):
         hosts_id_list = request.POST.getlist('hosts',[])
         hosts = models.Host.objects.filter(id__in=hosts_id_list)
+
+        users_id_list = request.POST.getlist('users',[])
+        users = models.ExtendUser.objects.filter(id__in=users_id_list)
+
         group = self.save(commit=commit)
         group.hosts.clear()
         group.hosts.add(*hosts)
+        group.users.clear()
+        group.users.add(*users)
         group.save()
         return group
 
@@ -67,7 +73,7 @@ class HostBaseForm(forms.ModelForm):
     def before_save(self,request,commit):
         groups=request.POST.getlist('groups',[])
         storages=request.POST.getlist('storages',[])
-        host = self.save()
+        host = self.save(commit=commit)
         host.groups.clear()
         host.storages.clear()
         groups = models.Group.objects.filter(id__in=groups)
