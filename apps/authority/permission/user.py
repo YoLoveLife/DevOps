@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 #__all__ = ['UserDeleteRequiredMixin','UserAddRequiredMixin','UserChangeRequiredMixin']
 class UserRequiredMixin(AccessMixin):
     redirect_url= "/permission"
-    permission_required = u'validate.all'
+    permission_required = u'authority.all'
     permission_denied_message = ''
 
     def has_permission(self):
@@ -20,11 +20,11 @@ class UserRequiredMixin(AccessMixin):
         return super(UserRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 class UserAddRequiredMixin(UserRequiredMixin):
-    permission_required = u'validate.add_extenduser'
+    permission_required = u'authority.add_extenduser'
 
 class UserChangeRequiredMixin(UserRequiredMixin):
-    permission_required = u'validate.change_extenduser'
+    permission_required = u'authority.change_extenduser'
 
 class UserDeleteRequiredMixin(UserRequiredMixin):
-    permission_required = u'validate.delete_extenduser'
+    permission_required = u'authority.delete_extenduser'
 

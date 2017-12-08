@@ -26,10 +26,11 @@ class UserCreateUpdateForm(forms.ModelForm):
         }
 
     def before_save(self,request,commit):
-        auths_id_list = self.request.POST.getlist('auths', [])
+        auths_id_list = request.POST.getlist('auths', [])
         auths = Group.objects.filter(id__in=auths_id_list)
+        self.groups.clear()
         self.groups.add(*auths)
-        is_active = self.request.POST.get('is_active')
+        is_active = request.POST.get('is_active')
         if is_active == 'actived':
             self.is_actuve = 1
         else:
