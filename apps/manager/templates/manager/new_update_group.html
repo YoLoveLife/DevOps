@@ -26,89 +26,115 @@
     <!--Main Content-->
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-md-7">
-                <form method="post" action="" id="group_form" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">应用组逻辑信息</h3>
-                        </div>
-                        <div class="box-body">
-{#                            <div class="row">#}
-{#                                <div class="col-md-4">#}
-{#                                    <p class="alert alert-danger" id="modal-error" style="display: none"></p>#}
-{#                                </div>#}
-{#                            </div>#}
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {% bootstrap_field form.name %}
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label" for="id_framework">架构图片</label>
-                                        <input id="input-b5" name="framework" type="file" multiple data-allowed-file-extensions='["jpg","png"]'>
-                                   </div>
-                                </div>
+            <form method="post" action="" id="group_form" enctype="multipart/form-data">
+                {% csrf_token %}
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">应用组基础信息</h3>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    {% bootstrap_field form.info %}
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% bootstrap_field form.name %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% bootstrap_field form.info %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">应用组主机信息</h3>
-                        </div>
-                        <div class="box-body">
-                            <select name="hosts" class="select2 form-control" multiple>
-                                {% for host in hosts %}
-                                    {% if host.id in group_hosts %}
-                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">管理用户列表</h3>
+                            </div>
+                            <div class="box-body">
+                                <label class="control-label" for="id_users">管理用户列表</label>
+                                <select name="users" class="select2 form-control" multiple>
+                                    {% for user in users %}
+                                    {% if user.id in group_users %}
+                                    <option value="{{ user.id }}" selected>{{ user.get_full_name }} - {{ user.get_8531email }}</option>
                                     {% else %}
-                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                    <option value="{{ user.id }}">{{ user.get_full_name }} - {{ user.get_8531email }}</option>
                                     {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title" style="text-align: center">操作</h3>
-                        </div>
-                        <div class="box-body">
-                            <button class="btn btn-app" id="btn_submit">
-                                <i class="fa fa-check"></i> 提交
-                            </button>
-                            <button class="btn btn-app" id="btn_back">
-                                <i class="fa fa-reply"></i> 回退
-                            </button>
-                            <button class="btn btn-app" disabled>
-                                <i class="fa fa-times"></i> 删除
-                            </button>
-                            <button class="btn btn-app" disabled>
-                                <i class="fa fa-info"></i> 信息
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title" style="text-align: center">提示</h3>
-                        </div>
-                        <div class="box-body">
-                            <dd>此处填写数据为基础主机信息，逻辑层次信息在外部维护</dd>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">所属主机列表</h3>
+                            </div>
+                            <div class="box-body">
+                                <label class="control-label" for="id_hosts">主机列表</label>
+                                <select name="hosts" class="select2 form-control" multiple>
+                                    {% for host in hosts %}
+                                    {% if host.id in group_hosts %}
+                                    <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                    {% else %}
+                                    <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title" style="text-align: center">操作</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <button class="btn btn-app" id="btn_submit">
+                                            <i class="fa fa-check"></i> 提交
+                                        </button>
+                                        <button class="btn btn-app" disabled>
+                                            <i class="fa fa-reply"></i> 回退
+                                        </button>
+                                        <button class="btn btn-app" disabled>
+                                            <i class="fa fa-times"></i> 删除
+                                        </button>
+                                        <button class="btn btn-app" disabled>
+                                            <i class="fa fa-info"></i> 信息
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title" style="text-align: center">提示</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <dd>此处填写数据为基础主机信息，逻辑层次信息在外部维护</dd>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
         </div>
     </section>
     <!--Main Content-->
