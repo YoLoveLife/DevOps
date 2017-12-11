@@ -3,6 +3,7 @@ import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
+from models import Group
 #__all__ = ['UserListAPI','UserRemoveAPI']
 class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
@@ -41,3 +42,12 @@ class PermissionListAPI(generics.ListAPIView):
     def get_queryset(self):
         queryset = models.Permission.objects.all()
         return queryset
+
+class PermissionUpdateAPI(generics.UpdateAPIView):
+    module = Group
+    serializer_class = serializers.GroupPermissionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+
+        return Response({'info': '转换成功'}, status=status.HTTP_201_CREATED)

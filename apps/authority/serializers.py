@@ -20,3 +20,8 @@ class AuthSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('id','name')
+
+class GroupPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('id')
