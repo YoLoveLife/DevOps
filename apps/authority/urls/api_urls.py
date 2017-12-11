@@ -10,4 +10,5 @@ urlpatterns=[
 
     # Resource permission api
     url(r'^v1/permission/$',api.PermissionListAPI.as_view()),
+    url(r'^v1/permission/(?P<pk>[0-9]+)/update/$',api.PermissionUpdateAPI.as_view()),
 ]
