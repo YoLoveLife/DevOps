@@ -62,6 +62,7 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
     def get_form(self, form_class=None):
         form = super(ManagerHostUpdateView,self).get_form(form_class)
+
         sshpasswd = form.initial['sshpasswd']
         form.initial['sshpasswd'] = aes.decrypt(sshpasswd)
         return form

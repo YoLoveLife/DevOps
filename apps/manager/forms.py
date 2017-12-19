@@ -6,6 +6,28 @@
 from django import forms
 import models
 from deveops.utils import aes,checkpass
+from django.utils.translation import gettext_lazy as _
+class BaseMultipleChoiceField(forms.ModelChoiceField):
+
+    def __init__(self,clsName,labName):
+        return super(BaseMultipleChoiceField,self).__init__(required=True,queryset=clsName.objects.all(),
+                                                             to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
+                                                             empty_label=None,label=labName,choices={'groups':clsName.objects.all()})
+    def label_from_instance(self, obj):
+        pass
+        #return obj.name
+
+
+class GroupMultipleChoiceField(BaseMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name
+
+class StorageMultipleChoiceField(BaseMultipleChoiceField):
+
+    def label_from_instance(self, obj):
+        return obj.disk_path + ' - ' +obj.info
+
+
 class GroupCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Group
@@ -42,12 +64,16 @@ class HostBaseForm(forms.ModelForm):
     memory = forms.CharField(required=False,max_length=7,label="内存大小")
     root_disk = forms.CharField(required=False,max_length=7,label="本地磁盘")
     service_ip = forms.CharField(required=True,max_length=15,label="服务IP")
+    groups = GroupMultipleChoiceField(models.Group,u'应用组')
+    storages = StorageMultipleChoiceField(models.Storage,u'存储')
+
     class Meta:
         model = models.Host
         fields = ['systemtype','manage_ip',
                   'service_ip','outer_ip','server_position',
                   'hostname','normal_user','sshport',
-                  'coreness','memory','root_disk','info','sshpasswd']#,'status']
+                  'coreness','memory','root_disk','info','sshpasswd',
+                  'groups','storages']
         widgets = {
             'info':forms.Textarea(attrs=None),
             'systemtype': forms.Select(attrs={'type': 'select2 form-control'}),
