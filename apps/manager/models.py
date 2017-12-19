@@ -27,7 +27,6 @@ class Storage(models.Model):
     disk_path=models.CharField(max_length=100,default="")
     info=models.CharField(max_length=100,default="")
 
-
     def _name(self):
         return 'storage'
 
@@ -72,7 +71,6 @@ class Host(models.Model):
     root_disk = models.CharField(max_length=7,default="")#本地磁盘大小
     info = models.CharField(max_length=200,default="")
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
-
 
     def _name(self):
         return 'host'
