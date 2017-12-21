@@ -7,12 +7,11 @@ from django import forms
 import models
 from deveops.utils import aes,checkpass
 from django.utils.translation import gettext_lazy as _
-class BaseMultipleChoiceField(forms.ModelChoiceField):
-
+class BaseMultipleChoiceField(forms.ModelMultipleChoiceField):
     def __init__(self,clsName,labName):
         return super(BaseMultipleChoiceField,self).__init__(required=True,queryset=clsName.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
-                                                             empty_label=None,label=labName,choices={'groups':clsName.objects.all()})
+                                                             label=labName)
     def label_from_instance(self, obj):
         pass
         #return obj.name
@@ -96,16 +95,22 @@ class HostBaseForm(forms.ModelForm):
     def clean_service_ip(self):
         pass
 
+    # def clean_groups(self):
+    #     pass
+
+    # def clean_storages(self):
+    #     pass
+
     def before_save(self,request,commit):
-        groups=request.POST.getlist('groups',[])
-        storages=request.POST.getlist('storages',[])
-        host = self.save(commit=commit)
-        host.groups.clear()
-        host.storages.clear()
-        groups = models.Group.objects.filter(id__in=groups)
-        storages = models.Storage.objects.filter(id__in=storages)
-        host.groups.add(*groups)
-        host.storages.add(*storages)
+        # groups=request.POST.getlist('groups',[])
+        # storages=request.POST.getlist('storages',[])
+        # host = self.save(commit=commit)
+        # host.groups.clear()
+        # host.storages.clear()
+        # groups = models.Group.objects.filter(id__in=groups)
+        # storages = models.Storage.objects.filter(id__in=storages)
+        # host.groups.add(*groups)
+        # host.storages.add(*storages)
         return
 
 class HostCreateForm(HostBaseForm):

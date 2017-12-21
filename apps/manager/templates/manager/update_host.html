@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+    <h1>
+        <i class="fa fa-laptop"></i>
+        主机
+        <small><i class="fa fa-angle-double-right"></i>增加-修改</small>
+    </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-truck"></i>
+            <li class="active">Manager</li>
+            <li><a href="/manager/host/">Host</a></li>
+            <li class="active">New-Update</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <form method="post" action="" id="host_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-5">
+                    {% csrf_token %}
+                    <div class="box" style="display: none">
+                        <div class="box-header">
+                            <h3 class="box-title">主机信息修改提示</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="alert alert-danger" id="modal-error"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">主机管理信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.manage_ip %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.service_ip %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.outer_ip %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.sshport %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.server_position %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.systemtype %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">主机配置信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.hostname %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.normal_user %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.sshpasswd %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.coreness %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.memory %}
+                                </div>
+                                <div class="col-md-4">
+                                    {% bootstrap_field form.root_disk %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    {% bootstrap_field form.info %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">应用组关系</h3>
+                        </div>
+                        <div class="box-body">
+                            <select id="storages" name="groups" class="select2 form-control" multiple="yes" style="width:100%;">
+                                {% for group in groups %}
+                                    {% if group.id in groups_host %}
+                                        <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                    {% else %}
+                                       <option value="{{ group.id }}">{{ group.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">存储</h3>
+                        </div>
+                        <div class="box-body">
+                            <select id="storages" name="storages" class="select2 form-control" multiple style="width:100%;">
+                                {% for storage in storages %}
+                                    {% if storage.id in storages_host %}
+                                        <option value="{{ storage.id }}" selected>{{ storage.disk_path }} - {{ storage.info }}</option>
+                                    {% else %}
+                                        <option value="{{ storage.id }}">{{ storage.disk_path }} - {{ storage.info }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">操作</h3>
+                        </div>
+                        <div class="box-body">
+                             <button class="btn btn-app" id="btn_submit">
+                                <i class="fa fa-check"></i> 提交
+                            </button>
+                            <button class="btn btn-app" id="btn_back">
+                                <i class="fa fa-reply"></i> 回退
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-info"></i> 信息
+                            </button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+    $(document).ready(function () {
+        $('.select2').select2();
+    })
+        .on('click','#btn_submit',function () {
+{#            $('#host_form').submit();#}
+        })
+        .on('click','#btn_back',function () {
+            history.go(-1);
+        })
+    </script>
+{% endblock %}

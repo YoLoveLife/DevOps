@@ -25,12 +25,12 @@ class ManagerHostListView(LoginRequiredMixin,TemplateView):
 class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
     form_class = forms.HostCreateForm
-    template_name = 'manager/new_update_host.html'
+    template_name = 'manager/new_host.html'
     success_url = reverse_lazy('manager:host')
 
     @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
-        form.before_save(request=self.request)
+        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -52,7 +52,7 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
 class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
     form_class = forms.HostUpdateForm
-    template_name = 'manager/new_update_host.html'
+    template_name = 'manager/update_host.html'
     success_url = reverse_lazy('manager:host')
 
     @decorator_manager(0,u'修改应用主机')
