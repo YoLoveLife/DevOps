@@ -1,10 +1,11 @@
 devEops :laughing: 开发自运维平台
 ================================
-[![Travis Build Status](https://travis-ci.org/YoLoveLife/DevOps.svg?branch=master)](https://travis-ci.org/YoLoveLife/devEops)
+[![Travis Build Status](https://travis-ci.org/YoLoveLife/DevOps.svg?branch=master)](https://travis-ci.org/YoLoveLife/DevOps)
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/YoLoveLife/devEops/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) :yum: </br>
 
 Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
+:heart: 感谢所有 :star: 我的人 你们是我努力的动力</br>
 
 运维体系解决方案(正在成长中)</br>
 :muscle: 实践以资产、应用信息为中心的运维平台</br>
