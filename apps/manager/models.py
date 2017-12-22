@@ -18,6 +18,11 @@ class Group(models.Model):
     framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
 
+    def __unicode__(self):
+        return self.name
+
+    __str__ = __unicode__
+
     def _name(self):
         return 'group'
 
@@ -26,6 +31,11 @@ class Storage(models.Model):
     disk_size=models.CharField(max_length=100,default="")
     disk_path=models.CharField(max_length=100,default="")
     info=models.CharField(max_length=100,default="")
+
+    def __unicode__(self):
+        return self.disk_path + ' - ' + self.info
+
+    __str__ = __unicode__
 
     def _name(self):
         return 'storage'
@@ -71,6 +81,11 @@ class Host(models.Model):
     root_disk = models.CharField(max_length=7,default="")#本地磁盘大小
     info = models.CharField(max_length=200,default="")
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
+
+    def __unicode__(self):
+        return self.hostname + ' - ' + self.service_ip + ' - ' + self.info
+
+    __str__ = __unicode__
 
     def _name(self):
         return 'host'

@@ -25,24 +25,15 @@ class ManagerHostListView(LoginRequiredMixin,TemplateView):
 class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
     form_class = forms.HostCreateForm
-    template_name = 'manager/new_host.html'
+    template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerHostCreateView,self).get_context_data(**kwargs)
-        groups = models.Group.objects.all()
-        storages = models.Storage.objects.all()
-        context.update({
-            'groups':groups,
-            'groups_host':{},
-            'storages':storages,
-            'storages_host':{}
-        })
         return context
 
     def get_success_url(self):
@@ -52,12 +43,11 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
 class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
     form_class = forms.HostUpdateForm
-    template_name = 'manager/update_host.html'
+    template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
     @decorator_manager(0,u'修改应用主机')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_form(self, form_class=None):
@@ -69,17 +59,6 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
-        groups = models.Group.objects.all()
-        groups_host = [group.id for group in self.object.groups.all()]
-
-        storages = models.Storage.objects.all()
-        storages_host = [storage.id for storage in self.object.storages.all()]
-        context.update({
-            'groups':groups,
-            'groups_host':groups_host,
-            'storages':storages,
-            'storages_host':storages_host
-        })
         return context
 
     def get_success_url(self):
