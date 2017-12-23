@@ -30,19 +30,10 @@ class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMix
 
     @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
-        form.before_save(request=self.request)
         return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerHostCreateView,self).get_context_data(**kwargs)
-        groups = models.Group.objects.all()
-        storages = models.Storage.objects.all()
-        context.update({
-            'groups':groups,
-            'groups_host':{},
-            'storages':storages,
-            'storages_host':{}
-        })
         return context
 
     def get_success_url(self):
@@ -57,28 +48,17 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
     @decorator_manager(0,u'修改应用主机')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerHostUpdateView, self).form_valid(form)
 
     def get_form(self, form_class=None):
         form = super(ManagerHostUpdateView,self).get_form(form_class)
+
         sshpasswd = form.initial['sshpasswd']
         form.initial['sshpasswd'] = aes.decrypt(sshpasswd)
         return form
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
-        groups = models.Group.objects.all()
-        groups_host = [group.id for group in self.object.groups.all()]
-
-        storages = models.Storage.objects.all()
-        storages_host = [storage.id for storage in self.object.storages.all()]
-        context.update({
-            'groups':groups,
-            'groups_host':groups_host,
-            'storages':storages,
-            'storages_host':storages_host
-        })
         return context
 
     def get_success_url(self):

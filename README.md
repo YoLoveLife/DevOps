@@ -1,10 +1,11 @@
 devEops :laughing: 开发自运维平台
 ================================
-[![Travis Build Status](https://travis-ci.org/YoLoveLife/DevOps.svg?branch=master)](https://travis-ci.org/YoLoveLife/devEops)
+[![Travis Build Status](https://travis-ci.org/YoLoveLife/DevOps.svg?branch=master)](https://travis-ci.org/YoLoveLife/DevOps)
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/YoLoveLife/devEops/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) :yum: </br>
 
 Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
+:heart: 感谢所有 :star: 我的人 你们是我努力的动力</br>
 
 运维体系解决方案(正在成长中)</br>
 :muscle: 实践以资产、应用信息为中心的运维平台</br>
@@ -32,8 +33,8 @@ travis & django TestCase</br>
 devEops正在不断成长
 - 所有运维操作都基于信息整合的正确性和一致性(资产信息管理) :floppy_disk: </br>
 - :bar_chart: 提供资产信息的统计,应用系统的占比、脚本|剧本的调用次数等</br>
-- 可临时搜集应用上的信息(如MySQL的status等信息)</br>
-- 所有运维操作(脚本 | 剧本)在提交的时候会自动注入资产信息并通过ansible远程执行</br>
+- ~~可临时搜集应用上的信息(如MySQL的status等信息)~~</br>
+- ~~所有运维操作(脚本 | 剧本)在提交的时候会自动注入资产信息并通过ansible远程执行~~</br>
 - 所有资产信息、架构信息都存储在数据库中供所有运维人员操作</br>
 - ~~开发人员可登陆平台提交工单发起防火墙修改、应用发布、日常运维 :clock9: 等操作,运维人员许可操作进行~~</br>
 - ~~所有应用发布、日常运维工作日程展示 :date:~~ </br>
