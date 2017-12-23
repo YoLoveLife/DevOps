@@ -7,6 +7,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+import random
+from PIL import Image, ImageDraw, ImageFont
+import cStringIO
+from django.conf import settings
 
 class ValidateLoginView(FormView):
     template_name = 'validate/login.html'
@@ -37,9 +41,6 @@ class ValidateLoginView(FormView):
 
 class ValidateCodeView(View):
     def verifycode_maker(self,request):
-        import random
-        from PIL import Image,ImageDraw,ImageFont
-        import cStringIO
         bgcolor = (random.randrange(20, 100), random.randrange(20, 100), 255)
         width = 100
         height = 25
@@ -53,7 +54,7 @@ class ValidateCodeView(View):
         rand_str = ''
         for i in range(0, 4):
             rand_str += str1[random.randrange(0, len(str1))]
-        font = ImageFont.truetype('validate/fonts/FreeMono.ttf', 23)
+        font = ImageFont.truetype(settings.BASE_DIR+'/validate/fonts/FreeMono.ttf', 23)
         fontcolor = (255, random.randrange(0, 255), random.randrange(0, 255))
         draw.text((5, 2), rand_str[0], font=font, fill=fontcolor)
         draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)

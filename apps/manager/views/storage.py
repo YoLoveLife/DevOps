@@ -23,15 +23,15 @@ class ManagerStorageCreateView(LoginRequiredMixin,StoragePermission.StorageAddRe
 
     @decorator_manager(0,u'新增存储')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
+        # form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerStorageCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerStorageCreateView, self).get_context_data(**kwargs)
-        hosts = models.Host.objects.all()
-        context.update({
-            'hosts':hosts,'storage_hosts':{}
-        })
+        # hosts = models.Host.objects.all()
+        # context.update({
+        #     'hosts':hosts,'storage_hosts':{}
+        # })
         return context
 
     def get_success_url(self):
@@ -45,14 +45,14 @@ class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChang
 
     @decorator_manager(0,u'更新存储')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
+        # form.before_save(request=self.request,commit=True)
         return self.request.user,super(ManagerStorageUpdateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerStorageUpdateView,self).get_context_data(**kwargs)
-        hosts = models.Host.objects.all()
-        storage_hosts=[host.id for host in self.object.hosts.all()]
-        context.update({
-            'hosts':hosts,'storage_hosts':storage_hosts
-        })
+        # hosts = models.Host.objects.all()
+        # storage_hosts=[host.id for host in self.object.hosts.all()]
+        # context.update({
+        #     'hosts':hosts,'storage_hosts':storage_hosts
+        # })
         return context

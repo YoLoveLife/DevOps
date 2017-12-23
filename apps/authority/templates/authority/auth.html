@@ -45,10 +45,10 @@
                     </div>
                     <div class="box-body">
                         <form id="toolbar-script">
-                        <button class="btn btn-app" id="add_script">
+                        <button class="btn btn-app" id="add_auth">
                             <i class="fa fa-plus"></i> 新增
                         </button>
-                        <button class="btn btn-app" id="modify_script">
+                        <button class="btn btn-app" disabled>
                             <i class="fa fa-edit"></i> 修改
                         </button>
                         <button class="btn btn-app" disabled>
@@ -85,6 +85,9 @@
         function historyBack() {
             window.history.go(-1);
         }
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
         function statusFormatter(value,row,index) {
             var label_a='<button class="btn btn-default" onclick=UpdateAuth('+value+')>'+'<i class="fa fa-paperclip"></i>'+'</button>';
             return [label_a].join('');
@@ -108,6 +111,13 @@
         }
         $(document).ready(function(){
             $('.select2').select2();
+            $.ajaxSetup({
+               beforeSend: function (xhr,settings) {
+                   if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+                   }
+               }
+            });
             var table=$('#auth_tb').bootstrapTable({
                 url : '/api-authority/v1/auth/',
                 method  : 'GET',
@@ -122,24 +132,21 @@
             });
         })
             .on('click','#add_auth',function () {
-                var form=$('#toolbar-script');
-                var action='/operation/script/';
-                var obj=0;
-                action+=obj+'/update/';
-                form.attr('action',action);
-                location.href(action);
-            })
-            .on('click','#modify_auth',function () {
-                var form=$('#toolbar-script');
-                var action='/operation/script/';
-                var obj=0;
-                var a=$('#auth_tb').bootstrapTable('getSelections');
-                if(a.length>=1){
-                    obj=a[0].id;
-                }
-                action+=obj+'/update/';
-                form.attr('action',action);
-                location.href(action);
+                var permissions = $('#permissions').val();
+                var data={'permissions':permissions};
+                $.ajax({
+                    type:"POST",
+                    url:"/api-authority/v1/permission/"+"{{ id }}"+"/update/",
+                    data:data,
+                    dataType:"json",
+                    success:function(data){
+                        $('#args_tb').bootstrapTable('refresh');
+
+                    },
+                    error:function(data){
+                        alert(data.responseJSON.detail);
+                    }
+                });
             })
     </script>
 {% endblock %}

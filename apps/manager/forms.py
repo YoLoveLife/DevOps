@@ -6,6 +6,8 @@
 from django import forms
 import models
 from deveops.utils import aes,checkpass
+from django.utils.translation import gettext_lazy as _
+
 class GroupCreateUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Group
@@ -42,12 +44,19 @@ class HostBaseForm(forms.ModelForm):
     memory = forms.CharField(required=False,max_length=7,label="内存大小")
     root_disk = forms.CharField(required=False,max_length=7,label="本地磁盘")
     service_ip = forms.CharField(required=True,max_length=15,label="服务IP")
+    groups = forms.ModelMultipleChoiceField(required=True,queryset=models.Group.objects.all(),
+                                                             to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
+                                                             label='应用组')
+    storages = forms.ModelMultipleChoiceField(required=True,queryset=models.Storage.objects.all(),
+                                                             to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
+                                                             label='存储')
     class Meta:
         model = models.Host
         fields = ['systemtype','manage_ip',
                   'service_ip','outer_ip','server_position',
                   'hostname','normal_user','sshport',
-                  'coreness','memory','root_disk','info','sshpasswd']#,'status']
+                  'coreness','memory','root_disk','info','sshpasswd',
+                  'groups','storages']
         widgets = {
             'info':forms.Textarea(attrs=None),
             'systemtype': forms.Select(attrs={'type': 'select2 form-control'}),
@@ -70,18 +79,6 @@ class HostBaseForm(forms.ModelForm):
     def clean_service_ip(self):
         pass
 
-    def before_save(self,request,commit):
-        groups=request.POST.getlist('groups',[])
-        storages=request.POST.getlist('storages',[])
-        host = self.save(commit=commit)
-        host.groups.clear()
-        host.storages.clear()
-        groups = models.Group.objects.filter(id__in=groups)
-        storages = models.Storage.objects.filter(id__in=storages)
-        host.groups.add(*groups)
-        host.storages.add(*storages)
-        return
-
 class HostCreateForm(HostBaseForm):
     def clean_service_ip(self):
         service_ip = self.cleaned_data['service_ip']
@@ -95,19 +92,31 @@ class HostUpdateForm(HostBaseForm):
         return service_ip
 
 class StorageCreateUpdateForm(forms.ModelForm):
+    hosts = forms.ModelMultipleChoiceField(required=True,queryset=models.Host.objects.all(),
+                                                             to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
+                                                             label='用户')
     class Meta:
         model = models.Storage
-        fields = ['disk_path','disk_size','info']
+        fields = ['disk_path','disk_size','info','hosts']
         widgets = {
             'info':forms.Textarea(attrs=None),
         }
         labels = {
             'disk_size':'存储大小','disk_path':'存储路径','info':'信息'
         }
-    def before_save(self,request,commit):
-        hosts_id_list=request.POST.getlist('hosts',[])
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-        storage = self.save()
-        storage.hosts.clear()
-        storage.hosts.add(*hosts)
-        return self.save()
+
+    def _save_m2m(self):
+        super(StorageCreateUpdateForm,self)._save_m2m()
+        hosts = self.cleaned_data['hosts']
+        self.instance.hosts.clear()
+        self.instance.hosts.add(*tuple(hosts))
+    #
+    # def clean_hosts(self):
+    #
+    # def before_save(self,request,commit):
+    #     hosts_id_list=request.POST.getlist('hosts',[])
+    #     hosts = models.Host.objects.filter(id__in=hosts_id_list)
+    #     storage = self.save()
+    #     storage.hosts.clear()
+    #     storage.hosts.add(*hosts)
+    #     return self.save()
