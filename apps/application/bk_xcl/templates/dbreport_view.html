@@ -1,0 +1,24 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+ <div class="right_col" role="main">
+          <div class="">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>{{ dbreport.db_name }}在{{ dbreport.create_time }}生成的配置报告<small><button type="button" class="btn btn-info btn-sm" onclick="{location.href='#bottom'}">直达底部</button><button type="button" class="btn btn-primary btn-sm" onclick="javascript :history.go(-1);">返回</button></small></h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <textarea class="form-control" readonly="readonly" rows="150">{{ dbreport.report_content }}</textarea>
+                  </div>
+                    <button type="button" class="btn btn-primary" onclick="javascript :history.go(-1);">返回</button>
+                </div>
+              </div>
+
+          </div>
+        </div>
+
+        <!-- /page content -->
+{% endblock %}

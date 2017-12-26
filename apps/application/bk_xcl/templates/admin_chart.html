@@ -1,0 +1,348 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="x_title">
+                <h2>{{ days }}天内图表&nbsp&nbsp
+                    <small><a href="{{ url_for('admin_chart',days=1) }}"><font color="#1e90ff">1天</font></a></small>
+                    &nbsp
+                    <small><a href="{{ url_for('admin_chart',days=3) }}"><font color="#1e90ff">3天</font></a></small>
+                    &nbsp
+                    <small><a href="{{ url_for('admin_chart',days=7) }}"><font color="#1e90ff">7天</font></a></small>
+                    &nbsp
+                    <small><a href="{{ url_for('admin_chart',days=15) }}"><font color="#1e90ff">15天</font></a></small>
+                    &nbsp
+                    <small><a href="{{ url_for('admin_chart',days=30) }}"><font color="#1e90ff">30天</font></a></small>
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+                    <div class="x_content">
+
+                        <div id="daycount" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+
+                    <div class="x_content">
+
+                        <div id="distribution" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+
+                    <div class="x_content">
+
+                        <div id="devdist" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+
+                    <div class="x_content">
+
+                        <div id="auditdist" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+        <!-- /page content -->
+    <!-- ECharts -->
+    <script src="{{url_for('static',filename='resource/js/echarts.min.js')}}"></script>
+    <script src="{{url_for('static',filename='resource/js/macarons.js')}}"></script>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var dayCount = echarts.init(document.getElementById('daycount'),'macarons');
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '工单统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['工单数']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: {{ dayrange|safe }}
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '工单数',
+                    type: 'line',
+                    data: {{ daycounts|tojson }}
+
+                }
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        dayCount.setOption(option);
+        //
+        var distriBution = echarts.init(document.getElementById('distribution'),'macarons');
+        var option = {
+            title: {
+                text: '工单状态'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                y: 'bottom',
+                data: ['正常结束', '待人工审核', '自动审核失败', '执行中', '执行异常', '开发人中止', '审核人中止', '管理员中止', '审核人驳回']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'center',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '工单状态',
+                    type: 'pie',
+                    radius: ['50%', '80%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: [
+                        {% for key,value in workstatus.items() %}
+                        {value: {{ value|tojson }}, name: '{{ key|safe }}'},
+                        {% endfor %}
+                    ]
+                }
+            ]
+        };
+        distriBution.setOption(option);
+        //
+        var devDist = echarts.init(document.getElementById('devdist'),'macarons');
+        var option = {
+            title: {
+                text: '开发工单情况'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                y: 'bottom',
+                data:   [
+                        {% for dev in dev_dist %}
+                        '{{ dev.dev }}',
+                        {% endfor %}
+                        ]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'center',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '工单',
+                    type: 'pie',
+                    radius: ['50%', '80%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: [
+                        {% for dev in dev_dist %}
+                        {value: {{ dev.count|tojson }}, name: '{{ dev.dev|safe }}'},
+                        {% endfor %}
+                    ]
+                }
+            ]
+        };
+        devDist.setOption(option);
+        //
+        var auditDist = echarts.init(document.getElementById('auditdist'),'macarons');
+        var option = {
+            title: {
+                text: '审核工单情况'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                y: 'bottom',
+                data:   [
+                        {% for audit in audit_dist %}
+                        '{{ audit.audit}}',
+                        {% endfor %}
+                        ]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'center',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '工单',
+                    type: 'pie',
+                    radius: ['50%', '80%'],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    data: [
+                        {% for audit in audit_dist %}
+                        {value: {{ audit.count|tojson }}, name: '{{ audit.audit|safe }}'},
+                        {% endfor %}
+                    ]
+                }
+            ]
+        };
+        auditDist.setOption(option);
+    </script>
+
+{% endblock %}

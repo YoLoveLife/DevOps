@@ -1,0 +1,55 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+ <div class="right_col" role="main">
+          <div class="">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>MySQL数据库</h2>
+                      <ul class="nav navbar-right panel_toolbox">
+                          <li><button type="button" class="btn btn-success btn-sm" onclick="{location.href='{{ url_for('mysql_db_create') }}'}">新增+</button></li>
+                      </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered">
+
+                      <thead>
+                        <tr>
+                          <th>名称</th>
+                          <th>主机</th>
+                          <th>端口</th>
+                          <th>用户名</th>
+                          <th>创建时间</th>
+                          <th>更新时间</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                      {% for dbconfig in dbconfigs %}
+                        <tr>
+                          <td>{{ dbconfig.name }}</td>
+                          <td>{{ dbconfig.host }}</td>
+                          <td>{{ dbconfig.port }}</td>
+                          <td>{{ dbconfig.user }}</td>
+                          <td>{{ dbconfig.create_time }}</td>
+                          <td>{{ dbconfig.update_time }}</td>
+                          <td><button type="button" class="btn btn-primary btn-sm" onclick="{location.href='{{ url_for('dbreport',id=dbconfig.id) }}'}">配置报告</button>&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm" onclick="{location.href='{{ url_for('mysql_db_update',id=dbconfig.id) }}'}">修改</button><button type="button" class="btn btn-danger btn-sm" onclick="javascript:if (confirm('确定要删除?')) location.href='{{ url_for('mysql_db_delete',id=dbconfig.id) }}';">删除</button></td>
+                        </tr>
+                      {% endfor %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+        <!-- /page content -->
+{% endblock %}
