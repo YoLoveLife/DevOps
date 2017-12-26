@@ -44,10 +44,10 @@ class HostBaseForm(forms.ModelForm):
     memory = forms.CharField(required=False,max_length=7,label="内存大小")
     root_disk = forms.CharField(required=False,max_length=7,label="本地磁盘")
     service_ip = forms.CharField(required=True,max_length=15,label="服务IP")
-    groups = forms.ModelMultipleChoiceField(required=False,queryset=models.Group.objects.all(),
+    groups = forms.ModelMultipleChoiceField(required=True,queryset=models.Group.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
                                                              label='应用组')
-    storages = forms.ModelMultipleChoiceField(required=False,queryset=models.Storage.objects.all(),
+    storages = forms.ModelMultipleChoiceField(required=True,queryset=models.Storage.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
                                                              label='存储')
     class Meta:
