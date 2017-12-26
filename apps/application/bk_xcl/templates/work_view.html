@@ -1,0 +1,115 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+    <div class="right_col" role="main" xmlns="http://www.w3.org/1999/html">
+          <div class="">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>工单名:<small>{{ work.name }}</small></h2>
+
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <br><br>
+                      <div class="form-group  col-md-9 col-sm-9 col-xs-12">
+                        <label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-1">数据库：</label>
+                        <div class="col-md-1 col-sm-1 col-xs-1">
+                          {{ work.db_config }}
+                        </div>
+                        <label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-12">开发人：</label>
+                        <div class="col-md-1 col-sm-1 col-xs-12">
+                          {{ work.dev }}
+                        </div>
+                        <label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-12">备份：</label>
+                        <div class="col-md-1 col-sm-1 col-xs-12">
+                         {% if work.backup == true %}是{% else %}否{% endif %}
+                        </div>
+                        <label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-12">状态：</label>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                         {% if work.status == 0 %}结束{% elif work.status == 1%}待人工审核{% elif work.status == 2 %}自动审核失败{% elif work.status == 3 %}执行中{% elif work.status == 4 %}执行异常{% elif work.status == 5 %}开发人中止{% elif work.status == 6 %}审核人中止{% elif work.status == 7 %}管理员中止{% elif work.status == 8 %}审核人驳回{% endif %}
+                        </div>
+                      </div>
+                      {% if current_user.role == 'dev' %}
+                        <div class=" col-md-3 col-sm-3 col-xs-12">
+                            <button type="button" class="btn btn-round btn-info btn-lg" onclick="javascript:location.href='{{ url_for('dev_work') }}';">返回</button>
+                        </div>
+                      {% elif current_user.role == 'audit' %}
+
+                      <div class=" col-md-3 col-sm-3 col-xs-12">
+                          {% if work.status ==  1 %}
+                              <button type="button" class="btn btn-primary btn-round btn-lg" onclick="javascript:if (confirm('确定要驳回')) location.href='{{ url_for('audit_work_reject', id=work.id) }}';" >驳回</button>
+                              {% if work.srole == 1 %}
+                                        <button type="button" class="btn btn-success btn-round btn-lg" onclick="javascript:location.href='{{ url_for('audit_work_assign', id=work.id) }}';">分派</button>
+                                   {% elif work.srole == 0 %}
+                                        {% if backtimer == 0 %}<button type="button" class="btn btn-success btn-round btn-lg" onclick="javascript:if (confirm('确定要执行?')) location.href='{{ url_for('audit_work_execute',id=work.id) }}';">执行</button>{% endif %}
+                                        <button type="button" class="btn btn-success btn-round btn-lg" onclick="javascript: location.href='{{ url_for('audit_work_timer',id=work.id) }}';">定时执行</button>
+                              {% endif %}
+                              <button type="button" class="btn btn-round btn-danger btn-lg" onclick="javascript:if (confirm('确定要终止?')) location.href='{{ url_for('work_stop',id=work.id) }}';">中止</button>
+
+                          {% endif %}
+                              <button type="button" class="btn btn-round btn-info btn-lg" onclick="javascript:location.href='{{ url_for('audit_work') }}';">返回</button>
+                      </div>
+                      {% endif %}
+
+
+                </div>
+              </div>
+              <div class="x_panel">
+                  <div class="x_content">
+                      <div class="form-group">
+                        <div id='result' class='col-md-12 col-sm-12 col-xs-12'>
+                            <table class='table'>
+                                <thead>
+                                    <tr>
+                                        <td>ID</td>
+                                        <th class='col-md-3 col-sm-3 col-xs-12'>sql语句</th>
+                                        <th class='col-md-5 col-sm-5 col-xs-12'>自动审核结果</th>
+                                        <th>扫描影响行数</th>
+                                        <th>执行耗时</th>
+                                        <th>执行状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in review_content %}
+
+                                    <tr>
+
+                                        <td>{{ row.0 }}</td>
+                                        <td>
+                                            {% for t in row.5.split('\r\n') %}
+                                                {{ t }}<br>
+                                            {% endfor %}
+                                        </td>
+
+                                        <td>
+                                            {% for t in row.4.split('\n') %}
+                                                {{ loop.index }}.{{ t }}<br>
+                                            {% endfor %}
+                                         </td>
+                                        <td>{{ row.6 }}</td>
+                                        <td>{{ row.9 }}</td>
+                                        <td>{{ row.3 }}</td>
+
+                                    </tr>
+                                     {% endfor %}
+                                </tbody>
+                            </table>
+
+                      </div>
+                      <div>
+                          <br><br>
+                          {% if work.status == 0 and work.backup == true %}
+                            <button type="button" class="btn btn-round btn-success" onclick="javascript:location.href='{{ url_for('audit_work_exportsql',id=work.id) }}';">回滚sql</button>
+                          {% endif %}
+                      </div>
+                  </div>
+                  </div>
+              </div>
+
+          </div>
+        </div>
+    </div>
+        <!-- /page content -->
+{% endblock %}

@@ -9,9 +9,15 @@ from deveops.utils import aes,checkpass
 from django.utils.translation import gettext_lazy as _
 
 class GroupCreateUpdateForm(forms.ModelForm):
+    hosts = forms.ModelMultipleChoiceField(required=False,queryset=models.Host.objects.all(),
+                                                             to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
+                                                             label='')
+    users = forms.ModelMultipleChoiceField(required=False,queryset=models.ExtendUser.objects.all(),
+                                                             to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
+                                                             label='用户')
     class Meta:
         model = models.Group
-        fields = ['name','info','framework']
+        fields = ['name','info','framework','hosts','users']
         widgets = {
             'info':forms.Textarea(attrs=None)
         }
@@ -20,21 +26,14 @@ class GroupCreateUpdateForm(forms.ModelForm):
             'info':'应用组信息'
         }
 
+    def save_hosts_new(self):
+        group = self.save()
+        self.instance.hosts = self.cleaned_data['hosts']
+        return group.save()
 
-    def before_save(self,request,commit):
-        hosts_id_list = request.POST.getlist('hosts',[])
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-
-        users_id_list = request.POST.getlist('users',[])
-        users = models.ExtendUser.objects.filter(id__in=users_id_list)
-
-        group = self.save(commit=commit)
-        group.hosts.clear()
-        group.hosts.add(*hosts)
-        group.users.clear()
-        group.users.add(*users)
-        group.save()
-        return group
+    def save_hosts_update(self):
+        self.instance.hosts = self.cleaned_data['hosts']
+        return self.save()
 
 class HostBaseForm(forms.ModelForm):
     # status = forms.CharField(required=True,disabled=True)
@@ -44,10 +43,10 @@ class HostBaseForm(forms.ModelForm):
     memory = forms.CharField(required=False,max_length=7,label="内存大小")
     root_disk = forms.CharField(required=False,max_length=7,label="本地磁盘")
     service_ip = forms.CharField(required=True,max_length=15,label="服务IP")
-    groups = forms.ModelMultipleChoiceField(required=True,queryset=models.Group.objects.all(),
+    groups = forms.ModelMultipleChoiceField(required=False,queryset=models.Group.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
                                                              label='应用组')
-    storages = forms.ModelMultipleChoiceField(required=True,queryset=models.Storage.objects.all(),
+    storages = forms.ModelMultipleChoiceField(required=False,queryset=models.Storage.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
                                                              label='存储')
     class Meta:
@@ -56,6 +55,7 @@ class HostBaseForm(forms.ModelForm):
                   'service_ip','outer_ip','server_position',
                   'hostname','normal_user','sshport',
                   'coreness','memory','root_disk','info','sshpasswd',
+                  'storages','groups',
                   ]
         widgets = {
             'info':forms.Textarea(attrs=None),
@@ -110,7 +110,7 @@ class HostUpdateForm(HostBaseForm):
 class StorageCreateUpdateForm(forms.ModelForm):
     hosts = forms.ModelMultipleChoiceField(required=False,queryset=models.Host.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
-                                                             label='用户')
+                                                             label='')
     class Meta:
         model = models.Storage
         fields = ['disk_path','disk_size','info','hosts']

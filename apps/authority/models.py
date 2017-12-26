@@ -29,6 +29,17 @@ class ExtendUser(AbstractUser):
         related_name="user_set",
         related_query_name="user",
     )
+
+
+    def __unicode__(self):
+        str = ""
+        print(self.groups.all())
+        for group in self.groups.all():
+            str += '/'+group.name
+        return self.username +' - '+ str
+
+    __str__ = __unicode__
+
     def get_8531email(self):
         return self.email.split('@')[0] + '@8531.cn'
 
