@@ -1,0 +1,65 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>新增MySQL数据库</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post" action="{{ url_for('mysql_db_create') }}">
+                       {{ form.hidden_tag() }}
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">名称<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="{{ form.name.name }}" name="{{ form.name.name }}" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">主机 <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="{{ form.host.name }}" name="{{ form.host.name }}"  required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">端口</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="{{ form.port.name }}" name="{{ form.port.name }}" class="form-control col-md-7 col-xs-12" type="text"  value="3306">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">用户名<span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="{{ form.user.name }}" name="{{ form.user.name }}" class="form-control col-md-7 col-xs-12" type="text"  >
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">密码<span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input id="{{ form.password.name }}" name="{{ form.password.name }}" class="form-control col-md-7 col-xs-12" type="password"  >
+                        </div>
+                      </div>
+
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <button class="btn btn-primary" type="button" onclick="{location.href='{{ url_for('mysql_db') }}'}">取消</button>
+						  <button class="btn btn-primary" type="reset">重置</button>
+                          <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+    </div>
+ </div>
+{% endblock %}

@@ -57,16 +57,17 @@
                                 <h3 class="box-title">管理用户列表</h3>
                             </div>
                             <div class="box-body">
-                                <label class="control-label" for="id_users">管理用户列表</label>
-                                <select name="users" class="select2 form-control" multiple>
-                                    {% for user in users %}
-                                    {% if user.id in group_users %}
-                                    <option value="{{ user.id }}" selected>{{ user.get_full_name }} - {{ user.get_8531email }}</option>
-                                    {% else %}
-                                    <option value="{{ user.id }}">{{ user.get_full_name }} - {{ user.get_8531email }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
+                                {% bootstrap_field form.users %}
+{#                                <label class="control-label" for="id_users">管理用户列表</label>#}
+{#                                <select name="users" class="select2 form-control" multiple>#}
+{#                                    {% for user in users %}#}
+{#                                    {% if user.id in group_users %}#}
+{#                                    <option value="{{ user.id }}" selected>{{ user.get_full_name }} - {{ user.get_8531email }}</option>#}
+{#                                    {% else %}#}
+{#                                    <option value="{{ user.id }}">{{ user.get_full_name }} - {{ user.get_8531email }}</option>#}
+{#                                    {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
                             </div>
                         </div>
                     </div>
@@ -80,16 +81,17 @@
                                 <h3 class="box-title">所属主机列表</h3>
                             </div>
                             <div class="box-body">
-                                <label class="control-label" for="id_hosts">主机列表</label>
-                                <select name="hosts" class="select2 form-control" multiple>
-                                    {% for host in hosts %}
-                                    {% if host.id in group_hosts %}
-                                    <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
-                                    {% else %}
-                                    <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
+                                {% bootstrap_field form.hosts %}
+{#                                <label class="control-label" for="id_hosts">主机列表</label>#}
+{#                                <select name="hosts" class="select2 form-control" multiple>#}
+{#                                    {% for host in hosts %}#}
+{#                                        {% if host.id in group_hosts %}#}
+{#                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>#}
+{#                                        {% else %}#}
+{#                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
                             </div>
                         </div>
                     </div>

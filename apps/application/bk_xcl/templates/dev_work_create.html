@@ -1,0 +1,161 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+
+<div class="right_col" role="main">
+    <div class="">
+        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post" action="{{ url_for('dev_work_create') }}">
+            {{ form.hidden_tag() }}
+        <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>新增工单</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">工单名
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                          <input type="text" id="{{ form.name.name }}" name="{{ form.name.name }}" class="form-control col-md-4 col-xs-4">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">数据库<span class="required">*</span>
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                          <select id="{{ form.db_config.name }}" name="{{ form.db_config.name }}" required="required" class="form-control">
+                            <option value=""></option>
+                            {% for db_config in db_configs %}
+                            <option value="{{ db_config.name }}">{{ db_config.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">备份<span class="required">*</span></label>
+                        <div  class="col-md-8 col-sm-8 col-xs-12">
+                          <select id="{{ form.backup.name }}" name="{{ form.backup.name }}" class="form-control">
+                            <option value="True">是</option>
+                            <option value="False">否</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="last-name">审核人员<span class="required">*</span>
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                          <select id="{{ form.audit.name }}" name="{{ form.audit.name }}" required="required" class="form-control">
+                            <option value=""></option>
+                            {% for audit in audits %}
+                            <option value="{{ audit.name }}">{{ audit.name }}{% if audit.srole == 0 %}(主审核){% elif audit.srole == 1 %}(副审核){% endif %}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3">
+                          <button class="btn btn-primary" type="button" onclick="{location.href='{{ url_for('dev_work') }}'}">取消</button>
+                          <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                 <ul>
+                                    {% for message in messages %}
+                                        <li><font color='#FF0000'>{{ message }}</font></li>
+                                    {% endfor %}
+                                 </ul>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                      </div>
+
+
+                  </div>
+                </div>
+        </div>
+        <div id="last" class="col-md-9 col-sm-9 col-xs-12">
+            <div class="x_panel">
+                <div class="x_content">
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                           <label for="message">SQL内容:</label>
+                            <textarea id="{{ form.sql_content.name }}" name="{{ form.sql_content.name }}" required="required" class="form-control" name="message" data-parsley-trigger="keyup" placeholder="请输入类似sql： use test; create table t1( id int);"
+                            data-parsley-validation-threshold="50" rows="20"></textarea>
+                            <br>
+                            <button id="slqcheck" type="button" class="btn btn-info" onclick="sqlcheck()">检查SQL</button>
+                         </div>
+                       </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+ </div>
+
+<script src="{{url_for('static',filename='resource/js/jquery.min.js')}}"></script>
+<script>
+ function sqlcheck() {
+	var result = true;
+	var sqlContent= $("#{{ form.sql_content.name }}").val();
+	var dbConfig = $("#{{ form.db_config.name }}").val();
+	if (sqlContent === null || sqlContent.trim() === "" || sqlContent == $("#{{ form.sql_content.name }}").attr("placeholder")) {
+		alert("SQL内容不能为空！");
+        return result = false;
+	} else if (dbConfig === null || dbConfig == $("#{{ form.db_config.name }}").attr("data-placeholder")) {
+		alert("请选择要上线的数据库！");
+        return result = false;
+	}
+	if (result === true) {
+        $.ajax({
+		type: "post",
+		url: "{{ url_for('dev_work_check') }}",
+		dataType: "json",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: {
+			'sqlContent': sqlContent,
+			'dbConfig': dbConfig
+		},
+		success: function (data) {
+           if (data.status == 0) {
+               var result = data.data;
+               var finalHtml ="<div id='result' class='col-md-12 col-sm-12 col-xs-12'><div class='x_panel'><div class='x_content'><table class='table'><thead><tr><th class='col-md-5 col-sm-5 col-xs-12'>sql语句</th><th class='col-md-7 col-sm-7 col-xs-12'>自动审核结果</th></tr></thead><tbody>";
+               for (var i=0; i<result.length; i++) {
+                   if (result[i][4] != "None") {
+                       finalresult=result[i][4].replace(/\n/g, "<br>")
+                       finalsql=result[i][5].replace(/\r\n/g, "<br>nbsp;nbsp;nbsp;nbsp;")
+                       finalsql=finalsql.replace(/,/g, ",<br>")
+                       finalHtml+="<tr><td><font color='#FF0000'>"+finalsql+"</font></td><td><font color='#FF0000'>"+finalresult+"</font></td></tr>"
+                   } else {
+                       finalHtml+="<tr><td><font color='#00A600'>"+result[i][5]+"</font></td><td><font color='#00A600'>"+result[i][4]+"</font></td></tr>"
+                   }
+               }
+               finalHtml+="</tbody></table></div></div></div>";
+               $('#result') .remove();
+               $('#last').append(finalHtml);
+           } else  {
+               alert(data.msg);
+           }
+
+	        }
+
+        })
+    }
+ }
+
+
+
+
+
+</script>
+{% endblock %}

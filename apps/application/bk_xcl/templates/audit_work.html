@@ -1,0 +1,66 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+ <div class="right_col" role="main">
+          <div class="">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>我的工单</h2>
+
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered">
+
+                      <thead>
+                        <tr>
+
+                          <th>工单名</th>
+                          <th>数据库</th>
+                          <th>备份</th>
+                          <th>开发人</th>
+                          <th>创建时间</th>
+                          <th>完成时间</th>
+                          <th>状态</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                      {% for work in works %}
+                        <tr>
+
+                          <td>{{ work.name }}</td>
+                          <td>{{ work.db_config }}</td>
+                          <td>{% if work.backup == true %}是{% else %}否{% endif %}</td>
+                          <td>{{ work.dev }}</td>
+                          <td>{{ work.create_time }}</td>
+                          <td>{% if work.finish_time %}{{ work.finish_time }}{% else %}未确定{% endif %}</td>
+                          <td>{% if work.status == 0 %}结束{% elif work.status == 1%}待人工审核{% elif work.status == 2 %}自动审核失败{% elif work.status == 3 %}执行中{% elif work.status == 4 %}执行异常{% elif work.status == 5 %}开发人中止{% elif work.status == 6 %}审核人中止{% elif work.status == 7 %}管理员中止{% elif work.status == 8 %}审核人驳回{% endif %}</td>
+                          <td><a type="button" href="{{ url_for('work_view',id=work.id) }}" class="btn btn-round btn-primary btn-xs">查看</a></td>
+                          <!--<td>
+                              {% if work.status ==  1 %}
+                                   {% if work.srole == 1 %}
+                                        <button type="button" class="btn btn-success btn-sm" onclick="javascript:location.href='{{ url_for('audit_work_assign', id=work.id) }}';">分派</button>
+                                   {% elif work.srole == 0 %}
+                                        <button type="button" class="btn btn-success btn-sm" onclick="javascript:if (confirm('确定要执行?')) location.href='{{ url_for('audit_work_execute',id=work.id) }}';">执行</button>
+                                   {% endif %}
+                              <button type="button" class="btn btn-danger btn-sm" onclick="javascript:if (confirm('确定要终止?')) location.href='{{ url_for('work_stop',id=work.id) }}';">中止</button>
+                              {% endif %}</td>-->
+                        </tr>
+                      {% endfor %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+        <!-- /page content -->
+{% endblock %}
