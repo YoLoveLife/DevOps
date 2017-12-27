@@ -21,30 +21,31 @@ class ManagerGroupListView(LoginRequiredMixin,TemplateView):
 class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequiredMixin,CreateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
-    template_name = 'manager/new_update_group.html'
+    template_name = 'manager/new_group.html'
     success_url = reverse_lazy('manager:group')
 
     def get_context_data(self, **kwargs):
         context = super(ManagerGroupCreateView, self).get_context_data(**kwargs)
-        hosts = models.Host.objects.all()
-        if Group.objects.filter(name=u'运维工程师').exists():
-            users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
-            group_users = {}
-        else:
-            users = {}
-            group_users = {}
-
-        context.update({
-            'hosts':hosts,
-            # 'group_hosts':group_hosts,
-            'users': 'users',
-            'group_users': group_users,
-                        })
+        # hosts = models.Host.objects.all()
+        # if Group.objects.filter(name=u'运维工程师').exists():
+        #     users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
+        #     group_users = {}
+        # else:
+        #     users = {}
+        #     group_users = {}
+        #
+        # context.update({
+        #     'hosts':hosts,
+        #     'group_hosts':group_hosts,
+        #     'users': 'users',
+        #     'group_users': group_users,
+        #                 })
         return context
 
     @decorator_manager(0,u'新增应用组')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
+        # form.before_save(request=self.request,commit=True)
+        form.save_hosts_new()
         return self.request.user,super(ManagerGroupCreateView,self).form_valid(form)
 
     def get_success_url(self):
@@ -53,31 +54,32 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
 class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequiredMixin,UpdateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
-    template_name = 'manager/new_update_group.html'
+    template_name = 'manager/update_group.html'
     success_url = reverse_lazy('manager:group')
 
     def get_context_data(self, **kwargs):
         context = super(ManagerGroupUpdateView, self).get_context_data(**kwargs)
         hosts = models.Host.objects.all()
         group_hosts = [host.id for host in self.object.hosts.all()]
-
-        if Group.objects.filter(name=u'运维工程师').exists():
-            users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
-            group_users = [user.id for user in self.object.users.all()]
-        else:
-            users = {}
-            group_users = {}
+        #
+        # if Group.objects.filter(name=u'运维工程师').exists():
+        #     users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
+        #     group_users = [user.id for user in self.object.users.all()]
+        # else:
+        #     users = {}
+        #     group_users = {}
         context.update({
             'hosts':hosts,
             'group_hosts':group_hosts,
-            'users': users,
-            'group_users':group_users,
+            # 'users': users,
+            # 'group_users':group_users,
         })
         return context
 
     @decorator_manager(0,u'修改应用组')
     def form_valid(self, form):
-        form.before_save(request=self.request,commit=True)
+        # form.before_save(request=self.request,commit=True)
+        form.save_hosts_update()
         return self.request.user,super(ManagerGroupUpdateView,self).form_valid(form)
 
     def get_success_url(self):

@@ -1,0 +1,40 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>{{ work.name }}设置定时执行</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post" action="{{ url_for('audit_work_timer',id=work.id) }}">
+
+                        <div class="form-group">
+                            <label>状态：</label>&nbsp;&nbsp;{% if work.timer %}定时执行时间为{{ work.timer }}{% else %}未设置定时执行{% endif %}
+                            <br>
+                            <br>
+                        </div>
+                        <div class="form-group">
+                            <input type="datetime-local" id="dt" name="dt" required="required"/>
+                        </div>
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                          <button class="btn btn-primary" type="button" onclick="{location.href='{{ url_for('work_view',id=work.id) }}'}">返回</button>
+                          {% if work.timer %}<button class="btn btn-danger" type="button" onclick="{location.href='{{ url_for('audit_work_timer_cancel',id=work.id) }}'}">关闭</button>{% endif %}
+                          <button type="submit" class="btn btn-success">设置</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+    </div>
+ </div>
+{% endblock %}
