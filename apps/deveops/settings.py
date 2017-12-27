@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'concert.apps.ConcertConfig',
     'timeline.apps.TimelineConfig',
     'upload.apps.UploadConfig',
+    'dns.apps.DnsConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',

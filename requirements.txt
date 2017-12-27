@@ -49,3 +49,5 @@ click==6.7
 itsdangerous==0.24
 Werkzeug==0.12.2
 Flask==0.12.2
+
+#jsonfield==2.0.2

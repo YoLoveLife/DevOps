@@ -35,6 +35,8 @@ urlpatterns = [
     url(r'^application/',include('application.urls.views_urls',namespace='application')),
     url(r'^concert/',include('concert.urls.views_urls',namespace='concert')),
     url(r'^upload/',include('upload.urls.views_urls',namespace='upload')),
+    url(r'^softlib/',include('softlib.urls.views_urls',namespace='softlib')),
+    url(R'^dns/',include('dns.urls.views_urls',namespace='dns')),
 
     # API
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),

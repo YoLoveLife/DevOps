@@ -1,3 +1,4 @@
+{% load static %}
 <!--Main topbar-->
     <header class="main-header">
         <a class="logo">
@@ -6,7 +7,7 @@
         </a>
         <nav class="navbar navbar-static-top">
             <div class="navbar-top-menu">
-                <ul class="nav navbar-nav">
+{#                <ul class="nav navbar-nav">#}
 {#                    <li class="dropdown messages-menu">#}
 {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
 {#                            <i class="fa fa-envelope-o"></i>#}
@@ -31,7 +32,31 @@
 {#                        <ul class="dropdown-menu">#}
 {#                        </ul>#}
 {#                    </li>#}
-                </ul>
+{#                    <li class="dropdown user user-menu">#}
+{#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                            <img class="user-image" src="{% static "img/" %}{{ request.user.img }}" alt="User Image">#}
+{#                            <span class="hidden-xs">{{ request.user.first_name }}</span>#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li class="user-header">#}
+{#                                <img class="img-circle" src="{% static "img/" %}{{ request.user.img }}" alt="User Image">#}
+{#                            </li>#}
+{#                            <li class="user-body">#}
+{#                                <div class="row">#}
+{#                                    <div class="col-xs-4 text-center">#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="col-xs-4 text-center">#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="col-xs-4 text-center">#}
+{##}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                </ul>#}
             </div>
         </nav>
     </header>
