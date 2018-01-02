@@ -6,23 +6,35 @@ from softlib.models import Softlib
 from django.db import models
 # Create your models here.
 #
-__all__=['DB','DBDetail','DBUser']
+__all__=['BaseApplication','Redis','DB','DBDetail','DBUser']
 
-class DB(models.Model):
+class BaseApplication(models.Model):
+    id=models.AutoField(primary_key=True)
+    host=models.ForeignKey(Host,default=1)
+    version=models.CharField(max_length=10)
+    prefix=models.CharField(max_length=100,default='/usr/local')
+    online=models.BooleanField(default=False)
+    class Meta:
+        abstract = True
+
+class Redis(BaseApplication):
+    redis_passwd = models.CharField(max_length=100,default='000000')
+    port = models.IntegerField(default='6379')
+    pidfile = models.CharField(max_length=100,default='/var/run/redis.pid')
+    logfile = models.CharField(max_length=100,default='')
+
+
+class DB(BaseApplication):
     IS_SLAVE=(
         (0,u'否'),
         (1,u'是'),
     )
-    id=models.AutoField(primary_key=True)
-    host=models.ForeignKey(Host,default=1)
-    prefix=models.CharField(max_length=100,default='/usr/local/mysql')
     root_passwd=models.CharField(max_length=100,default='')
     port=models.IntegerField(default='3306')
     socket=models.CharField(max_length=100,default='/tmp/mysql.sock')
     datadir=models.CharField(max_length=100,default='/storage/mysql')
     softlib=models.ForeignKey(Softlib,default=1,)
     is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
-    online=models.BooleanField(default=False)
 
     #集联更新
     # def save(self):
@@ -54,16 +66,6 @@ class DBUser(models.Model):
         self.ip = list[1]
         self.save()
 
-class Redis(models.Model):
-    id=models.AutoField(primary_key=True)
-    host=models.ForeignKey(Host,default=1)
-    prefix=models.CharField(max_length=100,default='/usr/local/redis')
-    redis_passwd=models.CharField(max_length=100,default='000000')
-    port=models.IntegerField(default='6379')
-    pidfile=models.CharField(max_length=100,default='/var/run/redis.pid')
-    softlib=models.ForeignKey(Softlib,default=1,)
-    logfile = models.CharField(max_length=100,default='')
-    online=models.BooleanField(default=False)
 
 #
 #

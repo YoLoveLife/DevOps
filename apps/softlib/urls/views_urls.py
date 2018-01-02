@@ -4,8 +4,10 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf.urls import url
+from .. import views
 urlpatterns = [
-    #Resource host url
+    #Resource softlib url
+    url(r'^$' , views.SoftlibListView.as_view(),name='softlib'),
     # url(r'^host/$', host.ManagerHostListView.as_view(), name='host'),
     # url(r'^host/create/$',host.ManagerHostCreateView.as_view(),name='hostcreate'),
     # url(r'^host/(?P<pk>[0-9]+)/update/$',host.ManagerHostUpdateView.as_view(),name='hostupdate'),

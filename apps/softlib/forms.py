@@ -7,23 +7,14 @@ from django import forms
 import models
 from django.utils.translation import gettext_lazy as _
 
-class StorageCreateUpdateForm(forms.ModelForm):
-    #
+class SoftlibCreateUpdateForm(forms.ModelForm):
+
     class Meta:
         model = models.Softlib
-        fields = ['disk_path','disk_size','info','hosts']
+        fields = ['soft_type','soft_version']
         widgets = {
-            'info':forms.Textarea(attrs=None),
+            'soft_type': forms.Select(attrs={'type': 'select2 form-control'}),
         }
         labels = {
-            'disk_size':'存储大小','disk_path':'存储路径','info':'信息'
+            'soft_type':'软件类型','soft_version':'软件版本'
         }
-
-    def save_hosts_new(self):
-        storage = self.save()
-        self.instance.hosts = self.cleaned_data['hosts']
-        return storage.save()
-
-    def save_hosts_update(self):
-        self.instance.hosts = self.cleaned_data['hosts']
-        return self.save()

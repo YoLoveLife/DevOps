@@ -93,7 +93,7 @@ class Host(models.Model):
     def _name(self):
         return 'host'
 
-    def application_get(self):
+    def application_get(self): ####Application Link to Host
         id_list=[]
         for attr in application_list:
             if getattr(self,attr).count() == 0:
