@@ -3,8 +3,8 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
-    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -24,9 +24,10 @@
     <!--Content Header-->
     <!--Main Content-->
     <section class="content container-fluid">
+        <form method="post" action="" id="user_form" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-8">
-                <form method="post" action="" id="user_form" enctype="multipart/form-data">
+
                     {% csrf_token %}
                     <div class="box">
                         <div class="box-header">
@@ -39,13 +40,19 @@
                                         {% bootstrap_field form.username %}
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.password %}
-                                    </div>
-                                </div>
                                 <div class="col-md-5">
-
+                                    <div class="form-group">
+                                        <label class="control-label" for="id_auths">权限组</label>
+                                        <select name="auths" class="select2 form-control" multiple>
+                                        {% for auth in auths %}
+                                            {% if auth.id in auths_user %}
+                                                <option value="{{ auth.id }}" selected>{{ auth.name }}</option>
+                                            {% else %}
+                                               <option value="{{ auth.id }}">{{ auth.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -72,32 +79,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                    </div>
-                                </div>
-                            </div>
+{#                            <div class="row">#}
+{#                                <div class="col-md-3">#}
+{#                                    <div class="form-group">#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label" for="id_is_active">活跃</label>
                                         <select name="is_active" class="select2">
-                                            {% if is_active == 1 %}
+                                            {% if object.is_active == 1 %}
                                                 <option id="1" selected>actived</option>
                                                 <option id="0">not actived</option>
                                                 {% else %}
                                                 <option id="1">actived</option>
                                                 <option id="0" selected>not actived</option>
                                             {% endif %}
-
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
             <div class="col-md-2">
                 <div class="row">
@@ -109,7 +114,7 @@
                             <button class="btn btn-app" id="btn_submit">
                                 <i class="fa fa-check"></i> 提交
                             </button>
-                            <button class="btn btn-app" id="btn_back">
+                            <button class="btn btn-app" disabled>
                                 <i class="fa fa-reply"></i> 回退
                             </button>
                             <button class="btn btn-app" disabled>
@@ -123,18 +128,19 @@
                 </div>
             </div>
         </div>
+        </form>
     </section>
     <!--Main Content-->
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
     <script>
         function historyBack() {
             window.history.go(-1);
         }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
     })
         .on('click','#btn_submit',function () {
             $('#user_form').submit();

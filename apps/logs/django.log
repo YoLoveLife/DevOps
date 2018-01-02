@@ -1,0 +1,33 @@
+2017-11-16 17:47:03,208 [Thread-7:139697432000256] [django.server:124] [basehttp:log_message] [WARNING]- "GET /api-execute/v1/update/host/1/ HTTP/1.1" 403 4722
+2017-11-16 17:47:03,281 [Thread-9:139697419667200] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+2017-11-16 17:47:03,290 [Thread-12:139697398687488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/jquery-1.12.4.min.js
+2017-11-16 17:47:03,292 [Thread-9:139697419667200] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 404 12358
+2017-11-16 17:47:03,294 [Thread-13:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/ajax-form.js
+2017-11-16 17:47:03,300 [Thread-12:139697398687488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/jquery-1.12.4.min.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,306 [Thread-14:139697290471168] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/csrf.js
+2017-11-16 17:47:03,316 [Thread-8:139697432000256] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/css/bootstrap.min.css
+2017-11-16 17:47:03,316 [Thread-13:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,318 [Thread-11:139697409177344] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/css/default.css
+2017-11-16 17:47:03,324 [Thread-14:139697290471168] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/csrf.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,324 [Thread-8:139697432000256] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 404 12358
+2017-11-16 17:47:03,328 [Thread-10:139697300961024] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/css/prettify.css
+2017-11-16 17:47:03,332 [Thread-15:139697279981312] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/bootstrap.min.js
+2017-11-16 17:47:03,333 [Thread-11:139697409177344] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/css/default.css HTTP/1.1" 404 12358
+2017-11-16 17:47:03,342 [Thread-16:139697398687488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/prettify-min.js
+2017-11-16 17:47:03,345 [Thread-15:139697279981312] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,349 [Thread-16:139697398687488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,349 [Thread-10:139697300961024] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/css/prettify.css HTTP/1.1" 404 12358
+2017-11-16 17:47:03,354 [Thread-17:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/default.js
+2017-11-16 17:47:03,355 [Thread-17:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/default.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,395 [Thread-18:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/jquery-1.12.4.min.js
+2017-11-16 17:47:03,396 [Thread-18:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/jquery-1.12.4.min.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,406 [Thread-19:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/ajax-form.js
+2017-11-16 17:47:03,407 [Thread-19:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,417 [Thread-20:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/csrf.js
+2017-11-16 17:47:03,418 [Thread-20:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/csrf.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,429 [Thread-21:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/bootstrap.min.js
+2017-11-16 17:47:03,430 [Thread-21:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,440 [Thread-22:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/prettify-min.js
+2017-11-16 17:47:03,441 [Thread-22:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 404 12358
+2017-11-16 17:47:03,453 [Thread-23:139697387935488] [django.request:152] [base:get_response] [WARNING]- Not Found: /static/rest_framework/js/default.js
+2017-11-16 17:47:03,454 [Thread-23:139697387935488] [django.server:124] [basehttp:log_message] [WARNING]- "GET /static/rest_framework/js/default.js HTTP/1.1" 404 12358

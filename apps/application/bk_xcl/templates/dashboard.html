@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+ <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+
+                <ul class="nav side-menu">
+                  <li><a href="{{ url_for('dashboard') }}"><h3> 首页</h3> </a></li>
+                  <li><a><h3>数据库管理<span class="fa fa-chevron-down"></span></h3></a></li>
+                  {% if current_user.role == 'dev' %}
+
+                    <ul class="nav " align="center">
+                      <li><a href="{{ url_for('dev_work') }}">我的工单</a></li>
+                      <li><a href="{{ url_for('dev_work_create') }}">发起工单</a></li>
+                      <li><a href="{{ url_for('dev_chart',days=7) }}">工单图表</a></li>
+                      <li><a href="{{ url_for('sqladvisor_check') }}">SQL优化</a></li>
+                      <li><a href="{{ url_for('slowlog') }}">慢查询</a></li>
+	              <li><a href="{{ url_for('rollback') }}">数据回滚</a></li>
+                    </ul>
+                  {% endif %}
+                  {% if current_user.role == 'audit' %}
+
+                    <ul class="nav " align="center">
+                      <li><a href="{{ url_for('audit_work') }}">我的工单</a></li>
+                      <li><a href="{{ url_for('audit_work_pending') }}">待审核工单</a></li>
+                      <li><a href="{{ url_for('audit_work_timer_view') }}">定时任务</a></li>
+                      <li><a href="{{ url_for('audit_chart',days=7) }}">工单图表</a></li>
+		      <li><a href="{{ url_for('rollback') }}">数据回滚</a></li>
+                    </ul>
+
+                  {% endif %}
+                  {% if current_user.role == 'admin' %}
+
+                    <ul class="nav " align="center">
+                      <li><a href="{{url_for('mysql_db')}}">数据库管理</a></li>
+                      <li><a href="{{url_for('user')}}">人员管理</a></li>
+                      <li><a href="{{ url_for('admin_chart',days=7) }}">工单图表</a></li>
+                      <li><a href="{{ url_for('slowlog') }}">慢查询</a></li>
+                      <li><a href="{{ url_for('modules') }}">模块管理</a></li>
+                    </ul>
+
+                  {% endif %}
+
+                </ul>
+              </div>
+
+
+            </div>
+
+{% endblock %}
+{% block content %}
+ <div class="right_col" role="main">
+    <div class="">
+        <div class="x_panel">
+            <h1>使用指引</h1>
+            <div class="x_title">
+
+            </div>
+            <div class="x_content">
+                <h3>欢迎使用自动化运维平台！</h3>
+                <br>
+                <p>本自动化运维平台旨在提高数据库运维效率，使用前请仔细查看使用规范</p>
+                <br>
+                <p><b><a href="{{url_for('static',filename='mysql_db_design_guide.docx')}}">点击下载规范</a></b></p>
+                <br>
+                <p>使用简要：</p>
+                <p>1.管理员登录</p>
+                <p>2.添加开发人员，为开发人员分配数据库</p>
+                <p>3.添加审核人员（主副审核根据需要）</p>
+                <p>4.开始工单流程</p>
+                <br>
+                <p>有问题请联系信息安全与运维中心</p>
+            </div>
+        </div>
+    </div>
+ </div>
+{% endblock %}
+

@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
+from rest_framework.permissions import BasePermission
 class GroupRequiredMixin(AccessMixin):
     redirect_url= "/permission"
     permission_required = u'manager.all'
@@ -24,6 +25,14 @@ class GroupAddRequiredMixin(GroupRequiredMixin):
 class GroupChangeRequiredMixin(GroupRequiredMixin):
     permission_required = u'manager.change_group'
 
-class GroupDeleteRequiredMixin(GroupRequiredMixin):
+class GroupDeleteRequiredMixin(BasePermission):
     permission_required = u'manager.delete_group'
+
+    def has_permission(self, request, view):
+        perms = self.permission_required
+        perm_list=list(request.user.get_all_permissions())
+        if perms in perm_list:
+            return True
+        else:
+            return False
 

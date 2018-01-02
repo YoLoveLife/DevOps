@@ -1,0 +1,46 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+ <div class="right_col" role="main">
+          <div class="">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>慢查询</h2>
+
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table id="datatable-buttons" class="table table-bordered">
+
+                      <thead>
+                        <tr>
+                            <th>数据库</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                      {% for dbconfig in dbconfigs %}
+                          <tr>
+                          <td>{{ dbconfig.name }}</td>
+                          <td><a href="{{ url_for('view_slowlog', dbid=dbconfig.id,t=1) }}">1小时</a></td>
+                          <td><a href="{{ url_for('view_slowlog', dbid=dbconfig.id,t=3) }}">3小时</a></td>
+                          <td><a href="{{ url_for('view_slowlog', dbid=dbconfig.id,t=6) }}">6小时</a></td>
+                          <td><a href="{{ url_for('view_slowlog', dbid=dbconfig.id,t=12) }}">12小时</a></td>
+                          <td><a href="{{ url_for('view_slowlog', dbid=dbconfig.id,t=24) }}">24小时</a></td>
+                          </tr>
+                      {% endfor %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+        <!-- /page content -->
+{% endblock %}

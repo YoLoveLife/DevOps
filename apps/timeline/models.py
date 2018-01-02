@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import User
-from validate.models import ExtendUser
+from authority.models import ExtendUser
 from manager.models import Host
-from concert.models import Music
+# from concert.models import Music
 from execute.models import Callback
 # Create your models here.
 STATUS = (
@@ -18,6 +18,7 @@ HISTORY_TYPE = (
     (1, u'脚本修改'),
     (2, u'剧本修改'),
     (3, u'人员管理'),
+    (4, u'应用管理'),
 )
 class History(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,7 +37,7 @@ class ConcertHistory(models.Model):
     endtime = models.DateTimeField(auto_now=True,blank=True)#历史结束时间
     info = models.TextField(default='')#信息
     status = models.IntegerField(default=0,choices=STATUS)#状态
-    music = models.ForeignKey(Music,default=1,related_name='concert_his')#使用的音乐
+    # music = models.ForeignKey(Music,default=1,related_name='concert_his')#使用的音乐
     callback = models.ForeignKey(Callback,default=1,related_name='concert_back')#执行日志
     #
     # def get_last_history(self):

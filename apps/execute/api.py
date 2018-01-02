@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
-import models,serializers
+from application.models import DB
+from manager.models import Host
+from operation.models import PlayBook
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from execute.service.catch.basic import BasicAnsibleService
-from execute.service.catch.db import DBAnsibleService
-from operation.models import PlayBook
-from manager.models import Host
-from application.models import DBDetail,DB
-from service.catch.basic import BasicAnsibleService
+from execute.service.base import PingOnlineService
+import serializers
+
+
 class UpdateHostAPI(generics.ListAPIView):
     serializer_class = serializers.UpdateHostSerializer
     permission_classes = [IsAuthenticated]
@@ -16,13 +16,12 @@ class UpdateHostAPI(generics.ListAPIView):
         return Host.objects.filter(id=self.kwargs['pk'])
 
     def get(self, request, *args, **kwargs):
-        host = Host.objects.get(id=self.kwargs['pk'])
-        playbook = PlayBook.objects.get(id = 1)
-        bas = BasicAnsibleService(hostlist=[host])
-        bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
+        # host = Host.objects.get(id=self.kwargs['pk'])
+        # playbook = PlayBook.objects.get(id = 1)
+        # bas = BasicAnsibleService(hostlist=[host])
+        # bas.run(tasklist=playbook.tasks.all().order_by('-sort'))
+        PingOnlineService()
         return super(UpdateHostAPI,self).get(request,*args,**kwargs)
-
-
 
 class CatchDBStatusAPI(generics.ListAPIView):
     serializer_class = serializers.CatchDBStatusSerializer

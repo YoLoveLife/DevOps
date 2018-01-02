@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-md-12">
+        <label class="control-label" for="id_permissions">{{ object.name }}</label>
+        <select id="permissions" name="permissions" class="select2 form-control" multiple="yes" style="width:100%;">
+            {% for permission in permissions %}
+                {% if permission.id in permissions_group %}
+                    <option value="{{ permission.id }}" selected>{{ permission.name }}</option>
+                {% else %}
+                   <option value="{{ permission.id }}">{{ permission.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>

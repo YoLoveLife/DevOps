@@ -2,7 +2,7 @@
 {% load static %}
 {% block single-css %}
     <link rel="stylesheet/less" type="text/css" href="{% static 'less/operation.less' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'less/summernote.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/summernote/summernote.css' %}">
 {% endblock %}
 {% load bootstrap3 %}
 {% load i18n %}
@@ -173,10 +173,10 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery.form.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'plugins/jQuery-form/jquery.form.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/summernote/summernote.min.js' %}"></script>
     <script src="{% static 'js/operation.js' %}"></script>
-    <script src="{% static 'js/summernote.js' %}"></script>
     <script>
         var avrg_list;
         var Ele_textarea=$('#id_script');
@@ -267,7 +267,7 @@
                     $('#args_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
-                    alert(data.responseJSON.info);
+                    alert(data.responseJSON.detail);
                 }
             });
         })
@@ -278,7 +278,7 @@
                 return false;
             }
             var argsname=a[0].args_name;
-            var data={'args_name':argsname}
+            var data={'args_name':argsname};
             $.ajax({
                 type:"DELETE",
                 url:"/api-operation/v1/scriptargs/"+"{{ id }}"+"/remove/",
@@ -288,7 +288,7 @@
                     $('#args_tb').bootstrapTable('refresh');
                 },
                 error:function(data){
-                    alert(data.responseJSON.info);
+                    alert(data.responseJSON.detail);
                 }
             })
         })

@@ -14,9 +14,11 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-
+from __future__ import absolute_import
 import os
 import django.db.backends.mysql
+ENVIRONMENT='DEVEL'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
@@ -31,19 +33,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'utils.apps.UtilsConfig',
+    'authority.apps.AuthorityConfig',
     'validate.apps.ValidateConfig',
     'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',
     'operation.apps.OperationConfig',
     'application.apps.MagicConfig',
-    'authority.apps.AuthorityConfig',
     'execute.apps.ExecuteConfig',
     'concert.apps.ConcertConfig',
     'timeline.apps.TimelineConfig',
+    'upload.apps.UploadConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
@@ -51,6 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery', #celery
+    'kombu.transport.django', #celery
 ]
 
 REST_FRAMEWORK = {
@@ -95,18 +100,6 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-# if 'BUILD_ON_TRAVIS' in os.environ:
-#     DATABASES={
-#         'default':{
-#             'ENGINE':'django.db.backends.mysql',
-#             'NAME':'deveops_testdb',
-#             'USER':'root',
-#             'PASSWORD':'',
-#             'HOST':'127.0.0.1',
-#             'PORT':'3306',
-#         },
-#     }
-# else:
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
@@ -142,6 +135,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-Hans'
 
+# FILE_CHARSET='gb18030'
+#
+DEFAULT_CHARSET='utf-8'
+
 TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
@@ -158,14 +155,124 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
 STATIC_URL = '/static/'
 
+# Media files
+MEDIA_ROOT = PROJECT_DIR + '/media'
+
+MEDIA_URL = '/media/'
+
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(PROJECT_DIR, "static"),
+    os.path.join(PROJECT_DIR, "media"),
 )
 
+#LOGIN
 LOGIN_URL='/validate/login'
-AUTH_USER_MODEL='validate.ExtendUser'
-
+AUTH_USER_MODEL='authority.ExtendUser'
+AUTH_GROUP_MODEL='authority.ExtendGroup'
+#SESSION
 SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SESSION_COOKIE_AGE=15*60
 
+
+# LDAP
+if ENVIRONMENT != 'TRAVIS':
+    from django_auth_ldap.config import LDAPSearch,GroupOfNamesType
+    import ldap
+    AUTHENTICATION_BACKENDS = (
+        'django_auth_ldap.backend.LDAPBackend',
+        'django.contrib.auth.backends.ModelBackend',
+    )
+    AUTH_LDAP_SERVER_URI = "ldap://10.100.61.6:389"
+    AUTH_LDAP_BIND_DN = "cn=tools,ou=Zabbix,ou=TEST,dc=zbjt,dc=com"
+    AUTH_LDAP_BIND_PASSWORD = "7a$LIOOwxNO"
+
+    OU = unicode('ou=信息安全与运维中心,ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
+    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(objectClass=groupOfNames)")
+    AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
+    AUTH_LDAP_USER_ATTR_MAP = {
+        "first_name":"sn",
+        "last_name":"givenName",
+        "email":"userPrincipalName",
+        "phone":"mobile",
+    }
+    AUTH_LDAP_ALWAYS_UPDATE_USER = True
+    AUTH_LDAP_MIRROR_GROUPS = True
+else:
+    pass
+
+
+#Default devEops Env
+PING_PLAYBOOK_TASK_ID=1
+
+# celery
+import djcelery
+djcelery.setup_loader()
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = 'django://'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'django://'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+
+#FileUpload
+# FILE_UPLOAD_HANDLERS=(
+#     "django.core.files.uploadhandler.MemoryFileUploadHandler",
+#     "django.core.files.uploadhandler.TemporaryFileUploadHandler"
+# )
+# import django.core.files.uploadhandler
+
+#DJANGO LOG
+# if DEBUG == True:
+#     LOGGING_LEVEL = 'DEBUG'
+# else:
+#     LOGGING_LEVEL = 'WARNING'
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,
+#     'formatters': {
+#        'standard': {
+#            # 'format': '%(levelname)s-%(asctime)s-'
+#            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'  #日志格式
+#        }
+#     },
+#     'filters': {
+#     },
+#     'handlers': {
+#         'default': {
+#             'level':LOGGING_LEVEL,
+#             'class':'logging.handlers.RotatingFileHandler',
+#             'filename': 'logs/django.log',     #日志输出文件
+#             'maxBytes': 1024*1024*5,                  #文件大小
+#             'backupCount': 5,                         #备份份数
+#             'formatter':'standard',                   #使用哪种formatters日志格式
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['default'],
+#             'level': LOGGING_LEVEL,
+#             'propagate': False
+#         }
+#     }
+# }
+#
+# #PERSON LOG
+# import logging
+# import logging.config
+# # logging.basicConfig(level=logging.DEBUG,
+# #                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+# #                     datefmt='%a, %d %b %Y %H:%M:%S',
+# #                     filename='logs/myapp.log',
+# #                     filemode='w')
+#
+# logging.config.fileConfig('logging.ini')
+# logger = logging.getLogger("deveops.api")
+# logging.debug('This is debug message')
+# logging.info('This is info message')
+# logging.warning('This is warning message')

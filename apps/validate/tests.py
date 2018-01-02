@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from django.test import TestCase,Client,LiveServerTestCase
-from validate.models import ExtendUser
+from authority.models import ExtendUser
 # Create your tests here.
 
 #model test
@@ -10,7 +10,7 @@ class ExtendUserTestCase(TestCase):
 
     def test_getfullname(self):
         user = ExtendUser.objects.get(username='yz2')
-        self.assertEqual(user.get_full_name(),'YuZhou')
+        self.assertEqual(user.get_full_name(),'Zhou')
 
 #view test
 class LoginPageTestCase(LiveServerTestCase):

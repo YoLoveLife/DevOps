@@ -2,12 +2,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .. import forms,models
 from timeline.models import History
+from authority.models import ExtendUser
+from django.contrib.auth.models import Permission,Group
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView,TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
+from timeline.decorator.manager import decorator_manager
 
 class ManagerGroupListView(LoginRequiredMixin,TemplateView):
     template_name= 'manager/group.html'
@@ -18,28 +21,32 @@ class ManagerGroupListView(LoginRequiredMixin,TemplateView):
 class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequiredMixin,CreateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
-    template_name = 'manager/new_update_group.html'
+    template_name = 'manager/new_group.html'
     success_url = reverse_lazy('manager:group')
 
     def get_context_data(self, **kwargs):
         context = super(ManagerGroupCreateView, self).get_context_data(**kwargs)
-        hosts = models.Host.objects.all()
-        context.update({'hosts':hosts})
+        # hosts = models.Host.objects.all()
+        # if Group.objects.filter(name=u'运维工程师').exists():
+        #     users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
+        #     group_users = {}
+        # else:
+        #     users = {}
+        #     group_users = {}
+        #
+        # context.update({
+        #     'hosts':hosts,
+        #     'group_hosts':group_hosts,
+        #     'users': 'users',
+        #     'group_users': group_users,
+        #                 })
         return context
 
+    @decorator_manager(0,u'新增应用组')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="创建新的应用组",status=0)
-        his.save()
-
-        host_group = form.save()
-        hosts_id_list = self.request.POST.getlist('hosts',[])
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-        host_group.hosts.add(*hosts)
-        host_group.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerGroupCreateView,self).form_valid(form)
+        # form.before_save(request=self.request,commit=True)
+        form.save_hosts_new()
+        return self.request.user,super(ManagerGroupCreateView,self).form_valid(form)
 
     def get_success_url(self):
          return self.success_url
@@ -47,34 +54,33 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
 class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequiredMixin,UpdateView):
     model = models.Group
     form_class = forms.GroupCreateUpdateForm
-    template_name = 'manager/new_update_group.html'
+    template_name = 'manager/update_group.html'
     success_url = reverse_lazy('manager:group')
 
     def get_context_data(self, **kwargs):
         context = super(ManagerGroupUpdateView, self).get_context_data(**kwargs)
         hosts = models.Host.objects.all()
         group_hosts = [host.id for host in self.object.hosts.all()]
+        #
+        # if Group.objects.filter(name=u'运维工程师').exists():
+        #     users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
+        #     group_users = [user.id for user in self.object.users.all()]
+        # else:
+        #     users = {}
+        #     group_users = {}
         context.update({
             'hosts':hosts,
-            'group_hosts':group_hosts
+            'group_hosts':group_hosts,
+            # 'users': users,
+            # 'group_users':group_users,
         })
         return context
 
+    @decorator_manager(0,u'修改应用组')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="修改应用组",status=0)
-        his.save()
-
-        host_group = form.save()
-        hosts_id_list = self.request.POST.getlist('hosts',[])
-
-        hosts = models.Host.objects.filter(id__in=hosts_id_list)
-        host_group.hosts.clear()
-        host_group.hosts.add(*hosts)
-        host_group.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerGroupUpdateView,self).form_valid(form)
+        # form.before_save(request=self.request,commit=True)
+        form.save_hosts_update()
+        return self.request.user,super(ManagerGroupUpdateView,self).form_valid(form)
 
     def get_success_url(self):
         return self.success_url
@@ -87,8 +93,10 @@ class ManagerGroupDetailView(LoginRequiredMixin,DetailView):
         context=super(ManagerGroupDetailView,self).get_context_data(**kwargs)
         group=self.object
         hosts=self.object.hosts.all()
+        manage_user = self.object.users.all()
         context.update({
             'group':group,
             'hosts':hosts,
+            'manage_user':manage_user,
         })
         return context

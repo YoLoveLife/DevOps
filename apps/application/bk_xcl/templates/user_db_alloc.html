@@ -1,0 +1,49 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>为{{ user.name }}分配数据库</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post" action="{{ url_for('user_db_alloc',id=user.id) }}">
+                       {{ form.hidden_tag() }}
+                     <label for="heard">选择数据库</label>
+                     <select id="heard" name="{{ form.db.name }}" class="form-control" required="">
+                         {% for dbconfig in alldbconfigs %}
+                            <option value="{{ dbconfig.id }}">{{ dbconfig.name }}</option>
+                         {% endfor %}
+                          </select>
+                      <br>
+                      <button class="btn btn-primary" type="button" onclick="{location.href='{{ url_for('user') }}'}">返回</button>
+                      <button type="submit" class="btn btn-success">提交</button>
+                    </form>
+
+                      <div class="ln_solid"></div>
+                      <label for="heard">{{ user.name }}已有数据库</label>
+                        <table class="table">
+                            <tbody>
+                              {% if not userdbconfigs %}<tr><td>暂无</td></tr>{% endif %}
+                              {% for dbconfig in userdbconfigs %}
+                                <tr>
+
+                                    <td>{{ dbconfig.name }}({{ dbconfig.host }})</td>
+                                    <td><button type="button" class="btn btn-danger btn-sm" onclick="javascript:if (confirm('确定要删除?')) location.href='{{ url_for('user_db_delete',userid=user.id, dbid=dbconfig.id) }}';">删除</button></td>
+
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+
+
+                  </div>
+                </div>
+              </div>
+    </div>
+ </div>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-puzzle-piece"></i>
+        Redis缓存
+        <small><i class="fa fa-angle-double-right"></i>列表</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-truck"></i>
+        <li class="active">Application</li>
+        <li><a href="/application/redis/">Redis</a></li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">主机列表</h3>
+                </div>
+                <!-- /.box-header -->
+                <div id="redis-toolbar">
+                </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table id="redis_tb" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="check" data-radio="true">#</th>
+                                        <th data-field="host_name">主机名称</th>
+                                        <th data-field="port">端口</th>
+                                        <th data-field="service_ip">服务IP</th>
+                                        <th data-field="online" data-formatter="statusFormatter">状态</th>
+                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">数据库信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <form id="toolbar-redis">
+                            <button class="btn btn-app" id="add_redis">
+                                <i class="fa fa-plus"></i> 新增Redis缓存
+                            </button>
+                            <button class="btn btn-app" id="modify_redis">
+                                <i class="fa fa-edit"></i> 修改Redis缓存
+                            </button>
+                            <button class="btn btn-app" id="delete_redis">
+                                <i class="fa fa-times"></i> 删除Redis缓存
+                            </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table-export/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'plugins/tableExport/tableExport.min.js' %}"></script>
+<script>
+    function detailFormatter(value,row,index) {
+        var label_a='<a class="btn btn-default" href="/application/redis/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
+    function statusFormatter(value,row,index) {
+        var label_status;
+        if(value=='1'){
+            label_status='<span class="label label-success">在线</span>'
+        }else{
+            label_status='<span class="label label-danger">离线</span>'
+        }
+        return [label_status].join('');
+    }
+    $(document).ready(function () {
+        $('.select2').select2({dropdownAutoWidth : true});
+        var table=$('#redis_tb').bootstrapTable({
+                url : '/api-application/v1/redis',
+                method  : 'GET',
+                uniqueId :  'id',
+                toolbar : '#redis-toolbar',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                showExport: true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                showExport: true,
+                exportDataType : "basic",
+            });
+    })
+        .on('click','#add_redis',function () {
+            var form=$('#toolbar-redis');
+            var action='/application/redis/create/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#modify_redis',function () {
+            var form=$('#toolbar-redis');
+            var action='/application/redis/';
+            var a=$('#redis_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var obj=a[0].id;
+            action+=obj+'/update/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#delete_redis',function () {
+            var a=$('#redis_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            $.ajax({
+                type:"DELETE",
+                url:"/api-application/v1/redis/{{ id }}/remove/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#redis_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.detail);
+                }
+            })
+        })
+        function historyBack() {
+            window.history.go(-1);
+        }
+
+</script>
+{% endblock %}

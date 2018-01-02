@@ -8,6 +8,7 @@ from manager.models import Host,Group
 # import timeline.models.ConcertHistory
 # Create your models here.
 #音符
+#__all__ = ['Note','Music']
 class Note(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,default='')

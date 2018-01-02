@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
-    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -29,12 +29,12 @@
                 </div>
                 <!-- /.box-header -->
                 <div id="hst-toolbar">
-                    <select id="groupselect" class="select2">
-                        <option id="0">Null</option>
-                        {% for row in grouplist %}
-                            <option id="{{ row.id }}">{{ row.name }}</option>
-                        {% endfor %}
-                    </select>
+                            <select id="groupselect" class="select2" style="width:100%;">
+                                <option id="0">全部应用主机</option>
+                                {% for row in grouplist %}
+                                    <option id="{{ row.id }}">{{ row.name }}</option>
+                                {% endfor %}
+                            </select>
                 </div>
                     <div class="box-body">
                         <div class="row">
@@ -78,10 +78,10 @@
                             <button class="btn btn-app" id="modify_host">
                                 <i class="fa fa-edit"></i> 修改主机
                             </button>
-                            <button class="btn btn-app" disabled>
-                                <i class="fa fa-times"></i> 删除
-                            </button>
                             </form>
+                            <button class="btn btn-app" id="remove_host">
+                                <i class="fa fa-times"></i> 删除主机
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -92,11 +92,17 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/select2.full.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
-    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table-export/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'plugins/tableExport/tableExport.min.js' %}"></script>
 <script>
+    function historyBack() {
+        window.history.go(-1);
+    }
+    function csrfSafeMethod(method){
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
     function statusFormatter(value,row,index) {
         var label_status='';
         if(value==0){//错误
@@ -113,6 +119,13 @@
         return [label_a].join('');
     }
     $(document).ready(function () {
+        $.ajaxSetup({
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
+        });
         $('.select2').select2();
         var table=$('#host_tb').bootstrapTable({
                 url : '/api-manager/v1/hostbygroup/0',
@@ -160,9 +173,29 @@
             form.attr('action',action);
             location.href(action);
         })
-        function historyBack() {
-            window.history.go(-1);
-        }
+        .on('click','#remove_host',function () {
+            var a=$('#host_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var data={};
+            if(confirm("您确认要删除该主机吗？")){
+                $.ajax({
+                    type:"DELETE",
+                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",
+                    data:data,
+                    dataType:"json",
+                    success:function(data){
+                        $('#host_tb').bootstrapTable('refresh');
+                    },
+                    error:function(data){
+                        alert(data.responseJSON.detail);
+                    }
+                })
+            }else{
 
+            }
+        })
 </script>
 {% endblock %}

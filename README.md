@@ -1,15 +1,16 @@
 devEops :laughing: 开发自运维平台
 ================================
-[![Travis Build Status](https://travis-ci.org/YoLoveLife/devEops.svg?branch=master)](https://travis-ci.org/YoLoveLife/devEops)
+[![Travis Build Status](https://travis-ci.org/YoLoveLife/DevOps.svg?branch=master)](https://travis-ci.org/YoLoveLife/DevOps)
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/YoLoveLife/devEops/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) :yum: </br>
 
 Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
+:heart: 感谢所有 :star: 我的人 你们是我努力的动力</br>
 
-运维体系解决方案</br>
-:muscle: 已经努力让它适用于各种可能出现的生产环境</br>
+运维体系解决方案(正在成长中)</br>
+:muscle: 实践以资产、应用信息为中心的运维平台</br>
 django & rest-framework & bootstrap</br>
-:muscle: 参考了诸多django项目 代码已经尽量优美</br>
+:muscle: 参考了诸多django项目 我的Django用的真的很棒</br>
 travis & django TestCase</br>
 :muscle: 单元测试 测试不规范但是努力去做
 
@@ -19,7 +20,7 @@ travis & django TestCase</br>
 
 *关于我开发中遇到的问题 我会写在issues当中供有需要的朋友 :mag: 查询*</br>
 *这些问题都是在查询了诸多资料并亲身尝试大量解决方案 :grimacing: 最后得出的结论*</br>
-*您可以在issues中搜索question和help wanted查看我写的相关问题*</br>
+*您可以在issues中搜索**helper**查看我写的相关问题 我写的很用心*</br>
 *如果未找到您关注的问题或者您对我的项目有建议请在issues和我讨论 :heart: 期待收到您的信息*</br>
 
 ## Contents
@@ -29,14 +30,14 @@ travis & django TestCase</br>
 * [自运维功能实现](#whatcando)
 ## <a name="introduce"> 介绍 </a>
 本开发自运维平台致力于IT资源信息的整合与自动化运维，通过服务、应用配置的信息整合来运维提供帮助。</br>
-
+devEops正在不断成长
 - 所有运维操作都基于信息整合的正确性和一致性(资产信息管理) :floppy_disk: </br>
 - :bar_chart: 提供资产信息的统计,应用系统的占比、脚本|剧本的调用次数等</br>
-- 可临时搜集应用上的信息(如MySQL的status等信息)</br>
-- 所有运维操作(脚本 | 剧本)在提交的时候会自动注入资产信息并通过absible远程执行</br>
+- ~~可临时搜集应用上的信息(如MySQL的status等信息)~~</br>
+- ~~所有运维操作(脚本 | 剧本)在提交的时候会自动注入资产信息并通过ansible远程执行~~</br>
 - 所有资产信息、架构信息都存储在数据库中供所有运维人员操作</br>
-- 开发人员可登陆平台提交工单发起防火墙修改、应用发布、日常运维 :clock9: 等操作,运维人员许可操作进行</br>
-- 所有应用发布、日常运维工作日程展示 :date: </br>
+- ~~开发人员可登陆平台提交工单发起防火墙修改、应用发布、日常运维 :clock9: 等操作,运维人员许可操作进行~~</br>
+- ~~所有应用发布、日常运维工作日程展示 :date:~~ </br>
 - 详细权限操作，区分开发人员以及运维人员 </br>
 
 ## <a name="looklike"> 平台一览 </a>
@@ -44,6 +45,8 @@ travis & django TestCase</br>
 ![LOGIN](img/login.png)</br>
 ### 主机管理
 ![HOST](img/host.png)</br>
+### 批量主机信息上传
+![UPLOAD](img/upload.png)</br>
 ### 脚本编写
 ![SCRIPT](img/script.png)</br>
 ### 时间线展示

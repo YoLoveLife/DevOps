@@ -3,18 +3,42 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
+from authority.models import ExtendUser
 # Create your models here.
-list= ['db_set','redis_set','nginx_set']
+application_list= ['db_set','redis_set']#,'nginx_set']
+
+def upload_dir_path(instance, filename):
+    #instance.group.id,
+    return u'framework/{0}'.format(filename)
+
 class Group(models.Model):
-    id=models.AutoField(primary_key=True)
-    name=models.CharField(max_length=100,default='')
-    info=models.CharField(max_length=100,default='')
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100,default='')
+    info = models.CharField(max_length=100,default='')
+    framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
+    users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
+
+    def __unicode__(self):
+        return self.name
+
+    __str__ = __unicode__
+
+    def _name(self):
+        return 'group'
 
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
     disk_size=models.CharField(max_length=100,default="")
     disk_path=models.CharField(max_length=100,default="")
     info=models.CharField(max_length=100,default="")
+
+    def __unicode__(self):
+        return self.disk_path + ' - ' + self.info
+
+    __str__ = __unicode__
+
+    def _name(self):
+        return 'storage'
 
     def get_all_group_name(self):
         list = []
@@ -51,17 +75,44 @@ class Host(models.Model):
     hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户
     sshpasswd = models.CharField(max_length=100,default='')#用户密码
-    sshport = models.CharField(max_length=5,default='')#用户端口
+    sshport = models.IntegerField(default='52000')#用户端口
     coreness = models.CharField(max_length=5,default='')#CPU数
     memory = models.CharField(max_length=7,default='')#内存
     root_disk = models.CharField(max_length=7,default="")#本地磁盘大小
     info = models.CharField(max_length=200,default="")
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
 
+    def __unicode__(self):
+        return self.hostname + ' - ' + self.service_ip + ' - ' + self.info
+
+    __str__ = __unicode__
+
+    def _name(self):
+        return 'host'
+
     def application_get(self):
         id_list=[]
-        for attr in list:
-            if hasattr(self,attr):
-                id_list.append(int(getattr(self,attr).get().softlib_id))
-        softlibs = Softlib.objects.filter(id__in=id_list)
+        for attr in application_list:
+            if getattr(self,attr).count() == 0:
+                pass
+            else:
+                if getattr(self,attr).count() == 1:
+                    id_list.append(int(getattr(self,attr).get().softlib_id))
+                else:
+                    for mols in getattr(self,attr).all():
+                        id_list.append(int(mols.softlib_id))
+        if Softlib.objects.filter(id__in=id_list).count() == 0:
+            softlibs = []
+        else:
+            softlibs = Softlib.objects.filter(id__in=id_list)
         return softlibs
+
+    def manage_user_get(self):
+        dist = {}
+        for group in self.groups.all():
+            for user in group.users.all():
+                dist[user.email]=user
+        list = []
+        for key in dist:
+            list.append(dist[key])
+        return list

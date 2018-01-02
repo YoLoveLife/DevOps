@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-database"></i>
+        数据库
+        <small><i class="fa fa-angle-double-right"></i>列表</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-truck"></i>
+        <li class="active">Application</li>
+        <li><a href="/application/db/">Database</a></li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">主机列表</h3>
+                </div>
+                <!-- /.box-header -->
+                <div id="db-toolbar">
+                </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table id="db_tb" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="check" data-radio="true">#</th>
+                                        <th data-field="host_name">主机名称</th>
+                                        <th data-field="port">端口</th>
+                                        <th data-field="datadir">数据目录</th>
+                                        <th data-field="service_ip">服务IP</th>
+                                        <th data-field="id" data-formatter="authFormatter">用户权限</th>
+                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">数据库信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <form id="toolbar-db">
+                            <button class="btn btn-app" id="add_db">
+                                <i class="fa fa-plus"></i> 新增数据库
+                            </button>
+                            <button class="btn btn-app" id="modify_db">
+                                <i class="fa fa-edit"></i> 修改数据库
+                            </button>
+                            </form>
+                            <button class="btn btn-app" id="delete_db">
+                                <i class="fa fa-times"></i> 删除数据库
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table-export/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'plugins/tableExport/tableExport.min.js' %}"></script>
+<script>
+    function authFormatter(value,row,index){
+        var label_a='<a class="btn btn-default" href="/application/db/'+value+'/auth/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
+    function detailFormatter(value,row,index) {
+        var label_a='<a class="btn btn-default" href="/application/db/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
+        return [label_a].join('');
+    }
+    function csrfSafeMethod(method){
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $(document).ready(function () {
+        $.ajaxSetup({
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
+        });
+        $('.select2').select2({dropdownAutoWidth : true});
+        var table=$('#db_tb').bootstrapTable({
+                url : '/api-application/v1/db',
+                method  : 'GET',
+                uniqueId :  'id',
+                toolbar : '#db-toolbar',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                showExport: true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                showExport: true,
+                exportDataType : "basic",
+            });
+    })
+        .on('click','#add_db',function () {
+            var form=$('#toolbar-db');
+            var action='/application/db/create/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#modify_db',function () {
+            var form=$('#toolbar-db');
+            var action='/application/db/';
+            var a=$('#db_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var obj=a[0].id;
+            action+=obj+'/update/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#delete_db',function () {
+            var a=$('#db_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var data={};
+            $.ajax({
+                type:"DELETE",
+                url:"/api-application/v1/db/"+a[0].id+"/remove/",
+                data:data,
+                dataType:"json",
+                success:function(data){
+                    $('#db_tb').bootstrapTable('refresh');
+                },
+                error:function(data){
+                    alert(data.responseJSON.detail);
+                }
+            })
+        })
+        function historyBack() {
+            window.history.go(-1);
+        }
+
+</script>
+{% endblock %}

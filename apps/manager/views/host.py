@@ -1,13 +1,14 @@
 # -*- coding:utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from .. import forms
 from .. import models
-from timeline.models import History
 from ..permission import host as HostPermission
-from django.urls import reverse_lazy
-from django.views.generic import FormView,TemplateView
-from django.views.generic.edit import CreateView,UpdateView
-from django.views.generic.detail import DetailView
+from deveops.utils import aes
+from timeline.decorator.manager import decorator_manager
 
 class ManagerHostListView(LoginRequiredMixin,TemplateView):
     template_name='manager/host.html'
@@ -23,83 +24,41 @@ class ManagerHostListView(LoginRequiredMixin,TemplateView):
 
 class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
-    form_class = forms.HostCreateUpdateForm
+    form_class = forms.HostCreateForm
     template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
+    @decorator_manager(0,u'新增应用主机')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="新增应用主机",status=0)
-        his.save()
-
-        host_storage_group=form.save()
-        hosts_id_list=self.request.POST.getlist('groups',[])
-        storages_id_list=self.request.POST.getlist('storages',[])
-
-        groups = models.Group.objects.filter(id__in=hosts_id_list)
-        storages = models.Storage.objects.filter(id__in=storages_id_list)
-
-        host_storage_group.groups.add(*groups)
-        host_storage_group.storages.add(*storages)
-        host_storage_group.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerHostCreateView,self).form_valid(form)
+        return self.request.user,super(ManagerHostCreateView,self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ManagerHostCreateView,self).get_context_data(**kwargs)
-        groups = models.Group.objects.all()
-        storages = models.Storage.objects.all()
-        context.update({
-            'groups':groups,
-            'groups_host':{},
-            'storages':storages,
-            'storages_host':{}
-        })
         return context
 
     def get_success_url(self):
         return self.success_url
 
 
-
 class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequiredMixin,UpdateView):
     model = models.Host
-    form_class = forms.HostCreateUpdateForm
+    form_class = forms.HostUpdateForm
     template_name = 'manager/new_update_host.html'
     success_url = reverse_lazy('manager:host')
 
+    @decorator_manager(0,u'修改应用主机')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=0,info="修改应用主机",status=0)
-        his.save()
+        return self.request.user,super(ManagerHostUpdateView, self).form_valid(form)
 
-        host_storage_group=form.save()
-        hosts_id_list=self.request.POST.getlist('groups',[])
-        storages_id_list=self.request.POST.getlist('storages',[])
+    def get_form(self, form_class=None):
+        form = super(ManagerHostUpdateView,self).get_form(form_class)
 
-        groups = models.Group.objects.filter(id__in=hosts_id_list)
-        storages = models.Storage.objects.filter(id__in=storages_id_list)
-
-        host_storage_group.groups.add(*groups)
-        host_storage_group.storages.add(*storages)
-        host_storage_group.save()
-
-        his.status=1
-        his.save()
-        return super(ManagerHostUpdateView, self).form_valid(form)
+        sshpasswd = ''
+        form.initial['sshpasswd'] = aes.decrypt(sshpasswd)
+        return form
 
     def get_context_data(self, **kwargs):
         context=super(ManagerHostUpdateView,self).get_context_data(**kwargs)
-        groups = models.Group.objects.all()
-        groups_host = [group.id for group in self.object.groups.all()]
-        storages = models.Storage.objects.all()
-        storages_host = [storage.id for storage in self.object.storages.all()]
-        context.update({
-            'groups':groups,
-            'groups_host':groups_host,
-            'storages':storages,
-            'storages_host':storages_host
-        })
         return context
 
     def get_success_url(self):
@@ -114,9 +73,11 @@ class ManagerHostDetailView(LoginRequiredMixin,DetailView):
         groups=self.object.groups.all()
         storages=self.object.storages.all()
         softlibs = self.object.application_get()
+        manage_user = self.object.manage_user_get()
         context.update({
             'groups':groups,
             'storages':storages,
             'softlibs':softlibs,
+            'manage_user':manage_user,
         })
         return context

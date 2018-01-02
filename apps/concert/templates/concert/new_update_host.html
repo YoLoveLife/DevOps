@@ -3,7 +3,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
     <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
 {% endblock %}
 {% block content %}
@@ -194,13 +194,13 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/../../../static/js_back/select2.full.min.js' %}"></script>
     <script>
         function historyBack() {
             window.history.go(-1);
         }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
     })
         .on('click','#btn_submit',function () {
             $('#host_form').submit();

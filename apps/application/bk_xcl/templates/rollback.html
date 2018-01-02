@@ -1,0 +1,145 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+
+<div class="right_col" role="main">
+    <div class="">
+        <div id="last" class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>数据回滚</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                <div class="x_content">
+                    <div class="col-md-12 col-sm-12 col-xs-12 ">
+                      <div class="form-group">
+
+                           <label for="message">sql内容:</label>
+                            <textarea id="sql_content" name="sql_content" required="required" class="form-control" name="message" data-parsley-trigger="keyup""
+                            data-parsley-validation-threshold="50" rows="10"></textarea>
+                            <br>
+
+
+                         </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-1 col-sm-1 col-xs-12" for="last-name">数据库主机<span class="required">*</span>
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-12">
+                          <select id="dbconfig" name="dbconfig" required="required" class="form-control" onchange="listbinlogs()">
+                            <option value=""></option>
+                            {% for dbconfig in dbconfigs %}
+                            <option value="{{ dbconfig.name }}">{{ dbconfig.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <label class="control-label col-md-1 col-sm-1 col-xs-12" for="last-name">binlog文件名<span class="required">*</span>
+                        </label>	
+                        <div class="col-md-1 col-sm-1 col-xs-12">
+                          <select id="binlog" name="binlog" required="required" class="form-control">
+                          </select>
+                        </div>
+			<div class="row">
+				<label class="control-label col-md-1 col-sm-1 col-xs-12" for="last-name">开始时间<span class="required">*</span>
+				</label>	
+				<div class="col-md-1 col-sm-1 col-xs-12">
+			 	<input type="datetime-local" id="dtsta" name="dtsta" required="required"/>
+				</div>
+
+				<label class="control-label col-md-1 col-sm-1 col-xs-12" for="last-name">结束时间<span class="required">*</span>
+				</label> 
+                        	<div class="col-md-1 col-sm-1 col-xs-12">
+                         	<input type="datetime-local" id="dtstp" name="dtsto" required="required"/>
+                        	</div>
+			</div>
+
+                   <div class="col-md-4 col-sm-4 col-xs-6">
+                        <button id="checksql" type="button" class="btn btn-info" onclick="mysqladvisorcheck()">查看执行语句</button>
+			<button id="getsql" type="button" class="btn btn-info" onclick="mysqladvisorcheck()">生成回滚语句</button>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+</div>
+
+<script src="{{url_for('static',filename='resource/js/jquery.min.js')}}"></script>
+<script>
+ function listbinlogs() {
+     var dbConfig = $("#dbconfig").val();
+     if (dbConfig !== null & dbConfig.trim() !== "" & dbConfig !== $("#dbconfig").attr("data-placeholder")) {
+          $.ajax({
+		        type: "post",
+		        url: "{{ url_for('list_binlog') }}",
+		        dataType: "json",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		        data: {
+			        'dbConfig': dbConfig
+		    },
+		    success: function (data) {
+                var result = eval(data);
+                for(var i =0;i<result.length;i++) {
+                    $("#binlog").append("<option value='"+result[i]+"'>"+result[i]+"</option>");
+                }
+            }
+
+            })
+
+     }
+ }
+ function mysqladvisorcheck() {
+	var result = true;
+	var sqlContent= $("#sql_content").val();
+	var dbConfig = $("#dbconfig").val();
+    var dbUse = $("#dbuse").val();
+	if (sqlContent === null || sqlContent.trim() === "" || sqlContent == $("#sql_content").attr("placeholder")) {
+		alert("SQL内容不能为空！");
+        return result = false;
+	} else if (dbConfig === null || dbConfig.trim() === "" || dbConfig == $("#dbconfig").attr("data-placeholder")) {
+		alert("请选择要执行的数据库！");
+        return result = false;
+	}
+	if (result === true) {
+        $.ajax({
+		type: "post",
+		url: "{{ url_for('sqladvisor_check') }}",
+		dataType: "json",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: {
+			'sqlContent': sqlContent,
+			'dbConfig': dbConfig,
+            'dbUse': dbUse
+		},
+		success: function (data) {
+            var result=eval(data)
+               var finalHtml ="<div id='result' class='col-md-12 col-sm-12 col-xs-12'><div class='x_panel'><div class='x_content'><table class='table'><thead><tr><th class='col-md-4 col-sm-4 col-xs-12'>sql语句</th><th class='col-md-8 col-sm-8 col-xs-12'>检查结果</th></tr></thead><tbody>";
+
+               for (var key in result) {
+                   finalHtml += "<tr><td>" + key + "</td><td><font color='#3399ff'>"
+                   for (i=0; i<result[key].length;i++) {
+                       finalHtml+= result[key][i]+"<br>"
+                   }
+                   finalHtml += "</font></td></tr>"
+
+               }
+               finalHtml+="</tbody></table></div></div></div>";
+               $('#result') .remove();
+               $('#last').append(finalHtml);
+
+
+	        }
+
+        })
+    }
+ }
+
+
+
+
+
+</script>
+{% endblock %}

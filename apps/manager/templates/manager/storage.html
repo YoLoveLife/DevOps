@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/select2.min.css' %}">
-    <link rel="stylesheet/less" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
     <section class="content-header">
         <h1>
-            <i class="fa fa-cubes"></i>
+            <i class="fa fa-hdd-o"></i>
             存储
             <small><i class="fa fa-angle-double-right"></i>列表</small>
         </h1>
@@ -56,13 +56,13 @@
                         <button class="btn btn-app" id="modify_storage">
                             <i class="fa fa-edit"></i> 修改
                         </button>
-                        <button class="btn btn-app" disabled>
-                            <i class="fa fa-times"></i> 删除
-                        </button>
-                        <button class="btn btn-app" disabled>
-                            <i class="fa fa-info"></i> 信息
+                        <button class="btn btn-app" id="upload_storage">
+                            <i class="fa fa-info"></i> 批量导入存储
                         </button>
                         </form>
+                        <button class="btn btn-app" id="remove_storage">
+                            <i class="fa fa-times"></i> 删除
+                        </button>
                     </div>
                 </div>
             </div>
@@ -72,15 +72,26 @@
 <!--Modal-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'js/jquery.form.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js'%}"></script>
-    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'js/tableExport.min.js' %}"></script>
+    <script src="{% static 'plugins/jQuery-form/jquery.form.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table-export/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'plugins/tableExport/tableExport.min.js' %}"></script>
     <script>
         function historyBack() {
             window.history.go(-1);
         }
+        function csrfSafeMethod(method){
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
         $(document).ready(function(){
+            $.ajaxSetup({
+               beforeSend: function (xhr,settings) {
+                   if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+                   }
+               }
+            });
+
             var table=$('#storage_tb').bootstrapTable({
                 url : '/api-manager/v1/storage/',
                 method  : 'GET',
@@ -143,6 +154,36 @@
                 action+=obj+'/update/';
                 form.attr('action',action);
                 location.href(action);
+            })
+            .on('click','#upload_storage',function () {
+                var form=$('#toolbar-storage');
+                var action='/upload/storage/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#remove_storage',function () {
+                var a=$('#storage_tb').bootstrapTable('getSelections');
+                if(a.length<1){
+                    alert('请选择数据');
+                    return false;
+                }
+                var data={};
+                if(confirm("您确认要删除该存储吗？")){
+                    $.ajax({
+                        type:"DELETE",
+                        url:"/api-manager/v1/storage/"+a[0].id+"/remove/",
+                        data:data,
+                        dataType:"json",
+                        success:function(data){
+                            $('#storage_tb').bootstrapTable('refresh');
+                        },
+                        error:function(data){
+                            alert(data.responseJSON.detail);
+                        }
+                    })
+                }else{
+
+                }
             })
     </script>
 {% endblock %}

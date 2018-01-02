@@ -10,6 +10,8 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from .. import MODULE_OPTION
+from timeline.decorator.manager import decorator_manager
+
 class OperationPlaybookListView(LoginRequiredMixin,TemplateView):
     template_name= 'operation/playbook.html'
 
@@ -52,10 +54,8 @@ class OperationPlaybookUpdateView(LoginRequiredMixin,PlaybookPermission.Playbook
         })
         return context
 
+    @decorator_manager(2,u'剧本编辑')
     def form_valid(self, form):
-        his=History(user=self.request.user,type=2,info="剧本编辑",status=0)
-        his.save()
-
         playbook_info=form.save()
         groups_id_list = self.request.POST.getlist('groups',[])
         groups = models.Group.objects.filter(id__in=groups_id_list)
@@ -69,9 +69,7 @@ class OperationPlaybookUpdateView(LoginRequiredMixin,PlaybookPermission.Playbook
         #     playbook_info.status = 1
         playbook_info.save()
 
-        his.status=1
-        his.save()
-        return super(OperationPlaybookUpdateView, self).form_valid(form)
+        return self.request.user,super(OperationPlaybookUpdateView, self).form_valid(form)
 
     def get_success_url(self):
         return self.success_url
@@ -93,8 +91,3 @@ class OperationTaskEditorView(LoginRequiredMixin,TemplateView):
 
     def get(self,request,*args, **kwargs):
         return super(OperationTaskEditorView, self).get(request, *args, **kwargs)
-
-    list=[
-        {'id':0},{'id':1},{'id':2}
-    ]
-    list[0].keys

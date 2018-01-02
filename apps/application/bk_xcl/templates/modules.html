@@ -1,0 +1,73 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="x_title">
+                <h2>模块管理
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">SQLAdvisor</div>
+                    <div class="x_content" style="height:200px;">
+                        <br>
+                        <label>简介</label>
+                        <p>SQLAdvisor是由美团点评公司技术工程部DBA团队（北京）开发维护的一个分析SQL给出索引优化建议的工具。它基于MySQL原生态词法解析，结合分析SQL中的where条件、聚合条件、多表Join关系 给出索引优化建议。</p>
+                        <br>
+                        <label>当前状态:</label>
+                        <p>{{ checksqladvisorresult }}</p>
+                        <br>
+                        {% if checksqladvisorresult == 'SQLAdvisor未安装' %}
+                            <button type="button" class="btn btn-success " onclick="javascript:if (confirm('马上安装?')) location.href='{{ url_for('sqladvisor_install') }}';">安装</button>
+                            <button type="button" class="btn ">卸载</button>
+                        {% else %}
+                            <button type="button" class="btn" >安装</button>
+                            <button type="button" class="btn btn-danger " onclick="javascript:if (confirm('确认卸载?')) location.href='{{ url_for('sqladvisor_uninstall') }}';">卸载</button>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+
+                    <div class="x_content">
+
+                        <div id="distribution" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+
+                    <div class="x_content">
+
+                        <div id="devdist" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+
+
+                    <div class="x_content">
+
+                        <div id="auditdist" style="height:350px;"></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+        <!-- /page content -->
+
+
+{% endblock %}
