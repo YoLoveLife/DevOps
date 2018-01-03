@@ -10,18 +10,25 @@ __all__=['BaseApplication','Redis','DB','DBDetail','DBUser']
 
 class BaseApplication(models.Model):
     id=models.AutoField(primary_key=True)
-    host=models.ForeignKey(Host,default=1)
+    host=models.ForeignKey(Host,default=None,blank=True,null=True)
     version=models.CharField(max_length=10)
-    prefix=models.CharField(max_length=100,default='/usr/local')
     online=models.BooleanField(default=False)
     class Meta:
         abstract = True
 
 class Redis(BaseApplication):
     redis_passwd = models.CharField(max_length=100,default='000000')
+    url = models.CharField(max_length=100,default='')
     port = models.IntegerField(default='6379')
     pidfile = models.CharField(max_length=100,default='/var/run/redis.pid')
-    logfile = models.CharField(max_length=100,default='')
+    logfile = models.CharField(max_length=100,default='/var/log/redis.log')
+    prefix=models.CharField(max_length=100,default='/usr/local/redis')
+
+    def get_access_url(self):
+        if self.host is None:
+            return self.redis_passwd+'@'+self.url
+        else:
+            return self.redis_passwd+'@'+self.host.service_ip
 
 
 class DB(BaseApplication):
@@ -29,11 +36,13 @@ class DB(BaseApplication):
         (0,u'否'),
         (1,u'是'),
     )
+    url = models.CharField(max_length=100,default='')
     root_passwd=models.CharField(max_length=100,default='')
     port=models.IntegerField(default='3306')
-    socket=models.CharField(max_length=100,default='/tmp/mysql.sock')
-    datadir=models.CharField(max_length=100,default='/storage/mysql')
+    socket=models.CharField(max_length=100,default='')
+    datadir=models.CharField(max_length=100,default='')
     softlib=models.ForeignKey(Softlib,default=1,)
+    prefix=models.CharField(max_length=100,default='')
     is_slave = models.IntegerField(default=0,choices=IS_SLAVE)
 
     #集联更新
@@ -65,6 +74,12 @@ class DBUser(models.Model):
         self.user = list[0]
         self.ip = list[1]
         self.save()
+
+    def get_access_url(self):
+        if self.db.host is None:#为空
+            return self.user+'@'+self.db.url+':'+self.db.port
+        else:
+            return self.user+'@'+self.db.host.service_ip+':'+self.db.port
 
 
 #
