@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+<section class="content-header">
+    <h1>
+        <i class="fa fa-laptop"></i>
+        软件库
+        <small><i class="fa fa-angle-double-right"></i>列表</small>
+    </h1>
+    <ol class="breadcrumb">
+        <i class="fa fa-truck"></i>
+        <li class="active">Softlib</li>
+        <li><a href="/softlib">List</a></li>
+    </ol>
+</section>
+<!--Content Header-->
+<!--Main Content-->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">软件列表</h3>
+                </div>
+                <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table id="softlib_tb" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="check" data-radio="true">#</th>
+                                        <th data-field="softtype">软件类型</th>
+                                        <th data-field="soft_version">软件版本</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="softlibtbody">
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">软件信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <form id="toolbar-softlib">
+                            <button class="btn btn-app" id="add_softlib">
+                                <i class="fa fa-plus"></i> 新增软件
+                            </button>
+                            <button class="btn btn-app" id="modify_softlib">
+                                <i class="fa fa-edit"></i> 修改软件
+                            </button>
+                            </form>
+                            <button class="btn btn-app" id="remove_softlib">
+                                <i class="fa fa-times"></i> 删除软件
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Main Content-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
+<script>
+    function historyBack() {
+        window.history.go(-1);
+    }
+    function csrfSafeMethod(method){
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $(document).ready(function () {
+        $.ajaxSetup({
+           beforeSend: function (xhr,settings) {
+               if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+               }
+           }
+        });
+        $('.select2').select2();
+        var table=$('#softlib_tb').bootstrapTable({
+                url : '/api-softlib/v1/softlib/',
+                method  : 'GET',
+                uniqueId :  'id',
+                toolbar : '#hst-toolbar',
+                search  :   true,
+                sortable    :   false,
+                pagination  :   true,
+                showExport: true,
+                sidePagination  : 'client',
+                clickToSelect:  true,
+                singleSelect    :   true,
+                showRefresh :   true,
+                showColumns :    true,
+                pageSize    :   15,
+                pageList    :   [10, 20, 30, 40],
+                dataType    :   'json',
+                showExport: true,
+                exportDataType : "basic",
+            });
+    })
+        .on('click','#add_softlib',function () {
+            var form=$('#toolbar-host');
+            var action='/manager/host/create/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#modify_host',function () {
+            var form=$('#toolbar-host');
+            var action='/manager/host/';
+            var a=$('#host_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var obj=a[0].id;
+            action+=obj+'/update/';
+            form.attr('action',action);
+            location.href(action);
+        })
+        .on('click','#remove_host',function () {
+            var a=$('#host_tb').bootstrapTable('getSelections');
+            if(a.length<1){
+                alert('请选择数据');
+                return false;
+            }
+            var data={};
+            if(confirm("您确认要删除该主机吗？")){
+                $.ajax({
+                    type:"DELETE",
+                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",
+                    data:data,
+                    dataType:"json",
+                    success:function(data){
+                        $('#host_tb').bootstrapTable('refresh');
+                    },
+                    error:function(data){
+                        alert(data.responseJSON.detail);
+                    }
+                })
+            }else{
+
+            }
+        })
+</script>
+{% endblock %}

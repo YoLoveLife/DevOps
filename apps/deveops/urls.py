@@ -23,31 +23,31 @@ from django.views.static import serve
 from django.conf import settings
 import views
 urlpatterns = [
-    # # VIEW
-    # url(r'^$', views.IndexView.as_view(), name='index'),
-    # url(r'^404/',views.ErrorView.as_view(),name='404'),
-    # url(r'^permission/',views.PermissionView.as_view(),name='permission'),
-    # url(r'^validate/', include('validate.urls.views_urls', namespace='validate')),
-    # url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
-    # url(r'^operation/',include('operation.urls.views_urls',namespace='operation')),
-    # url(r'^timeline/',include('timeline.urls.views_urls',namespace='timeline')),
-    # url(r'^authority/',include('authority.urls.views_urls',namespace='authority')),
-    # url(r'^application/',include('application.urls.views_urls',namespace='application')),
-    # url(r'^concert/',include('concert.urls.views_urls',namespace='concert')),
-    # url(r'^upload/',include('upload.urls.views_urls',namespace='upload')),
-    # url(r'^softlib/',include('softlib.urls.views_urls',namespace='softlib')),
-    # url(R'^dns/',include('dns.urls.views_urls',namespace='dns')),
-    #
-    # # API
-    # url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
-    # url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
-    # url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),
-    # url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
-    # url(r'^api-concert/',include('concert.urls.api_urls',namespace='api-concert')),
-    # url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
-    # url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
-    #
-    # url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
+    # VIEW
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^404/',views.ErrorView.as_view(),name='404'),
+    url(r'^permission/',views.PermissionView.as_view(),name='permission'),
+    url(r'^validate/', include('validate.urls.views_urls', namespace='validate')),
+    url(r'^manager/', include('manager.urls.views_urls', namespace='manager')),
+    url(r'^operation/',include('operation.urls.views_urls',namespace='operation')),
+    url(r'^timeline/',include('timeline.urls.views_urls',namespace='timeline')),
+    url(r'^authority/',include('authority.urls.views_urls',namespace='authority')),
+    url(r'^application/',include('application.urls.views_urls',namespace='application')),
+    url(r'^concert/',include('concert.urls.views_urls',namespace='concert')),
+    url(r'^upload/',include('upload.urls.views_urls',namespace='upload')),
+    url(r'^softlib/',include('softlib.urls.views_urls',namespace='softlib')),
+    url(R'^dns/',include('dns.urls.views_urls',namespace='dns')),
+
+    # API
+    url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
+    url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
+    url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),
+    url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
+    url(r'^api-concert/',include('concert.urls.api_urls',namespace='api-concert')),
+    url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
+    url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
+
+    url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
 
 '''
