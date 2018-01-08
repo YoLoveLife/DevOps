@@ -4,7 +4,6 @@
 {% load i18n %}
 {% block single-css %}
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-fileinput/css/fileinput.min.css' %}">
 {% endblock %}
 {% block content %}
@@ -37,15 +36,16 @@
                             </div>
                             <div class="box-body">
                                 <a href="{% static 'demo/group_demo.xls' %}"><i class="fa fa-check">上传模板下载</i></a>
-                                <select id="storages" name="groups" class="select2 form-control" style="width:100%;">
-                                    {% for group in groups %}
-                                        {% if group.id in groups_host %}
-                                            <option value="{{ group.id }}" selected>{{ group.name }}</option>
-                                        {% else %}
-                                           <option value="{{ group.id }}">{{ group.name }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
+                                {% bootstrap_field form.group %}
+{#                                <select id="storages" name="groups" class="select2 form-control" style="width:100%;">#}
+{#                                    {% for group in groups %}#}
+{#                                        {% if group.id in groups_host %}#}
+{#                                            <option value="{{ group.id }}" selected>{{ group.name }}</option>#}
+{#                                        {% else %}#}
+{#                                           <option value="{{ group.id }}">{{ group.name }}</option>#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
                             </div>
                         </div>
                     </div>
