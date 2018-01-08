@@ -55,7 +55,8 @@
                         <li><a href="/timeline/plan" class="ajax-link"><i class="fa fa-hourglass-half"></i>计划</a></li>
                     </ul>
                 </li>
-                <li class="treeview">
+                {% if request.user.is_authenticated %}
+                    <li class="treeview">
                     <a href="#">
                         <i class="fa fa-address-card-o"></i>
                         <span>人员管理</span>
@@ -65,12 +66,11 @@
                     </a>
                     <ul class="treeview-menu" style="display: none">
                         <li><a href="/404" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-{#                        <li><a href="/authority/group" class="ajax-link"><i class="fa fa-sitemap"></i>权限组</a></li>#}
                         <li><a href="/authority/user" class="ajax-link"><i class="fa fa-street-view"></i>人员</a></li>
                         <li><a href="/authority/auth" class="ajax-link"><i class="fa fa-eye-slash"></i>权限组</a></li>
                     </ul>
                 </li>
-
+                {% endif %}
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-truck"></i>
