@@ -68,7 +68,6 @@ class HostBaseForm(forms.ModelForm):
             'hostname':'主机名称','normal_user':'普通用户','coreness':'CPU核数',
             'memory':'内存大小','root_disk':'本地磁盘','info':'信息','sshpasswd':'管理密码',
         }
-
     def clean_sshpasswd(self):
         sshpasswd = self.cleaned_data['sshpasswd']
         if checkpass.checkPassword(sshpasswd):
@@ -79,8 +78,6 @@ class HostBaseForm(forms.ModelForm):
 class HostCreateForm(HostBaseForm):
     def clean_service_ip(self):
         service_ip = self.cleaned_data['service_ip']
-        if models.Host.objects.filter(service_ip=service_ip).exists() == True:
-            raise forms.ValidationError(u'该主机已经存在')
         return service_ip
 
     def clean_storages(self):
@@ -89,6 +86,11 @@ class HostCreateForm(HostBaseForm):
 
     def clean_groups(self):
         groups = self.cleaned_data['groups']
+        service_ip = self.cleaned_data['service_ip']
+        print('a')
+        for group in groups:
+            if group.hosts.filter(service_ip=service_ip).exists() == True:
+                raise forms.ValidationError(u'应用组 %s 中已经存在该主机'%(group.name))
         return groups
 
 
@@ -104,6 +106,11 @@ class HostUpdateForm(HostBaseForm):
 
     def clean_groups(self):
         groups = self.cleaned_data['groups']
+        service_ip = self.cleaned_data['service_ip']
+        own_id = self.instance.id
+        for group in groups:
+            if group.hosts.exclude(id=own_id).filter(service_ip=service_ip).exists() == True:
+                raise forms.ValidationError(u'应用组 %s 中已经存在该主机' % (group.name))
         return groups
 
 

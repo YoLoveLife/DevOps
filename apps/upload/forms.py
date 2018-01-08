@@ -9,15 +9,22 @@ from deveops.utils import aes,checkpass
 class GroupUploadFileForm(forms.ModelForm):
     class Meta:
         model = models.GroupUpload
-        fields = ['file']
+        fields = ['file','group']
+        labels = {
+            'group':u'应用组'
+        }
+        widgets = {
+            'group':forms.Select(attrs={'type': 'select2 form-control'}),
+        }
 
-    def before_save(self,request,commit):
-        return request.POST.get('groups')
+    # def before_save(self,request,commit):
+    #     return request.POST.get('groups')
 
 class StorageUploadFileForm(forms.ModelForm):
     class Meta:
         model = models.StorageUpload
         fields = ['file']
+
 
     def before_save(self,request,commit):
         pass

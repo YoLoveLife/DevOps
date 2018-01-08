@@ -24,9 +24,8 @@ class UploadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin
 
     @decorator_manager(0,u'批量导入主机信息')
     def form_valid(self, form):
-        group_id = form.before_save(request=self.request,commit=True)
         result = super(UploadGroupFile, self).form_valid(form)
-        AnalyzeHostFromExcel(group_id,form.instance.file)
+        AnalyzeHostFromExcel(form.instance.group.id,form.instance.file)
         return self.request.user,result
 
     def get_success_url(self):
