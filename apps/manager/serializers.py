@@ -23,6 +23,12 @@ class HostSerializer(serializers.ModelSerializer):
                   ,'storages','status',
                   )
 
+class HostPasswordSerializer(serializers.ModelSerializer):
+    password = serializers.StringRelatedField(source='password_get',read_only=True)
+    class Meta:
+        model=models.Host
+        fields = ('id','password')
+
 
 class HostUpdateGroupSerializer(serializers.ModelSerializer):
     hosts = serializers.PrimaryKeyRelatedField(many=True,queryset=models.Host.objects.all())

@@ -87,7 +87,6 @@ class HostCreateForm(HostBaseForm):
     def clean_groups(self):
         groups = self.cleaned_data['groups']
         service_ip = self.cleaned_data['service_ip']
-        print('a')
         for group in groups:
             if group.hosts.filter(service_ip=service_ip).exists() == True:
                 raise forms.ValidationError(u'应用组 %s 中已经存在该主机'%(group.name))

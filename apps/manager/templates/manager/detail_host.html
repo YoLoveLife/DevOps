@@ -12,6 +12,9 @@
         <i class="fa fa-laptop"></i>
         主机 {{ object.hostname }}
         <small><i class="fa fa-angle-double-right"></i>详细信息</small>
+        <button class="btn btn-success" id="btn-passwd">
+            <i class="fa fa-home"></i>
+        </button>
     </h1>
     <ol class="breadcrumb">
         <i class="fa fa-truck"></i>
@@ -296,6 +299,8 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
+    <script src="{% static 'plugins/jQuery/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'plugins/jQuery-Zeroclipboard/jquery.zclip.min.js' %}"></script>
 <script>
         function historyBack() {
             window.history.go(-1);
@@ -317,5 +322,34 @@
                     async: false
                 });
             })
+{#            .on('click','#btn-passwd',function () {#}
+{#                $.ajax({#}
+{#                    type:"GET",#}
+{#                    url:"/api-manager/v1/host/{{ object.id }}/passwd/",#}
+{#                    dataType:"json",#}
+{#                    success:function(data){#}
+{#                        var passwd = data[0].password;#}
+{#                        if(window.clipboardData){#}
+{#                            window.clipboardData.setData("Text", passwd);#}
+{#                            alert('success?');#}
+{#                        }#}
+{#                        else{#}
+{##}
+{#                        }#}
+{#                    },#}
+{#                    error:function(data){#}
+{#            $("#btn-passwd").zclip({#}
+{#                path:'{% static 'plugins/jQuery-Zeroclipboard/ZeroClipboard.swf' %}',#}
+{#                copy:function(){#}
+{#                    alert('复制一哈');#}
+{#                    return passwd;#}
+{#                    },#}
+{#                afterCopy:function(){#}
+{#                    alert('复制成功！');#}
+{#                }#}
+{#            });#}
+{#                    }#}
+{#                })#}
+{#            })#}
 </script>
 {% endblock %}
