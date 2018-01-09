@@ -8,6 +8,7 @@ urlpatterns=[
     # Resource host api
     url(r'^v1/hostbygroup/(?P<pk>[0-9]+)',api.ManagerHostListByGroupAPI.as_view()),
     url(r'^v1/host/(?P<pk>[0-9]+)/remove/', api.ManagerHostRemoveAPI.as_view()),
+    url(r'^v1/host/(?P<pk>[0-9]+)/passwd/', api.ManagerHostPasswordAPI.as_view()),
 
     # Resource storage api
     url(r'^v1/storage/$', api.ManagerStorageListAPI.as_view()),

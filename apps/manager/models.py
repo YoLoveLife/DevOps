@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
 from authority.models import ExtendUser
+from deveops.utils import aes
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
 
@@ -92,6 +93,9 @@ class Host(models.Model):
 
     def _name(self):
         return 'host'
+
+    def password_get(self):
+        return aes.decrypt(self.sshpasswd)
 
     def application_get(self): ####Application Link to Host
         id_list=[]
