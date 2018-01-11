@@ -24,8 +24,41 @@ class UploadGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin
 
     @decorator_manager(0,u'批量导入主机信息')
     def form_valid(self, form):
+
         result = super(UploadGroupFile, self).form_valid(form)
-        AnalyzeHostFromExcel(form.instance.group.id,form.instance.file)
+        try:
+            AnalyzeHostFromExcel(form.instance.group.id,form.instance.file)
+        except:
+            pass
+        return self.request.user,result
+
+    def get_success_url(self):
+        return self.success_url
+
+
+class UploadFrameworkGroupFile(LoginRequiredMixin,UploadPermission.UploadAddRequiredMixin,CreateView):
+    model = models.GroupFrameworkUpload
+    form_class = forms.GroupFrameworkUploadFileForm
+    template_name = "upload/upload_framework_group.html"
+    success_url = reverse_lazy('manager:group')
+
+    def get_context_data(self, **kwargs):
+        context = super(UploadFrameworkGroupFile,self).get_context_data(**kwargs)
+        groups = Group.objects.all()
+        context.update({
+            'groups':groups
+        })
+        return context
+
+    @decorator_manager(0,u'上传主机架构图')
+    def form_valid(self, form):
+        result = super(UploadFrameworkGroupFile, self).form_valid(form)
+        try:
+            group = Group.objects.filter(id=form.instance.group.id).get()
+            group = form.instance.file
+            group.save()
+        except:
+            pass
         return self.request.user,result
 
     def get_success_url(self):

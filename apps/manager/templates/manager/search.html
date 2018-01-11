@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load search_tags %}
 {% block single-css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+{#    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">#}
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -33,12 +34,12 @@
                             <dt>key=value</dt><dd>单个Item项通过key和value组成</dd>
                             <dt>Item;Item</dt><dd>多个Item项通过;号分隔</dd>
                             <dt>Example</dt><dd>manage_ip=10.100.100;sshport=52000</dd>
-                            <dt>可选用的key值</dt><dd>manage_ip,service_ip,outer_ip,
-                    server_position,hostname,
-                    groups__name,normal_user,sshport,
-                    coreness,memory,root_disk,info,
-                    storages__disk_size,
-                    storages__disk_path</dd>
+                            <dt>可选用的key值</dt><dd>管理IP,服务IP,对外IP,
+                    服务器位置,主机名,
+                    应用组名称,普通用户,SSH端口,
+                    核数,内存,根磁盘,信息,
+                    磁盘大小,
+                    磁盘路径</dd>
                 </div>
             </div>
         </div>
@@ -46,7 +47,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" id='manager-search-info' class="form-control" placeholder="">
+                        <input type="text" id='manager-search-info' class="form-control" placeholder="" list="search_list">
+
+                        {% searchlist %}
+
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-info" id="btn-search">Search</button>
                         </span>
@@ -54,7 +58,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8" disabled="none">
+                <div class="col-md-12" disabled="none">
                     <div class="box" disabled="none">
                         <div class="box-header">
                             <h3 class="box-title" style="text-align: center">搜索结果</h3>
@@ -64,6 +68,7 @@
                                 <thead>
                                 <tr>
                                     <th data-field="service_ip">服务IP</th>
+                                    <th data-field="hostname">主机名</th>
                                     <th data-field="info">用途</th>
                                     <th data-field="id" data-formatter="detailFormatter">细节</th>
                                 </tr>
@@ -83,7 +88,6 @@
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
-    <script src="{% static 'plugins/jQuery/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
     <script>
     function detailFormatter(value,row,index) {

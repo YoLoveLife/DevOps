@@ -57,9 +57,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery', #celery
     'kombu.transport.django', #celery
+    'channels',
 ]
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE':10,
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
@@ -156,6 +158,9 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
 STATIC_URL = '/static/'
 
+# Upload files
+UPLOAD_ROOT = PROJECT_DIR + '/upload'
+
 # Media files
 MEDIA_ROOT = PROJECT_DIR + '/media'
 
@@ -207,6 +212,13 @@ else:
 #Default devEops Env
 PING_PLAYBOOK_TASK_ID=1
 
+#CHANNEL
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "deveops.routing.routing",
+    },
+}
 # celery
 import djcelery
 djcelery.setup_loader()

@@ -1,7 +1,7 @@
 /**
  * Created by yo on 17-8-14.
  */
-
+Search_Args=['']
 Normal_Args=['/etc/hosts','/etc/systemctl/iptables','/etc/my.cnf','/usr/local','/etc/init.d',
     'tar -xvzf','tar -cvzf','service']
 Script={

@@ -44,7 +44,7 @@
                                     <tr>
                                         <th data-field="check" data-radio="true">#</th>
                                         <th data-field="systemtype">操作系统</th>
-                                        <th data-field="manage_ip">管理IP</th>
+                                        <th data-field="hostname">域名</th>
                                         <th data-field="service_ip">服务IP</th>
                                         <th data-field="outer_ip">外网IP</th>
                                         <th data-field="server_position">服务器位置</th>
@@ -133,6 +133,7 @@
                 uniqueId :  'id',
                 toolbar : '#hst-toolbar',
                 search  :   true,
+                cache   :   false,
                 sortable    :   false,
                 pagination  :   true,
                 showExport: true,
@@ -141,11 +142,15 @@
                 singleSelect    :   true,
                 showRefresh :   true,
                 showColumns :    true,
-                pageSize    :   15,
+                pageSize    :   10,
                 pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
                 showExport: true,
                 exportDataType : "basic",
+{#                responseHandler : function (res) {#}
+{#                    console.log(res.results);#}
+{#                    return res.results;//.results;#}
+{#                },#}
             });
     })
         .on('change','#groupselect',function(){
