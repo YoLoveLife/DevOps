@@ -55,7 +55,7 @@
                         <li><a href="/timeline/plan" class="ajax-link"><i class="fa fa-hourglass-half"></i>计划</a></li>
                     </ul>
                 </li>
-                {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
                     <li class="treeview">
                     <a href="#">
                         <i class="fa fa-address-card-o"></i>

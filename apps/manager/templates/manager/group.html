@@ -58,6 +58,9 @@
                         <button class="btn btn-app" id="upload_group">
                             <i class="fa fa-info"></i> 批量导入主机
                         </button>
+                            <button class="btn btn-app" id="upload_framworkgroup">
+                            <i class="fa fa-info"></i> 修改主机组架构图
+                        </button>
                         </form>
                         <button class="btn btn-app" id="remove_group">
                             <i class="fa fa-times"></i> 删除
@@ -139,6 +142,12 @@
             .on('click','#upload_group',function () {
                 var form=$('#toolbar-group');
                 var action='/upload/group/';
+                form.attr('action',action);
+                location.href(action);
+            })
+            .on('click','#upload_framworkgroup',function () {
+                var form=$('#toolbar-group');
+                var action='/upload/group-framework/';
                 form.attr('action',action);
                 location.href(action);
             })

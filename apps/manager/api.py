@@ -3,6 +3,7 @@ import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
+from rest_framework.pagination import PageNumberPagination
 from manager.query import hostQuery
 from manager.permission import group as GroupPermission
 from manager.permission import host as HostPermission
@@ -29,12 +30,15 @@ class ManagerGroupRemoveAPI(generics.DestroyAPIView):
             group.delete()
             return Response({'detail': '删除成功'}, status=status.HTTP_201_CREATED)
 
+class PagePa(PageNumberPagination):
+    page_size_query_param='page_size'
 
 
 class ManagerHostListByGroupAPI(generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [IsAuthenticated]
+    # pagination_class = PagePa
 
     def get_queryset(self):
         if self.kwargs['pk']=='0':
@@ -42,6 +46,9 @@ class ManagerHostListByGroupAPI(generics.ListAPIView):
             return queryset
         queryset=models.Group.objects.get(id=self.kwargs['pk']).hosts
         return queryset
+    #
+    # def paginate_queryset(self, queryset):
+
 
 class ManagerHostRemoveAPI(generics.DestroyAPIView):
     serializer_class = serializers.HostSerializer
