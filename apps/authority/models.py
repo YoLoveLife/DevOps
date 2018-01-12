@@ -33,7 +33,6 @@ class ExtendUser(AbstractUser):
 
     def __unicode__(self):
         str = ""
-        print(self.groups.all())
         for group in self.groups.all():
             str += '/'+group.name
         return self.username +' - '+ str

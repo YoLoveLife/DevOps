@@ -10,10 +10,11 @@
                 {% endblock %}
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-white" type="button">Close</button>
-                <button class="btn btn-primary" type="button" id="{% block modal_confirm_id %}{% endblock %}">Confirm</button>
+                <button data-dismiss="modal" class="btn btn-white" type="button">关闭</button>
+                <button class="btn btn-primary" type="button" id="{% block modal_confirm_id %}{% endblock %}">提交</button>
             </div>
         </div>
     </div>
 </div>
-{% block modal_js %}{% endblock %}
+{% block modal_js %}
+{% endblock %}

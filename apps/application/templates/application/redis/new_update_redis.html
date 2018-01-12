@@ -3,6 +3,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 {% block single-css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -32,44 +33,34 @@
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <p class="alert alert-danger" id="modal-error" style="display: none"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
+                                <div class="col-md-5">
                                         {% bootstrap_field form.prefix %}
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-5">
-                                    <div class="form-group">
                                         {% bootstrap_field form.redis_passwd %}
-                                    </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="form-group">
                                         {% bootstrap_field form.port %}
-                                    </div>
                                 </div>
                                 <div class="col-md-5">
-                                    <div class="form-group">
                                         {% bootstrap_field form.pidfile %}
-                                    </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-5">
-                                    <div class="form-group">
                                         {% bootstrap_field form.logfile %}
-                                    </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        {% bootstrap_field form.url %}
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-5">
-                                    <div class="form-group">
-                                        {% bootstrap_field form.service_ip %}
-                                    </div>
+                                        {% bootstrap_field form.host %}
                                 </div>
                             </div>
                         </div>
