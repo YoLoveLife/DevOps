@@ -106,9 +106,9 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'deveopsdb',
+        'NAME':'deveops',
         'USER':'root',
-        'PASSWORD':'',
+        'PASSWORD':'daiSgmiku2',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     },
