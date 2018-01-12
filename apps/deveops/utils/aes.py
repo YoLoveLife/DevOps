@@ -5,8 +5,7 @@
 # Email YoLoveLife@outlook.com
 from Crypto.Cipher import AES
 from binascii import b2a_hex,a2b_hex
-# from deveops.settings import SECRET_KEY
-SECRET_KEY = '1x$!#dwp2_6^tdgs1nv8pwgutbc#4m%#qaz!m!0h_f*%6fp+vt'
+from deveops.settings import SECRET_KEY
 KEY = SECRET_KEY
 KEY_LENGTH=16
 def encrypt(text):

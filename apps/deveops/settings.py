@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'concert.apps.ConcertConfig',
     'timeline.apps.TimelineConfig',
     'upload.apps.UploadConfig',
+    'dns.apps.DnsConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
@@ -56,9 +57,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery', #celery
     'kombu.transport.django', #celery
+    'channels',
 ]
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE':10,
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
@@ -103,9 +106,9 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'deveopsdb',
+        'NAME':'deveops',
         'USER':'root',
-        'PASSWORD':'',
+        'PASSWORD':'daiSgmiku2',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     },
@@ -155,6 +158,9 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
 STATIC_URL = '/static/'
 
+# Upload files
+UPLOAD_ROOT = PROJECT_DIR + '/upload'
+
 # Media files
 MEDIA_ROOT = PROJECT_DIR + '/media'
 
@@ -172,7 +178,7 @@ AUTH_GROUP_MODEL='authority.ExtendGroup'
 #SESSION
 SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
-SESSION_COOKIE_AGE=15*60
+SESSION_COOKIE_AGE=30*60
 
 
 # LDAP
@@ -206,6 +212,13 @@ else:
 #Default devEops Env
 PING_PLAYBOOK_TASK_ID=1
 
+#CHANNEL
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "deveops.routing.routing",
+    },
+}
 # celery
 import djcelery
 djcelery.setup_loader()

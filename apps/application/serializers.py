@@ -15,8 +15,6 @@ class DBAuthSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('user','ip')
 
 class RedisSerializer(serializers.HyperlinkedModelSerializer):
-    host_name = serializers.CharField(source='host.hostname',read_only=True)
-    service_ip = serializers.CharField(source='host.service_ip',read_only=True)
     class Meta:
         model = models.Redis
-        fields = ('id','host_name','service_ip','port','online')
+        fields = ('id','url','port','online')

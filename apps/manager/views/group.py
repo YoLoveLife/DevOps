@@ -26,20 +26,6 @@ class ManagerGroupCreateView(LoginRequiredMixin,GroupPermission.GroupAddRequired
 
     def get_context_data(self, **kwargs):
         context = super(ManagerGroupCreateView, self).get_context_data(**kwargs)
-        # hosts = models.Host.objects.all()
-        # if Group.objects.filter(name=u'运维工程师').exists():
-        #     users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
-        #     group_users = {}
-        # else:
-        #     users = {}
-        #     group_users = {}
-        #
-        # context.update({
-        #     'hosts':hosts,
-        #     'group_hosts':group_hosts,
-        #     'users': 'users',
-        #     'group_users': group_users,
-        #                 })
         return context
 
     @decorator_manager(0,u'新增应用组')
@@ -61,13 +47,6 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
         context = super(ManagerGroupUpdateView, self).get_context_data(**kwargs)
         hosts = models.Host.objects.all()
         group_hosts = [host.id for host in self.object.hosts.all()]
-        #
-        # if Group.objects.filter(name=u'运维工程师').exists():
-        #     users = Group.objects.filter(name=u'运维工程师').get().user_set.all()
-        #     group_users = [user.id for user in self.object.users.all()]
-        # else:
-        #     users = {}
-        #     group_users = {}
         context.update({
             'hosts':hosts,
             'group_hosts':group_hosts,
@@ -78,7 +57,6 @@ class ManagerGroupUpdateView(LoginRequiredMixin,GroupPermission.GroupChangeRequi
 
     @decorator_manager(0,u'修改应用组')
     def form_valid(self, form):
-        # form.before_save(request=self.request,commit=True)
         form.save_hosts_update()
         return self.request.user,super(ManagerGroupUpdateView,self).form_valid(form)
 

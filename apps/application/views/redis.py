@@ -53,10 +53,18 @@ class ApplicationRedisUpdateView(LoginRequiredMixin,RedisPermission.RedisChangeR
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationRedisUpdateView,self).get_context_data(**kwargs)
-        context.update({
-            'service_ip' : self.object.host.service_ip
-        })
         return context
 
     def get_success_url(self):
         return self.success_url
+
+
+class ApplicationRedisDetailView(LoginRequiredMixin,DetailView):
+    model = models.Redis
+    template_name = 'application/redis/detail_redis.html'
+
+    def get_context_data(self, **kwargs):
+        context=super(ApplicationRedisDetailView,self).get_context_data(**kwargs)
+        context.update({
+        })
+        return context

@@ -4,14 +4,20 @@
 {% block single-css %}
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/xterm.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
 <section class="content-header">
     <h1>
-        <i class="fa fa-laptop"></i>
+        <i class="fa fa-laptop" id="btn-passwd"></i>
         主机 {{ object.hostname }}
         <small><i class="fa fa-angle-double-right"></i>详细信息</small>
+{#        <button class="btn btn-warning" id="btn-passwd">#}
+{#            <i class="fa fa-key"></i>#}
+{#        </button>#}
+        <small id="show_passwd"></small>
     </h1>
     <ol class="breadcrumb">
         <i class="fa fa-truck"></i>
@@ -316,6 +322,24 @@
                     dataType: "html",
                     async: false
                 });
+            })
+            .on('click','#btn-passwd',function () {
+                if($('#show_passwd').html()==''){
+                    $.ajax({
+                        type:"GET",
+                        url:"/api-manager/v1/host/{{ object.id }}/passwd/",
+                        dataType:"json",
+                        success:function(data){
+                            var passwd = data[0].password;
+                            $('#show_passwd').html(passwd);
+                        },
+                        error:function(data){
+                        }
+                    })
+                }
+                else{
+                    $('#show_passwd').html('');
+                }
             })
 </script>
 {% endblock %}
