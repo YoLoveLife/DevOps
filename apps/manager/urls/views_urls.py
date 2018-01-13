@@ -7,13 +7,14 @@ from django.conf.urls import url
 from ..views import group,host,storage,dashboard
 urlpatterns = [
     #Resource dashboard url
-    url(r'^dashboard/$', dashboard.ManagerDashboardView.as_view(), name='dashboard'),
+    url(r'^$', dashboard.ManagerDashboardView.as_view(), name='dashboard'),
 
     #Resource host url
     url(r'^host/$', host.ManagerHostListView.as_view(), name='host'),
     url(r'^host/create/$',host.ManagerHostCreateView.as_view(),name='hostcreate'),
     url(r'^host/(?P<pk>[0-9]+)/update/$',host.ManagerHostUpdateView.as_view(),name='hostupdate'),
     url(r'^host/(?P<pk>[0-9]+)/detail/$',host.ManagerHostDetailView.as_view(),name='hostdetail'),
+    url(r'^host/(?P<pk>[0-9]+)/shell/$',host.ManagerHostShellView.as_view(),name='hostshell'),
 
     #Resource group url
     url(r'^group/$', group.ManagerGroupListView.as_view(), name='group'),
