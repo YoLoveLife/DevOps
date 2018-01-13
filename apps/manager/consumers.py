@@ -18,24 +18,24 @@ class ManagerConsumer(WebsocketConsumer):
     #     return ["test"]
 
     def connect(self, message, **kwargs):
-        # target = paramiko.SSHClient()
 
         #DEMO
-        self.target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.target.connect('114.55.126.93', username='root', key_filename='/root/.ssh/id_rsa', port=52000)
-        targettransport = self.target.get_transport()
+        self.jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.jumper.connect('114.55.126.93', username='root', key_filename='/root/.ssh/id_rsa', port=52000)
+        jumpertransport = self.jumper.get_transport()
         dest_addr = ('10.101.30.188', 22)
         local_addr = ('114.55.126.93', 52000)
-        targetchannel = targettransport.open_channel("direct-tcpip", dest_addr, local_addr)
+        jumperchannel = jumpertransport.open_channel("direct-tcpip", dest_addr, local_addr)
 
-        self.jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.jumper.connect('10.101.30.188', username='root', key_filename='/root/.ssh/id_rsa', sock=targetchannel,port=22)
-        print(self.jumper,'connect')
+        self.target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.target.connect('10.101.30.188', username='root', key_filename='/root/.ssh/id_rsa', sock=jumperchannel,port=22)
+        print(self.target,'connect')
         self.message.reply_channel.send({"accept": True})
 
     def receive(self, text=None, bytes=None, **kwargs):
-        (stdin, stdout, stderr) = self.jumper.exec_command(text)
-        print(self.jumper,'recevie')
+        (stdin, stdout, stderr) = self.target.exec_command('hostname')
+        print(self.target,'recevie')
+        print(stdout.read())
         self.send(text=stdout.read(), bytes=bytes)
 
     def disconnect(self, message, **kwargs):

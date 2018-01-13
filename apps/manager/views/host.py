@@ -81,3 +81,12 @@ class ManagerHostDetailView(LoginRequiredMixin,DetailView):
             'manage_user':manage_user,
         })
         return context
+
+class ManagerHostShellView(LoginRequiredMixin,TemplateView):
+    template_name='manager/manager_modal.html'
+
+    def get_context_data(self, **kwargs):
+        context= super(ManagerHostShellView, self).get_context_data(**kwargs)
+        context.update({'id':int(kwargs['pk']) ,
+                        })
+        return context
