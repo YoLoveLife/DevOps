@@ -18,7 +18,6 @@ class Group(models.Model):
     info = models.CharField(max_length=100,default='')
     framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
-
     def __unicode__(self):
         return self.name
 
@@ -70,11 +69,8 @@ class Host(models.Model):
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype=models.IntegerField(default=0,choices=SYSTEM_CHOICES)#操作系统
     manage_ip = models.GenericIPAddressField(default='0.0.0.0')
-    # manage_ip = models.CharField(max_length=15, default='')#管理IP
     service_ip = models.GenericIPAddressField(default='0.0.0.0')
-    # service_ip = models.CharField(max_length=15, default='')#服务IP
     outer_ip = models.GenericIPAddressField(default='0.0.0.0')
-    # outer_ip = models.CharField(max_length=15, default='')#外网IP
     server_position = models.CharField(max_length=50,default='')#服务器位置
     hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户

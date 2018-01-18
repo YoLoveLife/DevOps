@@ -24,7 +24,7 @@
                             </a>
                         </div>
                         <div class="col-md-2 col-md-offset-1">
-                           <a class="btn btn-danger" href="/validate/logout">
+                           <a class="btn btn-danger" href="{% url 'validate:logout'%}">
                                 <i class="fa fa-sign-out"></i>
                             </a>
                         </div>
@@ -41,21 +41,14 @@
                         <span>仪表盘</span>
                     </a>
                 </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-clock-o"></i>
-                        <span>时间线</span>
-                        <span>
-                            <i class="fa fa-angle-double-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-                        <li><a href="/timeline/record" class="ajax-link"><i class="fa fa-thumb-tack"></i>记录</a></li>
-                        <li><a href="/timeline/plan" class="ajax-link"><i class="fa fa-hourglass-half"></i>计划</a></li>
-                    </ul>
-                </li>
+
                 {% if request.user.is_superuser %}
+                    <li class="treeview">
+                        <a href="{% url 'utils:manage' %}" class="ajax-link">
+                            <i class="fa fa-cogs"></i>
+                            <span>基础配置管理</span>
+                        </a>
+                    </li>
                     <li class="treeview">
                     <a href="#">
                         <i class="fa fa-address-card-o"></i>
@@ -65,12 +58,27 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-                        <li><a href="/authority/user" class="ajax-link"><i class="fa fa-street-view"></i>人员</a></li>
-                        <li><a href="/authority/auth" class="ajax-link"><i class="fa fa-eye-slash"></i>权限组</a></li>
+                        <li><a href="{% url 'permission' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+                        <li><a href="{% url 'authority:user' %}" class="ajax-link"><i class="fa fa-street-view"></i>人员</a></li>
+                        <li><a href="{% url 'authority:auth' %}" class="ajax-link"><i class="fa fa-eye-slash"></i>权限组</a></li>
                     </ul>
                 </li>
                 {% endif %}
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-clock-o"></i>
+                        <span>时间线</span>
+                        <span>
+                            <i class="fa fa-angle-double-down"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none">
+                        <li><a href="{% url 'permission'%}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+                        <li><a href="{% url 'timeline:record'%}" class="ajax-link"><i class="fa fa-thumb-tack"></i>记录</a></li>
+                        <li><a href="{% url 'timeline:plan'%}" class="ajax-link"><i class="fa fa-hourglass-half"></i>计划</a></li>
+                    </ul>
+                </li>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-truck"></i>
@@ -80,11 +88,11 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="/manager/" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-                        <li><a href="/manager/group" class="ajax-link"><i class="fa fa-server"></i>应用组</a></li>
-                        <li><a href="/manager/host" class="ajax-link"><i class="fa fa-laptop"></i>主机</a></li>
-                        <li><a href="/manager/storage" class="ajax-link"><i class="fa fa-hdd-o"></i>存储</a></li>
-                        <li><a href="/manager/search" class="ajax-link"><i class="fa fa-search"></i>搜索</a></li>
+                        <li><a href="{% url 'manager:dashboard' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+                        <li><a href="{% url 'manager:group'%}" class="ajax-link"><i class="fa fa-server"></i>应用组</a></li>
+                        <li><a href="{% url 'manager:host'%}" class="ajax-link"><i class="fa fa-laptop"></i>主机</a></li>
+                        <li><a href="{% url 'manager:storage'%}" class="ajax-link"><i class="fa fa-hdd-o"></i>存储</a></li>
+                        <li><a href="{% url 'manager:search'%}" class="ajax-link"><i class="fa fa-search"></i>搜索</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -96,9 +104,9 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="/application/dashboard" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-{#                        <li><a href="/application/db" class="ajax-link"><i class="fa fa-database"></i>数据库</a></li>#}
-                        <li><a href="/application/redis" class="ajax-link"><i class="fa fa-puzzle-piece"></i>Redis缓存</a></li>
+                        <li><a href="{% url 'permission' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+{#                        <li><a href="{% url 'application:db' %}" class="ajax-link"><i class="fa fa-database"></i>数据库</a></li>#}
+                        <li><a href="{% url 'application:redis' %}" class="ajax-link"><i class="fa fa-puzzle-piece"></i>Redis缓存</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -110,9 +118,9 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-                        <li><a href="/operation/script" class="ajax-link"><i class="fa fa-superscript"></i>脚本</a></li>
-                        <li><a href="/operation/playbook" class="ajax-link"><i class="fa fa-play-circle-o"></i>剧本</a></li>
+                        <li><a href="{% url 'permission' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+                        <li><a href="{% url 'operation:script' %}" class="ajax-link"><i class="fa fa-superscript"></i>脚本</a></li>
+                        <li><a href="{% url 'operation:playbook' %}" class="ajax-link"><i class="fa fa-play-circle-o"></i>剧本</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -124,88 +132,93 @@
                         </span>
                     </a>
                     <ul class="treeview-menu" style="display: none">
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-                        <li><a href="/concert/music" class="ajax-link"><i class="fa fa-music"></i>乐谱</a></li>
+                        <li><a href="{% url 'permission' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+                        <li><a href="{% url 'concert:music' %}" class="ajax-link"><i class="fa fa-music"></i>乐谱</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-briefcase"></i>
-                        <span>软件管理</span>
-                        <span>
-                            <i class="fa fa-angle-double-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/softlib" class="ajax-link"><i class="fa fa-archive"></i>管理</a></li>
-                    </ul>
+                        <a href="{% url 'xmt:create' %}" class="ajax-link">
+                            <i class="fa fa-bookmark"></i>
+                            <span>新媒体云服务平台(临时)</span>
+                        </a>
                 </li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-magic"></i>
-                        <span>Ansible</span>
-                        <span>
-                            <i class="fa fa-angle-double-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap"></i>Batch deployment
-                                <span>
-                                    <i class="fa fa-angle-double-down"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none">
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-cogs"></i>Centralized release</a></li>
-                        <li><a href="/404" class="ajax-link"><i class="glyphicon glyphicon-info-sign"></i>Configuration modify</a></li>
-                        <li>
-                            <a href="#"><i class="fa fa-life-ring"></i>App Control
-                                <span>
-                                    <i class="fa fa-angle-double-down"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none">
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>
-                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-comment-o"></i>
-                        <span>Liar</span>
-                        <span>
-                            <i class="fa fa-angle-double-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-houzz"></i>Tomcat</a></li>
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-joomla"></i>Nginx</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-gratipay"></i>
-                        <span>Pavel</span>
-                        <span>
-                            <i class="fa fa-angle-double-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-slideshare"></i>Save me</a></li>
-                        <li><a href="/404" class="ajax-link"><i class="fa fa-viadeo"></i>Pavel</a></li>
-                    </ul>
-                </li>
+{#                <li class="treeview">#}
+{#                    <a href="#">#}
+{#                        <i class="fa fa-briefcase"></i>#}
+{#                        <span>软件管理</span>#}
+{#                        <span>#}
+{#                            <i class="fa fa-angle-double-down"></i>#}
+{#                        </span>#}
+{#                    </a>#}
+{#                    <ul class="treeview-menu" style="display: none">#}
+{#                        <li><a href="/softlib" class="ajax-link"><i class="fa fa-archive"></i>管理</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li class="treeview">#}
+{#                    <a href="#">#}
+{#                        <i class="fa fa-magic"></i>#}
+{#                        <span>Ansible</span>#}
+{#                        <span>#}
+{#                            <i class="fa fa-angle-double-down"></i>#}
+{#                        </span>#}
+{#                    </a>#}
+{#                    <ul class="treeview-menu" style="display: none">#}
+{#                        <li>#}
+{#                            <a href="#"><i class="fa fa-sitemap"></i>Batch deployment#}
+{#                                <span>#}
+{#                                    <i class="fa fa-angle-double-down"></i>#}
+{#                                </span>#}
+{#                            </a>#}
+{#                            <ul class="treeview-menu" style="display: none">#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        <li><a href="/404" class="ajax-link"><i class="fa fa-cogs"></i>Centralized release</a></li>#}
+{#                        <li><a href="/404" class="ajax-link"><i class="glyphicon glyphicon-info-sign"></i>Configuration modify</a></li>#}
+{#                        <li>#}
+{#                            <a href="#"><i class="fa fa-life-ring"></i>App Control#}
+{#                                <span>#}
+{#                                    <i class="fa fa-angle-double-down"></i>#}
+{#                                </span>#}
+{#                            </a>#}
+{#                            <ul class="treeview-menu" style="display: none">#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Redis</a></li>#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>MariaDB</a></li>#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Tomcat</a></li>#}
+{#                                <li><a href="/404" class="ajax-link"><i class="fa fa-circle-o"></i>Nginx</a></li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li class="treeview">#}
+{#                    <a href="#">#}
+{#                        <i class="fa fa-comment-o"></i>#}
+{#                        <span>Liar</span>#}
+{#                        <span>#}
+{#                            <i class="fa fa-angle-double-down"></i>#}
+{#                        </span>#}
+{#                    </a>#}
+{#                    <ul class="treeview-menu" style="display: none">#}
+{#                        <li><a href="/404" class="ajax-link"><i class="fa fa-houzz"></i>Tomcat</a></li>#}
+{#                        <li><a href="/404" class="ajax-link"><i class="fa fa-joomla"></i>Nginx</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li class="treeview">#}
+{#                    <a href="#">#}
+{#                        <i class="fa fa-gratipay"></i>#}
+{#                        <span>Pavel</span>#}
+{#                        <span>#}
+{#                            <i class="fa fa-angle-double-down"></i>#}
+{#                        </span>#}
+{#                    </a>#}
+{#                    <ul class="treeview-menu" style="display: none">#}
+{#                        <li><a href="/404" class="ajax-link"><i class="fa fa-slideshare"></i>Save me</a></li>#}
+{#                        <li><a href="/404" class="ajax-link"><i class="fa fa-viadeo"></i>Pavel</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
             </ul>
         </section>
 </aside>

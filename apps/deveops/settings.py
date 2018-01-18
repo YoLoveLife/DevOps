@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'timeline.apps.TimelineConfig',
     'upload.apps.UploadConfig',
     'dns.apps.DnsConfig',
+    'xmt.apps.XmtConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',

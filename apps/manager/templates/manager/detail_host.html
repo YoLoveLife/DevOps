@@ -5,7 +5,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/xterm.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -332,13 +331,12 @@
                 });
             })
             .on('click','#btn-passwd',function () {
-{#                $('#modal').modal({#}
-{#                    show: true,#}
-{#                    backdrop: 'static',#}
-{#                    keyboard: 'true',#}
-{#                    remote:"{% url 'manager:hostshell' object.id %}"#}
-{#                });#}
-{#                $('#modal').modal('show');#}
+                $('#modal').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: 'true',
+                    remote:"{% url 'manager:hostshell' object.id %}"
+                });
 
 
 {#                if($('#show_passwd').html()==''){#}
