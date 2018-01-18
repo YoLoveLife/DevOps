@@ -1,37 +1,24 @@
 {% load static %}
-<html>
-<head>
-        <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/xterm.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}">
-</head>
-{#<body>#}
-{#<div class="modal-header">#}
-{#    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>#}
-{#    <h4 class="modal-title" id="myModalLabel">分配/回收资产</h4>#}
-{#</div>#}
-{##}
-{#<div class="modal-body" style="">#}
-{#<padding-bottom: 0px;">#}
-{#    <div class="row">#}
-{#		<div class="col-lg-10">#}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel">分配/回收资产</h4>
+</div>
+
+<div class="modal-body" style="">
+    <div class="row">
+		<div class="col-lg-10">
 			<div id="yoshell">
 		    </div>
-{#		</div>#}
-{#	</div>#}
-{#</div>#}
-{#</body>#}
-{##}
-{#<div class="modal-footer">#}
-{#    <button type="button" class="btn btn-default" id="close-btn">取消</button>#}
-{#    <button type="button" class="btn btn-primary" id="save-btn">保存</button>#}
-{#</div>#}
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+</div>
 <script src="{% static 'plugins/jQuery/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/attach/attach.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
-<script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
-<script src="{% static 'plugins/xterm/addons/search/search.js' %}"></script>
-<script src="{% static 'plugins/xterm/addons/winptyCompat/winptyCompat.js' %}"></script>
 <script type="text/javascript">
     function make_yoshell(ele,size){
             tem = new Terminal({
@@ -42,7 +29,12 @@
                 cursorBlink: true,
             });
             tem.open(ele,false);
-            var socket = new WebSocket("ws://" + "192.168.122.244:9999/manager/1/wds/40/120/");
+            var width = (size.cols+ 500).toString() + 'px';
+            var height = (size.rows + 200).toString() + 'px';
+            ele.style.width = width;
+            ele.style.height = height;
+            tem.resize(size.cols, size.rows);
+            var socket = new WebSocket("ws://" + "192.168.122.224:9999/manager/{{ id }}/wds/"+tem.cols+"/"+tem.rows+"/");
             tem.fit();
             tem.focus();
             socket.onopen= function () {
@@ -50,7 +42,6 @@
             }
     }
         $(document).ready(function () {
-            make_yoshell(document.getElementById('yoshell'),{'cols':40,'rows':120});
+            make_yoshell(document.getElementById('yoshell'),{'cols':300,'rows':200});
         })
 </script>
-</html>

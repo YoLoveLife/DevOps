@@ -17,43 +17,37 @@ class YoShellRecvThread(threading.Thread):
         super(YoShellRecvThread, self).__init__()
         self.chan = chan
         self.channel = channel
-        self.count = 0
 
     def run(self):
-        while(True):
+        self.chan.settimeout(0.0)
+        while True:
             try:
                 stdout = list()
                 msg = u(self.chan.recv(self.CACHE))
-                from deveops.asgi import channel_layer  # 为什么一定要在函数中引入才可以？
-
+                from deveops.asgi import channel_layer
                 if len(msg) == 0:
-                    channel_layer.send(self.channel, {
-                        'text': json.dumps(smart_unicode('\r\n*** EOF\r\n'))})
-                    break
+                    continue
                 if msg == "exit\r\n" or msg == "logout\r\n" or msg == 'logout': #如果exit则返回
                     self.chan.close()
                 else:
                     stdout.append([codecs.getincrementaldecoder('UTF-8')('replace').decode(msg)])
-                channel_layer.send(self.channel, {'text': json.dumps(smart_unicode(msg)) })
+                channel_layer.send(self.channel, {'text': msg })
             except socket.timeout:
                 pass
             except Exception,e:
                 pass
 
 class YoShellSendThread(threading.Thread):
-    def __init__(self,message,chan,pubsub):
+    def __init__(self,message,chan,redis):
         super(YoShellSendThread, self).__init__()
         self._stop_event = threading.Event()
         self.message = message
         self.chan = chan
-        self.pubsub = self.catch_pubsub(pubsub)
-        self.count = 1
+        self.pubsub = self.catch_pubsub(redis)
 
-    def catch_pubsub(self,pubsub):
-        import redis
-        redis_instance = redis.StrictRedis()
-        redis_sub = redis_instance.pubsub()
-        redis_sub.subscribe('112')
+    def catch_pubsub(self,redis):
+        redis_sub = redis.pubsub()
+        redis_sub.subscribe(self.message.reply_channel.name)
         return redis_sub
 
     def stop(self):
@@ -63,6 +57,8 @@ class YoShellSendThread(threading.Thread):
         for item in self.pubsub.listen():
             if item['type'] == 'message':
                 self.chan.send(item['data'])
+                # msg = self.chan.recv(1024)
+                # print('获取到的数据',msg)
 
         # while True:
         #     msg = self.pubsub.get_message()

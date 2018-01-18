@@ -24,12 +24,8 @@ class YoSheelConsumer(WebsocketConsumer):
         self.catch_redis().publish()
 
     #获取redis 获取信息链接
-    def catch_redis_pubsub(self):
-        return redis.StrictRedis().pubsub()
-
-    #获取交互式的Shell
-    def catch_chan(self,**kwargs):
-        return self.target.invoke_shell(height=int(kwargs['rows']),width=int(kwargs['cols']))
+    def catch_redis_instance(self):
+        return redis.StrictRedis()
 
 
 
@@ -58,25 +54,21 @@ class ManagerConsumer(YoSheelConsumer):
             self.message.reply_channel.send({"accept": False})
             return
 
-        threadSend = YoShellSendThread(self.message,self.catch_chan(**kwargs),self.catch_redis_pubsub())
+        chan = self.target.invoke_shell(height=int(kwargs['rows']),width=int(kwargs['cols']))
+        # chan.send('export JAVA_HOME=/usr/local/java')
+        threadSend = YoShellSendThread(self.message,chan,self.catch_redis_instance())
         threadSend.setDaemon = True
         threadSend.start()
 
-        theadRecv = YoShellRecvThread(self.message.reply_channel.name,self.catch_chan(**kwargs))
+        theadRecv = YoShellRecvThread(self.message.reply_channel.name,chan)
         theadRecv.setDaemon = True
         theadRecv.start()
         self.message.reply_channel.send({"accept": True})
 
     def receive(self, text=None, bytes=None, **kwargs):
-
         #将用户的输入直接发送到redis的订阅者队列当中
         if text is not None:
-            if text == '\t':
-                print('1')
-            else:
-                print('0')
-            self.push_mission('112',text)
-            print(self.message.reply_channel.name)
+            self.push_mission(self.message.reply_channel.name,text)
 
     def disconnect(self, message, **kwargs):
         print('kkkr')
