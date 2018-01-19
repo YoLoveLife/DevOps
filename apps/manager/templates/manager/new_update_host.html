@@ -63,7 +63,9 @@
                                 <div class="col-md-4">
                                     {% bootstrap_field form.server_position %}
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     {% bootstrap_field form.systemtype %}
                                 </div>
                             </div>
@@ -176,7 +178,7 @@
             window.history.go(-1);
         }
     $(document).ready(function () {
-        $('.select2').select2();
+        $('.select2').select2({dropdownAutoWidth : true});
     })
         .on('click','#btn_submit',function () {
             $('#host_form').submit();
