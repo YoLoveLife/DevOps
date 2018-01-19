@@ -15,7 +15,7 @@ class StorageSerializer(serializers.HyperlinkedModelSerializer):
                   )
 
 class HostSerializer(serializers.ModelSerializer):
-    systemtype = serializers.CharField(source='get_systemtype_display')
+    systemtype = serializers.CharField(source='systemtype.name')
     class Meta:
         model=models.Host
         fields = ('id','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',

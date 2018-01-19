@@ -17,7 +17,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 from __future__ import absolute_import
 import os
 import django.db.backends.mysql
-ENVIRONMENT='DEVEL'
+from deveops import conf as DEVEOPS_CONF
+ENVIRONMENT=DEVEOPS_CONF.ENVIRONMENT
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'timeline.apps.TimelineConfig',
     'upload.apps.UploadConfig',
     'dns.apps.DnsConfig',
+    'xmt.apps.XmtConfig',
     'rest_framework',
     'bootstrap3',
     'django.contrib.auth',
@@ -106,11 +108,11 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'deveops',
-        'USER':'root',
-        'PASSWORD':'daiSgmiku2',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
+        'NAME':DEVEOPS_CONF.DB_NAME,
+        'USER':DEVEOPS_CONF.DB_USER,
+        'PASSWORD':DEVEOPS_CONF.DB_PASSWD,
+        'HOST':DEVEOPS_CONF.DB_HOST,
+        'PORT':DEVEOPS_CONF.DB_PORT,
     },
 }
 
@@ -174,11 +176,11 @@ STATICFILES_DIRS = (
 #LOGIN
 LOGIN_URL='/validate/login'
 AUTH_USER_MODEL='authority.ExtendUser'
-AUTH_GROUP_MODEL='authority.ExtendGroup'
+
 #SESSION
 SESSION_SAVE_EVERY_REQUEST=True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
-SESSION_COOKIE_AGE=30*60
+SESSION_COOKIE_AGE=DEVEOPS_CONF.SESSION_COOKIE_AGE
 
 
 # LDAP
@@ -215,7 +217,10 @@ PING_PLAYBOOK_TASK_ID=1
 #CHANNEL
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(DEVEOPS_CONF.REDIS_HOST,DEVEOPS_CONF.REDIS_PORT)],
+        },
         "ROUTING": "deveops.routing.routing",
     },
 }

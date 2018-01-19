@@ -1,9 +1,11 @@
 <div aria-hidden="true" class="modal fade" id="{% block modal_id %}{% endblock %}" role="dialog" >
     <div class="modal-dialog {% block modal_class %}{% endblock %}" role="document" style="{% block modal_style %}{% endblock %}">
-        <div class="modal-content">
+        <div class="modal-content animated fadeIn">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">{% block modal_title %}{% endblock %}</h4>
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">
+                    {% block modal_title %}{% endblock %}
+                </h4>
             </div>
             <div class="modal-body container">
                 {% block modal_body %}
@@ -16,5 +18,23 @@
         </div>
     </div>
 </div>
+
 {% block modal_js %}
 {% endblock %}
+{#    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">#}
+{#    <div class="modal-dialog">#}
+{#        <div class="modal-content">#}
+{#            <div class="modal-header">#}
+{#                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>#}
+{#                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>#}
+{#            </div>#}
+{#            <div class="modal-body">#}
+{#                <input>#}
+{#            </div>#}
+{#            <div class="modal-footer">#}
+{#                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>#}
+{#                <button type="button" class="btn btn-primary">提交更改</button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}

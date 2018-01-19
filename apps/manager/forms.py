@@ -37,18 +37,21 @@ class GroupCreateUpdateForm(forms.ModelForm):
 
 class HostBaseForm(forms.ModelForm):
     # status = forms.CharField(required=True,disabled=True)
-    manage_ip = forms.CharField(required=False,max_length=15,label="管理IP")
-    outer_ip = forms.CharField(required=False,max_length=15,label="外网IP")
-    coreness = forms.CharField(required=False,max_length=5,label="CPU核数")
-    memory = forms.CharField(required=False,max_length=7,label="内存大小")
-    root_disk = forms.CharField(required=False,max_length=7,label="本地磁盘")
-    service_ip = forms.CharField(required=True,max_length=15,label="服务IP")
+    manage_ip = forms.CharField(required=False,max_length=15,label=u"管理IP")
+    outer_ip = forms.CharField(required=False,max_length=15,label=u"外网IP")
+    coreness = forms.CharField(required=False,max_length=5,label=u"CPU核数")
+    memory = forms.CharField(required=False,max_length=7,label=u"内存大小")
+    root_disk = forms.CharField(required=False,max_length=7,label=u"本地磁盘")
+    service_ip = forms.CharField(required=True,max_length=15,label=u"服务IP")
     groups = forms.ModelMultipleChoiceField(required=False,queryset=models.Group.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
-                                                             label='应用组')
+                                                             label=u'应用组')
     storages = forms.ModelMultipleChoiceField(required=False,queryset=models.Storage.objects.all(),
                                                              to_field_name="id",widget=forms.SelectMultiple(attrs={'class':'select2'}),
-                                                             label='存储')
+                                                             label=u'存储')
+    systemtype = forms.ModelChoiceField(required=True,queryset=models.System_Type.objects.all(),
+                                        to_field_name="id",widget=forms.Select(attrs={'class':'select2'}),
+                                        label=u'操作系统')
     class Meta:
         model = models.Host
         fields = ['systemtype','manage_ip',
@@ -59,14 +62,13 @@ class HostBaseForm(forms.ModelForm):
                   ]
         widgets = {
             'info':forms.Textarea(attrs=None),
-            'systemtype': forms.Select(attrs={'type': 'select2 form-control'}),
             'sshpasswd': forms.TextInput(attrs={'type':'password'}),
         }
         labels = {
-            'systemtype':'操作系统','manage_ip':'管理IP','sshport':'管理端口',
-            'outer_ip':'外网IP','server_position':'服务器位置',
-            'hostname':'主机名称','normal_user':'普通用户','coreness':'CPU核数',
-            'memory':'内存大小','root_disk':'本地磁盘','info':'信息','sshpasswd':'管理密码',
+            'sshport':'管理端口',
+            'server_position':'服务器位置',
+            'hostname':'主机名称','normal_user':'普通用户',
+            'info':'信息','sshpasswd':'管理密码',
         }
     def clean_sshpasswd(self):
         sshpasswd = self.cleaned_data['sshpasswd']

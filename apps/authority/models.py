@@ -33,9 +33,14 @@ class ExtendUser(AbstractUser):
 
     def __unicode__(self):
         str = ""
-        for group in self.groups.all():
-            str += '/'+group.name
-        return self.username +' - '+ str
+        if self.is_superuser == True:
+            str += u'|超级管理员'
+        elif self.groups.count() == 0:
+            str += u'|无权限'
+        else:
+            for group in self.groups.all():
+                str += '|'+group.name
+        return self.username +' - '+ str+'|'
 
     __str__ = __unicode__
 
