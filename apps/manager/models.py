@@ -12,12 +12,20 @@ def upload_dir_path(instance, filename):
     #instance.group.id,
     return u'framework/{0}'.format(filename)
 
+class System_Type(models.Model):
+    id = models.AutoField(primary_key=True) #全局ID
+    name = models.CharField(max_length=50,default="") #字符长度
+
+    def __unicode__(self):
+        return self.name
+
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,default='')
     info = models.CharField(max_length=100,default='')
     framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
+
     def __unicode__(self):
         return self.name
 
@@ -52,13 +60,6 @@ class Storage(models.Model):
         return str[0:-1]
 
 class Host(models.Model):
-    SYSTEM_CHOICES=(
-        (0,u'未添加'),
-        (1,u'Windows Server 2006'),
-        (2,u'Windows Server 2008'),
-        (3,u'Centos 6.5'),
-        (4,u'Centos 7.1'),
-    )
     SYSTEM_STATUS=(
         (0,'错误'),
         (1,'正常'),
@@ -67,7 +68,8 @@ class Host(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
-    systemtype=models.IntegerField(default=0,choices=SYSTEM_CHOICES)#操作系统
+    systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True)
+
     manage_ip = models.GenericIPAddressField(default='0.0.0.0')
     service_ip = models.GenericIPAddressField(default='0.0.0.0')
     outer_ip = models.GenericIPAddressField(default='0.0.0.0')

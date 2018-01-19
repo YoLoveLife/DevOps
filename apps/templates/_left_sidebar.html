@@ -44,25 +44,35 @@
 
                 {% if request.user.is_superuser %}
                     <li class="treeview">
-                        <a href="{% url 'utils:manage' %}" class="ajax-link">
-                            <i class="fa fa-cogs"></i>
+                        <a href="#">
+                            <i class="fa fa-address-card-o"></i>
                             <span>基础配置管理</span>
+                            <span>
+                                <i class="fa fa-angle-double-down"></i>
+                            </span>
                         </a>
+                        <ul class="treeview-menu" style="display: none">
+                            <li><a href="{% url 'utils:jumper' %}" class="ajax-link"><i class="fa fa-rocket"></i>跳板机</a></li>
+{#                            <li><a href="{% url 'authority:user' %}" class="ajax-link"><i class="fa fa-street-view"></i>人员</a></li>#}
+{#                            <li><a href="{% url 'authority:auth' %}" class="ajax-link"><i class="fa fa-eye-slash"></i>权限组</a></li>#}
+                        </ul>
                     </li>
+
+
                     <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-address-card-o"></i>
-                        <span>人员管理</span>
-                        <span>
-                            <i class="fa fa-angle-double-down"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none">
-                        <li><a href="{% url 'permission' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
-                        <li><a href="{% url 'authority:user' %}" class="ajax-link"><i class="fa fa-street-view"></i>人员</a></li>
-                        <li><a href="{% url 'authority:auth' %}" class="ajax-link"><i class="fa fa-eye-slash"></i>权限组</a></li>
-                    </ul>
-                </li>
+                        <a href="#">
+                            <i class="fa fa-address-card-o"></i>
+                            <span>人员管理</span>
+                            <span>
+                                <i class="fa fa-angle-double-down"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none">
+                            <li><a href="{% url 'permission' %}" class="ajax-link"><i class="fa fa-dashboard"></i>概况</a></li>
+                            <li><a href="{% url 'authority:user' %}" class="ajax-link"><i class="fa fa-street-view"></i>人员</a></li>
+                            <li><a href="{% url 'authority:auth' %}" class="ajax-link"><i class="fa fa-eye-slash"></i>权限组</a></li>
+                        </ul>
+                    </li>
                 {% endif %}
 
                 <li class="treeview">

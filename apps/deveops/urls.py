@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^api-concert/',include('concert.urls.api_urls',namespace='api-concert')),
     url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
     url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
+    url(r'^api-utils/',include('utils.urls.api_urls',namespace='api-utils')),
 
     url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
