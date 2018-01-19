@@ -8,9 +8,9 @@ from ..views import loginout as LoginoutViews
 from ..views import dashboard as DashboardViews
 from ..views import user as UserViews
 urlpatterns = [
-    url(r'^login$', LoginoutViews.ValidateLoginView.as_view(), name='valudatelogin'),
-    url(r'^logout$', LoginoutViews.ValidateLogoutView.as_view(), name='valudatelogout'),
-    url(r'^dashboard/', DashboardViews.ValidateDashboardView.as_view(), name='validatedashboard'),
+    url(r'^login$', LoginoutViews.ValidateLoginView.as_view(), name='login'),
+    url(r'^logout$', LoginoutViews.ValidateLogoutView.as_view(), name='logout'),
+    url(r'^dashboard/', DashboardViews.ValidateDashboardView.as_view(), name='dashboard'),
     url(r'^user/', UserViews.ValidateUserListView.as_view(),name='validateuser'),
-    url(r'^validecode/',LoginoutViews.ValidateCodeView.as_view(),name='validatecode'),
+    url(r'^validecode/',LoginoutViews.ValidateCodeView.as_view(),name='code'),
 ]

@@ -5,7 +5,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/xterm.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}">
 {% endblock %}
 {% block content %}
 <!--Content Header-->
@@ -299,6 +298,14 @@
         </div>
     </div>
 </section>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content" id="box">
+        <!--此部分为主体内容，将远程加载进来-->
+      </div>
+   </div>
+</div>
 <!--Main Content-->
 {% endblock %}
 {% block foot_js %}
@@ -324,22 +331,30 @@
                 });
             })
             .on('click','#btn-passwd',function () {
-                if($('#show_passwd').html()==''){
-                    $.ajax({
-                        type:"GET",
-                        url:"/api-manager/v1/host/{{ object.id }}/passwd/",
-                        dataType:"json",
-                        success:function(data){
-                            var passwd = data[0].password;
-                            $('#show_passwd').html(passwd);
-                        },
-                        error:function(data){
-                        }
-                    })
-                }
-                else{
-                    $('#show_passwd').html('');
-                }
+                $('#modal').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: 'true',
+                    remote:"{% url 'manager:hostshell' object.id %}"
+                });
+
+
+{#                if($('#show_passwd').html()==''){#}
+{#                    $.ajax({#}
+{#                        type:"GET",#}
+{#                        url:"/api-manager/v1/host/{{ object.id }}/passwd/",#}
+{#                        dataType:"json",#}
+{#                        success:function(data){#}
+{#                            var passwd = data[0].password;#}
+{#                            $('#show_passwd').html(passwd);#}
+{#                        },#}
+{#                        error:function(data){#}
+{#                        }#}
+{#                    })#}
+{#                }#}
+{#                else{#}
+{#                    $('#show_passwd').html('');#}
+{#                }#}
             })
 </script>
 {% endblock %}
