@@ -8,5 +8,6 @@ from xmt import views
 urlpatterns = [
     #Resource dashboard url
     url(r'^create/$', views.XMTCreateView.as_view(), name='create'),
-    url(r'^result/(?P<pk>[0-9]+)/', views.XMTResultView.as_view(), name='result')
+    url(r'^result/(?P<pk>[0-9]+)/', views.XMTResultView.as_view(), name='result'),
+    url(r'^statistics/$',views.XmtStatisticView.as_view(),name='statistics'),
 ]

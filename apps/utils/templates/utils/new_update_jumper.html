@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block single-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'less/manager.less' %}">
+{% endblock %}
+{% block content %}
+<!--Content Header-->
+    <section class="content-header">
+    <h1>
+        <i class="fa fa-rocket"></i>
+        跳板机
+        <small><i class="fa fa-angle-double-right"></i>增加-修改</small>
+    </h1>
+        <ol class="breadcrumb">
+            <i class="fa fa-truck"></i>
+            <li class="active">Utils</li>
+            <li><a href="/utils/jumper/">Jumper</a></li>
+            <li class="active">New-Update</li>
+        </ol>
+    </section>
+    <!--Content Header-->
+    <!--Main Content-->
+    <section class="content container-fluid">
+        <form method="post" action="" id="jumper_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-5">
+                    {% csrf_token %}
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">主机管理信息</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {% bootstrap_field form.service_ip %}
+                                </div>
+                                <div class="col-md-6">
+                                    {% bootstrap_field form.normal_user %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {% bootstrap_field form.sshpasswd %}
+                                </div>
+                                <div class="col-md-6">
+                                    {% bootstrap_field form.sshport %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {% bootstrap_field form.info %}
+                                </div>
+                                <div class="col-md-6">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% bootstrap_field form.groups %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-2">
+                <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title" style="text-align: center">操作</h3>
+                        </div>
+                        <div class="box-body">
+                             <button class="btn btn-app" id="btn_submit">
+                                <i class="fa fa-check"></i> 提交
+                            </button>
+                            <button class="btn btn-app" id="btn_back">
+                                <i class="fa fa-reply"></i> 回退
+                            </button>
+                            <button class="btn btn-app" disabled>
+                                <i class="fa fa-info"></i> 信息
+                            </button>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </section>
+    <!--Main Content-->
+<!--Modal-->
+{% endblock %}
+{% block foot_js %}
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script>
+        function historyBack() {
+            window.history.go(-1);
+        }
+    $(document).ready(function () {
+        $('.select2').select2({dropdownAutoWidth : true});
+    })
+        .on('click','#btn_submit',function () {
+            $('#jumper_form').submit();
+        })
+        .on('click','#btn_back',function () {
+            history.go(-1);
+        })
+    </script>
+{% endblock %}

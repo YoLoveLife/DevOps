@@ -1,6 +1,6 @@
 {% load static %}
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+{#    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>#}
     <h4 class="modal-title" id="myModalLabel">分配/回收资产</h4>
 </div>
 
@@ -14,8 +14,9 @@
 </div>
 
 <div class="modal-footer">
+    <button class="btn btn-primary" data-dismiss="modal" onclick="close_yoshell()">关闭</button>
 </div>
-<script src="{% static 'plugins/jQuery/jquery-3.2.1.min.js' %}"></script>
+{#<script src="{% static 'plugins/jQuery/jquery-3.2.1.min.js' %}"></script>#}
 <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/attach/attach.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
@@ -34,14 +35,19 @@
             ele.style.width = width;
             ele.style.height = height;
             tem.resize(size.cols, size.rows);
-            var socket = new WebSocket("ws://" + "192.168.122.224:9999/manager/{{ id }}/wds/"+tem.cols+"/"+tem.rows+"/");
+            socket = new WebSocket("ws://" + "192.168.122.224:9999/manager/{{ id }}/wds/"+tem.cols+"/"+tem.rows+"/");
             tem.fit();
             tem.focus();
             socket.onopen= function () {
                 tem.attach(socket);
             }
     }
-        $(document).ready(function () {
-            make_yoshell(document.getElementById('yoshell'),{'cols':300,'rows':200});
-        })
+    function close_yoshell() {
+        socket.close();
+        tem.destroy();
+    }
+    make_yoshell(document.getElementById('yoshell'),{'cols':300,'rows':200});
+{#        $(document).ready(function () {#}
+{##}
+{#        })#}
 </script>

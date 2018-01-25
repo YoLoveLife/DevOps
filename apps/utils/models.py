@@ -22,7 +22,7 @@ class Jumper(models.Model):
     sshpasswd = models.CharField(max_length=100,default='')#用户密码
     sshport = models.IntegerField(default='52000')#用户端口
     info = models.CharField(max_length=200,default="")
-    group = models.OneToOneField(Group,null=True,related_name='jumper')
+    groups = models.ManyToManyField(Group,null=True,related_name='jumpers')
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
 
     def __unicode__(self):

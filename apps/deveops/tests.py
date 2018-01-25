@@ -16,7 +16,7 @@ class IndexPageTestCase(LiveServerTestCase):
     def test_indexpage(self):
         # response = self.c.get('/validate/login')
         response = self.c.get('/')
-        self.assertEqual(response.status_code,301)
+        self.assertEqual(response.status_code,302)
 
     def test_404page(self):
         self.c.force_login(self.user)
