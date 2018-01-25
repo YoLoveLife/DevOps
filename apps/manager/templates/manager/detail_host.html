@@ -299,7 +299,7 @@
     </div>
 </section>
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="shell_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" id="box">
         <!--此部分为主体内容，将远程加载进来-->
@@ -314,6 +314,10 @@
             window.history.go(-1);
         }
         $(document).ready(function () {
+            $('#shell_modal').on('hidden.bs.modal',function () {
+                $(this).removeData("bs.modal");
+                $(this).innerHTML="";
+            });
         })
             .on('click','#flush_host',function () {
                 $.ajax({
@@ -331,30 +335,13 @@
                 });
             })
             .on('click','#btn-passwd',function () {
-                $('#modal').modal({
+                $('#shell_modal').modal({
                     show: true,
                     backdrop: 'static',
                     keyboard: 'true',
                     remote:"{% url 'manager:hostshell' object.id %}"
                 });
 
-
-{#                if($('#show_passwd').html()==''){#}
-{#                    $.ajax({#}
-{#                        type:"GET",#}
-{#                        url:"/api-manager/v1/host/{{ object.id }}/passwd/",#}
-{#                        dataType:"json",#}
-{#                        success:function(data){#}
-{#                            var passwd = data[0].password;#}
-{#                            $('#show_passwd').html(passwd);#}
-{#                        },#}
-{#                        error:function(data){#}
-{#                        }#}
-{#                    })#}
-{#                }#}
-{#                else{#}
-{#                    $('#show_passwd').html('');#}
-{#                }#}
             })
 </script>
 {% endblock %}

@@ -23,6 +23,7 @@ ENVIRONMENT=DEVEOPS_CONF.ENVIRONMENT
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -157,7 +158,6 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATIC_URL = '/static/'
 
 # Upload files
@@ -165,12 +165,15 @@ UPLOAD_ROOT = PROJECT_DIR + '/upload'
 
 # Media files
 MEDIA_ROOT = PROJECT_DIR + '/media'
-
 MEDIA_URL = '/media/'
+
+#Work space
+WORK_ROOT= PROJECT_DIR + '/workspace'
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, "static"),
     os.path.join(PROJECT_DIR, "media"),
+    os.path.join(PROJECT_DIR, "workpsace"),
 )
 
 #LOGIN
@@ -195,7 +198,7 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_BIND_DN = "cn=tools,ou=Zabbix,ou=TEST,dc=zbjt,dc=com"
     AUTH_LDAP_BIND_PASSWORD = "7a$LIOOwxNO"
 
-    OU = unicode('ou=信息安全与运维中心,ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
+    OU = unicode('ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
     AUTH_LDAP_GROUP_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(objectClass=groupOfNames)")
     AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
     AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
@@ -206,13 +209,16 @@ if ENVIRONMENT != 'TRAVIS':
         "phone":"mobile",
     }
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
-    AUTH_LDAP_MIRROR_GROUPS = True
+    # AUTH_LDAP_MIRROR_GROUPS = True
 else:
     pass
 
 
 #Default devEops Env
 PING_PLAYBOOK_TASK_ID=1
+
+#RSA_KEY
+RSA_KEY=DEVEOPS_CONF.RSA_KEY
 
 #CHANNEL
 CHANNEL_LAYERS = {
@@ -224,7 +230,9 @@ CHANNEL_LAYERS = {
         "ROUTING": "deveops.routing.routing",
     },
 }
-# celery
+
+
+# CELERY
 import djcelery
 djcelery.setup_loader()
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
@@ -244,6 +252,7 @@ CELERY_TIMEZONE = TIME_ZONE
 #     "django.core.files.uploadhandler.TemporaryFileUploadHandler"
 # )
 # import django.core.files.uploadhandler
+
 
 #DJANGO LOG
 # if DEBUG == True:

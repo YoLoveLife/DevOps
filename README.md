@@ -56,8 +56,8 @@ devEops正在不断成长
 ![TIMELINE](img/timeline.png)</br>
 
 ## <a name="howtoinstall"> 如何安装 </a>
-devEops依赖于python2.7、诸多python第三方模块以及mysql数据库</br>
-以下操作环境已经拥有python2.7以及mysql数据库
+devEops依赖于python2.7、诸多python第三方模块、mysql数据库、redis缓存</br>
+以下操作环境已经拥有python2.7、mysql数据库、redis缓存
 ```bash
 $ cd path/to/project/folder/
 

@@ -69,10 +69,9 @@ class Host(models.Model):
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True)
-
-    manage_ip = models.GenericIPAddressField(default='0.0.0.0')
+    manage_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
     service_ip = models.GenericIPAddressField(default='0.0.0.0')
-    outer_ip = models.GenericIPAddressField(default='0.0.0.0')
+    outer_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
     server_position = models.CharField(max_length=50,default='')#服务器位置
     hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户

@@ -54,6 +54,13 @@ class ExtendUser(AbstractUser):
         full_name = '%s' % (self.last_name,)# self.first_name)
         return full_name.strip()
 
+    @property
+    def is_operationE(self):
+        for group in self.groups.all():
+            if group.id == 1:
+                return True
+        return False
+
     def get_group_name(self):
         """
         :return: Name of group

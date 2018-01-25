@@ -33,7 +33,7 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <table id="host_tb" class="table table-bordered table-striped">
+                                <table id="jumper_tb" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th data-field="check" data-radio="true">#</th>
@@ -62,14 +62,14 @@
                             <h3 class="box-title" style="text-align: center">跳板机信息</h3>
                         </div>
                         <div class="box-body">
-{#                            <form id="toolbar-host">#}
+                            <form id="toolbar-jumper">
                             <button class="btn btn-app" id="add_jumper">
                                 <i class="fa fa-plus"></i> 新增跳板机
                             </button>
                             <button class="btn btn-app" id="modify_jumper">
                                 <i class="fa fa-edit"></i> 修改跳板机
                             </button>
-{#                            </form>#}
+                            </form>
                             <button class="btn btn-app" id="remove_jumper">
                                 <i class="fa fa-times"></i> 删除跳板机
                             </button>
@@ -120,7 +120,7 @@
                }
            }
         });
-        var table=$('#host_tb').bootstrapTable({
+        var table=$('#jumper_tb').bootstrapTable({
                 url : '/api-utils/v1/jumper/',
                 method  : 'GET',
                 uniqueId :  'id',
@@ -139,44 +139,39 @@
             });
     })
         .on('click','#add_jumper',function () {
-            $('#modal').modal({
-                show: true,
-                backdrop: 'static',
-                keyboard: 'true',
-                remote:"{% url 'utils:jumpercreate' %}"
-            });
-            $('#modal').removeData('bs.modal');
+            var form=$('#toolbar-jumper');
+            var action='/utils/jumper/create/';
+            form.attr('action',action);
+            location.href(action);
         })
         .on('click','#modify_jumper',function () {
-            var jumper = '/utils/jumper/'
-            var a=$('#host_tb').bootstrapTable('getSelections');
-            if (a.length<1){
+            var form=$('#toolbar-jumper');
+            var action='/utils/jumper/';
+            var a=$('#jumper_tb').bootstrapTable('getSelections');
+            if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
-            $('#modal').modal({
-                show: true,
-                backdrop: 'static',
-                keyboard: 'true',
-                remote:jumper+a[0].id+'/update/'
-            });
-            $('#modal').removeData('bs.modal');
+            var obj=a[0].id;
+            action+=obj+'/update/';
+            form.attr('action',action);
+            location.href(action);
         })
         .on('click','#remove_jumper',function () {
-            var a=$('#host_tb').bootstrapTable('getSelections');
+            var a=$('#jumper_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
             var data={};
-            if(confirm("您确认要删除该主机吗？")){
+            if(confirm("您确认要删除该跳板机吗？")){
                 $.ajax({
                     type:"DELETE",
-                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",
+                    url:"/api-utils/v1/jumper/"+a[0].id+"/remove/",
                     data:data,
                     dataType:"json",
                     success:function(data){
-                        $('#host_tb').bootstrapTable('refresh');
+                        $('#jumper_tb').bootstrapTable('refresh');
                     },
                     error:function(data){
                         alert(data.responseJSON.detail);
