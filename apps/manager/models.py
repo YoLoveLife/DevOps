@@ -5,6 +5,9 @@ from django.db import models
 from softlib.models import Softlib
 from authority.models import ExtendUser
 from deveops.utils import aes
+from django.conf import settings
+import paramiko
+import socket
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
 
@@ -33,6 +36,20 @@ class Group(models.Model):
 
     def _name(self):
         return 'group'
+
+    def catch_ssh_connect(self):
+        try:
+            for jumper in self.jumpers.all():
+                jumperssh = jumper.catch_ssh_connect
+                if jumperssh is not None:
+                    return jumperssh,jumper.service_ip,jumper.sshport
+                else:
+                    return None,0,0
+        except socket.timeout:
+            return None,0,0
+        except Exception,ex:
+            return None,0,0
+
 
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
@@ -120,3 +137,20 @@ class Host(models.Model):
         for key in dist:
             list.append(dist[key])
         return list
+
+    @property
+    def catch_ssh_connect(self):
+        target = paramiko.SSHClient()
+        target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        for group in self.groups.all()
+
+        for group in self.groups.all():
+            for jumper in group.jumpers.all():
+                try:
+                    self.target.connect(self.service_ip, username=self.normal_user, key_filename=settings.RSA_KEY,
+                                        sock=jumperchannel, port=self.sshport, password=aes.decrypt(self.sshpasswd))
+                except socket.timeout:
+                    continue
+                except Exception,ex:
+                    continue
+
