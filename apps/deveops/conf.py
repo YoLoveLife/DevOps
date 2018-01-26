@@ -20,6 +20,8 @@ DB_PORT = '3306'
 #Session配置
 SESSION_COOKIE_AGE = 30*60
 
+#SSH配置
+SSH_TIMEOUT = SSH_TIMEOUT5
 
 #Redis配置
 REDIS_HOST = 'localhost'
