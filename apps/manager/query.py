@@ -3,12 +3,12 @@ import json
 from django.db.models import Q
 def systemtypeQuery():
     list=[]
-    choices=models.Host.SYSTEM_CHOICES
+    choices = models.System_Type.objects.all()
     count=0
     for choice in choices:
         dit={}
-        dit['name']=choice[1]
-        dit['value']=models.Host.objects.filter(systemtype=choice[0]).count()
+        dit['name']=choice.name
+        dit['value']=models.Host.objects.filter(systemtype=choice).count()
         list.append(dit)
     return json.dumps(list, ensure_ascii=False, encoding='UTF-8')
 

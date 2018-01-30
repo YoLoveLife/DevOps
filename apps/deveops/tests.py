@@ -14,6 +14,7 @@ class IndexPageTestCase(LiveServerTestCase):
         self.c = Client(HTTP_USER_AGENT='Mozilla/5.0')
 
     def test_indexpage(self):
+        # response = self.c.get('/validate/login')
         response = self.c.get('/')
         self.assertEqual(response.status_code,302)
 

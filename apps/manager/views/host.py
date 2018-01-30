@@ -10,6 +10,7 @@ from ..permission import host as HostPermission
 from deveops.utils import aes
 from timeline.decorator.manager import decorator_manager
 
+
 class ManagerHostListView(LoginRequiredMixin,TemplateView):
     template_name='manager/host.html'
 
@@ -21,6 +22,7 @@ class ManagerHostListView(LoginRequiredMixin,TemplateView):
 
     def get(self,request,*args, **kwargs):
         return super(ManagerHostListView, self).get(request, *args, **kwargs)
+
 
 class ManagerHostCreateView(LoginRequiredMixin,HostPermission.HostAddRequiredMixin,CreateView):
     model = models.Host
@@ -52,9 +54,9 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
     def get_form(self, form_class=None):
         form = super(ManagerHostUpdateView,self).get_form(form_class)
-
-        sshpasswd = ''
-        form.initial['sshpasswd'] = aes.decrypt(sshpasswd)
+        #
+        # sshpasswd = ''
+        form.initial['sshpasswd'] = aes.decrypt(form.initial['sshpasswd'])
         return form
 
     def get_context_data(self, **kwargs):
