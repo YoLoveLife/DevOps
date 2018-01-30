@@ -35,28 +35,8 @@ class ManagerConsumer(YoSheelConsumer):
 
     def before_connect(self,**kwargs):
         host = Host.objects.filter(id=int(kwargs['pk'])).get()
-        groups = host.groups
-        self.jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        for group in groups.all():
-            for jumper in group.jumpers.all():
-                try:
-                    print(aes.decrypt(jumper.sshpasswd))
-                    print(aes.decrypt(host.sshpasswd))
-                    self.jumper.connect(jumper.service_ip, username=jumper.normal_user,
-                                        key_filename=settings.RSA_KEY, port=jumper.sshport,password=aes.decrypt(jumper.sshpasswd))
-                    jumpertransport = self.jumper.get_transport()
-                    jumperchannel = jumpertransport.open_channel("direct-tcpip",
-                                                                 (host.service_ip,host.sshport),
-                                                                 (jumper.service_ip,jumper.sshport))
-
-                    self.target.connect(host.service_ip, username=host.normal_user, key_filename=settings.RSA_KEY,
-                                        sock=jumperchannel, port=host.sshport,password=aes.decrypt(host.sshpasswd))
-                    return 1
-                except socket.timeout:
-                    continue
-                except Exception,ex:
-                    continue
+        self.target = host.catch_ssh_connect
+        return
 
     def connect(self, message, **kwargs):
         #Catch Info
