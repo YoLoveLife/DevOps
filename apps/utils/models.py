@@ -5,14 +5,15 @@
 # Email YoLoveLife@outlook.com
 
 from __future__ import unicode_literals
-
 from django.db import models
 from manager.models import Group
 import paramiko
 from django.conf import settings
 from deveops.utils import aes
+from deveops.utils.msg import Message
 from django.conf import settings
 import socket
+
 
 class Jumper(models.Model):
     SYSTEM_STATUS=(
@@ -39,11 +40,14 @@ class Jumper(models.Model):
         try:
             s.connect((self.service_ip,self.sshport))
             return True
+        except socket.timeout:
+            return False
         except Exception,e:
             return False
 
     @property
     def catch_ssh_connect(self):
+        msg = Message()
         if self.check_status == True:
             try:
                 jumper = paramiko.SSHClient()
@@ -51,10 +55,10 @@ class Jumper(models.Model):
                 jumper.connect(self.service_ip, username=self.normal_user,
                                   key_filename=settings.RSA_KEY, port=self.sshport,
                                   password=aes.decrypt(self.sshpasswd))
-                return jumper
+                return msg.fuse_msg('jumper-success',jumper)
             except socket.timeout:
-                return None
+                return msg.fuse_msg('jumper-timeout',None)
             except Exception,ex:
-                return None
+                return msg.fuse_msg('jumper-exception',None)
         else:
-            return None
+            return msg.fuse_msg('jumper-nocheck', None)

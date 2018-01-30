@@ -5,6 +5,7 @@ from django.db import models
 from softlib.models import Softlib
 from authority.models import ExtendUser
 from deveops.utils import aes
+from deveops.utils.msg import Message
 from django.conf import settings
 import paramiko
 import socket
@@ -37,18 +38,15 @@ class Group(models.Model):
     def _name(self):
         return 'group'
 
+    @property
     def catch_ssh_connect(self):
-        try:
+        if self.jumpers.count() <1:
+            msg = Message()
+            return msg.fuse_msg('group-none', None),0,0
+        else:
             for jumper in self.jumpers.all():
-                jumperssh = jumper.catch_ssh_connect
-                if jumperssh is not None:
-                    return jumperssh,jumper.service_ip,jumper.sshport
-                else:
-                    return None,0,0
-        except socket.timeout:
-            return None,0,0
-        except Exception,ex:
-            return None,0,0
+                msg = jumper.catch_ssh_connect
+                return msg, jumper.service_ip, jumper.sshport
 
 
 class Storage(models.Model):
@@ -142,15 +140,26 @@ class Host(models.Model):
     def catch_ssh_connect(self):
         target = paramiko.SSHClient()
         target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        for group in self.groups.all()
-
+        flag = 'host-none'
+        msg = Message()
         for group in self.groups.all():
-            for jumper in group.jumpers.all():
+            msg,sship,sshport = group.catch_ssh_connect
+            if msg.last_result == 'jumper-success':
                 try:
-                    self.target.connect(self.service_ip, username=self.normal_user, key_filename=settings.RSA_KEY,
-                                        sock=jumperchannel, port=self.sshport, password=aes.decrypt(self.sshpasswd))
+                    transport = msg.instance.get_transport()
+                    jumperchannel = transport.open_channel("direct-tcpip",
+                                                                 (self.service_ip, self.sshport),
+                                                                 (sship, sshport))
+                    hostssh = target.connect(self.service_ip,username=self.normal_user,key_filename=settings.RSA_KEY,
+                                             sock=jumperchannel,port=self.sshport,password=aes.decrypt(self.sshpasswd))
+                    return msg.fuse_msg('host-success',hostssh)
                 except socket.timeout:
+                    flag='host-timeout'
+                    msg
                     continue
-                except Exception,ex:
+                except Exception, ex:
+                    flag='host-exception'
                     continue
-
+            else:
+                continue
+        return msg.fuse_msg(flag,None)
