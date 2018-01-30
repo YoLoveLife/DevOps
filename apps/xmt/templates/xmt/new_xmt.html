@@ -12,7 +12,7 @@
         <h1>
             <i class="fa fa-cubes"></i>
             新媒体云服务平台(临时)
-            <small><i class="fa fa-angle-double-right"></i>预发布代码发布</small>
+            <small><i class="fa fa-angle-double-right"></i>代码发布</small>
         </h1>
         <ol class="breadcrumb">
             <i class="fa fa-truck"></i>
@@ -34,18 +34,27 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-5">
-                                    {% bootstrap_field form.name %}
+                                    {% bootstrap_field form.env %}
                                 </div>
                                 <div class="col-md-5">
-                                    {% bootstrap_field form.env %}
+                                    {% bootstrap_field form.model %}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
-                                    {% bootstrap_field form.model %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {% bootstrap_field form.gitlab %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {% bootstrap_field form.user %}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-5">
-                                    {% bootstrap_field form.gitlab %}
+                                    {% bootstrap_field form.info %}
                                 </div>
                             </div>
                             <div class="row">
@@ -74,6 +83,7 @@
                         <th>发布环境</th>
                         <th>发布模块</th>
                         <th>代码版本</th>
+                        <th>发布信息</th>
                         <th>发布时间</th>
                         <th>执行情况</th>
                         <th>执行结果</th>
@@ -81,13 +91,14 @@
                             {% for mission in missions %}
                                 <tr>
                                 <td>{{ mission.id }}</td>
-                                <td>{{ mission.get_name_display }}</td>
+                                <td>{{ mission.user.last_name }}</td>
                                 <td>{{ mission.get_env_display }}</td>
                                 <td>{{ mission.get_model_display }}</td>
                                 <td>{{ mission.gitlab }}</td>
+                                    <td>{{ mission.info }}</td>
                                 <td>{{ mission.time }}</td>
                                 <td>{{ mission.get_status_display }}</td>
-                                    <td><button onclick=result('{{ mission.get_result }}')>结果</button></td>
+                                    <td><button class="btn btn-primary" onclick=result('{{ mission.get_result }}')>结果</button></td>
                                 </tr>
                             {% endfor %}
 </table>

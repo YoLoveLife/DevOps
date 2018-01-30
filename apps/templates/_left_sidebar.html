@@ -146,11 +146,20 @@
                         <li><a href="{% url 'concert:music' %}" class="ajax-link"><i class="fa fa-music"></i>乐谱</a></li>
                     </ul>
                 </li>
+
+
                 <li class="treeview">
-                        <a href="{% url 'xmt:create' %}" class="ajax-link">
-                            <i class="fa fa-bookmark"></i>
-                            <span>新媒体云服务平台(临时)</span>
-                        </a>
+                    <a href="#">
+                        <i class="fa fa-lemon-o"></i>
+                        <span>新媒体云服务平台(临时)</span>
+                        <span>
+                            <i class="fa fa-angle-double-down"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none">
+                        <li><a href="{% url 'xmt:statistics' %}" class="ajax-link"><i class="fa fa-dashboard"></i>发布统计</a></li>
+                        <li><a href="{% url 'xmt:create' %}" class="ajax-link"><i class="fa fa-bookmark"></i>代码更新</a></li>
+                    </ul>
                 </li>
 {#                <li class="treeview">#}
 {#                    <a href="#">#}

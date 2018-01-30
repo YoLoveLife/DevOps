@@ -5,19 +5,29 @@
 # Email YoLoveLife@outlook.com
 
 #环境参数 识别运行环境是开发/生产/测试
-ENVIRONMENT='DEVEL'
+ENVIRONMENT = 'DEVEL'
+
+#RSA_KEY
+RSA_KEY = '/root/.ssh/id_rsa'
 
 #数据库配置内容
-DB_NAME='deveops'
-DB_USER='root'
-DB_PASSWD=''
-DB_HOST='127.0.0.1'
-DB_PORT='3306'
+DB_NAME = 'deveops'
+DB_USER = 'root'
+DB_PASSWD = ''
+DB_HOST = '127.0.0.1'
+DB_PORT = '3306'
 
 #Session配置
-SESSION_COOKIE_AGE=30*60
+SESSION_COOKIE_AGE = 30*60
 
+#SSH配置
+SSH_TIMEOUT = SSH_TIMEOUT5
 
 #Redis配置
-REDIS_HOST='localhost'
-REDIS_PORT=6379
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+#相关目录配置
+UPLOAD_ROOT = '/devEops/upload'
+MEDIA_ROOT = '/devEops/media'
+WORK_ROOT = '/devEops/workspace'

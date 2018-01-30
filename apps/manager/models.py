@@ -5,6 +5,10 @@ from django.db import models
 from softlib.models import Softlib
 from authority.models import ExtendUser
 from deveops.utils import aes
+from deveops.utils.msg import Message
+from django.conf import settings
+import paramiko
+import socket
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
 
@@ -33,6 +37,17 @@ class Group(models.Model):
 
     def _name(self):
         return 'group'
+
+    @property
+    def catch_ssh_connect(self):
+        if self.jumpers.count() <1:
+            msg = Message()
+            return msg.fuse_msg('group-none', None),0,0
+        else:
+            for jumper in self.jumpers.all():
+                msg = jumper.catch_ssh_connect
+                return msg, jumper.service_ip, jumper.sshport
+
 
 class Storage(models.Model):
     id=models.AutoField(primary_key=True)#全局ID
@@ -69,10 +84,9 @@ class Host(models.Model):
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True)
-
-    manage_ip = models.GenericIPAddressField(default='0.0.0.0')
+    manage_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
     service_ip = models.GenericIPAddressField(default='0.0.0.0')
-    outer_ip = models.GenericIPAddressField(default='0.0.0.0')
+    outer_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
     server_position = models.CharField(max_length=50,default='')#服务器位置
     hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户
@@ -121,3 +135,31 @@ class Host(models.Model):
         for key in dist:
             list.append(dist[key])
         return list
+
+    @property
+    def catch_ssh_connect(self):
+        target = paramiko.SSHClient()
+        target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        flag = 'host-none'
+        msg = Message()
+        for group in self.groups.all():
+            msg,sship,sshport = group.catch_ssh_connect
+            if msg.last_result == 'jumper-success':
+                try:
+                    transport = msg.instance.get_transport()
+                    jumperchannel = transport.open_channel("direct-tcpip",
+                                                                 (self.service_ip, self.sshport),
+                                                                 (sship, sshport))
+                    hostssh = target.connect(self.service_ip,username=self.normal_user,key_filename=settings.RSA_KEY,
+                                             sock=jumperchannel,port=self.sshport,password=aes.decrypt(self.sshpasswd))
+                    return msg.fuse_msg('host-success',hostssh)
+                except socket.timeout:
+                    flag='host-timeout'
+                    msg
+                    continue
+                except Exception, ex:
+                    flag='host-exception'
+                    continue
+            else:
+                continue
+        return msg.fuse_msg(flag,None)

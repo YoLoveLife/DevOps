@@ -24,3 +24,6 @@ travis & django TestCase</br>
 
 ## Contents
 * [项目结构描述](https://github.com/YoLoveLife/DevOps/blob/master/docs/project_structure.md)
+
+* 希望贡献我的绵薄之力
+Life is short, you need Python
