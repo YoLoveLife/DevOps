@@ -90,6 +90,17 @@
     </div>
 </section>
 <!--Main Content-->
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content" id="box">
+        <!--此部分为主体内容，将远程加载进来-->
+      </div>
+   </div>
+</div>
+
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
@@ -184,23 +195,29 @@
                 alert('请选择数据');
                 return false;
             }
-            var data={};
-            if(confirm("您确认要删除该主机吗？")){
-                $.ajax({
-                    type:"DELETE",
-                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",
-                    data:data,
-                    dataType:"json",
-                    success:function(data){
-                        $('#host_tb').bootstrapTable('refresh');
-                    },
-                    error:function(data){
-                        alert(data.responseJSON.detail);
-                    }
-                })
-            }else{
-
-            }
+            $('#modal').modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: 'false',
+                remote:"/manager/host/"+a[0].id+"/delete/"
+            });
+{#            var data={};#}
+{#            if(confirm("您确认要删除该主机吗？")){#}
+{#                $.ajax({#}
+{#                    type:"DELETE",#}
+{#                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",#}
+{#                    data:data,#}
+{#                    dataType:"json",#}
+{#                    success:function(data){#}
+{#                        $('#host_tb').bootstrapTable('refresh');#}
+{#                    },#}
+{#                    error:function(data){#}
+{#                        alert(data.responseJSON.detail);#}
+{#                    }#}
+{#                })#}
+{#            }else{#}
+{##}
+{#            }#}
         })
 </script>
 {% endblock %}

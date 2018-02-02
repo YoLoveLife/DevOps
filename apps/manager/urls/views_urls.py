@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^host/$', host.ManagerHostListView.as_view(), name='host'),
     url(r'^host/create/$',host.ManagerHostCreateView.as_view(),name='hostcreate'),
     url(r'^host/(?P<pk>[0-9]+)/update/$',host.ManagerHostUpdateView.as_view(),name='hostupdate'),
+    url(r'^host/(?P<pk>[0-9])/delete/$',host.ManagerHostDeleteView.as_view(),name='hostdelete'),
     url(r'^host/(?P<pk>[0-9]+)/detail/$',host.ManagerHostDetailView.as_view(),name='hostdetail'),
     url(r'^host/(?P<pk>[0-9]+)/shell/$',host.ManagerHostShellView.as_view(),name='hostshell'),
 

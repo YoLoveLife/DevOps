@@ -83,7 +83,7 @@ class Host(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
-    systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True)
+    systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts')
     manage_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
     service_ip = models.GenericIPAddressField(default='0.0.0.0')
     outer_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
