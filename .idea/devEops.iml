@@ -12,7 +12,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Remote Python 2.7.13 (ssh://root@10.100.62.223:52000/usr/bin/python)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 2.7.13 (ssh://root@192.168.122.224:22/usr/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
@@ -35,6 +35,18 @@
         <option value="$MODULE_DIR$/apps/application/templates/batch" />
         <option value="$MODULE_DIR$/apps/operation/templates/operation/module" />
         <option value="$MODULE_DIR$/apps/application/templates/application/db" />
+        <option value="$MODULE_DIR$/apps/dns/templates" />
+        <option value="$MODULE_DIR$/apps/dns/templates/dns" />
+        <option value="$MODULE_DIR$/apps/softlib/templates/softlib" />
+        <option value="$MODULE_DIR$/apps/softlib/templates" />
+        <option value="$MODULE_DIR$/apps/application/templates/application/redis" />
+        <option value="$MODULE_DIR$/apps/upload/templates" />
+        <option value="$MODULE_DIR$/apps/upload/templates/upload" />
+        <option value="$MODULE_DIR$/apps/manager/templates/manager/tags" />
+        <option value="$MODULE_DIR$/apps/utils/templates" />
+        <option value="$MODULE_DIR$/apps/utils/templates/utils" />
+        <option value="$MODULE_DIR$/apps/xmt/templates" />
+        <option value="$MODULE_DIR$/apps/xmt/templates/xmt" />
       </list>
     </option>
   </component>

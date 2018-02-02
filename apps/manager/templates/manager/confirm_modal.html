@@ -1,0 +1,16 @@
+{% load static %}
+{% load bootstrap3 %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel">跳板机</h4>
+</div>
+<form method="post" action="{% url 'manager:hostdelete' object.id %}" id="host_form" enctype="multipart/form-data">
+        {% csrf_token %}
+<div class="modal-body" style="">
+    <p>Are you sure delete<b>{{ object.manage_ip }} </b> ?</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary">确定</button>
+    <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+</div>
+</form>

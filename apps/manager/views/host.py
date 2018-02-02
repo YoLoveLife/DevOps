@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from .. import forms
 from .. import models
 from ..permission import host as HostPermission
@@ -65,6 +65,11 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
     def get_success_url(self):
         return self.success_url
+
+class ManagerHostDeleteView(LoginRequiredMixin,DeleteView):
+    model = models.Host
+    template_name = 'manager/confirm_modal.html'
+    success_url = reverse_lazy('manager:host')
 
 class ManagerHostDetailView(LoginRequiredMixin,DetailView):
     model = models.Host
