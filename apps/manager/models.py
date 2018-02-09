@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
 from authority.models import ExtendUser
+# import uuid
 from deveops.utils import aes
 from deveops.utils.msg import Message
 from django.conf import settings
@@ -23,6 +24,11 @@ class System_Type(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def sum_host(self):
+        return self.hosts.count()
+
+
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,default='')
@@ -37,6 +43,16 @@ class Group(models.Model):
 
     def _name(self):
         return 'group'
+
+    def users_list(self):
+        st=","
+        list=[]
+        for user in self.users.all():
+            list.append(user.get_full_name())
+        if len(list) == 0:
+            return ""
+        else:
+            return st.join(list)
 
     @property
     def catch_ssh_connect(self):
@@ -69,10 +85,10 @@ class Storage(models.Model):
             for group in host.groups.all():
                 list.append(group.name)
         result={}.fromkeys(list).keys()
-        str = ""
+        strlist= []
         for r in result:
-            str = str + r +','
-        return str[0:-1]
+            strlist.append(r)
+        return ",".join(strlist)
 
 class Host(models.Model):
     SYSTEM_STATUS=(
@@ -81,6 +97,7 @@ class Host(models.Model):
         (2,'不可达'),
     )
     id=models.AutoField(primary_key=True) #全局ID
+    # id = models.UUIDField(primary_key=True,auto_created=True,default=uuid.uuid4,editable=False)
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts')
@@ -98,6 +115,13 @@ class Host(models.Model):
     info = models.CharField(max_length=200,default="")
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
 
+    class Meta:
+        permissions = (('yo_add_host', u'新增主机'),
+                       ('yo_change_host',u'修改主机'),
+                       ('yo_delete_host',u'删除主机'),
+                       ('yo_passwd_host',u'获取主机密码'),
+                       ('yo_webskt_host',u'远控主机'))
+
     def __unicode__(self):
         return self.hostname + ' - ' + self.service_ip + ' - ' + self.info
 
@@ -108,6 +132,10 @@ class Host(models.Model):
 
     def password_get(self):
         return aes.decrypt(self.sshpasswd)
+
+    # @property
+    # def all_groups(self):
+    #     return self.groups.distinct('id')
 
     def application_get(self): ####Application Link to Host
         id_list=[]

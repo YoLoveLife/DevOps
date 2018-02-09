@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView,CreateView,UpdateView
+from django.views.generic import TemplateView,CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy
 from permission import jumper as JumperPermission
 import forms as UtilForms
 import models
+from manager.models import System_Type
 from timeline.decorator.manager import decorator_manager
 from deveops.utils import aes
 
@@ -47,3 +48,36 @@ class UtilsJumperUpdateView(LoginRequiredMixin,JumperPermission.JumperChangeRequ
 
     def get_success_url(self):
         return self.success_url
+
+
+class UtilsView(LoginRequiredMixin,TemplateView):
+    template_name = 'utils/utils.html'
+
+    def get(self,request,*args, **kwargs):
+        return super(UtilsView, self).get(request, *args, **kwargs)
+
+class UtilsSystemTypeDeleteView(LoginRequiredMixin,DeleteView):
+    model = System_Type
+    template_name = 'utils/delete_utils_systype_modal.html'
+    success_url = reverse_lazy('utils')
+
+    def get_context_data(self, **kwargs):
+        flag = 0
+        detail = ""
+        if self.object.sum_host > 0:
+            detail = u'该系统类型存在关联主机无法删除 请确认无该类型的主机后在执行该操作'
+        else:
+            flag = 1
+
+        context_data = super(UtilsSystemTypeDeleteView, self).get_context_data(**kwargs)
+        context_data.update({
+            'unable_delete': flag,
+            'detail': detail,
+        })
+        return context_data
+
+class UtilsSystemTypeCreateView(LoginRequiredMixin,CreateView):
+    model = System_Type
+    template_name = 'utils/create_utils_systype_modal.html'
+    success_url = reverse_lazy('utils')
+

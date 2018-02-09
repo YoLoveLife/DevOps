@@ -68,8 +68,26 @@ class ManagerHostUpdateView(LoginRequiredMixin,HostPermission.HostChangeRequired
 
 class ManagerHostDeleteView(LoginRequiredMixin,DeleteView):
     model = models.Host
-    template_name = 'manager/confirm_modal.html'
+    template_name = 'manager/delete_host_modal.html'
     success_url = reverse_lazy('manager:host')
+
+    def get_context_data(self, **kwargs):
+        flag = 0
+        detail = ""
+        if self.object.storages.count() != 0:
+            detail = u"该主机下存在存储无法删除 请确认主机下无关联存储后再执行该操作"
+        elif len(self.object.application_get()) !=0:
+            detail = u"该主机下存在应用无法删除 请确认主机下无关联存储后再执行该操作"
+        else:
+            flag = 1
+
+        context_data = super(ManagerHostDeleteView,self).get_context_data(**kwargs)
+        context_data.update({
+            'unable_delete': flag,
+            'detail':detail,
+        })
+        return context_data
+
 
 class ManagerHostDetailView(LoginRequiredMixin,DetailView):
     model = models.Host

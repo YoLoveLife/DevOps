@@ -72,6 +72,13 @@
     </section>
     <!--Main Content-->
 <!--Modal-->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content" id="box">
+        <!--此部分为主体内容，将远程加载进来-->
+      </div>
+   </div>
+</div>
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'plugins/jQuery-form/jquery.form.min.js' %}"></script>
@@ -82,9 +89,6 @@
         function historyBack() {
             window.history.go(-1);
         }
-        function csrfSafeMethod(method){
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
         function detailFormatter(value,row,index) {
             var label_a='<a class="btn btn-default" href="/manager/group/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
             return [label_a].join('');
@@ -94,12 +98,8 @@
             return [label_status].join('');
         }
         $(document).ready(function(){
-            $.ajaxSetup({
-               beforeSend: function (xhr,settings) {
-                   if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
-                   }
-               }
+            $('#modal').on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
             });
             var table=$('#group_tb').bootstrapTable({
                 url : '/api-manager/v1/group/',
@@ -157,21 +157,12 @@
                     alert('请选择数据');
                     return false;
                 }
-                var data={};
-                if(confirm("您确认要删除该应用组吗？")){
-                    $.ajax({
-                        type:"DELETE",
-                        url:"/api-manager/v1/group/"+a[0].id+"/remove/",
-                        data:data,
-                        dataType:"json",
-                        success:function(data){
-                            $('#group_tb').bootstrapTable('refresh');
-                        },
-                        error:function(data){
-                            alert(data.responseJSON.detail);
-                        }
-                    })
-                }
+                $('#modal').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: 'false',
+                    remote:"/manager/group/"+a[0].id+"/delete/"
+                });
             })
     </script>
 {% endblock %}
