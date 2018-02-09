@@ -30,6 +30,13 @@ class UtilsJumperRemoveAPI(generics.DestroyAPIView):
             jumper.delete()
             return Response({'detail': '删除成功'}, status=status.HTTP_201_CREATED)
 
+class UtilsSystemTypeListAPI(generics.ListAPIView):
+    module = System_Type
+    serializer_class = serializers.SystemTypeDetailSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        queryset = System_Type.objects.all()
+        return queryset
 
 class UtilsSystemTypeCreateAPI(generics.CreateAPIView):
     serializer_class = serializers.SystemTypeSerializer

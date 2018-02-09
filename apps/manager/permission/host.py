@@ -33,16 +33,16 @@ class HostAPIRequiredMixin(BasePermission):
             return False
 
 class HostAddRequiredMixin(HostRequiredMixin):
-    permission_required = u'manager.add_host'
+    permission_required = u'manager.yo_add_host'
 
 class HostChangeRequiredMixin(HostRequiredMixin):
-    permission_required = u'manager.change_host'
+    permission_required = u'manager.yo_change_host'
 
 class HostPasswordRequiredMixin(HostAPIRequiredMixin):
-    permission_required = u'manager.passwd_host'
+    permission_required = u'manager.yo_passwd_host'
 
 class HostDeleteRequiredMixin(HostAPIRequiredMixin):
-    permission_required = u'manager.delete_host'
+    permission_required = u'manager.yo_delete_host'
 
 
 

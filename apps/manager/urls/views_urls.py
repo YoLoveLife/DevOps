@@ -22,11 +22,13 @@ urlpatterns = [
     url(r'^group/create/$', group.ManagerGroupCreateView.as_view(), name='groupcreate'),
     url(r'^group/(?P<pk>[0-9]+)/update/', group.ManagerGroupUpdateView.as_view(), name='groupupdate'),
     url(r'^group/(?P<pk>[0-9]+)/detail/',group.ManagerGroupDetailView.as_view(),name='groupdetail'),
+    url(r'^group/(?P<pk>[0-9])/delete/$', group.ManagerGroupDeleteView.as_view(), name='groupdelete'),
 
     #Resource storage url
     url(r'^storage/$', storage.ManagerStorageListView.as_view(), name='storage'),
     url(r'^storage/create/$', storage.ManagerStorageCreateView.as_view(), name='storagecreate'),
     url(r'^storage/(?P<pk>[0-9]+)/update/', storage.ManagerStorageUpdateView.as_view(), name='storageupdate'),
+    url(r'^storage/(?P<pk>[0-9]+)/delete/', storage.ManagerStorageDeleteView.as_view(), name='storagedelete'),
 
     url(r'^search$', dashboard.ManagerSearchListView.as_view(), name='search'),
 ]

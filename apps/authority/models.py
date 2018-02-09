@@ -32,15 +32,16 @@ class ExtendUser(AbstractUser):
 
 
     def __unicode__(self):
-        str = ""
+        str = "|"
+        list = []
         if self.is_superuser == True:
-            str += u'|超级管理员'
+            list.append(u'超级管理员')
         elif self.groups.count() == 0:
-            str += u'|无权限'
+            list.append(u'无权限')
         else:
             for group in self.groups.all():
-                str += '|'+group.name
-        return self.username +' - '+ str+'|'
+                list.append(group.name)
+        return self.username +' - '+ str.join(list)
 
     __str__ = __unicode__
 
@@ -70,8 +71,12 @@ class ExtendUser(AbstractUser):
         elif self.groups.count() == 0:
             return "无权限"
         else:
-            str = ""
+            str = "|"
+            list = []
             groups = self.groups.all()
             for group in groups:
-                str += group.name + ' '
-            return str
+                list.append(group.name)
+            if len(list) == 0:
+                return ''
+            else:
+                return str.join(list)

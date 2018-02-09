@@ -69,7 +69,16 @@
         </div>
     </section>
     <!--Main Content-->
-<!--Modal-->
+
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content" id="box">
+        <!--此部分为主体内容，将远程加载进来-->
+      </div>
+   </div>
+</div>
+
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'plugins/jQuery-form/jquery.form.min.js' %}"></script>
@@ -84,14 +93,6 @@
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
         $(document).ready(function(){
-            $.ajaxSetup({
-               beforeSend: function (xhr,settings) {
-                   if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
-                   }
-               }
-            });
-
             var table=$('#storage_tb').bootstrapTable({
                 url : '/api-manager/v1/storage/',
                 method  : 'GET',
@@ -108,32 +109,7 @@
                 exportDataType : "basic",
                 pageSize    :   15,
                 pageList    :   [10, 20, 30, 40],
-                dataType    :   'json',
-                colums  :   [
-                    {
-                        checkbox:true
-                    },
-{#                    {#}
-{#                        title:'存储ID',#}
-{#                        field:'id',#}
-{#                        align:'center'#}
-{#                    },#}
-                    {
-                        title:'存储路径',
-                        field:'disk_path',
-                        align:'center'
-                    },
-                    {
-                        title:'存储大小',
-                        field:'disk_size',
-                        align:'center'
-                    },
-                    {
-                        title:'存储信息',
-                        field:'info',
-                        align:'center'
-                    }
-                ]
+                dataType    :   'json'
             });
         })
             .on('click','#add_storage',function () {
@@ -167,23 +143,12 @@
                     alert('请选择数据');
                     return false;
                 }
-                var data={};
-                if(confirm("您确认要删除该存储吗？")){
-                    $.ajax({
-                        type:"DELETE",
-                        url:"/api-manager/v1/storage/"+a[0].id+"/remove/",
-                        data:data,
-                        dataType:"json",
-                        success:function(data){
-                            $('#storage_tb').bootstrapTable('refresh');
-                        },
-                        error:function(data){
-                            alert(data.responseJSON.detail);
-                        }
-                    })
-                }else{
-
-                }
+                $('#modal').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: 'false',
+                    remote:"/manager/storage/"+a[0].id+"/delete/"
+                });
             })
     </script>
 {% endblock %}

@@ -7,8 +7,8 @@
 #环境参数 识别运行环境是开发/生产/测试
 ENVIRONMENT = 'DEVEL'
 
-#RSA_KEY
-RSA_KEY = '/root/.ssh/id_rsa'
+#RSA_KEY 默认在当前运行账户下寻找私钥
+RSA_KEY = '~/.ssh/id_rsa'
 
 #数据库配置内容
 DB_NAME = 'deveops'

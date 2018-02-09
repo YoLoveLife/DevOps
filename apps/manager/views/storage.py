@@ -6,7 +6,7 @@ from timeline.models import History
 from ..permission import storage as StoragePermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView,TemplateView
-from django.views.generic.edit import CreateView,UpdateView
+from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from timeline.decorator.manager import decorator_manager
 
 class ManagerStorageListView(LoginRequiredMixin,TemplateView):
@@ -52,3 +52,8 @@ class ManagerStorageUpdateView(LoginRequiredMixin,StoragePermission.StorageChang
             'hosts':hosts,'storage_hosts':storage_hosts
         })
         return context
+
+class ManagerStorageDeleteView(LoginRequiredMixin,DeleteView):
+    model = models.Storage
+    template_name = 'manager/delete_storage_modal.html'
+    success_url = reverse_lazy('manager:storage')

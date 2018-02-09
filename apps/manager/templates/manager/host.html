@@ -130,6 +130,9 @@
         return [label_a].join('');
     }
     $(document).ready(function () {
+        $('#modal').on("hidden.bs.modal", function() {
+            $(this).removeData("bs.modal");
+        });
         $.ajaxSetup({
            beforeSend: function (xhr,settings) {
                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -201,23 +204,6 @@
                 keyboard: 'false',
                 remote:"/manager/host/"+a[0].id+"/delete/"
             });
-{#            var data={};#}
-{#            if(confirm("您确认要删除该主机吗？")){#}
-{#                $.ajax({#}
-{#                    type:"DELETE",#}
-{#                    url:"/api-manager/v1/host/"+a[0].id+"/remove/",#}
-{#                    data:data,#}
-{#                    dataType:"json",#}
-{#                    success:function(data){#}
-{#                        $('#host_tb').bootstrapTable('refresh');#}
-{#                    },#}
-{#                    error:function(data){#}
-{#                        alert(data.responseJSON.detail);#}
-{#                    }#}
-{#                })#}
-{#            }else{#}
-{##}
-{#            }#}
         })
 </script>
 {% endblock %}
