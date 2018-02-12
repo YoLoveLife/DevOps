@@ -53,12 +53,13 @@ class Jumper(models.Model):
                 jumper = paramiko.SSHClient()
                 jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 jumper.connect(self.service_ip, username=self.normal_user,
-                                  key_filename=settings.RSA_KEY, port=self.sshport,
-                                  password=aes.decrypt(self.sshpasswd))
-                return msg.fuse_msg('jumper-success',jumper)
+                               key_filename=settings.RSA_KEY,
+                               port=self.sshport,
+                               password=aes.decrypt(self.sshpasswd))
+                return msg.fuse_msg(1,'Jumper connection success',jumper)
             except socket.timeout:
-                return msg.fuse_msg('jumper-timeout',None)
+                return msg.fuse_msg(0,'Jumper connection timeout',None)
             except Exception,ex:
-                return msg.fuse_msg('jumper-exception',None)
+                return msg.fuse_msg(0,'Jumper connection wrong',None)
         else:
-            return msg.fuse_msg('jumper-nocheck', None)
+            return msg.fuse_msg(0,'Jumper connection wrong', None)

@@ -54,30 +54,30 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-offset-1 col-md-4">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title" style="text-align: center">系统类型</h3>
-                    </div>
-                    <div class="box-body">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title" style="text-align: center">主机信息</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-app" id="add_host">
-                            <i class="fa fa-plus"></i> 新增主机
-                        </button>
-                        <button class="btn btn-app" id="remove_host">
-                            <i class="fa fa-times"></i> 删除主机
-                        </button>
-                    </div>
-                </div>
-            </div>
+{#            <div class="col-md-offset-1 col-md-4">#}
+{#                <div class="box">#}
+{#                    <div class="box-header">#}
+{#                        <h3 class="box-title" style="text-align: center">系统类型</h3>#}
+{#                    </div>#}
+{#                    <div class="box-body">#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-1">#}
+{#                <div class="box">#}
+{#                    <div class="box-header">#}
+{#                        <h3 class="box-title" style="text-align: center">主机信息</h3>#}
+{#                    </div>#}
+{#                    <div class="box-body">#}
+{#                        <button class="btn btn-app" id="add_host">#}
+{#                            <i class="fa fa-plus"></i> 新增主机#}
+{#                        </button>#}
+{#                        <button class="btn btn-app" id="remove_host">#}
+{#                            <i class="fa fa-times"></i> 删除主机#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
         </div>
     </section>
     <!--Main Content-->
@@ -119,19 +119,27 @@
                 exportDataType : "basic"
             });
     })
-        .on('click','#remove_systype',function () {
-            var a=$('#systype_tb').bootstrapTable('getSelections');
-            if(a.length<1){
-                alert('请选择数据');
-                return false;
-            }
-            $('#modal').modal({
-                show: true,
-                backdrop: 'static',
-                keyboard: 'false',
-                remote:"/utils/systype/"+a[0].id+"/delete/"
-            });
-        })
+    .on('click','#remove_systype',function () {
+        var a=$('#systype_tb').bootstrapTable('getSelections');
+        if(a.length<1){
+            alert('请选择数据');
+            return false;
+        }
+        $('#modal').modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: 'false',
+            remote:"/utils/systype/"+a[0].id+"/delete/"
+        });
+    })
+    .on('click','#add_systype',function () {
+        $('#modal').modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: 'false',
+            remote:"/utils/systype/create/"
+        });
+    })
 
     </script>
 {% endblock %}

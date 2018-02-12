@@ -35,26 +35,18 @@ class ManagerConsumer(YoSheelConsumer):
 
     def before_connect(self,**kwargs):
         host = Host.objects.filter(id=int(kwargs['pk'])).get()
-        self.target = host.catch_ssh_connect
-        return
+        self.target = host.catch_ssh_connect.instance
+        return host.catch_ssh_connect
 
     def connect(self, message, **kwargs):
-        #Catch Info
-        #DEMO
-        try:
-            result = self.before_connect(**kwargs)
-        except socket.timeout:
+        result = self.before_connect(**kwargs)
+        if result.status == 0:
             self.message.reply_channel.send(
-                {"text": '\033[1;3;31m连接服务器超时\033[0m'},immediately=True)
+                {"text": '\033[1;3;31m'+result.last_result+'\033[0m'},immediately=True)
             self.message.reply_channel.send({"accept": False})
             return
-        except Exception,ex:
-            self.message.reply_channel.send(
-                {"text": '\033[1;3;31m连接服务器失败\033[0m'},
-                immediately=True)
-            self.message.reply_channel.send({"accept": False})
-            return
-        if result == 1:
+        else:
+            print(kwargs)
             chan = self.target.invoke_shell(height=int(kwargs['rows']),width=int(kwargs['cols']))
             # chan.send('export JAVA_HOME=/usr/local/java')
             threadSend = YoShellSendThread(self.message,chan,self.catch_redis_instance())
@@ -65,8 +57,6 @@ class ManagerConsumer(YoSheelConsumer):
             theadRecv.setDaemon = True
             theadRecv.start()
             self.message.reply_channel.send({"accept": True})
-        else:
-            self.message.reply_channel.send({"accept": False})
 
     def receive(self, text=None, bytes=None, **kwargs):
         #将用户的输入直接发送到redis的订阅者队列当中
@@ -74,6 +64,8 @@ class ManagerConsumer(YoSheelConsumer):
             self.push_mission(self.message.reply_channel.name,text)
 
     def disconnect(self, message, **kwargs):
-        # print('kkkr')
+        self.message.reply_channel.send(
+            {"text": '\033[1;3;31m' + u'您的连接已结束 如果不是您主动释放连接 则相关资产信息有误' + '\033[0m'}, immediately=True)
+        self.message.reply_channel.send({"accept": False})
         self.jumper.close()
         self.target.close()

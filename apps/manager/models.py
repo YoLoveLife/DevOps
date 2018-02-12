@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from softlib.models import Softlib
 from authority.models import ExtendUser
-# import uuid
+import uuid
 from deveops.utils import aes
 from deveops.utils.msg import Message
 from django.conf import settings
@@ -58,7 +58,7 @@ class Group(models.Model):
     def catch_ssh_connect(self):
         if self.jumpers.count() <1:
             msg = Message()
-            return msg.fuse_msg('group-none', None),0,0
+            return msg.fuse_msg('该应用组无关联跳板机', None),0,0
         else:
             for jumper in self.jumpers.all():
                 msg = jumper.catch_ssh_connect
@@ -97,13 +97,11 @@ class Host(models.Model):
         (2,'不可达'),
     )
     id=models.AutoField(primary_key=True) #全局ID
-    # id = models.UUIDField(primary_key=True,auto_created=True,default=uuid.uuid4,editable=False)
+    uuid = models.UUIDField(auto_created=True,default=uuid.uuid4,editable=False)
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
     systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts')
-    manage_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
-    service_ip = models.GenericIPAddressField(default='0.0.0.0')
-    outer_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
+    connect_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
     server_position = models.CharField(max_length=50,default='')#服务器位置
     hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
     normal_user = models.CharField(max_length=15, default='')#普通用户
@@ -172,22 +170,30 @@ class Host(models.Model):
         msg = Message()
         for group in self.groups.all():
             msg,sship,sshport = group.catch_ssh_connect
-            if msg.last_result == 'jumper-success':
+            if msg.status == 1:
                 try:
                     transport = msg.instance.get_transport()
-                    jumperchannel = transport.open_channel("direct-tcpip",
-                                                                 (self.service_ip, self.sshport),
-                                                                 (sship, sshport))
-                    hostssh = target.connect(self.service_ip,username=self.normal_user,key_filename=settings.RSA_KEY,
-                                             sock=jumperchannel,port=self.sshport,password=aes.decrypt(self.sshpasswd))
-                    return msg.fuse_msg('host-success',hostssh)
+                    dest_addr = (self.service_ip,int(self.sshport))
+                    local_addr = (sship,int(sshport))
+                    print(dest_addr,local_addr)
+                    jumperchannel = transport.open_channel("direct-tcpip", dest_addr, local_addr)
+                    target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+                    target.connect(self.service_ip, username=self.normal_user, key_filename=settings.RSA_KEY,
+                                   sock=jumperchannel, port=int(self.sshport))
+                    return msg.fuse_msg(1,u'主机连接成功',target)
+                except paramiko.SSHException:
+                    flag=u'主机SSH错误'
+                    continue
                 except socket.timeout:
-                    flag='host-timeout'
-                    msg
+                    flag=u'主机连接超时'
+                    continue
+                except socket.error:
+                    flag=u'socket出错'
                     continue
                 except Exception, ex:
-                    flag='host-exception'
+                    flag=u'主机连接故障'
                     continue
             else:
                 continue
-        return msg.fuse_msg(flag,None)
+        return msg.fuse_msg(0,flag,None)
