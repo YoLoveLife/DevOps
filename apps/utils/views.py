@@ -8,7 +8,7 @@ import models
 from manager.models import System_Type
 from timeline.decorator.manager import decorator_manager
 from deveops.utils import aes
-
+from django.http import HttpResponseRedirect
 
 class UtilsJumperView(LoginRequiredMixin,TemplateView):
     template_name = 'utils/jumper.html'
@@ -59,7 +59,7 @@ class UtilsView(LoginRequiredMixin,TemplateView):
 class UtilsSystemTypeDeleteView(LoginRequiredMixin,DeleteView):
     model = System_Type
     template_name = 'utils/delete_utils_systype_modal.html'
-    success_url = reverse_lazy('utils')
+    success_url = reverse_lazy('utils:other')
 
     def get_context_data(self, **kwargs):
         flag = 0
@@ -76,8 +76,21 @@ class UtilsSystemTypeDeleteView(LoginRequiredMixin,DeleteView):
         })
         return context_data
 
+    @decorator_manager(0,u'删除操作系统')
+    def delete(self, request, *args, **kwargs):
+        return self.request.user,super(UtilsSystemTypeDeleteView,self).delete(request,*args,**kwargs)
+
 class UtilsSystemTypeCreateView(LoginRequiredMixin,CreateView):
     model = System_Type
     template_name = 'utils/create_utils_systype_modal.html'
-    success_url = reverse_lazy('utils')
+    success_url = reverse_lazy('utils:other')
+    form_class = UtilForms.SystemTypeForm
 
+
+    @decorator_manager(0,u'新增操作系统')
+    def form_valid(self, form):
+        #此处的form_valid包含一部分名字重复但是作为None值提交的
+        return self.request.user,super(UtilsSystemTypeCreateView,self).form_valid(form=form)
+
+    def get_success_url(self):
+        return self.success_url

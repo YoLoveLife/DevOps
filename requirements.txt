@@ -71,3 +71,5 @@ msgpack-python==0.5.1
 asgi-redis==1.4.3
 
 #jsonfield==2.0.2
+ecdsa==0.13
+sshpubkeys==2.3.0

@@ -6,6 +6,7 @@
 from django import forms
 import models
 from deveops.utils import aes,checkpass
+from manager.models import System_Type
 # class GroupCreateUpdateForm(forms.ModelForm):
 #     class Meta:
 #         model = models.System_Type
@@ -62,5 +63,30 @@ class JumperUpdateForm(JumperBaseForm):
                 continue
             jumper = group.jumper.get()
             if jumper.service_ip != service_ip:
-                raise forms.ValidationErroru(u'试图将新的跳板机写入完整的应用组')
+                raise forms.ValidationError(u'试图将新的跳板机写入完整的应用组')
         return groups
+
+
+class SystemTypeForm(forms.ModelForm):
+    class Meta:
+        model = System_Type
+        fields = ['name']
+        labels = {
+            'name': u'系统名称',
+        }
+
+    def clean_name(self):
+        sub_name = self.cleaned_data['name']
+        if System_Type.objects.filter(name=sub_name).count() ==0:
+            return sub_name
+        else:
+            return 'null'
+
+    # 重写基类函数 将原本的Form save内容注销掉
+    def save(self, commit=True):
+        if self.instance.name == 'null':
+            print(self.instance.name)
+            return None
+        else:
+            print(self.instance.name)
+            return super(SystemTypeForm,self).save(commit=commit)
