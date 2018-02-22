@@ -64,9 +64,9 @@ class HostTestCase(TestCase):
         storages = Storage.objects.filter(disk_size='1024GB')
         systemtype = System_Type.objects.filter(name='CentOS6.5').get()
         host = Host.objects.create(
-                            manage_ip='192.168.1.1',service_ip='192.168.1.2',
-                            outer_ip='192.168.1.3',server_position='VmWare',
-                            hostname='localhost.localdomain',normal_user='TestProd',
+                            service_ip='192.168.1.2',
+            connect_ip='192.168.1.3',server_position='VmWare',
+                            hostname='localhost.localdomain',
                             sshpasswd='testpasswd',sshport='52000',coreness='36',
                             memory='1024MB',root_disk='1024G',info='testinfo')
         host.storages = storages
@@ -75,11 +75,11 @@ class HostTestCase(TestCase):
         host.save()
 
     def test_hostcreate(self):
-        host = Host.objects.get(service_ip='192.168.1.2')
+        host = Host.objects.get(connect_ip='192.168.1.2')
         self.assertEqual(host.hostname,'localhost.localdomain')
 
     def test_hostmany2many(self):
-        host = Host.objects.get(service_ip='192.168.1.2')
+        host = Host.objects.get(connect_ip='192.168.1.2')
         self.assertEqual(host.groups.all()[0].name,'Testgroup')
         self.assertEqual(host.storages.all()[0].disk_path,'//192.168.0.1/testdisk')
 
@@ -88,10 +88,10 @@ class HostTestCase(TestCase):
         self.assertEqual(storage.get_all_group_name(),'Testgroup')
 
     def test_hostupdate(self):
-        Host.objects.filter(service_ip='192.168.1.2').update(server_position='Position-1')
-        host = Host.objects.get(service_ip='192.168.1.2')
+        Host.objects.filter(connect_ip='192.168.1.2').update(server_position='Position-1')
+        host = Host.objects.get(connect_ip='192.168.1.2')
         self.assertEqual(host.server_position,'Position-1')
 
     def test_hostdelete(self):
-        Host.objects.filter(service_ip='192.168.1.2').delete()
-        self.assertEqual(Host.objects.filter(service_ip='192.168.1.2').count(),0)
+        Host.objects.filter(connect_ip='192.168.1.2').delete()
+        self.assertEqual(Host.objects.filter(connect_ip='192.168.1.2').count(),0)

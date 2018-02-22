@@ -7,7 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from timeline.decorator.manager import decorator_manager
 from permission import jumper as JumperPermission
 from permission import systemtype as SystemTypePermission
-from manager.models import System_Type
+from manager.models import System_Type,Sys_User
 
 class UtilsJumperListAPI(generics.ListAPIView):
     module = models.Jumper
@@ -60,3 +60,11 @@ class UtilsSystemTypeRemoveAPI(generics.DestroyAPIView):
         else:
             st.delete()
             return Response({'detail': '删除系统类型成功'}, status=status.HTTP_201_CREATED)
+
+class UtilsUserListAPI(generics.ListAPIView):
+    module = Sys_User
+    serializer_class = serializers.SysUserSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        queryset = Sys_User.objects.all()
+        return queryset

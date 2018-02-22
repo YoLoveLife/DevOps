@@ -69,7 +69,7 @@ class ApplicationDBUpdateView(LoginRequiredMixin,DBPermission.DBChangeRequiredMi
     def get_context_data(self, **kwargs):
         context = super(ApplicationDBUpdateView,self).get_context_data(**kwargs)
         context.update({
-            'service_ip' : self.object.host.service_ip
+            'connect_ip' : self.object.host.connect_ip
         })
         return context
 

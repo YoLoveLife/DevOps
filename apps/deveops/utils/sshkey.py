@@ -4,7 +4,7 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 import paramiko
-import StringIO
+from six import StringIO
 import sshpubkeys
 def ssh_private_key2obj(ssh_key):
     key = None

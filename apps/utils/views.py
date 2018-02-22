@@ -94,3 +94,6 @@ class UtilsSystemTypeCreateView(LoginRequiredMixin,CreateView):
 
     def get_success_url(self):
         return self.success_url
+
+class UtilsUserView(LoginRequiredMixin,TemplateView):
+    template_name = 'utils/user.html'
