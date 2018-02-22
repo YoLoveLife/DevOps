@@ -3,10 +3,10 @@ from rest_framework import serializers
 #__all__ = ['DBSerializer','DBAuthSerializer']
 class DBSerializer(serializers.HyperlinkedModelSerializer):
     host_name = serializers.CharField(source='host.hostname',read_only=True)
-    service_ip = serializers.CharField(source='host.service_ip',read_only=True)
+    connect_ip = serializers.CharField(source='host.connect_ip',read_only=True)
     class Meta:
         model = models.DB
-        fields = ('id','host_name','port','datadir','service_ip',
+        fields = ('id','host_name','port','datadir','connect_ip',
                 )
 
 class DBAuthSerializer(serializers.HyperlinkedModelSerializer):

@@ -11,7 +11,7 @@ __all__ = ['YoInventory','YoHost']
 class YoHost(Host):
     def __init__(self,host):
         self.host = host
-        self.name = host.service_ip
+        self.name = host.connect_ip
         self.port = host.sshport
         super(YoHost,self).__init__(self.name,self.port)
         self.set_all_variable()
@@ -19,7 +19,7 @@ class YoHost(Host):
     def set_all_variable(self):
         self.set_variable('ansible_host', self.name)
         self.set_variable('ansible_port', self.port)
-        self.set_variable('ansible_user', self.host.normal_user)
+        self.set_variable('ansible_user', self.host.sys_user.username)
         # self.set_variable('ansible_ssh_pass', self.host.sshpasswd) #密码登陆
         self.set_variable("ansible_become", True)
         self.set_variable("ansible_become_method", 'sudo')

@@ -15,4 +15,9 @@ urlpatterns = [
     url(r'^other/$', views.UtilsView.as_view(),name='other'),
     url(r'^systype/(?P<pk>[0-9]+)/delete/$', views.UtilsSystemTypeDeleteView.as_view(),name='systypedelete'),
     url(r'^systype/create/$', views.UtilsSystemTypeCreateView.as_view(),name='systypecreate'),
+
+    #Resource user url
+    url(r'^user/$', views.UtilsUserView.as_view(),name='user'),
+    # url(r'^user/create/$', views.UtilsUserCreateView.as_view(),name='usercreate'),
+    # url(r'^user/(?P<pk>[0-9]+)/delete/$', views.UtilsUserDeleteView.as_view(),name='userdelete'),
 ]

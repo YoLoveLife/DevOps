@@ -28,7 +28,7 @@ class Redis(BaseApplication):
         if self.host is None:
             return self.redis_passwd+'@'+self.url
         else:
-            return self.redis_passwd+'@'+self.host.service_ip
+            return self.redis_passwd+'@'+self.host.connect_ip
 
 
 class DB(BaseApplication):
@@ -79,7 +79,7 @@ class DBUser(models.Model):
         if self.db.host is None:#为空
             return self.user+'@'+self.db.url+':'+self.db.port
         else:
-            return self.user+'@'+self.db.host.service_ip+':'+self.db.port
+            return self.user+'@'+self.db.host.connect_ip+':'+self.db.port
 
 
 #

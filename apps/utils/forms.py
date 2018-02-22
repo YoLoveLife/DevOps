@@ -25,14 +25,12 @@ class JumperBaseForm(forms.ModelForm):
 
     class Meta:
         model = models.Jumper
-        fields = ['service_ip','normal_user','sshpasswd','sshport','info','groups']
+        fields = ['connect_ip','sshport','info','groups']
         widgets = {
             'sshpasswd': forms.TextInput(attrs={'type':'password'}),
         }
         labels = {
-            'service_ip': u'服务IP',
-            'normal_user': u'用户',
-            'sshpasswd': u'密码',
+            'connect_ip': u'连接IP',
             'sshport': u'访问端口',
             'info': u'信息',
         }
@@ -57,12 +55,12 @@ class JumperCreateForm(JumperBaseForm):
 class JumperUpdateForm(JumperBaseForm):
     def clean_group(self):
         groups = self.cleaned_data['groups']
-        service_ip = self.cleaned_data['service_ip']
+        connect_ip = self.cleaned_data['connect_ip']
         for group in groups:
             if group.jumper is None:
                 continue
             jumper = group.jumper.get()
-            if jumper.service_ip != service_ip:
+            if jumper.connect_ip != connect_ip:
                 raise forms.ValidationError(u'试图将新的跳板机写入完整的应用组')
         return groups
 

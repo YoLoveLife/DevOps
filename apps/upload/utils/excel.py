@@ -9,9 +9,9 @@ from manager.models import Host,Group,Storage
 from deveops.utils import aes
 from django.db.models.query import QuerySet
 def ToDictFromExcelForGroup(rowdata):
-    service_ip = 0
+    connect_ip = 0
     server_position = 1
-    normal_user = 2
+    username = 2
     sshport = 3
     sshpasswd = 4
     info = 5
@@ -19,12 +19,12 @@ def ToDictFromExcelForGroup(rowdata):
     outer_ip = 7
     hostname = 8
     systemtype = 9
-    if Host.objects.filter(service_ip=rowdata[service_ip].value).exists():
+    if Host.objects.filter(service_ip=rowdata[connect_ip].value).exists():
         return {}
     else:
         return {
-            'service_ip':rowdata[service_ip].value,'server_position':rowdata[server_position].value,
-            'normal_user':rowdata[normal_user].value,'sshpasswd':aes.encrypt(rowdata[sshpasswd].value),
+            'service_ip':rowdata[connect_ip].value,'server_position':rowdata[server_position].value,
+            'normal_user':rowdata[username].value,'sshpasswd':aes.encrypt(rowdata[sshpasswd].value),
             'sshport':int(rowdata[sshport].value),'info':rowdata[info].value,
             'manage_ip':rowdata[manage_ip].value,'outer_ip':rowdata[outer_ip].value,
             'hostname':rowdata[hostname].value,'systemtype':rowdata[systemtype].value,
@@ -53,7 +53,7 @@ def ToDictFromExcelForStorage(rowdata):
     disk_path=1
     info=2
     host=3
-    if Host.objects.filter(service_ip=rowdata[host].value).exists():#判断Host是否存在 如果不存在则不增加该存储
+    if Host.objects.filter(connect_ip=rowdata[host].value).exists():#判断Host是否存在 如果不存在则不增加该存储
         if not Storage.objects.filter(disk_size=rowdata[disk_size].value, #判断该存储是否存在 不存在返回对应的数据
                                   disk_path=rowdata[disk_path].value,
                                   info=rowdata[info].value).exists():
@@ -61,7 +61,7 @@ def ToDictFromExcelForStorage(rowdata):
                 "disk_size":rowdata[disk_size].value,
                 "disk_path":rowdata[disk_path].value,
                 "info":rowdata[info].value
-            },Host.objects.filter(service_ip=rowdata[host].value).get()
+            },Host.objects.filter(connect_ip=rowdata[host].value).get()
         else:#如果存储存在 判断host中是否有这个存储
             # host = Host.objects.filter(service_ip=rowdata[host].value).get()
             # host.storages.

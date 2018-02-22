@@ -54,7 +54,25 @@
                     <div class="col-md-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">管理用户列表</h3>
+                                <h3 class="box-title">关联用户账户</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% bootstrap_field form.sys_user %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">管理账户列表</h3>
                             </div>
                             <div class="box-body">
                                 {% bootstrap_field form.users %}
@@ -72,8 +90,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
@@ -92,6 +108,22 @@
 {#                                        {% endif %}#}
 {#                                    {% endfor %}#}
 {#                                </select>#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">架构信息</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% bootstrap_field form.framework %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,18 +153,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box">
-                                    <div class="box-header">
-                                        <h3 class="box-title" style="text-align: center">提示</h3>
-                                    </div>
-                                    <div class="box-body">
-                                        <dd>此处填写数据为基础主机信息，逻辑层次信息在外部维护</dd>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{#                        <div class="row">#}
+{#                            <div class="col-md-12">#}
+{#                                <div class="box">#}
+{#                                    <div class="box-header">#}
+{#                                        <h3 class="box-title" style="text-align: center">提示</h3>#}
+{#                                    </div>#}
+{#                                    <div class="box-body">#}
+{#                                        <dd>此处填写数据为基础主机信息，逻辑层次信息在外部维护</dd>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>
