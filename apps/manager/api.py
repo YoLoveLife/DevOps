@@ -10,10 +10,15 @@ from manager.permission import host as HostPermission
 from manager.permission import storage as StoragePermission
 from timeline.decorator.manager import decorator_manager
 
+from rest_framework.renderers import JSONRenderer
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 class ManagerGroupListAPI(generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = (JSONWebTokenAuthentication,)
+    renderer_classes = (JSONRenderer,)
+
     def get_queryset(self):
         queryset=models.Group.objects.all()
         return queryset
