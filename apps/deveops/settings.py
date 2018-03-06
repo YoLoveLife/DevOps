@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'dns.apps.DnsConfig',
     'xmt.apps.XmtConfig',
     'rest_framework',
+    'rest_framework_jwt',
     'bootstrap3',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,12 +64,29 @@ INSTALLED_APPS = [
     'channels',
 ]
 
+#JWF
+import datetime
+JWT_AUTH = {
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+
+
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE':10,
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAdminUser'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+
+    )
+
 }
 
 MIDDLEWARE = [

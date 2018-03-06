@@ -21,6 +21,7 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.views.static import serve
 from django.conf import settings
+from rest_framework_jwt.views import obtain_jwt_token
 import views
 urlpatterns = [
     # VIEW
@@ -41,6 +42,7 @@ urlpatterns = [
     url(r'^xmt/',include('xmt.urls.views_urls',namespace='xmt')),
 
     # API
+    url(r'^api-login/',obtain_jwt_token),
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
     url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
     url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),
