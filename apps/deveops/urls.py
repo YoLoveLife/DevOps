@@ -23,6 +23,7 @@ from django.views.static import serve
 from django.conf import settings
 from rest_framework_jwt.views import obtain_jwt_token
 import views
+from . import api
 urlpatterns = [
     # VIEW
     url(r'^$', views.IndexView.as_view(), name='index'),
@@ -42,7 +43,7 @@ urlpatterns = [
     url(r'^xmt/',include('xmt.urls.views_urls',namespace='xmt')),
 
     # API
-    url(r'^api-login/',obtain_jwt_token),
+    url(r'^api-auth/', include('authority.urls.api_urls',namespace='api-auth')),
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
     url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
     url(r'^api-authority/',include('authority.urls.api_urls',namespace='api-authority')),

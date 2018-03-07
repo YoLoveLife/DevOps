@@ -76,3 +76,4 @@ sshpubkeys==2.3.0
 
 PyJWT==1.6.0
 djangorestframework-jwt==1.11.0
+django-cors-headers==2.2.0
