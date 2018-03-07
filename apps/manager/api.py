@@ -9,9 +9,9 @@ from manager.permission import group as GroupPermission
 from manager.permission import host as HostPermission
 from manager.permission import storage as StoragePermission
 from timeline.decorator.manager import decorator_manager
-
 from rest_framework.renderers import JSONRenderer
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 class ManagerGroupListAPI(generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer

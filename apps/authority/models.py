@@ -47,7 +47,7 @@ class ExtendUser(AbstractUser):
         return full_name.strip()
 
     @property
-    def is_operationE(self):
+    def is_oper(self):
         for group in self.groups.all():
             if group.id == 1:
                 return True

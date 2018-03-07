@@ -34,7 +34,7 @@ class XMTForm(forms.ModelForm):
         if env == 0:
             raise forms.ValidationError(u'未选择更新环境')
 
-        if env == 2 and (self.user.is_superuser or self.user.is_operationE):
+        if env == 2 and (self.user.is_superuser or self.user.is_oper):
             pass
         elif env == 2:
             raise forms.ValidationError(u'开发人员无法更新生产环境')
