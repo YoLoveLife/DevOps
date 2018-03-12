@@ -3,7 +3,7 @@ from .. import api
 urlpatterns=[
     #Resource login api
     url(r'^login/', api.LoginJSONWebToken.as_view()),
-    url(r'^issuper/', api.IsSuperJSONWebToken.as_view()),
+    url(r'^userinfo/', api.UserInfoJSONWebToken.as_view()),
 
     # Resource user api
     url(r'^v1/user/$',api.UserListAPI.as_view()),

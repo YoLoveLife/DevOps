@@ -14,16 +14,21 @@ class LoginJSONWebToken(ObtainJSONWebToken):
         response = super(LoginJSONWebToken,self).post(request,*args,**kwargs)
         return response
 
-class IsSuperJSONWebToken(generics.ListAPIView):
+class UserInfoJSONWebToken(generics.ListAPIView):
     authentication_classes = (JSONWebTokenAuthentication,)
     renderer_classes = (JSONRenderer,)
     def get(self, request, *args, **kwargs):
+        dist = {}
+        dist['username'] = request.user.username
+        dist['name'] = request.user.last_name
         if request.user.is_oper == True or request.user.is_superuser == True:
-            return Response({'isadmin': True}, status=status.HTTP_201_CREATED)
+            dist['isadmin'] = True
         elif request.user.is_oper == False and request.user.is_superuser == False:
-            return Response({'isadmin': False}, status=status.HTTP_201_CREATED)
+            dist['isadmin'] = False
         else:
-            return Response({'isadmin': 'None'}, status=status.HTTP_400_BAD_REQUEST)
+            dist['isadmin'] = 'None'
+
+        return Response(dist, status=status.HTTP_201_CREATED)
 
 class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
