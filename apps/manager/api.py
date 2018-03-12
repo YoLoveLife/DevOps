@@ -16,6 +16,7 @@ class ManagerGroupListAPI(generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
+
     authentication_classes = (JSONWebTokenAuthentication,)
     renderer_classes = (JSONRenderer,)
 
