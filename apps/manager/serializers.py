@@ -2,9 +2,10 @@ import models
 from rest_framework import serializers
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    status_label = serializers.StringRelatedField(source='get_status_display')
     class Meta:
         model = models.Group
-        fields = ('id', 'name', 'info',
+        fields = ('id', 'name', 'info', 'uuid', 'status', 'status_label'
                 )
 
 class StorageSerializer(serializers.HyperlinkedModelSerializer):
