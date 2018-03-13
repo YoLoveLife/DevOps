@@ -15,9 +15,6 @@ from django.core.exceptions import ValidationError
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
 
-def upload_dir_path(instance, filename):
-    #instance.group.id,
-    return u'framework/{0}'.format(filename)
 
 class System_Type(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
@@ -108,12 +105,23 @@ class Sys_User(models.Model):
     def public_key(self, pub_key):
         self._public_key = aes.encrypt(pub_key)
 
+def upload_dir_path(instance, filename):
+    #instance.group.id,
+    return u'framework/{0}'.format(filename)
+
 class Group(models.Model):
+    GROUP_STATUS=(
+        (0,'禁用中'),
+        (1,'使用中'),
+        (2,'暂停中'),
+    )
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100,default='')
     info = models.CharField(max_length=100,default='')
     framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
+    status = models.IntegerField(choices=GROUP_STATUS,default=0)
     sys_user = models.ManyToManyField(Sys_User,null=True,related_name='group')
 
     def __unicode__(self):

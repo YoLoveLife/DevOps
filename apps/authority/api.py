@@ -30,6 +30,7 @@ class UserInfoJSONWebToken(generics.ListAPIView):
 
         return Response(dist, status=status.HTTP_201_CREATED)
 
+
 class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer

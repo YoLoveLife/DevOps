@@ -16,13 +16,18 @@ class ManagerGroupListAPI(generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
-
     authentication_classes = (JSONWebTokenAuthentication,)
     renderer_classes = (JSONRenderer,)
 
     def get_queryset(self):
         queryset=models.Group.objects.all()
         return queryset
+
+class ManagerGroupUpdateAPI(generics.UpdateAPIView):
+    module = models.Group
+
+
+
 
 class ManagerGroupRemoveAPI(generics.DestroyAPIView):
     serializer_class = serializers.GroupSerializer
