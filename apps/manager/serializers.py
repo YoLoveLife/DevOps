@@ -1,12 +1,15 @@
 import models
 from rest_framework import serializers
+from authority.models import ExtendUser
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    status_label = serializers.StringRelatedField(source='get_status_display')
+    users = serializers.PrimaryKeyRelatedField(many=True,queryset=ExtendUser.objects.all())
     class Meta:
         model = models.Group
-        fields = ('id', 'name', 'info', 'uuid', 'status', 'status_label'
+        fields = ('id', 'name', 'info', 'uuid', 'status','users',#'framework'
                 )
+        read_only_fields = ('id',
+                             )
 
 class StorageSerializer(serializers.HyperlinkedModelSerializer):
     group_name = serializers.StringRelatedField(source="get_all_group_name",read_only=True)
@@ -15,14 +18,30 @@ class StorageSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','disk_size','disk_path','info','group_name',
                   )
 
+class SystemTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.System_Type
+        fields = (
+            'name',
+        )
+
+class HostDetailSerializer(serializers.ModelSerializer):
+    systemtype=SystemTypeSerializer()
+    class Meta:
+        model = models.HostDetail
+        fields = (
+            'coreness','memory','root_disk','server_position','systemtype','info',
+        )
+
 class HostSerializer(serializers.ModelSerializer):
-    systemtype = serializers.CharField(source='systemtype.name')
+    label = serializers.CharField(source='__unicode__')
+    detail = HostDetailSerializer()
     class Meta:
         model=models.Host
-        fields = ('id','systemtype','manage_ip','service_ip','outer_ip','server_position','hostname',
-                  'normal_user','sshport','coreness','memory','root_disk','info'
-                  ,'storages','status',
-                  )
+        fields = (
+            'id','uuid','label','detail',
+        )
+
 
 class HostPasswordSerializer(serializers.ModelSerializer):
     password = serializers.StringRelatedField(source='password_get',read_only=True)
