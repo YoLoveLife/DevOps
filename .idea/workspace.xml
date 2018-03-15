@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/apps/manager/api.py" line="14" />
-    <bookmark url="file://$PROJECT_DIR$/apps/manager/api.py" line="41" />
+    <bookmark url="file://$PROJECT_DIR$/apps/manager/api.py" line="16" />
+    <bookmark url="file://$PROJECT_DIR$/apps/manager/api.py" line="46" />
     <bookmark url="file://$PROJECT_DIR$/apps/operation/templates/operation/detail_script.html" />
     <bookmark url="file://$PROJECT_DIR$/apps/operation/templates/operation/new_update_script.html" />
     <bookmark url="file://$PROJECT_DIR$/apps/operation/templates/operation/new_update_script.html" line="4" />
-    <bookmark url="file://$PROJECT_DIR$/executor/nginx/nginxpb.py" line="31" />
     <bookmark url="file://$PROJECT_DIR$/apps/timeline/views.py" line="32" />
     <bookmark url="file://$PROJECT_DIR$/apps/timeline/models.py" />
     <bookmark url="file://$PROJECT_DIR$/apps/operation/models.py" />
@@ -16,57 +15,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14ee007d-5cce-452d-a54e-94fb9407a6b8" name="Default" comment="new-api Adh">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/manage.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/modules/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/modules/personblock.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/modules/personbook.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/modules/persontask.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/base_pk_install.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/mysql_pb_conf.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/mysql_pb_install.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/mysql_pb_remove.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/redis_pb_conf.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/redis_pb_install.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/playbook/redis_pb_remove.yml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/java/java_install.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/java/java_remove.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/mysql/mysql_answer.exp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/mysql/mysql_control.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/mysql/mysql_install.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/mysql/mysql_remove.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/mysql/mysql_test.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/nginx/nginx_control.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/nginx/nginx_install.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/nginx/nginx_remove.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/redis/redis_control.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/redis/redis_install.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/redis/redis_remove.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/redis/redis_test.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/tomcat/tomcat_control.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/tomcat/tomcat_install.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/tomcat/tomcat_remove.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/tomcat/tomcat_test.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/my.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/nginx.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/redis/redis2.6.17.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/redis/redis3.0.7.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/redis/redis3.2.4.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/redis/redis3.2.6.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/setenv.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template/test.j2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/rq.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/start.py" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apitry/listener.xls" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apitry/listener2.xls" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apitry/aliyun_api.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apitry/aliyun_api_conf.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/templates/manager/confirm_modal.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/manager/templates/manager/delete_confirm.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/utils/permission/systemtype.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/devEops.iml" afterPath="$PROJECT_DIR$/.idea/devEops.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/webServers.xml" afterPath="$PROJECT_DIR$/.idea/webServers.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/deveops/celery.py" afterPath="$PROJECT_DIR$/apps/deveops/celery.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/event/allevent.py" afterPath="$PROJECT_DIR$/event/allevent.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/executor/dispatch/dispatchpb.py" afterPath="$PROJECT_DIR$/executor/dispatch/dispatchpb.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/yosible/inventory.py" afterPath="$PROJECT_DIR$/yosible/inventory.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/yosible/runner.py" afterPath="$PROJECT_DIR$/yosible/runner.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/deveops/conf.py" afterPath="$PROJECT_DIR$/apps/deveops/conf.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/models.py" afterPath="$PROJECT_DIR$/apps/manager/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/templates/manager/host.html" afterPath="$PROJECT_DIR$/apps/manager/templates/manager/host.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/urls/views_urls.py" afterPath="$PROJECT_DIR$/apps/manager/urls/views_urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/manager/views/host.py" afterPath="$PROJECT_DIR$/apps/manager/views/host.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/utils/api.py" afterPath="$PROJECT_DIR$/apps/utils/api.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/utils/serializers.py" afterPath="$PROJECT_DIR$/apps/utils/serializers.py" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -79,26 +46,29 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/devEops$runner.coverage" NAME="runner Coverage Results" MODIFIED="1510042509871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yosible" />
     <SUITE FILE_PATH="coverage/devEops$manage.coverage" NAME="manage Coverage Results" MODIFIED="1508481506773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps" />
-    <SUITE FILE_PATH="coverage/devEops$Unittests_in_runner_py.coverage" NAME="Unittests in runner.py Coverage Results" MODIFIED="1510042225285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yosible" />
-    <SUITE FILE_PATH="coverage/devEops$playbook__1_.coverage" NAME="playbook (1) Coverage Results" MODIFIED="1503655214574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apitry" />
-    <SUITE FILE_PATH="coverage/devEops$playbook.coverage" NAME="playbook Coverage Results" MODIFIED="1505182283430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/devEops$task.coverage" NAME="task Coverage Results" MODIFIED="1503651169926" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
-    <SUITE FILE_PATH="coverage/devEops$dns.coverage" NAME="dns Coverage Results" MODIFIED="1501224432408" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
-    <SUITE FILE_PATH="coverage/devEops$start.coverage" NAME="start Coverage Results" MODIFIED="1505207733202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/devEops$Unittests_in_tests_py.coverage" NAME="Unittests in tests.py Coverage Results" MODIFIED="1502934613260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps/manager" />
-    <SUITE FILE_PATH="coverage/devEops$3des.coverage" NAME="3des Coverage Results" MODIFIED="1508481589472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
-    <SUITE FILE_PATH="coverage/devEops$celery.coverage" NAME="celery Coverage Results" MODIFIED="1509070662649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps/deveops" />
     <SUITE FILE_PATH="coverage/devEops$new_api.coverage" NAME="new-api Coverage Results" MODIFIED="1510042971494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps/execute/service" />
     <SUITE FILE_PATH="coverage/devEops$shellpb.coverage" NAME="shellpb Coverage Results" MODIFIED="1503655243521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/executor/base" />
-    <SUITE FILE_PATH="coverage/devEops$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1504665387044" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yosible/module" />
+    <SUITE FILE_PATH="coverage/DevOps$Unnamed.coverage" NAME="Fedora Coverage Results" MODIFIED="1515722736702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apitry" />
     <SUITE FILE_PATH="coverage/devEops$tasks.coverage" NAME="tasks Coverage Results" MODIFIED="1503651332385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/devEops$ansible.coverage" NAME="ansible Coverage Results" MODIFIED="1505210472885" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
-    <SUITE FILE_PATH="coverage/devEops$__init____1_.coverage" NAME="__init__ (1) Coverage Results" MODIFIED="1505182216582" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/callback/module" />
     <SUITE FILE_PATH="coverage/devEops$utils.coverage" NAME="utils Coverage Results" MODIFIED="1505303654908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps/operation/utils" />
     <SUITE FILE_PATH="coverage/devEops$rq.coverage" NAME="rq Coverage Results" MODIFIED="1502965147301" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/devEops$settings.coverage" NAME="settings Coverage Results" MODIFIED="1508927871598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps/deveops" />
     <SUITE FILE_PATH="coverage/devEops$rabbitmq.coverage" NAME="rabbitmq Coverage Results" MODIFIED="1503625370814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
     <SUITE FILE_PATH="coverage/devEops$Unittests_in_test_py.coverage" NAME="Unittests in test.py Coverage Results" MODIFIED="1505207605086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/devEops$Unittests_in_runner_py.coverage" NAME="Unittests in runner.py Coverage Results" MODIFIED="1510042225285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yosible" />
+    <SUITE FILE_PATH="coverage/devEops$playbook__1_.coverage" NAME="playbook (1) Coverage Results" MODIFIED="1503655214574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apitry" />
+    <SUITE FILE_PATH="coverage/devEops$playbook.coverage" NAME="playbook Coverage Results" MODIFIED="1505182283430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
+    <SUITE FILE_PATH="coverage/devEops$dns.coverage" NAME="dns Coverage Results" MODIFIED="1501224432408" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+    <SUITE FILE_PATH="coverage/devEops$start.coverage" NAME="start Coverage Results" MODIFIED="1505207733202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DevOps$aliyun_api.coverage" NAME="aliyun-api Coverage Results" MODIFIED="1517393123087" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apitry" />
+    <SUITE FILE_PATH="coverage/devEops$3des.coverage" NAME="3des Coverage Results" MODIFIED="1508481589472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/util" />
+    <SUITE FILE_PATH="coverage/devEops$celery.coverage" NAME="celery Coverage Results" MODIFIED="1509070662649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apps/deveops" />
+    <SUITE FILE_PATH="coverage/devEops$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1504665387044" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yosible/module" />
+    <SUITE FILE_PATH="coverage/DevOps$Fedora.coverage" NAME="Fedora Coverage Results" MODIFIED="1516240207235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apitry" />
+    <SUITE FILE_PATH="coverage/devEops$__init____1_.coverage" NAME="__init__ (1) Coverage Results" MODIFIED="1505182216582" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/callback/module" />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
@@ -113,112 +83,120 @@
         <option value="JavaScript File" />
         <option value="Setup Script" />
         <option value="HTML File" />
+        <option value="Jupyter Notebook" />
         <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TIME</find>
-      <find>ENVIRONMENT</find>
-      <find>scge</find>
-      <find>scg</find>
-      <find>sc</find>
-      <find>s</find>
-      <find>sche</find>
-      <find>crontab</find>
-      <find>CELERY_ACCEPT_CONTENT</find>
-      <find>c</find>
-      <find>cs</find>
-      <find>csrf</find>
-      <find>FormView</find>
-      <find>parse_inventory</find>
-      <find>Play</find>
-      <find>task_tuple</find>
-      <find>result_q</find>
-      <find>YoHost</find>
-      <find>YoInventory</find>
-      <find>all_vars</find>
-      <find>variable_manager</find>
-      <find>tasks</find>
-      <find>task_name</find>
-      <find>hosts</find>
-      <find>script_maker</find>
-      <find>ext_vars</find>
-      <find>new_vars</find>
-      <find>pb</find>
-      <find>pattern</find>
-      <find>extra_vars</find>
+      <find>reque</find>
+      <find>request.self.</find>
+      <find>request.self</find>
+      <find>requestu</find>
+      <find>request</find>
+      <find>request,</find>
+      <find>request.</find>
+      <find>request.us</find>
+      <find>request.user</find>
+      <find>request.user.</find>
+      <find>request.user.is</find>
+      <find>deploylist</find>
+      <find>ToDictFromExcelForStorage</find>
+      <find>Scheduler</find>
+      <find>check_status</find>
+      <find>SSH_TIMEOUT</find>
+      <find>System_Type</find>
+      <find>u</find>
+      <find>ur</find>
+      <find>url</find>
+      <find>urlre</find>
+      <find>urlremo</find>
+      <find>urlremote</find>
+      <find>r</find>
+      <find>remo</find>
+      <find>remote</find>
+      <find>mo</find>
+      <find>moda</find>
+      <find>modal</find>
+      <find>data</find>
     </findStrings>
     <replaceStrings>
       <replace>data['data']</replace>
       <replace>fa-angle-double-down</replace>
       <replace>Task</replace>
       <replace>task</replace>
+      <replace>target</replace>
+      <replace>jumper_tb</replace>
+      <replace>jumper_form</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/apps/authority</dir>
+      <dir>$PROJECT_DIR$/apps/application/templates/application/redis</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="devel" />
+        <entry key="$PROJECT_DIR$" value="920f0a3c24aecaecfe115469f269b5c8cdf65fd1" />
       </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/apps/concert/templates/concert/new_update_group.html" />
-        <option value="$PROJECT_DIR$/apps/manager/templates/manager/new_update_storage.html" />
-        <option value="$PROJECT_DIR$/apps/concert/templates/concert/new_update_host.html" />
+        <option value="$PROJECT_DIR$/apps/templates/404.html" />
+        <option value="$PROJECT_DIR$/apps/utils/templates/utils/utils.html" />
+        <option value="$PROJECT_DIR$/apps/deveops/urls.py" />
+        <option value="$PROJECT_DIR$/apps/manager/serializers.py" />
+        <option value="$PROJECT_DIR$/apps/manager/tests.py" />
+        <option value="$PROJECT_DIR$/apps/deveops/tests.py" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/apps/utils/templates/utils/jumper_modal.html" />
         <option value="$PROJECT_DIR$/apps/manager/templates/manager/new_update_host.html" />
-        <option value="$PROJECT_DIR$/apps/manager/templates/manager/host.html" />
-        <option value="$PROJECT_DIR$/apps/application/templates/application/new_update_db.html" />
-        <option value="$PROJECT_DIR$/apps/application/urls/views_urls.py" />
-        <option value="$PROJECT_DIR$/apps/application/permission/db.py" />
-        <option value="$PROJECT_DIR$/apps/application/serializers.py" />
-        <option value="$PROJECT_DIR$/apps/operation/templates/operation/new_update_script.html" />
-        <option value="$PROJECT_DIR$/apps/application/templates/application/auth_db.html" />
-        <option value="$PROJECT_DIR$/apps/application/templates/application/_is_slave.html" />
-        <option value="$PROJECT_DIR$/apps/manage.py" />
-        <option value="$PROJECT_DIR$/apps/application/models.py" />
-        <option value="$PROJECT_DIR$/apps/application/templates/application/db.html" />
-        <option value="$PROJECT_DIR$/apps/application/views/db.py" />
-        <option value="$PROJECT_DIR$/apps/application/api.py" />
-        <option value="$PROJECT_DIR$/apps/application/urls/api_urls.py" />
-        <option value="$PROJECT_DIR$/apps/application/templates/application/db/auth_db.html" />
-        <option value="$PROJECT_DIR$/apps/validate/views/loginout.py" />
-        <option value="$PROJECT_DIR$/apps/authority/serializers.py" />
-        <option value="$PROJECT_DIR$/apps/authority/views/user.py" />
-        <option value="$PROJECT_DIR$/apps/authority/urls/views_urls.py" />
-        <option value="$PROJECT_DIR$/apps/operation/urls/api_urls.py" />
-        <option value="$PROJECT_DIR$/apps/authority/templates/authority/user.html" />
-        <option value="$PROJECT_DIR$/apps/authority/urls/api_urls.py" />
-        <option value="$PROJECT_DIR$/apps/authority/api.py" />
-        <option value="$PROJECT_DIR$/apps/__init__.py" />
-        <option value="$PROJECT_DIR$/apps/manager/tsaks.py" />
-        <option value="$PROJECT_DIR$/apps/validate/models.py" />
-        <option value="$PROJECT_DIR$/apps/manager/celery.py" />
-        <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/apps/deveops/__init__.py" />
-        <option value="$PROJECT_DIR$/apps/manager/__init__.py" />
-        <option value="$PROJECT_DIR$/apps/manager/tasks.py" />
-        <option value="$PROJECT_DIR$/apps/deveops/settings.py" />
-        <option value="$PROJECT_DIR$/apps/validate/tests.py" />
-        <option value="$PROJECT_DIR$/jstack/__init__.py" />
-        <option value="$PROJECT_DIR$/utils/__init__.py" />
-        <option value="$PROJECT_DIR$/yosible/run/playbook.py" />
-        <option value="$PROJECT_DIR$/apps/manager/templates/manager/upload.html" />
+        <option value="$PROJECT_DIR$/apps/utils/permission/jumper.py" />
+        <option value="$PROJECT_DIR$/apps/utils/templates/utils/jumper.html" />
+        <option value="$PROJECT_DIR$/apps/utils/urls/api_urls.py" />
+        <option value="$PROJECT_DIR$/apps/templates/base.html" />
         <option value="$PROJECT_DIR$/apps/manager/forms.py" />
-        <option value="$PROJECT_DIR$/apps/manager/views/host.py" />
+        <option value="$PROJECT_DIR$/apps/utils/templates/utils/new_update_jumper.html" />
+        <option value="$PROJECT_DIR$/apps/utils/urls/views_urls.py" />
+        <option value="$PROJECT_DIR$/apps/manager/interactive.py" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/manager/detail_host.html" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/manager/manager_modal.html" />
+        <option value="$PROJECT_DIR$/apps/utils/views.py" />
+        <option value="$PROJECT_DIR$/apps/utils/forms.py" />
+        <option value="$PROJECT_DIR$/apps/xmt/models.py" />
+        <option value="$PROJECT_DIR$/apps/authority/models.py" />
+        <option value="$PROJECT_DIR$/apps/xmt/forms.py" />
+        <option value="$PROJECT_DIR$/apps/xmt/templates/xmt/new_xmt.html" />
+        <option value="$PROJECT_DIR$/apps/manager/query.py" />
+        <option value="$PROJECT_DIR$/apps/xmt/templates/xmt/dashboard_xmt.html" />
+        <option value="$PROJECT_DIR$/apps/xmt/urls/views_urls.py" />
+        <option value="$PROJECT_DIR$/apps/xmt/query.py" />
+        <option value="$PROJECT_DIR$/apps/xmt/templates/xmt/statistics_xmt.html" />
+        <option value="$PROJECT_DIR$/apps/templates/_left_sidebar.html" />
+        <option value="$PROJECT_DIR$/apps/xmt/views.py" />
+        <option value="$PROJECT_DIR$/apps/deveops/settings.py" />
+        <option value="$PROJECT_DIR$/apitry/aliyun-api-conf.py" />
+        <option value="$PROJECT_DIR$/apitry/aliyun-api.py" />
+        <option value="$PROJECT_DIR$/apps/manager/consumers.py" />
+        <option value="$PROJECT_DIR$/apps/deveops/utils/msg.ipynb" />
+        <option value="$PROJECT_DIR$/apps/utils/models.py" />
+        <option value="$PROJECT_DIR$/apps/deveops/utils/msg.py" />
+        <option value="$PROJECT_DIR$/apps/deveops/conf.py" />
+        <option value="$PROJECT_DIR$/apitry/aliyun_api_conf.py" />
+        <option value="$PROJECT_DIR$/apitry/aliyun_api.py" />
+        <option value="$PROJECT_DIR$/apps/utils/serializers.py" />
+        <option value="$PROJECT_DIR$/apps/utils/permission/systemtype.py" />
+        <option value="$PROJECT_DIR$/apps/manager/models.py" />
+        <option value="$PROJECT_DIR$/apps/utils/api.py" />
         <option value="$PROJECT_DIR$/apps/manager/urls/views_urls.py" />
-        <option value="$PROJECT_DIR$/ansible/inventory/__init__.py" />
-        <option value="$PROJECT_DIR$/yosible/vars/__init__.py" />
-        <option value="$PROJECT_DIR$/apps/execute/service/new-api.py" />
-        <option value="$PROJECT_DIR$/apps/execute/api.py" />
-        <option value="$PROJECT_DIR$/yosible/inventory.py" />
-        <option value="$PROJECT_DIR$/apps/deveops/celery.py" />
-        <option value="$PROJECT_DIR$/yosible/runner.py" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/manager/delete_confirm.html" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/manager/confirm_modal.html" />
+        <option value="$PROJECT_DIR$/apps/manager/views/host.py" />
+        <option value="$PROJECT_DIR$/apps/manager/templates/manager/host.html" />
       </list>
     </option>
   </component>
@@ -236,72 +214,54 @@
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
-      <showMembers />
+      <showMembers ProjectPane="true" />
       <showModules />
       <showLibraryContents />
       <hideEmptyPackages />
       <abbreviatePackageNames />
-      <autoscrollToSource />
+      <autoscrollToSource ProjectPane="false" />
       <autoscrollFromSource />
       <sortByType />
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
+              <option name="myItemId" value="DevOps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
+              <option name="myItemId" value="DevOps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
+              <option name="myItemId" value="DevOps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
+              <option name="myItemId" value="DevOps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="yosible" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devEops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="yosible" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vars" />
+              <option name="myItemId" value="apps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../scrRipt" />
+    <property name="last_opened_file_path" value="$USER_HOME$/桌面/OpsManage-master" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
@@ -309,6 +269,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="nodejs_interpreter_path" value="/usr/bin/node" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -319,19 +280,19 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/apps/execute/service/catch" />
-      <recent name="$PROJECT_DIR$/apps/application/templates/application/db" />
-      <recent name="$PROJECT_DIR$/apps/application/templates/application" />
-      <recent name="$PROJECT_DIR$/apps" />
-      <recent name="$PROJECT_DIR$/apps/callback" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/apps/application/templates/application" />
-      <recent name="$PROJECT_DIR$/apps/application" />
-      <recent name="$PROJECT_DIR$/apps/application/templates" />
-      <recent name="$PROJECT_DIR$/apps/execute/callback" />
-      <recent name="$PROJECT_DIR$/apps/application/urls" />
+      <recent name="$PROJECT_DIR$/apps/manager/templates/manager" />
+      <recent name="$PROJECT_DIR$/apps/utils/permission" />
+      <recent name="$PROJECT_DIR$/apitry" />
+      <recent name="$PROJECT_DIR$/apps/xmt" />
+      <recent name="$PROJECT_DIR$/apps/xmt/templates/xmt" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apitry" />
+      <recent name="$PROJECT_DIR$/apps/xmt/urls" />
+      <recent name="$PROJECT_DIR$/static/plugins" />
+      <recent name="$PROJECT_DIR$/static/plugins/jQuery-Zeroclipboard" />
+      <recent name="$PROJECT_DIR$/apps/application/bk_xcl" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -346,61 +307,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.deveops">
-    <configuration default="false" name="settings" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apps/deveops" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="devEops" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apps/deveops/settings.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="celery" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apps/deveops" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="devEops" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apps/deveops/celery.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittests in runner.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/yosible" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="devEops" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/yosible/runner.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Django server.dev-deveops">
     <configuration default="false" name="runner" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -434,6 +341,64 @@
       <module name="devEops" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apps/execute/service/catch/new-api.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="sshproxy" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apitry" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="devEops" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apitry/sshproxysend.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Test: deveops.tests.IndexPageTestCase.test_indexpage" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="devEops" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="deveops.tests.IndexPageTestCase.test_indexpage" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="aliyun-api" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apitry" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="devEops" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apitry/aliyun_api.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -648,21 +613,91 @@
       <option name="customRunCommand" value="" />
       <method />
     </configuration>
-    <list size="6">
+    <configuration default="false" name="Fedora" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apitry" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="devEops" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apitry/sshproxysend.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="prod-deveops" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="deveops.settings" />
+      </envs>
+      <option name="SDK_HOME" value="ssh://root@192.168.122.123:22/usr/local/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="devEops" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="9999" />
+      <option name="host" value="192.168.122.123" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="dev-deveops" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="DJANGO_SETTINGS_MODULE" value="deveops.settings" />
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="ssh://root@192.168.122.148:22/usr/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="devEops" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="9999" />
+      <option name="host" value="192.168.122.148" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method />
+    </configuration>
+    <list size="9">
       <item index="0" class="java.lang.String" itemvalue="Django server.deveops" />
-      <item index="1" class="java.lang.String" itemvalue="Python.settings" />
-      <item index="2" class="java.lang.String" itemvalue="Python.celery" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in runner.py" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Fedora" />
+      <item index="2" class="java.lang.String" itemvalue="Django server.prod-deveops" />
+      <item index="3" class="java.lang.String" itemvalue="Django server.dev-deveops" />
       <item index="4" class="java.lang.String" itemvalue="Python.runner" />
       <item index="5" class="java.lang.String" itemvalue="Python.new-api" />
+      <item index="6" class="java.lang.String" itemvalue="Python.sshproxy" />
+      <item index="7" class="java.lang.String" itemvalue="Django tests.Test: deveops.tests.IndexPageTestCase.test_indexpage" />
+      <item index="8" class="java.lang.String" itemvalue="Python.aliyun-api" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.new-api" />
-        <item index="1" class="java.lang.String" itemvalue="Python.runner" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in runner.py" />
-        <item index="3" class="java.lang.String" itemvalue="Python.celery" />
-        <item index="4" class="java.lang.String" itemvalue="Python.settings" />
+        <item index="0" class="java.lang.String" itemvalue="Python.aliyun-api" />
+        <item index="1" class="java.lang.String" itemvalue="Django tests.Test: deveops.tests.IndexPageTestCase.test_indexpage" />
+        <item index="2" class="java.lang.String" itemvalue="Python.sshproxy" />
+        <item index="3" class="java.lang.String" itemvalue="Python.new-api" />
+        <item index="4" class="java.lang.String" itemvalue="Python.runner" />
       </list>
     </recent_temporary>
   </component>
@@ -676,132 +711,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1501062126124</updated>
-    </task>
-    <task id="LOCAL-00003" summary="selet mu">
-      <created>1501501469484</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1501501469484</updated>
-    </task>
-    <task id="LOCAL-00004" summary="modal change to page">
-      <created>1501588198625</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1501588198625</updated>
-    </task>
-    <task id="LOCAL-00005" summary="django to page{{}}">
-      <created>1501667266245</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1501667266245</updated>
-    </task>
-    <task id="LOCAL-00006" summary="前端form上传数据错误">
-      <created>1501809741176</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1501809741176</updated>
-    </task>
-    <task id="LOCAL-00007" summary="缩减create-update要求的内容 完成功能">
-      <created>1502071796228</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1502071796228</updated>
-    </task>
-    <task id="LOCAL-00008" summary="将所有的modal改为page 并且通过group来连接host">
-      <created>1502104316274</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1502104316274</updated>
-    </task>
-    <task id="LOCAL-00009" summary="storage无法修改">
-      <created>1502113076279</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1502113076279</updated>
-    </task>
-    <task id="LOCAL-00010" summary="备份">
-      <created>1502159756927</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1502159756927</updated>
-    </task>
-    <task id="LOCAL-00011" summary="都是玄学">
-      <created>1502162701476</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1502162701476</updated>
-    </task>
-    <task id="LOCAL-00012" summary="缺跨APP引用">
-      <created>1502192352629</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1502192352629</updated>
-    </task>
-    <task id="LOCAL-00013" summary="美化UI detail基础">
-      <created>1502278517870</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1502278517870</updated>
-    </task>
-    <task id="LOCAL-00014" summary="cmdb基础功能完毕">
-      <created>1502360944412</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1502360944412</updated>
-    </task>
-    <task id="LOCAL-00015" summary="cmdb关系维护彻底完成">
-      <created>1502368006936</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1502368006936</updated>
-    </task>
-    <task id="LOCAL-00016" summary="script utils">
-      <created>1502447004987</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1502447004987</updated>
-    </task>
-    <task id="LOCAL-00017" summary="script maker">
-      <created>1502702688974</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1502702688974</updated>
-    </task>
-    <task id="LOCAL-00018" summary="初步构建了script maker页面 根据小姐姐的建议 将部分功能做成api进行访问">
-      <created>1502791090045</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1502791090045</updated>
-    </task>
-    <task id="LOCAL-00019" summary="script">
-      <created>1502878070649</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1502878070649</updated>
-    </task>
-    <task id="LOCAL-00020" summary="完成scriptargs所有API">
-      <created>1502958844660</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1502958844661</updated>
     </task>
     <task id="LOCAL-00021" summary="README.md">
       <created>1502959656464</created>
@@ -1020,7 +929,133 @@
       <option name="project" value="LOCAL" />
       <updated>1510044250018</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="finish the manager">
+      <created>1514275643496</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1514275643496</updated>
+    </task>
+    <task id="LOCAL-00053" summary="softlib">
+      <created>1514367193993</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1514367193994</updated>
+    </task>
+    <task id="LOCAL-00054" summary="application rebuild">
+      <created>1514888809605</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1514888809606</updated>
+    </task>
+    <task id="LOCAL-00055" summary="update application">
+      <created>1514973669573</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1514973669573</updated>
+    </task>
+    <task id="LOCAL-00056" summary="rebuild top menu">
+      <created>1515404497023</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1515404497023</updated>
+    </task>
+    <task id="LOCAL-00057" summary="left bar auth">
+      <created>1515407496780</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1515407496780</updated>
+    </task>
+    <task id="LOCAL-00058" summary="密码API完成">
+      <created>1515495789641</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1515495789642</updated>
+    </task>
+    <task id="LOCAL-00059" summary="add channel &amp; try proxy ssh with paramiko">
+      <created>1515663272482</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1515663272482</updated>
+    </task>
+    <task id="LOCAL-00060" summary="channel 实现堡垒机ssh代理访问">
+      <created>1515749310871</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1515749310871</updated>
+    </task>
+    <task id="LOCAL-00061" summary="重新书写数据库配置 通过线上测试">
+      <created>1515750171496</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1515750171496</updated>
+    </task>
+    <task id="LOCAL-00062" summary="termial web">
+      <created>1515834920375</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1515834920375</updated>
+    </task>
+    <task id="LOCAL-00063" summary="new 线程完成堡垒机访问">
+      <created>1516191372373</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1516191372373</updated>
+    </task>
+    <task id="LOCAL-00064" summary="完成堡垒机功能 部分前端显示仍需要修改">
+      <created>1516277177473</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1516277177479</updated>
+    </task>
+    <task id="LOCAL-00065" summary="jumper添加">
+      <created>1516368103561</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1516368103561</updated>
+    </task>
+    <task id="LOCAL-00066" summary="测试用例修改 &amp;&amp; readme change">
+      <created>1516371756361</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1516371756361</updated>
+    </task>
+    <task id="LOCAL-00067" summary="xmt功能上传">
+      <created>1516865248477</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1516865248477</updated>
+    </task>
+    <task id="LOCAL-00068" summary="jumper &amp; settings">
+      <created>1516959960235</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1516959960235</updated>
+    </task>
+    <task id="LOCAL-00069" summary="将ssh链接封装入资产实例当中 重构信息体传递信息">
+      <created>1517318307056</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1517318307057</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1051,30 +1086,31 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.53541666" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.49375" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.49791667" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.26197916" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.51197916" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43612334" sideWeight="0.68541664" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.73802084" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.46458334" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36123347" sideWeight="0.47291666" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32552084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34140968" sideWeight="0.82604164" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37114537" sideWeight="0.5453125" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="manage.py@devEops" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4229075" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1090,28 +1126,36 @@
       </list>
     </option>
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="readme update" />
-    <MESSAGE value="validate" />
-    <MESSAGE value="ansible-api rewrite wrong" />
-    <MESSAGE value="rewrite page.Timeline(record and plan)." />
-    <MESSAGE value="添加所有页面的权限内容 成功拓展用户表内容" />
-    <MESSAGE value="新增playbook" />
-    <MESSAGE value="完成playbook的mudule编写的功能" />
-    <MESSAGE value="完成playbook的编写" />
-    <MESSAGE value="权限管理模块" />
-    <MESSAGE value="完成用户添加修改" />
-    <MESSAGE value="完成callback调用" />
-    <MESSAGE value="完成数据库数据获取存储" />
-    <MESSAGE value="构思权限管理 继承原生代码失败" />
-    <MESSAGE value="数据库新增与加解密" />
-    <MESSAGE value="数据库 权限+增删改查" />
-    <MESSAGE value="數據庫內容管理" />
-    <MESSAGE value="添加LDAP验证" />
-    <MESSAGE value="ldap" />
     <MESSAGE value="devel complete" />
     <MESSAGE value="master complete" />
     <MESSAGE value="django-celery init" />
@@ -1119,7 +1163,25 @@
     <MESSAGE value="celery success" />
     <MESSAGE value="django-celery test" />
     <MESSAGE value="new-api AdHoc" />
-    <option name="LAST_COMMIT_MESSAGE" value="new-api AdHoc" />
+    <MESSAGE value="finish the manager" />
+    <MESSAGE value="softlib" />
+    <MESSAGE value="application rebuild" />
+    <MESSAGE value="update application" />
+    <MESSAGE value="rebuild top menu" />
+    <MESSAGE value="left bar auth" />
+    <MESSAGE value="密码API完成" />
+    <MESSAGE value="add channel &amp; try proxy ssh with paramiko" />
+    <MESSAGE value="channel 实现堡垒机ssh代理访问" />
+    <MESSAGE value="重新书写数据库配置 通过线上测试" />
+    <MESSAGE value="termial web" />
+    <MESSAGE value="new 线程完成堡垒机访问" />
+    <MESSAGE value="完成堡垒机功能 部分前端显示仍需要修改" />
+    <MESSAGE value="jumper添加" />
+    <MESSAGE value="测试用例修改 &amp;&amp; readme change" />
+    <MESSAGE value="xmt功能上传" />
+    <MESSAGE value="jumper &amp; settings" />
+    <MESSAGE value="将ssh链接封装入资产实例当中 重构信息体传递信息" />
+    <option name="LAST_COMMIT_MESSAGE" value="将ssh链接封装入资产实例当中 重构信息体传递信息" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1153,11 +1215,6 @@
           <url>file://$PROJECT_DIR$/apps/callback/catch/basic.py</url>
           <line>8</line>
           <option name="timeStamp" value="259" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/apps/manager/api.py</url>
-          <line>32</line>
-          <option name="timeStamp" value="262" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/apps/execute/api.py</url>
@@ -1213,7 +1270,100 @@
           <line>58</line>
           <option name="timeStamp" value="330" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/softlib/views.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="335" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/application/forms.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="338" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/pagination.py</url>
+          <line>203</line>
+          <option name="timeStamp" value="363" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/pagination.py</url>
+          <line>228</line>
+          <option name="timeStamp" value="364" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/pagination.py</url>
+          <line>236</line>
+          <option name="timeStamp" value="365" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/pagination.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="366" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/pagination.py</url>
+          <line>256</line>
+          <option name="timeStamp" value="367" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/pagination.py</url>
+          <line>265</line>
+          <option name="timeStamp" value="368" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/manager/api.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="370" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/upload/views.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="399" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/xmt/forms.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="530" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/utils/permission/jumper.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="547" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/utils/api.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="550" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/authority/models.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="577" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/xmt/forms.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="580" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/manager/views/host.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="591" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/xmt/forms.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="596" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/xmt/views.py</url>
+          <line>35</line>
+          <option name="timeStamp" value="602" />
+        </line-breakpoint>
       </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -1221,320 +1371,241 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="331" />
+      <option name="time" value="604" />
     </breakpoint-manager>
     <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="result._result" language="Python" />
+      <configuration name="Python.DjangoServer">
+        <watch expression="self.user.groups.all()" language="Python" />
+        <watch expression="env==2" language="Python" />
+        <watch expression="self.user.is_superuser" language="Python" />
+        <watch expression="self.user.is_operationE()" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/execute/admin.py">
+    <entry file="file://$PROJECT_DIR$/apps/xmt/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="53" column="10" lean-forward="false" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/xmt/query.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="11" lean-forward="true" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/xmt/templates/xmt/statistics_xmt.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="50" column="19" lean-forward="true" selection-start-line="50" selection-start-column="19" selection-end-line="50" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/xmt/urls/views_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="21" lean-forward="true" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/validate/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/-1414151350/django/db/models/fields/related_descriptors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="512" column="0" lean-forward="false" selection-start-line="512" selection-start-column="0" selection-end-line="512" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/454295256/rest_framework/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="485" column="0" lean-forward="false" selection-start-line="485" selection-start-column="0" selection-end-line="485" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/callback/catch/__init__.py">
+    <entry file="file://$PROJECT_DIR$/apps/validate/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/callback/ecode.py">
+    <entry file="file://$PROJECT_DIR$/apps/manager/api.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/callback/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="29" column="43" lean-forward="true" selection-start-line="29" selection-start-column="43" selection-end-line="29" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/973181044/-1414151350/django/views/generic/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/validate/views/loginout.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#35#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/vars/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="352" column="20" lean-forward="false" selection-start-line="352" selection-start-column="12" selection-end-line="352" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/inventory/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1694">
-          <caret line="776" column="38" lean-forward="true" selection-start-line="776" selection-start-column="38" selection-end-line="776" selection-end-column="38" />
-          <folding>
-            <element signature="e#6387#6664#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/service/catch/db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/cli/console.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/cli/adhoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-378">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/aes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="21" column="11" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/modules/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/config/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/inventory/script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2371">
-          <caret line="15" column="55" lean-forward="true" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/service/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="21" selection-end-column="98" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/module_utils/service.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-125">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/modules/core/system/service.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1620">
-          <caret line="12" column="57" lean-forward="false" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/module_utils/shell.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1026">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/modules/core/commands/script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="33" column="15" lean-forward="true" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/start.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/rq.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" column="18" lean-forward="false" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/java/java_install.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apitry/adhoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-535">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/operation/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="25" column="37" lean-forward="false" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
-          <folding>
-            <element signature="e#24#63#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/deveops/celery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="24" column="10" lean-forward="true" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/service/catch/basic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="43" lean-forward="true" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/service/catch/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/service/catch/new-api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="21" column="15" lean-forward="true" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/execute/api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="25" column="8" lean-forward="false" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+        <state relative-caret-position="645">
+          <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
           <folding>
             <element signature="e#23#48#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yosible/run/playbook.py">
+    <entry file="file://$PROJECT_DIR$/apps/validate/views/user.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-119">
-          <caret line="10" column="30" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="30" />
-          <folding />
+        <state relative-caret-position="270">
+          <caret line="15" column="65" lean-forward="true" selection-start-line="15" selection-start-column="65" selection-end-line="15" selection-end-column="65" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/manage.py">
+    <entry file="file://$USER_HOME$/.PyCharm2017.1/system/remote_sources/133992482/-183260405/django/contrib/auth/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-89">
+        <state relative-caret-position="-136">
+          <caret line="117" column="4" lean-forward="false" selection-start-line="117" selection-start-column="4" selection-end-line="117" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/validate/views/loginout.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="34" column="18" lean-forward="true" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.PyCharm2017.1/system/remote_sources/-1117859392/aliyun_python_sdk_slb-3.2.1-py2.7.egg!/aliyunsdkslb/request/v20140515/DescribeLoadBalancersRequest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/personblock.py">
+    <entry file="file://$PROJECT_DIR$/apitry/a.xml" />
+    <entry file="file://$PROJECT_DIR$/apps/upload/utils/excel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="299">
+          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1296">
+          <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/authority/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/validate/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/deveops/utils/msg.ipynb" />
+    <entry file="file://$PROJECT_DIR$/apps/manager/consumers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="41" column="19" lean-forward="false" selection-start-line="41" selection-start-column="19" selection-end-line="41" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/deveops/utils/msg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apitry/aliyun_api_conf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="47" lean-forward="true" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apitry/aliyun_api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="108" column="0" lean-forward="true" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/templates/_left_sidebar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/xmt/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="e#23#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/utils/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="347">
+          <caret line="41" column="23" lean-forward="true" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/playbook/mysql_pb_conf.yml">
+    <entry file="file://$PROJECT_DIR$/apps/utils/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="16" column="30" lean-forward="true" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/utils/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#13#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/tests.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
-          <caret line="6" column="14" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/template/redis/redis3.0.7.j2">
+    <entry file="file://$PROJECT_DIR$/apps/utils/permission/systemtype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="40" column="50" lean-forward="true" selection-start-line="40" selection-start-column="50" selection-end-line="40" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/utils/permission/jumper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="28" column="30" lean-forward="true" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/utils/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="48" column="8" lean-forward="false" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="8" />
+          <folding>
+            <element signature="e#23#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/xmt/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="18" column="74" lean-forward="true" selection-start-line="18" selection-start-column="74" selection-end-line="18" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/manager/tags/search.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1542,113 +1613,155 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/README.md">
+    <entry file="file://$PROJECT_DIR$/apps/deveops/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="6" lean-forward="true" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        <state relative-caret-position="312">
+          <caret line="32" column="30" lean-forward="true" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/executor/dispatch/dispatchpb.py">
+    <entry file="file://$PROJECT_DIR$/apps/deveops/conf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="12" column="25" lean-forward="false" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        <state relative-caret-position="360">
+          <caret line="20" column="26" lean-forward="true" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/executor/java/javapb.py">
+    <entry file="file://$PROJECT_DIR$/apps/manager/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="16" column="28" lean-forward="true" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
+        <state relative-caret-position="-348">
+          <caret line="38" column="22" lean-forward="true" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/event/allevent.py">
+    <entry file="file://$PROJECT_DIR$/apps/manager/urls/views_urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-252">
-          <caret line="14" column="31" lean-forward="false" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+        <state relative-caret-position="151">
+          <caret line="15" column="52" lean-forward="false" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/plugins/action/normal.py">
+    <entry file="file://$PROJECT_DIR$/apps/manager/permission/host.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+        <state relative-caret-position="-162">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/logs/README.md">
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/manager/detail_host.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="77" column="29" lean-forward="true" selection-start-line="77" selection-start-column="29" selection-end-line="77" selection-end-column="29" />
+        <state relative-caret-position="284">
+          <caret line="341" column="28" lean-forward="true" selection-start-line="341" selection-start-column="28" selection-end-line="341" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/manage.py">
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/manager/delete_confirm.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="42" lean-forward="false" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
+        <state relative-caret-position="162">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yosible/inventory.py">
+    <entry file="file://$PROJECT_DIR$/apps/utils/templates/utils/new_update_jumper.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="25" column="45" lean-forward="false" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-          <folding>
-            <element signature="e#104#154#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yosible/run/ansiblerun.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="774">
-          <caret line="51" column="14" lean-forward="false" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
+        <state relative-caret-position="-1579">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yosible/vars/args.py">
+    <entry file="file://$PROJECT_DIR$/apps/utils/templates/utils/utils.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="11" lean-forward="true" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
+        <state relative-caret-position="-432">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yosible/runner.py">
+    <entry file="file://$PROJECT_DIR$/apps/utils/urls/views_urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
-          <folding>
-            <element signature="e#104#138#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ansible/utils/vars.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inventory/maker.py">
+    <entry file="file://$PROJECT_DIR$/apps/utils/templates/utils/jumper_modal.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding>
-            <element signature="e#105#114#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="306">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/utils/templates/utils/jumper.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1202">
+          <caret line="175" column="41" lean-forward="true" selection-start-line="175" selection-start-column="41" selection-end-line="175" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/manager/confirm_modal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="57" lean-forward="false" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/manager/group.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/softlib/templates/manager/host.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2983">
+          <caret line="15" column="31" lean-forward="false" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/plugins/bootstrap/css/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="12" lean-forward="true" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/views/host.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="70" column="39" lean-forward="false" selection-start-line="70" selection-start-column="39" selection-end-line="70" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/manager/templates/manager/host.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="98" column="16" lean-forward="true" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>

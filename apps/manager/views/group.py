@@ -7,7 +7,7 @@ from django.contrib.auth.models import Permission,Group
 from ..permission import group as GroupPermission
 from django.urls import reverse_lazy
 from django.views.generic import FormView,TemplateView
-from django.views.generic.edit import CreateView,UpdateView
+from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
 from timeline.decorator.manager import decorator_manager
@@ -78,3 +78,23 @@ class ManagerGroupDetailView(LoginRequiredMixin,DetailView):
             'manage_user':manage_user,
         })
         return context
+
+
+class ManagerGroupDeleteView(LoginRequiredMixin,DeleteView):
+    model = models.Group
+    template_name = 'manager/delete_group_modal.html'
+    success_url = reverse_lazy('manager:group')
+
+    def get_context_data(self, **kwargs):
+        flag = 0
+        detail = ""
+        if self.object.hosts.count() != 0:
+            detail = u'该应用组下存在主机无法删除 请确认应用组下无关联主机后再执行该操作'
+        else:
+            flag = 1
+        context_data = super(ManagerGroupDeleteView,self).get_context_data(**kwargs)
+        context_data.update({
+            'unable_delete': flag,
+            'detail':detail,
+        })
+        return context_data

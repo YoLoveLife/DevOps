@@ -4,7 +4,32 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
 from models import Group
+from rest_framework_jwt.views import ObtainJSONWebToken
+from rest_framework.renderers import JSONRenderer
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 #__all__ = ['UserListAPI','UserRemoveAPI']
+
+class LoginJSONWebToken(ObtainJSONWebToken):
+    def post(self, request, *args, **kwargs):
+        response = super(LoginJSONWebToken,self).post(request,*args,**kwargs)
+        return response
+
+class UserInfoJSONWebToken(generics.ListAPIView):
+    authentication_classes = (JSONWebTokenAuthentication,)
+    renderer_classes = (JSONRenderer,)
+    def get(self, request, *args, **kwargs):
+        dist = {}
+        dist['username'] = request.user.username
+        dist['name'] = request.user.last_name
+        if request.user.is_oper == True or request.user.is_superuser == True:
+            dist['isadmin'] = True
+        elif request.user.is_oper == False and request.user.is_superuser == False:
+            dist['isadmin'] = False
+        else:
+            dist['isadmin'] = 'None'
+
+        return Response(dist, status=status.HTTP_201_CREATED)
+
 class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer

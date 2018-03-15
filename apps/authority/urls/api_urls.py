@@ -1,6 +1,10 @@
 from django.conf.urls import url
 from .. import api
 urlpatterns=[
+    #Resource login api
+    url(r'^login/', api.LoginJSONWebToken.as_view()),
+    url(r'^userinfo/', api.UserInfoJSONWebToken.as_view()),
+
     # Resource user api
     url(r'^v1/user/$',api.UserListAPI.as_view()),
     url(r'^v1/user/(?P<pk>[0-9]+)/remove/$',api.UserRemoveAPI.as_view()),

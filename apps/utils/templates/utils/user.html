@@ -8,14 +8,14 @@
 <!--Content Header-->
 <section class="content-header">
     <h1>
-        <i class="fa fa-laptop"></i>
-        主机
+        <i class="fa fa-rocket"></i>
+        堡垒机账户
         <small><i class="fa fa-angle-double-right"></i>列表</small>
     </h1>
     <ol class="breadcrumb">
-        <i class="fa fa-truck"></i>
-        <li class="active">Manager</li>
-        <li><a href="/manager/host/">Host</a></li>
+        <i class="fa fa-clock-o"></i>
+        <li class="active">Utils</li>
+        <li><a href="/utils/user/">User</a></li>
     </ol>
 </section>
 <!--Content Header-->
@@ -25,32 +25,23 @@
         <div class="col-lg-10">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">主机列表</h3>
+                    <h3 class="box-title">堡垒机账户列表</h3>
                 </div>
                 <!-- /.box-header -->
                 <div id="hst-toolbar">
-                            <select id="groupselect" class="select2" style="width:100%;">
-                                <option id="0">全部应用主机</option>
-                                {% for row in grouplist %}
-                                    <option id="{{ row.id }}">{{ row.name }}</option>
-                                {% endfor %}
-                            </select>
                 </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <table id="host_tb" class="table table-bordered table-striped">
+                                <table id="user_tb" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th data-field="check" data-radio="true">#</th>
-                                        <th data-field="systemtype">操作系统</th>
-                                        <th data-field="hostname">域名</th>
                                         <th data-field="service_ip">服务IP</th>
-                                        <th data-field="outer_ip">外网IP</th>
-                                        <th data-field="server_position">服务器位置</th>
-                                        <th data-field="info">用途</th>
+                                        <th data-field="normal_user">用户</th>
+                                        <th data-field="sshport">访问端口</th>
+                                        <th data-field="info">信息</th>
                                         <th data-field="status" data-formatter="statusFormatter">状态</th>
-                                        <th data-field="id" data-formatter="detailFormatter">细节</th>
                                     </tr>
                                     </thead>
                                     <tbody id="hosttbody">
@@ -68,19 +59,19 @@
                 <div class="row">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title" style="text-align: center">主机信息</h3>
+                            <h3 class="box-title" style="text-align: center">跳板机信息</h3>
                         </div>
                         <div class="box-body">
-                            <form id="toolbar-host">
-                            <button class="btn btn-app" id="add_host">
-                                <i class="fa fa-plus"></i> 新增主机
+                            <form id="toolbar-jumper">
+                            <button class="btn btn-app" id="add_jumper">
+                                <i class="fa fa-plus"></i> 新增跳板机
                             </button>
-                            <button class="btn btn-app" id="modify_host">
-                                <i class="fa fa-edit"></i> 修改主机
+                            <button class="btn btn-app" id="modify_jumper">
+                                <i class="fa fa-edit"></i> 修改跳板机
                             </button>
                             </form>
-                            <button class="btn btn-app" id="remove_host">
-                                <i class="fa fa-times"></i> 删除主机
+                            <button class="btn btn-app" id="remove_jumper">
+                                <i class="fa fa-times"></i> 删除跳板机
                             </button>
                         </div>
                     </div>
@@ -90,9 +81,7 @@
     </div>
 </section>
 <!--Main Content-->
-
-
-<!-- 模态框（Modal） -->
+    <!-- 模态框（Modal） -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content" id="box">
@@ -100,13 +89,10 @@
       </div>
    </div>
 </div>
-
 {% endblock %}
 {% block foot_js %}
     <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
     <script src="{% static 'plugins/bootstrap-table/bootstrap-table.js' %}"></script>
-    <script src="{% static 'plugins/bootstrap-table-export/bootstrap-table-export.min.js' %}"></script>
-    <script src="{% static 'plugins/tableExport/tableExport.min.js' %}"></script>
 <script>
     function historyBack() {
         window.history.go(-1);
@@ -125,14 +111,8 @@
         }
         return [label_status].join('');
     }
-    function detailFormatter(value,row,index) {
-        var label_a='<a class="btn btn-default" href="/manager/host/'+value+'/detail/">'+'<i class="fa fa-paperclip"></i>'+'</a>';
-        return [label_a].join('');
-    }
     $(document).ready(function () {
-        $('#modal').on("hidden.bs.modal", function() {
-            $(this).removeData("bs.modal");
-        });
+        $('.select2').select2();
         $.ajaxSetup({
            beforeSend: function (xhr,settings) {
                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -140,9 +120,8 @@
                }
            }
         });
-        $('.select2').select2();
-        var table=$('#host_tb').bootstrapTable({
-                url : '/api-manager/v1/hostbygroup/0',
+        var table=$('#jumper_tb').bootstrapTable({
+                url : '/api-utils/v1/jumper/',
                 method  : 'GET',
                 uniqueId :  'id',
                 toolbar : '#hst-toolbar',
@@ -150,39 +129,25 @@
                 cache   :   false,
                 sortable    :   false,
                 pagination  :   true,
-                showExport: true,
                 sidePagination  : 'client',
                 clickToSelect:  true,
                 singleSelect    :   true,
                 showRefresh :   true,
-                showColumns :    true,
                 pageSize    :   10,
                 pageList    :   [10, 20, 30, 40],
                 dataType    :   'json',
-                showExport: true,
-                exportDataType : "basic",
-{#                responseHandler : function (res) {#}
-{#                    console.log(res.results);#}
-{#                    return res.results;//.results;#}
-{#                },#}
             });
     })
-        .on('change','#groupselect',function(){
-            var objSelect = document.getElementById('groupselect');
-            var obj=objSelect.options[objSelect.selectedIndex].id;
-            var url='/api-manager/v1/hostbygroup/'+obj;
-            var table=$('#host_tb').bootstrapTable('refresh', {url :   url});
-        })
-        .on('click','#add_host',function () {
-            var form=$('#toolbar-host');
-            var action='/manager/host/create/';
+        .on('click','#add_jumper',function () {
+            var form=$('#toolbar-jumper');
+            var action='/utils/jumper/create/';
             form.attr('action',action);
             location.href(action);
         })
-        .on('click','#modify_host',function () {
-            var form=$('#toolbar-host');
-            var action='/manager/host/';
-            var a=$('#host_tb').bootstrapTable('getSelections');
+        .on('click','#modify_jumper',function () {
+            var form=$('#toolbar-jumper');
+            var action='/utils/jumper/';
+            var a=$('#jumper_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
@@ -192,18 +157,29 @@
             form.attr('action',action);
             location.href(action);
         })
-        .on('click','#remove_host',function () {
-            var a=$('#host_tb').bootstrapTable('getSelections');
+        .on('click','#remove_jumper',function () {
+            var a=$('#jumper_tb').bootstrapTable('getSelections');
             if(a.length<1){
                 alert('请选择数据');
                 return false;
             }
-            $('#modal').modal({
-                show: true,
-                backdrop: 'static',
-                keyboard: 'false',
-                remote:"/manager/host/"+a[0].id+"/delete/"
-            });
+            var data={};
+            if(confirm("您确认要删除该跳板机吗？")){
+                $.ajax({
+                    type:"DELETE",
+                    url:"/api-utils/v1/jumper/"+a[0].id+"/remove/",
+                    data:data,
+                    dataType:"json",
+                    success:function(data){
+                        $('#jumper_tb').bootstrapTable('refresh');
+                    },
+                    error:function(data){
+                        alert(data.responseJSON.detail);
+                    }
+                })
+            }else{
+
+            }
         })
 </script>
 {% endblock %}

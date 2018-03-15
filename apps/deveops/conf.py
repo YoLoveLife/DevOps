@@ -7,11 +7,13 @@
 #环境参数 识别运行环境是开发/生产/测试
 ENVIRONMENT = 'DEVEL'
 
-#RSA_KEY
-RSA_KEY = '/root/.ssh/id_rsa'
+#运行用户
+RUN_USER = 'root'
+#RSA_KEY 默认在当前运行账户下寻找私钥
+RSA_KEY = '/'+RUN_USER + '/.ssh/id_rsa'
 
 #数据库配置内容
-DB_NAME = 'deveops'
+DB_NAME = 'deveops_dev'
 DB_USER = 'root'
 DB_PASSWD = ''
 DB_HOST = '127.0.0.1'
@@ -25,7 +27,7 @@ SSH_TIMEOUT = 5
 
 #Redis配置
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_PORT = 6389
 
 #相关目录配置
 UPLOAD_ROOT = '/devEops/upload'

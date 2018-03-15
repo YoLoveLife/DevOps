@@ -35,7 +35,7 @@
             ele.style.width = width;
             ele.style.height = height;
             tem.resize(size.cols, size.rows);
-            socket = new WebSocket("ws://" + "192.168.122.224:9999/manager/{{ id }}/wds/"+tem.cols+"/"+tem.rows+"/");
+            socket = new WebSocket("ws://" +window.location.host+"/manager/{{ id }}/wds/"+tem.cols+"/"+tem.rows+"/");
             tem.fit();
             tem.focus();
             socket.onopen= function () {
@@ -43,6 +43,7 @@
             }
     }
     function close_yoshell() {
+        console.log('销毁');
         socket.close();
         tem.destroy();
     }
