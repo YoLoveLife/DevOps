@@ -68,6 +68,7 @@ INSTALLED_APPS = [
 #JWF
 import datetime
 JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=600),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }

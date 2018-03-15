@@ -116,7 +116,7 @@ class Group(models.Model):
         (2,'暂停中'),
     )
     id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(auto_created=True,default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100,default='')
     info = models.CharField(max_length=100,default='')
     framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
@@ -131,16 +131,6 @@ class Group(models.Model):
 
     def _name(self):
         return 'group'
-
-    def users_list(self):
-        st=","
-        list=[]
-        for user in self.users.all():
-            list.append(user.get_full_name())
-        if len(list) == 0:
-            return ""
-        else:
-            return st.join(list)
 
     @property
     def catch_ssh_connect(self):
@@ -217,7 +207,7 @@ class Host(models.Model):
                        ('yo_webskt_host',u'远控主机'))
 
     def __unicode__(self):
-        return self.hostname + ' - ' + self.connect_ip + ' - ' + self.info
+        return str(self.uuid) +'-'+self.detail.info
 
     __str__ = __unicode__
 

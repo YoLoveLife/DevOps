@@ -16,30 +16,37 @@ class ManagerGroupListAPI(generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = (JSONWebTokenAuthentication,)
-    renderer_classes = (JSONRenderer,)
+    # authentication_classes = (JSONWebTokenAuthentication,)
+    # renderer_classes = (JSONRenderer,)
 
     def get_queryset(self):
         queryset=models.Group.objects.all()
         return queryset
 
+class ManagerGroupCreateAPI(generics.CreateAPIView):
+    module = models.Group
+    serializer_class = serializers.GroupSerializer
+    permission_classes = [IsAuthenticated]
+
+
 class ManagerGroupUpdateAPI(generics.UpdateAPIView):
     module = models.Group
-
-
-
+    serializer_class = serializers.GroupSerializer
+    # permission_classes = [IsAuthenticated]
+    queryset = models.Group.objects.all()
 
 class ManagerGroupRemoveAPI(generics.DestroyAPIView):
+    module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [GroupPermission.GroupDeleteRequiredMixin]
+    queryset = models.Group.objects.all()
 
     def delete(self, request, *args, **kwargs):
         group = models.Group.objects.get(id=int(kwargs['pk']))
         if group.hosts.count() != 0:
             return Response({'detail': '该应用组下存在主机无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            group.delete()
-            return Response({'detail': '删除成功'}, status=status.HTTP_201_CREATED)
+            return super(ManagerGroupRemoveAPI,self).delete(request,*args,**kwargs)
 
 class PagePa(PageNumberPagination):
     page_size_query_param='page_size'
