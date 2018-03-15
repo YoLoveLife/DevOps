@@ -4,7 +4,7 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from timeline.models import History
-def decorator_manager(asset_id,api_name):#host group storage
+def decorator_manager(asset_id,api_name):
     def wrapper(func):
         def inner_wrapper(*args,**kwargs):
             his = History(type=asset_id, info=api_name, status=0)
@@ -15,6 +15,6 @@ def decorator_manager(asset_id,api_name):#host group storage
             his.user = user
             his.status = 1
             his.save()
-            return response #别碰 这是魔法
+            return response #别碰 这是魔法 DOT TOUCH it's magic
         return inner_wrapper
     return wrapper

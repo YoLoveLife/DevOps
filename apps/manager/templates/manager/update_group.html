@@ -85,9 +85,9 @@
                                 <select name="hosts" class="select2 form-control" multiple>
                                     {% for host in hosts %}
                                         {% if host.id in group_hosts %}
-                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.connect_ip }} - {{ host.info }}</option>
                                         {% else %}
-                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.connect_ip }} - {{ host.info }}</option>
                                         {% endif %}
                                     {% endfor %}
                                 </select>
@@ -95,6 +95,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">架构信息</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {% bootstrap_field form.framework %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">

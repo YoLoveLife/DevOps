@@ -71,3 +71,9 @@ msgpack-python==0.5.1
 asgi-redis==1.4.3
 
 #jsonfield==2.0.2
+ecdsa==0.13
+sshpubkeys==2.3.0
+
+PyJWT==1.6.0
+djangorestframework-jwt==1.11.0
+django-cors-headers==2.2.0

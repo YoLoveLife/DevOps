@@ -63,9 +63,9 @@
                             <select name="hosts" class="select2 form-control" multiple>
                                 {% for host in hosts %}
                                     {% if host.id in group_hosts %}
-                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                        <option value="{{ host.id }}" selected>{{ host.hostname }} - {{ host.connect_ip }} - {{ host.info }}</option>
                                     {% else %}
-                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.service_ip }} - {{ host.info }}</option>
+                                        <option value="{{ host.id }}">{{ host.hostname }} - {{ host.connect_ip }} - {{ host.info }}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>

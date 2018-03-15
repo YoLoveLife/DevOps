@@ -6,6 +6,7 @@
 from django import forms
 import models
 from deveops.utils import aes,checkpass
+from manager.models import System_Type
 # class GroupCreateUpdateForm(forms.ModelForm):
 #     class Meta:
 #         model = models.System_Type
@@ -24,14 +25,12 @@ class JumperBaseForm(forms.ModelForm):
 
     class Meta:
         model = models.Jumper
-        fields = ['service_ip','normal_user','sshpasswd','sshport','info','groups']
+        fields = ['connect_ip','sshport','info','groups']
         widgets = {
             'sshpasswd': forms.TextInput(attrs={'type':'password'}),
         }
         labels = {
-            'service_ip': u'服务IP',
-            'normal_user': u'用户',
-            'sshpasswd': u'密码',
+            'connect_ip': u'连接IP',
             'sshport': u'访问端口',
             'info': u'信息',
         }
@@ -56,11 +55,36 @@ class JumperCreateForm(JumperBaseForm):
 class JumperUpdateForm(JumperBaseForm):
     def clean_group(self):
         groups = self.cleaned_data['groups']
-        service_ip = self.cleaned_data['service_ip']
+        connect_ip = self.cleaned_data['connect_ip']
         for group in groups:
             if group.jumper is None:
                 continue
             jumper = group.jumper.get()
-            if jumper.service_ip != service_ip:
-                raise forms.ValidationErroru(u'试图将新的跳板机写入完整的应用组')
+            if jumper.connect_ip != connect_ip:
+                raise forms.ValidationError(u'试图将新的跳板机写入完整的应用组')
         return groups
+
+
+class SystemTypeForm(forms.ModelForm):
+    class Meta:
+        model = System_Type
+        fields = ['name']
+        labels = {
+            'name': u'系统名称',
+        }
+
+    def clean_name(self):
+        sub_name = self.cleaned_data['name']
+        if System_Type.objects.filter(name=sub_name).count() ==0:
+            return sub_name
+        else:
+            return 'null'
+
+    # 重写基类函数 将原本的Form save内容注销掉
+    def save(self, commit=True):
+        if self.instance.name == 'null':
+            print(self.instance.name)
+            return None
+        else:
+            print(self.instance.name)
+            return super(SystemTypeForm,self).save(commit=commit)

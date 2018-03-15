@@ -1,0 +1,57 @@
+{% load static %}
+{% load bootstrap3 %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-exclamation-triangle"></i>主机删除</h4>
+</div>
+<form method="post" action="{% url 'manager:hostdelete' object.id %}" id="host_form" enctype="multipart/form-data">
+        {% csrf_token %}
+<div class="modal-body" style="">
+    {% if unable_delete == 1 %}
+        <div class="row">
+            <div class="col-md-12">
+                <p>你确定要删除:</p>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered" id="host_tb">
+                <thead>
+                    <tr>
+                        <th>主机名</th>
+                        <th>服务IPAddress</th>
+                        <th>操作系统</th>
+                        <th>服务器位置</th>
+                        <th>服务器状态</th>
+                    </tr>
+                </thead>
+                <tbody id="hosttbody">
+                    <tr>
+                        <td>{{ object.hostname }}</td>
+                        <td>{{ object.connect_ip }}</td>
+                        <td>{{ object.systemtype.name }}</td>
+                        <td>{{ object.server_position }}</td>
+                        <td>{{ object.get_status_display }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            </div>
+        </div>
+    {% if unable_delete == 0 %}
+        <div class="row">
+            <div class="col-md-12">
+                <p style="font-weight:bold;">{{ detail }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    {% if unable_delete == 1 %}
+    <button class="btn btn-danger">确定</button>
+    {% endif %}
+    <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+</div>
+</form>

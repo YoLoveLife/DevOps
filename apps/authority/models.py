@@ -6,15 +6,6 @@ from django.contrib.auth.models import Permission,Group
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 
-# class ExtendGroup(Group):
-#     phone = models.CharField(max_length=11,default='None',)
-#     def get_permissions(self):
-#         str = ""
-#         permissions = self.permissions.all()
-#         for permission in permissions:
-#             str += permission.name + ' '
-#         return str
-
 class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10,default='user.jpg')
     phone = models.CharField(max_length=11,default='None',)
@@ -32,15 +23,16 @@ class ExtendUser(AbstractUser):
 
 
     def __unicode__(self):
-        str = ""
+        str = "|"
+        list = []
         if self.is_superuser == True:
-            str += u'|超级管理员'
+            list.append(u'超级管理员')
         elif self.groups.count() == 0:
-            str += u'|无权限'
+            list.append(u'无权限')
         else:
             for group in self.groups.all():
-                str += '|'+group.name
-        return self.username +' - '+ str+'|'
+                list.append(group.name)
+        return self.username +' - '+ str.join(list)
 
     __str__ = __unicode__
 
@@ -55,7 +47,7 @@ class ExtendUser(AbstractUser):
         return full_name.strip()
 
     @property
-    def is_operationE(self):
+    def is_oper(self):
         for group in self.groups.all():
             if group.id == 1:
                 return True
@@ -70,8 +62,12 @@ class ExtendUser(AbstractUser):
         elif self.groups.count() == 0:
             return "无权限"
         else:
-            str = ""
+            str = "|"
+            list = []
             groups = self.groups.all()
             for group in groups:
-                str += group.name + ' '
-            return str
+                list.append(group.name)
+            if len(list) == 0:
+                return ''
+            else:
+                return str.join(list)

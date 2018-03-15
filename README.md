@@ -8,6 +8,7 @@ Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
 :heart: 感谢所有 :star: 我的人 你们是我努力的动力</br>
 
 运维体系解决方案(正在成长中)</br>
+新的Vue前端已经逐步上线啦！</br>
 :muscle: 实践以资产、应用信息为中心的运维平台</br>
 django & rest-framework & bootstrap</br>
 :muscle: 参考了诸多django项目 我的Django用的真的很棒</br>
@@ -44,8 +45,8 @@ devEops正在不断成长
 ## <a name="looklike"> 平台一览 </a>
 ### 登陆界面
 ![LOGIN](img/login.png)</br>
-### 主机管理
-![HOST](img/host.png)</br>
+### 资产管理
+![GROUP](img/group.png)</br>
 ### 堡垒机操作
 ![JUMPER](img/jumper.png)</br>
 ### 批量主机信息上传
