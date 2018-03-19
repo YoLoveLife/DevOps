@@ -6,9 +6,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(many=True,queryset=ExtendUser.objects.all())
     class Meta:
         model = models.Group
-        fields = ('id', 'name', 'info', 'uuid', 'status','users',#'framework'
+        fields = ('id', 'name', 'info', 'uuid', 'status','users','framework'
                 )
-        read_only_fields = ('id',
+        read_only_fields = ('id','framework'
                              )
 
 class StorageSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,25 +22,33 @@ class SystemTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.System_Type
         fields = (
-            'name',
+            'id','name'
+        )
+class PositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Position
+        fields = (
+            'id','name'
         )
 
 class HostDetailSerializer(serializers.ModelSerializer):
-    systemtype=SystemTypeSerializer()
+    systemtype = serializers.PrimaryKeyRelatedField(queryset=models.System_Type.objects.all())
+    position = serializers.PrimaryKeyRelatedField(queryset=models.Position.objects.all())
     class Meta:
         model = models.HostDetail
         fields = (
-            'coreness','memory','root_disk','server_position','systemtype','info',
+            'position','systemtype','info'
         )
 
 class HostSerializer(serializers.ModelSerializer):
-    label = serializers.CharField(source='__unicode__')
+    label = serializers.CharField(source='__unicode__',read_only=True)
     detail = HostDetailSerializer()
     class Meta:
         model=models.Host
         fields = (
-            'id','uuid','label','detail',
+            'id','uuid','label','detail','connect_ip','service_ip','hostname','sshport','status'
         )
+        read_only_fields = ('id','uuid','label')
 
 
 class HostPasswordSerializer(serializers.ModelSerializer):
