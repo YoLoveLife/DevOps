@@ -168,13 +168,17 @@ class Storage(models.Model):
             strlist.append(r)
         return ",".join(strlist)
 
+class Position(models.Model):
+    id = models.AutoField(primary_key=True) #全局ID
+    name = models.CharField(max_length=50,default="") #字符长度
+
+    def __unicode__(self):
+        return self.name
+
 class HostDetail(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
-    coreness = models.CharField(max_length=5, default='')  # CPU数
-    memory = models.CharField(max_length=7, default='')  # 内存
-    root_disk = models.CharField(max_length=7, default="")  # 本地磁盘大小
-    server_position = models.CharField(max_length=50,default='')#服务器位置
-    systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts')
+    position = models.ForeignKey(Position,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
+    systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
     info = models.CharField(max_length=200,default="")
 
 class Host(models.Model):
