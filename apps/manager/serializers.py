@@ -42,7 +42,7 @@ class HostDetailSerializer(serializers.ModelSerializer):
 
 class HostSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source='__unicode__',read_only=True)
-    detail = HostDetailSerializer()
+    detail = HostDetailSerializer(required=True)
     class Meta:
         model=models.Host
         fields = (
@@ -50,27 +50,21 @@ class HostSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('id','uuid','label')
 
+    def create(self, validated_data):
+        detail = validated_data.pop('detail')
+        detail_instance = models.HostDetail.objects.create(**detail)
+        return models.Host.objects.create(detail=detail_instance,**validated_data)
+
+    def update(self, instance, validated_data):
+        detail = validated_data.pop('detail')
+        for v in detail:
+            if hasattr(instance.detail,v):
+                setattr(instance.detail,v,detail.get(v))
+        instance.detail.save()
+        return super(HostSerializer,self).update(instance,validated_data)
 
 class HostPasswordSerializer(serializers.ModelSerializer):
     password = serializers.StringRelatedField(source='password_get',read_only=True)
     class Meta:
         model=models.Host
         fields = ('id','password')
-
-
-class HostUpdateGroupSerializer(serializers.ModelSerializer):
-    hosts = serializers.PrimaryKeyRelatedField(many=True,queryset=models.Host.objects.all())
-    class Meta:
-        model = models.Group
-        fields = ['id', 'hosts']
-
-class HostSearchSerializer(serializers.ModelSerializer):
-    groups__name = serializers.CharField()
-    storages__disk_size = serializers.CharField()
-    storages__disk_path = serializers.CharField()
-    class Meta:
-        model=models.Host
-        fields = ('manage_ip','service_ip','outer_ip','server_position','hostname','groups__name',
-                  'normal_user','sshpasswd','sshport','coreness','memory','root_disk','info'
-                  ,'storages__disk_size','storages__disk_path'
-                  )
