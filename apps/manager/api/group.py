@@ -12,25 +12,21 @@ from manager.permission import group as GroupPermission
 from manager.permission import host as HostPermission
 from manager.permission import storage as StoragePermission
 from timeline.decorator.manager import decorator_manager
-from rest_framework.renderers import JSONRenderer
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
-# authentication_classes = (JSONWebTokenAuthentication,)
-# renderer_classes = (JSONRenderer,)
+from deveops.api import WebTokenAuthentication
 
 
-class ManagerGroupListAPI(generics.ListAPIView):
+class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
     queryset = models.Group.objects.all()
 
-class ManagerGroupCreateAPI(generics.CreateAPIView):
+class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
 
-class ManagerGroupDetailAPI(generics.ListAPIView):
+class ManagerGroupDetailAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
@@ -38,13 +34,13 @@ class ManagerGroupDetailAPI(generics.ListAPIView):
     def get_queryset(self):
         return models.Group.objects.filter(id=int(self.kwargs['pk']))
 
-class ManagerGroupUpdateAPI(generics.UpdateAPIView):
+class ManagerGroupUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     # permission_classes = [IsAuthenticated]
     queryset = models.Group.objects.all()
 
-class ManagerGroupDeleteAPI(generics.DestroyAPIView):
+class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     permission_classes = [GroupPermission.GroupDeleteRequiredMixin]
