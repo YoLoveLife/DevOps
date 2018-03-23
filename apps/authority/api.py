@@ -5,8 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
 from models import Group
 from rest_framework_jwt.views import ObtainJSONWebToken
-from rest_framework.renderers import JSONRenderer
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from deveops.api import WebTokenAuthentication
 #__all__ = ['UserListAPI','UserRemoveAPI']
 
 class LoginJSONWebToken(ObtainJSONWebToken):
@@ -14,13 +13,11 @@ class LoginJSONWebToken(ObtainJSONWebToken):
         response = super(LoginJSONWebToken,self).post(request,*args,**kwargs)
         return response
 
-class UserInfoJSONWebToken(generics.ListAPIView):
-    authentication_classes = (JSONWebTokenAuthentication,)
-    renderer_classes = (JSONRenderer,)
+class UserInfoJSONWebToken(WebTokenAuthentication,generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         dist = {}
         dist['username'] = request.user.username
-        dist['name'] = request.user.last_name
+        dist['name'] = request.user.full_name
         if request.user.is_oper == True or request.user.is_superuser == True:
             dist['isadmin'] = True
         elif request.user.is_oper == False and request.user.is_superuser == False:
@@ -34,45 +31,79 @@ class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     permission_classes = [IsAuthenticated]
-    def get_queryset(self):
-        queryset=models.ExtendUser.objects.all()
-        return queryset
+    queryset = models.ExtendUser.objects.all()
 
-class UserRemoveAPI(generics.DestroyAPIView):
+class UserUpdateAPI(generics.UpdateAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     permission_classes = [IsAuthenticated]
+    queryset = models.ExtendUser.objects.all()
 
-    def delete(self, request, *args, **kwargs):
-        if models.ExtendUser.objects.filter(id=int(kwargs['pk'])).exists():
-            models.ExtendUser.objects.get(id=int(kwargs['pk'])).delete()
-            return Response({'info': '删除成功'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({'info': '该用户不存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+class UserDeleteAPI(generics.DestroyAPIView):
+    module = models.ExtendUser
+    serializer_class = serializers.UserSerializer
+    # permission_classes = [HostPermission.HostDeleteRequiredMixin]
+    queryset = models.ExtendUser.objects.all()
 
-class AuthListAPI(generics.ListAPIView):
+class GroupListAPI(generics.ListAPIView):
     module = models.Group
-    serializer_class = serializers.AuthSerializer
+    serializer_class =serializers.GroupSerializer
+    queryset = models.Group.objects.all()
+
+class GroupCreateAPI(generics.CreateAPIView):
+    module = models.Group
+    serializer_class =serializers.GroupSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        queryset =  models.Group.objects.all()
-        return queryset
+class GroupUpdateAPI(generics.UpdateAPIView):
+    module = models.Group
+    serializer_class = serializers.GroupSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = models.Group.objects.all()
+
+class GroupDeleteAPI(generics.DestroyAPIView):
+    module =models.Group
+    serializer_class = serializers.GroupSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = models.Group.objects.all()
 
 class PermissionListAPI(generics.ListAPIView):
     module = models.Permission
     serializer_class = serializers.PermissionSerializer
     permission_classes = [IsAuthenticated]
+    queryset = models.Permission.objects.filter(codename__istartswith="yo_")
 
-    def get_queryset(self):
-        queryset = models.Permission.objects.all()
-        return queryset
 
-class PermissionUpdateAPI(generics.UpdateAPIView):
-    module = Group
-    serializer_class = serializers.GroupPermissionSerializer
-    permission_classes = [IsAuthenticated]
+# class GroupListAPI(generics.ListAPIView):
+#     module = models.Group
+#     serializer_class =serializers.GroupSerializer
+#     permission_classes = [IsAuthenticated]
+#     queryset = models.Group.objects.all()
 
-    def update(self, request, *args, **kwargs):
 
-        return Response({'info': '转换成功'}, status=status.HTTP_201_CREATED)
+# class UserRemoveAPI(WebTokenAuthentication,generics.DestroyAPIView):
+#     module = models.ExtendUser
+#     serializer_class = serializers.UserSerializer
+#     permission_classes = [IsAuthenticated]
+#
+#     def delete(self, request, *args, **kwargs):
+#         if models.ExtendUser.objects.filter(id=int(kwargs['pk'])).exists():
+#             models.ExtendUser.objects.get(id=int(kwargs['pk'])).delete()
+#             return Response({'info': '删除成功'}, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response({'info': '该用户不存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+#
+
+# class AuthGrpListAPI(WebTokenAuthentication,generics.ListAPIView):
+#     module = models.Group
+#     serializer_class = serializers.AuthSerializer
+#     permission_classes = [IsAuthenticated]
+#
+#     def get_queryset(self):
+#         queryset =  models.Group.objects.all()
+#         return queryset
+#
+#
+# class PermissionAddForGroup(WebTokenAuthentication,generics.UpdateAPIView):
+#     module = models.Group
+#     serializer_class = serializers
