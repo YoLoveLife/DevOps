@@ -12,16 +12,12 @@ from manager.permission import group as GroupPermission
 from manager.permission import host as HostPermission
 from manager.permission import storage as StoragePermission
 from timeline.decorator.manager import decorator_manager
-from rest_framework.renderers import JSONRenderer
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from deveops.api import WebTokenAuthentication
 
-# authentication_classes = (JSONWebTokenAuthentication,)
-# renderer_classes = (JSONRenderer,)
-
-class ManagerHostListByGroupAPI(generics.ListAPIView):
+class ManagerHostListByGroupAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     # pagination_class = PagePa
 
     def get_queryset(self):
@@ -33,20 +29,20 @@ class ManagerHostListByGroupAPI(generics.ListAPIView):
     #
     # def paginate_queryset(self, queryset):
 
-class ManagerHostListAPI(generics.ListAPIView):
+class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
     permission_classes = [IsAuthenticated]
 
 
-class ManagerHostCreateAPI(generics.CreateAPIView):
+class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [IsAuthenticated]
 
 
-class ManagerHostDetailAPI(generics.ListAPIView):
+class ManagerHostDetailAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [IsAuthenticated]
@@ -55,13 +51,13 @@ class ManagerHostDetailAPI(generics.ListAPIView):
         queryset = models.Host.objects.filter(id=self.kwargs['pk'])
         return queryset
 
-class ManagerHostUpdateAPI(generics.UpdateAPIView):
+class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [IsAuthenticated]
     queryset = models.Host.objects.all()
 
-class ManagerHostDeleteAPI(generics.DestroyAPIView):
+class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     # permission_classes = [HostPermission.HostDeleteRequiredMixin]
@@ -77,18 +73,18 @@ class ManagerHostDeleteAPI(generics.DestroyAPIView):
     #         apps.manager.models.Host.objects.get(id=int(kwargs['pk'])).delete()
     #         return Response({'detail': '删除成功'}, status=status.HTTP_201_CREATED)
 
-class ManagerHostPasswordAPI(generics.ListAPIView):
+class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.HostPasswordSerializer
-    permission_classes = (HostPermission.HostPasswordRequiredMixin,)
-    count = 0
-
-    @decorator_manager(5, u'获取密码')
-    def timeline_create(self,user):
-        return user,None
+    # permission_classes = (HostPermission.HostPasswordRequiredMixin,)
+    # count = 0
+    #
+    # @decorator_manager(5, u'获取密码')
+    # def timeline_create(self,user):
+    #     return user,None
 
     def get_queryset(self):#此处时由于RestFramework的permission会被调用两次 只能在这里使用装饰器
-        if self.count == 0:
-            self.count = self.count + 1
-            self.timeline_create(self.request.user)
-            host = models.Host.objects.filter(id=int(self.kwargs['pk']))
-            return host
+        # if self.count == 0:
+        #     self.count = self.count + 1
+        #     self.timeline_create(self.request.user)
+        host = models.Host.objects.filter(id=int(self.kwargs['pk']))
+        return host

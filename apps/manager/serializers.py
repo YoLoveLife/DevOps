@@ -4,9 +4,10 @@ from authority.models import ExtendUser
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(many=True,queryset=ExtendUser.objects.all())
+    pmn_groups = serializers.PrimaryKeyRelatedField(many=True,queryset=models.PerGroup.objects.all())
     class Meta:
         model = models.Group
-        fields = ('id', 'name', 'info', 'uuid', 'status','users','framework'
+        fields = ('id', 'name', 'info', 'uuid', 'status','users','framework','pmn_groups'
                 )
         read_only_fields = ('id','framework'
                              )
@@ -37,7 +38,7 @@ class HostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.HostDetail
         fields = (
-            'position','systemtype','info'
+            'position','systemtype','info','aliyun_id'
         )
 
 class HostSerializer(serializers.ModelSerializer):
@@ -46,7 +47,7 @@ class HostSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Host
         fields = (
-            'id','uuid','label','detail','connect_ip','service_ip','hostname','sshport','status'
+            'id','uuid','label','detail','connect_ip','service_ip','hostname','sshport','status','passwd'
         )
         read_only_fields = ('id','uuid','label')
 
@@ -64,7 +65,7 @@ class HostSerializer(serializers.ModelSerializer):
         return super(HostSerializer,self).update(instance,validated_data)
 
 class HostPasswordSerializer(serializers.ModelSerializer):
-    password = serializers.StringRelatedField(source='password_get',read_only=True)
+    password = serializers.StringRelatedField(source='passwd',read_only=True)
     class Meta:
         model=models.Host
         fields = ('id','password')

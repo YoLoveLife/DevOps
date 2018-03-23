@@ -11,6 +11,7 @@ import paramiko
 import socket
 from deveops.utils import sshkey,aes
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import Group as PerGroup
 
 # Create your models here.
 application_list= ['db_set','redis_set']#,'nginx_set']
@@ -19,6 +20,9 @@ application_list= ['db_set','redis_set']#,'nginx_set']
 class System_Type(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
     name = models.CharField(max_length=50,default="") #字符长度
+
+    class Meta:
+        permissions = (('yo_add_systype', u'新增应用组'),)
 
     def __unicode__(self):
         return self.name
@@ -123,6 +127,12 @@ class Group(models.Model):
     users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
     status = models.IntegerField(choices=GROUP_STATUS,default=0)
     sys_user = models.ManyToManyField(Sys_User,null=True,related_name='group')
+    pmn_groups = models.ManyToManyField(PerGroup,blank=True,related_name='pmn_groups',verbose_name=_("pmn_groups"))
+
+    class Meta:
+        permissions = (('yo_add_group', u'新增应用组'),
+                       ('yo_change_group',u'修改应用组'),
+                       ('yo_delete_group',u'删除应用组'))
 
     def __unicode__(self):
         return self.name
@@ -171,6 +181,8 @@ class Storage(models.Model):
 class Position(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
     name = models.CharField(max_length=50,default="") #字符长度
+    class Meta:
+        permissions = (('yo_add_position', u'新增位置'),)
 
     def __unicode__(self):
         return self.name
@@ -180,6 +192,7 @@ class HostDetail(models.Model):
     position = models.ForeignKey(Position,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
     systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
     info = models.CharField(max_length=200,default="")
+    aliyun_id = models.CharField(max_length=30,default='',blank=True,null=True)
 
 class Host(models.Model):
     SYSTEM_STATUS=(
@@ -194,13 +207,15 @@ class Host(models.Model):
     #资产结构
     groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
     storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
+
     #相关信息
     connect_ip = models.GenericIPAddressField(default='',null=False)
     service_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
 
-    hostname = models.CharField(max_length=50,default='localhost.localdomain')#主机名称
+    hostname = models.CharField(max_length=50,default='localhost.localdomain',null=True,blank=True)#主机名称
     sshport = models.IntegerField(default='52000')#用户端口
     detail = models.ForeignKey(HostDetail,related_name='host',on_delete=models.SET_NULL,null=True)
+    passwd = models.CharField(max_length=50,default='',null=True,blank=True)
     status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
 
     class Meta:
@@ -219,7 +234,7 @@ class Host(models.Model):
         return 'host'
 
     def password_get(self):
-        return aes.decrypt(self.sshpasswd)
+        return aes.decrypt(self.passwd)
 
     def application_get(self): ####Application Link to Host
         id_list=[]

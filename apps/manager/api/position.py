@@ -12,25 +12,29 @@ from manager.permission import group as GroupPermission
 from manager.permission import host as HostPermission
 from manager.permission import storage as StoragePermission
 from timeline.decorator.manager import decorator_manager
-from rest_framework.renderers import JSONRenderer
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
-# authentication_classes = (JSONWebTokenAuthentication,)
-# renderer_classes = (JSONRenderer,)
+from deveops.api import WebTokenAuthentication
 
 
-class ManagerPositionListAPI(generics.ListAPIView):
+
+class ManagerPositionListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     permission_classes = [IsAuthenticated]
     queryset = models.Position.objects.all()
 
-class ManagerPositionCreateAPI(generics.CreateAPIView):
+class ManagerPositionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     permission_classes = [IsAuthenticated]
 
-class ManagerPositionDetailAPI(generics.ListAPIView):
+    def create(self, request, *args, **kwargs):
+        if models.Position.objects.filter(name=request.data['name']).count()>0:
+            return Response({'detail': '所添加的Position已存在'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        else:
+            return super(ManagerPositionCreateAPI,self).create(request,*args,**kwargs)
+
+
+class ManagerPositionDetailAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     permission_classes = [IsAuthenticated]
@@ -38,13 +42,13 @@ class ManagerPositionDetailAPI(generics.ListAPIView):
     def get_queryset(self):
         return models.Position.objects.filter(id=int(self.kwargs['pk']))
 
-class ManagerPositionUpdateAPI(generics.UpdateAPIView):
+class ManagerPositionUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     permission_classes = [IsAuthenticated]
     queryset = models.Position.objects.all()
 
-class ManagerPositionDeleteAPI(generics.DestroyAPIView):
+class ManagerPositionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     # permission_classes = [GroupPermission.GroupDeleteRequiredMixin]

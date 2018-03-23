@@ -68,9 +68,10 @@ INSTALLED_APPS = [
 #JWF
 import datetime
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=600),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_SECRET_KEY': SECRET_KEY,
 }
 
 
@@ -79,17 +80,18 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE':10,
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticated',
         # 'rest_framework.permissions.IsAdminUser'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-
+        # 'rest_framework.authentication.BasicAuthentication',
     )
 
 }
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -229,9 +231,9 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
     AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
     AUTH_LDAP_USER_ATTR_MAP = {
+        "full_name": "cn",
+        "description": "description",
         "first_name":"sn",
-        "last_name":"givenName",
-        "email":"userPrincipalName",
         "phone":"mobile",
     }
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
