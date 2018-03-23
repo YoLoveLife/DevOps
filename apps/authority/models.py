@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractUser
 class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10,default='user.jpg')
     phone = models.CharField(max_length=11,default='None',)
+    full_name = models.CharField(max_length=11,default='未获取')
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -37,14 +38,7 @@ class ExtendUser(AbstractUser):
     __str__ = __unicode__
 
     def get_8531email(self):
-        return self.email.split('@')[0] + '@8531.cn'
-
-    def get_full_name(self):
-        """
-        Returns the first_name plus the last_name, with a space in between.
-        """
-        full_name = '%s' % (self.last_name,)# self.first_name)
-        return full_name.strip()
+        return self.username + '@8531.cn'
 
     @property
     def is_oper(self):
