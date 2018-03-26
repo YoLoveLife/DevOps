@@ -193,6 +193,7 @@ class HostDetail(models.Model):
     systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
     info = models.CharField(max_length=200,default="")
     aliyun_id = models.CharField(max_length=30,default='',blank=True,null=True)
+    vmware_id = models.CharField(max_length=36,default='',blank=True,null=True)
 
 class Host(models.Model):
     SYSTEM_STATUS=(
