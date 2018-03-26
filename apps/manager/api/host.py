@@ -5,6 +5,7 @@
 # Email YoLoveLife@outlook.com
 from .. import models,serializers
 from rest_framework import generics
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
 from rest_framework.pagination import PageNumberPagination
@@ -41,15 +42,33 @@ class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     serializer_class = serializers.HostSerializer
     permission_classes = [IsAuthenticated]
 
-
-class ManagerHostDetailAPI(WebTokenAuthentication,generics.ListAPIView):
-    module = models.Host
-    serializer_class = serializers.HostSerializer
+class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        queryset = models.Host.objects.filter(id=self.kwargs['pk'])
-        return queryset
+    def get_object(self):
+        return models.Host.objects.filter(id=int(self.kwargs['pk'])).get()
+
+    def get(self, request, *args, **kwargs):
+        from deveops.utils import aliyun
+        from deveops.utils import vmware
+        obj = self.get_object()
+        data = None
+        if obj.detail.aliyun_id:
+            data = aliyun.fetch_Instance(obj.detail.aliyun_id)
+            if data:
+                data['type'] = 'aliyun'
+            else:
+                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(data, status=status.HTTP_200_OK)
+        elif obj.detail.vmware_id:
+            data = vmware.fetch_Instance(obj.detail.vmware_id)
+            if data:
+                data['type'] = 'vmware'
+            else:
+                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Host
