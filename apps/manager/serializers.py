@@ -38,7 +38,7 @@ class HostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.HostDetail
         fields = (
-            'position','systemtype','info','aliyun_id'
+            'position','systemtype','info','aliyun_id','vmware_id'
         )
 
 class HostSerializer(serializers.ModelSerializer):
