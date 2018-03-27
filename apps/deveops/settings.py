@@ -38,19 +38,16 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'utils.apps.UtilsConfig',
+    # 'utils.apps.UtilsConfig',
     'authority.apps.AuthorityConfig',
-    'validate.apps.ValidateConfig',
-    'softlib.apps.SoftlibConfig',
+    # 'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',
-    'operation.apps.OperationConfig',
-    'application.apps.MagicConfig',
-    'execute.apps.ExecuteConfig',
-    'concert.apps.ConcertConfig',
-    'timeline.apps.TimelineConfig',
-    'upload.apps.UploadConfig',
+    'ops.apps.OpsConfig',
+    # 'application.apps.MagicConfig',
+    # 'execute.apps.ExecuteConfig',
+    # 'timeline.apps.TimelineConfig',
+    # 'upload.apps.UploadConfig',
     'dns.apps.DnsConfig',
-    'xmt.apps.XmtConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
@@ -78,15 +75,14 @@ JWT_AUTH = {
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE':10,
-    'DEFAULT_PERMISSION_CLASSES': [
+    # 'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.IsAuthenticated',
         # 'rest_framework.permissions.IsAdminUser'
-    ],
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     )
 }
 

@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
-from django.contrib.auth.models import Permission,Group
+from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 
+__all__ = [
+    "ExtendUser"
+]
+
 class ExtendUser(AbstractUser):
-    img = models.CharField(max_length=10,default='user.jpg')
-    phone = models.CharField(max_length=11,default='None',)
-    full_name = models.CharField(max_length=11,default='未获取')
+    img = models.CharField(max_length=10, default='user.jpg')
+    phone = models.CharField(max_length=11, default='None',)
+    full_name = models.CharField(max_length=11, default='未获取')
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -22,18 +25,31 @@ class ExtendUser(AbstractUser):
         related_query_name="user",
     )
 
+    class Meta:
+        permissions = (
+            ('yo_list_user', u'罗列用户'),
+            ('yo_list_opsuser', u'罗列运维用户'),
+            ('yo_create_user', u'新增用户'),
+            ('yo_update_user', u'修改用户'),
+            ('yo_delete_user', u'删除用户'),
+            ('yo_list_pmngroup', u'罗列权限组'),
+            ('yo_create_pmngroup', u'新增权限组'),
+            ('yo_update_pmngroup', u'修改权限组'),
+            ('yo_delete_pmngroup', u'删除权限组'),
+            # django.contrib.auth.models.Permission django.contrib.auth.models.Group 无法重构
+            ('yo_list_permission', u'罗列所有权限')
+        )
 
     def __unicode__(self):
-        str = "|"
         list = []
-        if self.is_superuser == True:
+        if self.is_superuser:
             list.append(u'超级管理员')
         elif self.groups.count() == 0:
             list.append(u'无权限')
         else:
             for group in self.groups.all():
                 list.append(group.name)
-        return self.username +' - '+ str.join(list)
+        return self.username + ' - ' + "|".join(list)
 
     __str__ = __unicode__
 
@@ -42,15 +58,11 @@ class ExtendUser(AbstractUser):
 
     @property
     def is_oper(self):
-        for group in self.groups.all():
-            if group.id == 1:
-                return True
+        if self.groups.filter(name__icontains='运维').count() != 0:
+            return True
         return False
 
     def get_group_name(self):
-        """
-        :return: Name of group
-        """
         if self.is_superuser == 1:
             return "超级管理员"
         elif self.groups.count() == 0:

@@ -3,48 +3,53 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models,serializers
+from .. import models, serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import Response,status
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import Response, status
 from manager.permission import group as GroupPermission
-from manager.permission import host as HostPermission
-from manager.permission import storage as StoragePermission
-from timeline.decorator.manager import decorator_manager
 from deveops.api import WebTokenAuthentication
+
+__all__ = [
+    'ManagerGroupListAPI', 'ManagerGroupCreateAPI', 'ManagerGroupDetailAPI',
+    'ManagerGroupUpdateAPI', 'ManagerGroupDeleteAPI'
+]
 
 
 class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [IsAuthenticated]
     queryset = models.Group.objects.all()
+    permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+
 
 class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
+
 
 class ManagerGroupDetailAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [GroupPermission.GroupDetailRequiredMixin,IsAuthenticated]
 
     def get_queryset(self):
         return models.Group.objects.filter(id=int(self.kwargs['pk']))
 
+
 class ManagerGroupUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    # permission_classes = [IsAuthenticated]
     queryset = models.Group.objects.all()
+    permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
+
 
 class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [GroupPermission.GroupDeleteRequiredMixin]
     queryset = models.Group.objects.all()
+    permission_classes = [GroupPermission.GroupDeleteRequiredMixin,IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
         group = models.Group.objects.get(id=int(kwargs['pk']))
