@@ -28,12 +28,11 @@ urlpatterns = [
     # API
     url(r'^api-auth/', include('authority.urls.api_urls',namespace='api-auth')),
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
-    url(r'^api-operation/',include('operation.urls.api_urls',namespace='api-operation')),
-    url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
-    url(r'^api-concert/',include('concert.urls.api_urls',namespace='api-concert')),
-    url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
-    url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
-    url(r'^api-utils/',include('utils.urls.api_urls',namespace='api-utils')),
+    url(r'^api-ops/',include('ops.urls.api_urls',namespace='api-ops')),
+    # url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
+    # url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
+    # url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
+    # url(r'^api-utils/',include('utils.urls.api_urls',namespace='api-utils')),
 
     url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
 ]

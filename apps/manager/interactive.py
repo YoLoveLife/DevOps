@@ -3,16 +3,18 @@
 # Time 18-1-16
 # Author Yo
 # Email YoLoveLife@outlook.com
-from __future__ import absolute_import,unicode_literals
-import socket,json,threading,ast,codecs
+from __future__ import absolute_import, unicode_literals
+import socket, threading, codecs
 from paramiko.py3compat import u
-from django.utils.encoding import smart_unicode
-# def linux_shell(chan):
-#     import select
-#     pass
+
+__all__ = [
+    "YoShellSendThread", "YoShellRecvThread"
+]
+
 
 class YoShellRecvThread(threading.Thread):
     CACHE = 1024
+
     def __init__(self,channel,chan):
         super(YoShellRecvThread, self).__init__()
         self.chan = chan
@@ -27,15 +29,17 @@ class YoShellRecvThread(threading.Thread):
                 from deveops.asgi import channel_layer
                 if len(msg) == 0:
                     continue
-                if msg == "exit\r\n" or msg == "logout\r\n" or msg == 'logout': #如果exit则返回
+                if msg == "exit\r\n" or msg == "logout\r\n" or msg == 'logout':
+                    # 如果exit则返回
                     self.chan.close()
                 else:
                     stdout.append([codecs.getincrementaldecoder('UTF-8')('replace').decode(msg)])
                 channel_layer.send(self.channel, {'text': msg })
             except socket.timeout:
                 pass
-            except Exception,e:
+            except Exception:
                 pass
+
 
 class YoShellSendThread(threading.Thread):
     def __init__(self,message,chan,redis):
@@ -53,7 +57,8 @@ class YoShellSendThread(threading.Thread):
     def stop(self):
         self._stop_event.set()
 
-    def run(self):#持续获取队列中传递进来的用户命令并直接传递到远程的服务器
+    def run(self):
+        # 持续获取队列中传递进来的用户命令并直接传递到远程的服务器
         for item in self.pubsub.listen():
             if item['type'] == 'message':
                 self.chan.send(item['data'])

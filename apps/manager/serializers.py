@@ -2,54 +2,67 @@ import models
 from rest_framework import serializers
 from authority.models import ExtendUser
 
+__all__ = [
+    "GroupSerializer", "SystemTypeSerializer", 'PositionSerializer',
+    "HostDetailSerializer", "HostSerializer", "HostPasswordSerializer",
+    "StorageSerializer"
+]
+
+
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(many=True,queryset=ExtendUser.objects.all())
     pmn_groups = serializers.PrimaryKeyRelatedField(many=True,queryset=models.PerGroup.objects.all())
+
     class Meta:
         model = models.Group
-        fields = ('id', 'name', 'info', 'uuid', 'status','users','framework','pmn_groups'
-                )
-        read_only_fields = ('id','framework'
-                             )
+        fields = (
+            'id', 'name', 'info', 'uuid', 'status', 'users', 'framework', 'pmn_groups'
+        )
+        read_only_fields = (
+            'id', 'framework'
+        )
 
-class StorageSerializer(serializers.HyperlinkedModelSerializer):
-    group_name = serializers.StringRelatedField(source="get_all_group_name",read_only=True)
-    class Meta:
-        model = models.Storage
-        fields = ('id','disk_size','disk_path','info','group_name',
-                  )
 
 class SystemTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.System_Type
         fields = (
-            'id','name'
+            'id', 'name'
         )
+
+
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Position
         fields = (
-            'id','name'
+            'id', 'name'
         )
+
 
 class HostDetailSerializer(serializers.ModelSerializer):
     systemtype = serializers.PrimaryKeyRelatedField(queryset=models.System_Type.objects.all())
     position = serializers.PrimaryKeyRelatedField(queryset=models.Position.objects.all())
+
     class Meta:
         model = models.HostDetail
         fields = (
-            'position','systemtype','info','aliyun_id','vmware_id'
+            'position', 'systemtype', 'info', 'aliyun_id', 'vmware_id'
         )
+
 
 class HostSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source='__unicode__',read_only=True)
     detail = HostDetailSerializer(required=True)
+    groups = serializers.PrimaryKeyRelatedField(many=True,queryset=models.Group.objects.all())
+
     class Meta:
-        model=models.Host
+        model = models.Host
         fields = (
-            'id','uuid','label','detail','connect_ip','service_ip','hostname','sshport','status','passwd'
+            'id', 'uuid', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', 'status', 'passwd', 'groups'
         )
-        read_only_fields = ('id','uuid','label')
+        read_only_fields = (
+            'id', 'uuid', 'label'
+        )
 
     def create(self, validated_data):
         detail = validated_data.pop('detail')
@@ -64,8 +77,20 @@ class HostSerializer(serializers.ModelSerializer):
         instance.detail.save()
         return super(HostSerializer,self).update(instance,validated_data)
 
+
 class HostPasswordSerializer(serializers.ModelSerializer):
     password = serializers.StringRelatedField(source='passwd',read_only=True)
+
     class Meta:
         model=models.Host
-        fields = ('id','password')
+        fields = ('id', 'password')
+
+
+class StorageSerializer(serializers.HyperlinkedModelSerializer):
+    group_name = serializers.StringRelatedField(source="get_all_group_name",read_only=True)
+
+    class Meta:
+        model = models.Storage
+        fields = (
+            'id', 'disk_size', 'disk_path', 'info', 'group_name'
+        )

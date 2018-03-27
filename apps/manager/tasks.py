@@ -5,9 +5,11 @@
 # Email YoLoveLife@outlook.com
 
 from celery import shared_task
+
+
 @shared_task
 def update_host_info(host):
     task_tuple=(
-        ('setup','')
+        ('setup', '')
     )
 

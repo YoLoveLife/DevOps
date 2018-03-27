@@ -3,7 +3,6 @@ from ..api import group as GroupAPI
 from ..api import systype as SystypeAPI
 from ..api import position as PositionAPI
 from ..api import host as HostAPI
-# from .. import api
 urlpatterns=[
     # Resource group api
     url(r'^v1/group/$', GroupAPI.ManagerGroupListAPI.as_view()),
@@ -13,11 +12,11 @@ urlpatterns=[
     url(r'^v1/group/(?P<pk>[0-9]+)/delete/$',GroupAPI.ManagerGroupDeleteAPI.as_view()),
     #
     # Resource systype api
-    url(r'^v1/systype/$', SystypeAPI.ManagerSystypeListAPI.as_view()),
-    url(r'^v1/systype/create/$', SystypeAPI.ManagerSystemCreateAPI.as_view()),
-    url(r'^v1/systype/(?P<pk>[0-9]+)/detail/$', SystypeAPI.ManagerSystemDetailAPI.as_view()),
-    url(r'^v1/systype/(?P<pk>[0-9]+)/update/$', SystypeAPI.ManagerSystemUpdateAPI.as_view()),
-    url(r'^v1/systype/(?P<pk>[0-9]+)/delete/$', SystypeAPI.ManagerSystemDeleteAPI.as_view()),
+    url(r'^v1/systype/$', SystypeAPI.ManagerSysTypeListAPI.as_view()),
+    url(r'^v1/systype/create/$', SystypeAPI.ManagerSysTypeCreateAPI.as_view()),
+    url(r'^v1/systype/(?P<pk>[0-9]+)/detail/$', SystypeAPI.ManagerSysTypeDetailAPI.as_view()),
+    url(r'^v1/systype/(?P<pk>[0-9]+)/update/$', SystypeAPI.ManagerSysTypeUpdateAPI.as_view()),
+    url(r'^v1/systype/(?P<pk>[0-9]+)/delete/$', SystypeAPI.ManagerSysTypeDeleteAPI.as_view()),
     #
     # Resource position api
     url(r'^v1/position/$', PositionAPI.ManagerPositionListAPI.as_view()),
@@ -39,6 +38,4 @@ urlpatterns=[
     # url(r'^v1/storage/$', api.ManagerStorageListAPI.as_view()),
     # url(r'^v1/storage/(?P<pk>[0-9]+)/remove/', api.ManagerStorageRemoveAPI.as_view()),
     #
-    # # Resource search api
-    # url(r'^v1/search/',api.ManagerSearchAPI.as_view()),
 ]
