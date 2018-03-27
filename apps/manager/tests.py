@@ -2,7 +2,13 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from manager.models import Group,Host,Storage,System_Type
-#model test
+
+__all__ = [
+    "GroupTestCase", "StorageTestCase" , "System_TypeTestCase",
+    "HostTestCase"
+]
+
+
 class GroupTestCase(TestCase):
     def setUp(self):
         Group.objects.create(name='Testname',info='Testinfo')
