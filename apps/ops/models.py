@@ -11,6 +11,7 @@ __all__ = [
 
 class META_CONTENT(models.Model):
     id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=50, default='')
     module = models.CharField(default='',max_length=20)
     args = models.CharField(default='', max_length=100)
     sort = models.IntegerField(default=0)
@@ -20,6 +21,12 @@ class META_CONTENT(models.Model):
                        ('yo_create_metacontent', u'创建元操作内容'),
                        ('yo_update_metacontent',u'更新元操作内容'),
                        ('yo_delete_metacontent',u'删除元操作内容'))
+
+    @property
+    def to_yaml(self):
+        return {
+            self.module: self.args, 'name': self.name
+        }
 
 
 class META(models.Model):
@@ -34,4 +41,19 @@ class META(models.Model):
                        ('yo_update_meta',u'更新元操作'),
                        ('yo_delete_meta',u'删除元操作'))
 
+    @property
+    def to_yaml(self):
+        tasks = []
+        hosts_list = []
+        for host in self.hosts:
+            hosts_list.append(host.connect_ip)
+        for content in self.contents:
+            tasks.append(content.to_yaml)
 
+        return {
+            'tasks': tasks,
+            'hosts': ','.join(hosts_list)
+        }
+
+
+import yaml
