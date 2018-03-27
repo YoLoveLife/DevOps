@@ -1,30 +1,51 @@
-from django.contrib.auth.mixins import AccessMixin
-from django.http import HttpResponseRedirect
-#__all__ = ['UserDeleteRequiredMixin','UserAddRequiredMixin','UserChangeRequiredMixin']
-class UserRequiredMixin(AccessMixin):
-    redirect_url= "/permission"
-    permission_required = u'authority.all'
-    permission_denied_message = ''
+from rest_framework.permissions import BasePermission
 
-    def has_permission(self):
+__all__ = [
+    "UserAPIRequiredMixin", "UserOpsListRequiredMixin", "UserCreateRequiredMixin",
+    "UserChangeRequiredMixin", "UserDeleteRequiredMixin"
+]
+
+
+class UserAPIRequiredMixin(BasePermission):
+    def has_permission(self, request, view):
         perms = self.permission_required
-        perm_list=list(self.request.user.get_all_permissions())
+        perm_list=list(request.user.get_all_permissions())
+        if request.user.is_superuser:
+            return True
         if perms in perm_list:
             return True
         else:
             return False
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.has_permission():
-            return HttpResponseRedirect(self.redirect_url)
-        return super(UserRequiredMixin, self).dispatch(request, *args, **kwargs)
 
-class UserAddRequiredMixin(UserRequiredMixin):
-    permission_required = u'authority.add_extenduser'
+class UserOpsListRequiredMixin(UserAPIRequiredMixin):
+    permission_required = u'authority.yo_list_opsuser'
 
-class UserChangeRequiredMixin(UserRequiredMixin):
-    permission_required = u'authority.change_extenduser'
+    def has_permission(self, request, view):
+        perms = self.permission_required
+        perm_list=list(request.user.get_all_permissions())
+        if request.user.is_superuser:
+            return True
+        elif request.user.is_oper:
+            return True
+        if perms in perm_list:
+            return True
+        else:
+            return False
 
-class UserDeleteRequiredMixin(UserRequiredMixin):
-    permission_required = u'authority.delete_extenduser'
+
+class UserListRequiredMixin(UserAPIRequiredMixin):
+    permission_required = u'authority.yo_list_user'
+
+
+class UserCreateRequiredMixin(UserAPIRequiredMixin):
+    permission_required = u'authority.yo_create_user'
+
+
+class UserUpdateRequiredMixin(UserAPIRequiredMixin):
+    permission_required = u'authority.yo_update_user'
+
+
+class UserDeleteRequiredMixin(UserAPIRequiredMixin):
+    permission_required = u'authority.yo_delete_user'
 

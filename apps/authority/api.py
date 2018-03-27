@@ -3,17 +3,25 @@ import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response,status
-from models import Group
 from rest_framework_jwt.views import ObtainJSONWebToken
 from deveops.api import WebTokenAuthentication
-#__all__ = ['UserListAPI','UserRemoveAPI']
+from authority.permission import user as UserPermission
 
-class LoginJSONWebToken(ObtainJSONWebToken):
+__all__ = [
+
+]
+
+
+class UserLoginAPI(ObtainJSONWebToken):
     def post(self, request, *args, **kwargs):
-        response = super(LoginJSONWebToken,self).post(request,*args,**kwargs)
+        response = super(UserLoginAPI,self).post(request,*args,**kwargs)
         return response
 
-class UserInfoJSONWebToken(WebTokenAuthentication,generics.ListAPIView):
+
+class UserInfoAPI(WebTokenAuthentication,generics.ListAPIView):
+    module = models.ExtendUser
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, *args, **kwargs):
         dist = {}
         dist['username'] = request.user.username
@@ -27,23 +35,27 @@ class UserInfoJSONWebToken(WebTokenAuthentication,generics.ListAPIView):
 
         return Response(dist, status=status.HTTP_201_CREATED)
 
+
 class UserListAPI(generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
-    permission_classes = [IsAuthenticated]
     queryset = models.ExtendUser.objects.all()
+    permission_classes = [UserPermission.UserListRequiredMixin,IsAuthenticated]
+
 
 class UserUpdateAPI(generics.UpdateAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
-    permission_classes = [IsAuthenticated]
     queryset = models.ExtendUser.objects.all()
+    permission_classes = [UserPermission.UserUpdateRequiredMixin,IsAuthenticated]
+
 
 class UserDeleteAPI(generics.DestroyAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
-    # permission_classes = [HostPermission.HostDeleteRequiredMixin]
     queryset = models.ExtendUser.objects.all()
+    permission_classes = [UserPermission.UserDeleteRequiredMixin,IsAuthenticated]
+
 
 class GroupListAPI(generics.ListAPIView):
     module = models.Group

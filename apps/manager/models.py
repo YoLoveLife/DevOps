@@ -2,27 +2,32 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from softlib.models import Softlib
 from authority.models import ExtendUser
 import uuid
 from deveops.utils.msg import Message
-from django.conf import settings
 import paramiko
 import socket
 from deveops.utils import sshkey,aes
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import Group as PerGroup
 
-# Create your models here.
-application_list= ['db_set','redis_set']#,'nginx_set']
+__all__ = [
+    "System_Type", "Sys_User", "Group",
+    "Storage", "Position", "HostDetail",
+    "Host"
+]
 
 
 class System_Type(models.Model):
-    id = models.AutoField(primary_key=True) #全局ID
-    name = models.CharField(max_length=50,default="") #字符长度
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, default="")
 
     class Meta:
-        permissions = (('yo_add_systype', u'新增应用组'),)
+        permissions = (('yo_list_systype', u'罗列系统类型'),
+                       ('yo_create_systype', u'新增系统类型'),
+                       ('yo_update_systype', u'修改系统类型'),
+                       ('yo_detail_systype', u'详细系统类型'),
+                       ('yo_delete_systype', u'删除系统类型'))
 
     def __unicode__(self):
         return self.name
@@ -31,12 +36,14 @@ class System_Type(models.Model):
     def sum_host(self):
         return self.hosts.count()
 
+
 def private_key_validator(key):
     if not sshkey.private_key_validator(key):
         raise ValidationError(
             _('%(value)s is not an even number'),
             params={'value': key},
         )
+
 
 class Sys_User(models.Model):
     BECOME_METHOD_CHOICES = (
@@ -45,13 +52,13 @@ class Sys_User(models.Model):
     )
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=64)
-    _password = models.CharField(max_length=256,blank=True,null=True)
-    _private_key = models.TextField(max_length=4096,blank=True,null=True,validators=[private_key_validator])
-    _public_key = models.TextField(max_length=4096,blank=True)
+    _password = models.CharField(max_length=256, blank=True, null=True)
+    _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator])
+    _public_key = models.TextField(max_length=4096, blank=True)
     become = models.BooleanField(default=True)
-    become_method = models.CharField(choices=BECOME_METHOD_CHOICES,default='su',max_length=4)
-    become_user = models.CharField(default='root',max_length=16)
-    become_pass = models.CharField(default='',max_length=128)
+    become_method = models.CharField(choices=BECOME_METHOD_CHOICES,default='su', max_length=4)
+    become_user = models.CharField(default='root', max_length=16)
+    become_pass = models.CharField(default='', max_length=128)
 
     def __unicode__(self):
         return self.username
@@ -82,7 +89,7 @@ class Sys_User(models.Model):
             return ''
 
     @password.setter
-    def password(self,passwd):
+    def password(self, passwd):
         self._password = aes.encrypt(passwd)
 
     @property
@@ -109,9 +116,11 @@ class Sys_User(models.Model):
     def public_key(self, pub_key):
         self._public_key = aes.encrypt(pub_key)
 
-def upload_dir_path(instance, filename):
-    #instance.group.id,
+
+def upload_dir_path(filename):
+    # instance.group.id,
     return u'framework/{0}'.format(filename)
+
 
 class Group(models.Model):
     GROUP_STATUS=(
@@ -120,27 +129,26 @@ class Group(models.Model):
         (2,'暂停中'),
     )
     id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(auto_created=True,default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100,default='')
-    info = models.CharField(max_length=100,default='')
-    framework = models.ImageField(upload_to=upload_dir_path,default='hacg.fun_01.jpg')
-    users = models.ManyToManyField(ExtendUser,blank=True,related_name='users',verbose_name=_("users"))
-    status = models.IntegerField(choices=GROUP_STATUS,default=0)
-    sys_user = models.ManyToManyField(Sys_User,null=True,related_name='group')
-    pmn_groups = models.ManyToManyField(PerGroup,blank=True,related_name='pmn_groups',verbose_name=_("pmn_groups"))
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100, default='')
+    info = models.CharField(max_length=100, default='')
+    framework = models.ImageField(upload_to=upload_dir_path, default='hacg.fun_01.jpg')
+    users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
+    status = models.IntegerField(choices=GROUP_STATUS, default=0)
+    sys_user = models.ManyToManyField(Sys_User,null=True, related_name='assetgroup')
+    pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
 
     class Meta:
-        permissions = (('yo_add_group', u'新增应用组'),
-                       ('yo_change_group',u'修改应用组'),
+        permissions = (('yo_list_group', u'罗列应用组'),
+                       ('yo_create_group', u'新增应用组'),
+                       ('yo_update_group',u'修改应用组'),
+                       ('yo_detail_group', u'详细查看应用组'),
                        ('yo_delete_group',u'删除应用组'))
 
     def __unicode__(self):
         return self.name
 
     __str__ = __unicode__
-
-    def _name(self):
-        return 'group'
 
     @property
     def catch_ssh_connect(self):
@@ -154,18 +162,15 @@ class Group(models.Model):
 
 
 class Storage(models.Model):
-    id=models.AutoField(primary_key=True)#全局ID
-    disk_size=models.CharField(max_length=100,default="")
-    disk_path=models.CharField(max_length=100,default="")
-    info=models.CharField(max_length=100,default="")
+    id = models.AutoField(primary_key=True)#全局ID
+    disk_size = models.CharField(max_length=100,default="")
+    disk_path = models.CharField(max_length=100,default="")
+    info = models.CharField(max_length=100,default="")
 
     def __unicode__(self):
         return self.disk_path + ' - ' + self.info
 
     __str__ = __unicode__
-
-    def _name(self):
-        return 'storage'
 
     def get_all_group_name(self):
         list = []
@@ -178,81 +183,95 @@ class Storage(models.Model):
             strlist.append(r)
         return ",".join(strlist)
 
+
 class Position(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
-    name = models.CharField(max_length=50,default="") #字符长度
+    name = models.CharField(max_length=50, default="") #字符长度
+
     class Meta:
-        permissions = (('yo_add_position', u'新增位置'),)
+        permissions = (('yo_list_position', u'罗列位置'),
+                       ('yo_create_position', u'新增位置'),
+                       ('yo_update_position', u'修改位置'),
+                       ('yo_detail_position', u'详细位置'),
+                       ('yo_delete_position', u'删除位置'))
 
     def __unicode__(self):
         return self.name
 
+
 class HostDetail(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
-    position = models.ForeignKey(Position,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
-    systemtype = models.ForeignKey(System_Type,on_delete=models.SET_NULL,null=True,related_name='hosts_detail')
-    info = models.CharField(max_length=200,default="")
-    aliyun_id = models.CharField(max_length=30,default='',blank=True,null=True)
-    vmware_id = models.CharField(max_length=36,default='',blank=True,null=True)
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
+    systemtype = models.ForeignKey(System_Type, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
+    info = models.CharField(max_length=200, default="")
+    aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
+    vmware_id = models.CharField(max_length=36, default='', blank=True, null=True)
+
 
 class Host(models.Model):
-    SYSTEM_STATUS=(
+    SYSTEM_STATUS = (
         (0,'错误'),
         (1,'正常'),
         (2,'不可达'),
     )
-    #主机标识
-    id=models.AutoField(primary_key=True) #全局ID
-    uuid = models.UUIDField(auto_created=True,default=uuid.uuid4,editable=False)
+    # 主机标识
+    id = models.AutoField(primary_key=True) #全局ID
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
 
-    #资产结构
-    groups = models.ManyToManyField(Group,blank=True,related_name='hosts',verbose_name=_("Group"))#所属应用
-    storages = models.ManyToManyField(Storage,blank=True,related_name='hosts',verbose_name=_('Host'))
+    # 资产结构
+    groups = models.ManyToManyField(Group, blank=True, related_name='hosts', verbose_name=_("Group"))
+    # 所属应用
+    storages = models.ManyToManyField(Storage, blank=True, related_name='hosts', verbose_name=_('Host'))
 
-    #相关信息
-    connect_ip = models.GenericIPAddressField(default='',null=False)
-    service_ip = models.GenericIPAddressField(default='0.0.0.0',null=True)
-
-    hostname = models.CharField(max_length=50,default='localhost.localdomain',null=True,blank=True)#主机名称
-    sshport = models.IntegerField(default='52000')#用户端口
-    detail = models.ForeignKey(HostDetail,related_name='host',on_delete=models.SET_NULL,null=True)
-    passwd = models.CharField(max_length=50,default='',null=True,blank=True)
-    status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
+    # 相关信息
+    connect_ip = models.GenericIPAddressField(default='', null=False)
+    service_ip = models.GenericIPAddressField(default='0.0.0.0', null=True)
+    # 主机名称
+    hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)
+    # 用户端口
+    sshport = models.IntegerField(default='52000')
+    detail = models.ForeignKey(HostDetail, related_name='host', on_delete=models.SET_NULL, null=True)
+    passwd = models.CharField(max_length=50, default='', null=True, blank=True)
+    # 服务器状态
+    status = models.IntegerField(default=1, choices=SYSTEM_STATUS)
 
     class Meta:
-        permissions = (('yo_add_host', u'新增主机'),
-                       ('yo_change_host',u'修改主机'),
-                       ('yo_delete_host',u'删除主机'),
-                       ('yo_passwd_host',u'获取主机密码'),
-                       ('yo_webskt_host',u'远控主机'))
+        permissions = (
+            ('yo_list_host', u'罗列主机'),
+            ('yo_create_host', u'新增主机'),
+            ('yo_update_host', u'修改主机'),
+            ('yo_delete_host', u'删除主机'),
+            ('yo_detail_host', u'详细查看主机'),
+            ('yo_passwd_host', u'获取主机密码'),
+            ('yo_webskt_host', u'远控主机')
+        )
 
     def __unicode__(self):
-        return str(self.uuid) +'-'+self.detail.info
+        return str(self.uuid) + '-' +self.detail.info
 
     __str__ = __unicode__
-
-    def _name(self):
-        return 'host'
 
     def password_get(self):
         return aes.decrypt(self.passwd)
 
-    def application_get(self): ####Application Link to Host
-        id_list=[]
-        for attr in application_list:
-            if getattr(self,attr).count() == 0:
-                pass
-            else:
-                if getattr(self,attr).count() == 1:
-                    id_list.append(int(getattr(self,attr).get().softlib_id))
-                else:
-                    for mols in getattr(self,attr).all():
-                        id_list.append(int(mols.softlib_id))
-        if Softlib.objects.filter(id__in=id_list).count() == 0:
-            softlibs = []
-        else:
-            softlibs = Softlib.objects.filter(id__in=id_list)
-        return softlibs
+    # # ###Application Link to Host
+    # def application_get(self):
+    #     application_list = []
+    #     id_list = []
+    #     for attr in application_list:
+    #         if getattr(self,attr).count() == 0:
+    #             pass
+    #         else:
+    #             if getattr(self,attr).count() == 1:
+    #                 id_list.append(int(getattr(self,attr).get().softlib_id))
+    #             else:
+    #                 for mols in getattr(self,attr).all():
+    #                     id_list.append(int(mols.softlib_id))
+    #     if Softlib.objects.filter(id__in=id_list).count() == 0:
+    #         softlibs = []
+    #     else:
+    #         softlibs = Softlib.objects.filter(id__in=id_list)
+    #     return softlibs
 
     def manage_user_get(self):
         dist = {}
