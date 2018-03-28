@@ -19,8 +19,8 @@ class META_CONTENT(models.Model):
     class Meta:
         permissions = (('yo_list_metacontent', u'罗列元操作内容'),
                        ('yo_create_metacontent', u'创建元操作内容'),
-                       ('yo_update_metacontent',u'更新元操作内容'),
-                       ('yo_delete_metacontent',u'删除元操作内容'))
+                       ('yo_update_metacontent', u'更新元操作内容'),
+                       ('yo_delete_metacontent', u'删除元操作内容'))
 
     @property
     def to_yaml(self):
@@ -38,22 +38,19 @@ class META(models.Model):
     class Meta:
         permissions = (('yo_list_meta', u'罗列元操作'),
                        ('yo_create_meta', u'创建元操作'),
-                       ('yo_update_meta',u'更新元操作'),
-                       ('yo_delete_meta',u'删除元操作'))
+                       ('yo_update_meta', u'更新元操作'),
+                       ('yo_delete_meta', u'删除元操作'))
 
     @property
     def to_yaml(self):
         tasks = []
         hosts_list = []
-        for host in self.hosts:
+        for host in self.hosts.all():
             hosts_list.append(host.connect_ip)
-        for content in self.contents:
+        for content in self.contents.all():
             tasks.append(content.to_yaml)
-
         return {
             'tasks': tasks,
             'hosts': ','.join(hosts_list)
         }
 
-
-import yaml
