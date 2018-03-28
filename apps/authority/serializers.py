@@ -1,10 +1,11 @@
 import models
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
-from authority.models import ExtendUser,Group
+from authority.models import ExtendUser,Group,Key
 
 __all__ = [
-    'UserSerializer', 'GroupSerializer', 'PermissionSerializer'
+    'UserSerializer', 'GroupSerializer', 'PermissionSerializer',
+    'KeySerializer'
 ]
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,3 +37,16 @@ class PermissionSerializer(serializers.ModelSerializer):
             'id', 'name'
         )
 
+
+class KeySerializer(serializers.ModelSerializer):
+    private_key = serializers.CharField(max_length=4096, required=False)
+    public_key = serializers.CharField(max_length=4096, required=False)
+
+    class Meta:
+        model = Key
+        fields = (
+            'id', 'name', 'private_key', 'public_key', 'group_name', 'fetch_time'
+        )
+        read_only_fields = (
+            'id', 'group_name', 'fetch_time'
+        )

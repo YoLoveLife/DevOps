@@ -3,29 +3,26 @@
 # Time 17-10-12
 # Author Yo
 # Email YoLoveLife@outlook.com
-from Crypto.Cipher import AES
-from binascii import b2a_hex,a2b_hex
 from deveops.settings import SECRET_KEY
 KEY = SECRET_KEY
-KEY_LENGTH=16
+KEY_LENGTH = 16
+from itsdangerous import JSONWebSignatureSerializer, BadSignature, SignatureExpired
+
 def encrypt(text):
-    # 这里密钥key 长度必须为16（AES-128）、24（AES-192）、或32（AES-256）Bytes 长度.目前AES-128足够用
-    cryptor = AES.new(KEY[0:KEY_LENGTH], AES.MODE_CBC, KEY[0:KEY_LENGTH])
-    length = KEY_LENGTH
-    count = len(text)
-    add = length - (count % length)
-    text = text + ('\0' * add)
-    ciphertext = cryptor.encrypt(text)
-    # 因为AES加密时候得到的字符串不一定是ascii字符集的，输出到终端或者保存时候可能存在问题
-    # 所以这里统一把加密后的字符串转化为16进制字符串
-    return b2a_hex(ciphertext)
+    if isinstance(text, bytes):
+        value = text.decode("utf-8")
+    s = JSONWebSignatureSerializer(SECRET_KEY)
+    return s.dumps(value)
+
 
 def decrypt(text):
-    cryptor = AES.new(KEY[0:16], AES.MODE_CBC, KEY[0:16])
-    plain_text = cryptor.decrypt(a2b_hex(text))
-    return plain_text.rstrip('\0')
+    s = JSONWebSignatureSerializer(SECRET_KEY)
+    try:
+        return s.loads(text)
+    except BadSignature:
+        return {}
 
 if __name__ == '__main__':
-    e = encrypt("daiSgmiku2")
-    d = decrypt('508ffea1e80ee020d151d81b25fc56db')
+    e = encrypt("dai123ku2")
+    d = decrypt('eyJhbGciOiJIUzI1NiJ9.ImRhaVNnbWlrdTIi.dz1bGj8fmYSiUi65ezRUaYN9HCKTpQppAsUhMmEy4ww')
     print e, d

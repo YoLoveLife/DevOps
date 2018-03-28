@@ -27,10 +27,8 @@ class UserInfoAPI(WebTokenAuthentication,generics.ListAPIView):
         dist = {}
         dist['username'] = request.user.username
         dist['name'] = request.user.full_name
-        if request.user.is_oper == True or request.user.is_superuser == True:
+        if request.user.is_superuser == True:
             dist['isadmin'] = True
-        elif request.user.is_oper == False and request.user.is_superuser == False:
-            dist['isadmin'] = False
         else:
             dist['isadmin'] = 'None'
 

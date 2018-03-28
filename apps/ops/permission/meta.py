@@ -14,9 +14,6 @@ class MetaAPIRequiredMixin(BasePermission):
         # 超级管理员通行
         if request.user.is_superuser:
             return True
-        # 运维工程师通行
-        elif request.user.is_oper:
-            return True
         # 拥有权限通行
         if perms in perm_list:
             return True
