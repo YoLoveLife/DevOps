@@ -16,7 +16,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Group
         fields = (
-            'id', 'name', 'info', 'uuid', 'status', 'users', 'framework', 'pmn_groups'
+            'id', 'name', 'info', 'uuid', 'status', 'users', 'framework', 'pmn_groups',
         )
         read_only_fields = (
             'id', 'framework'
@@ -53,12 +53,14 @@ class HostDetailSerializer(serializers.ModelSerializer):
 class HostSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source='__unicode__',read_only=True)
     detail = HostDetailSerializer(required=True)
-    groups = serializers.PrimaryKeyRelatedField(many=True,queryset=models.Group.objects.all())
+    groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all())
+    passwd = serializers.CharField(required=True, source='password',)
 
     class Meta:
         model = models.Host
         fields = (
-            'id', 'uuid', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', 'status', 'passwd', 'groups'
+            'id', 'uuid', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', 'status', 'groups',
+            'passwd',
         )
         read_only_fields = (
             'id', 'uuid', 'label'
@@ -67,7 +69,8 @@ class HostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         detail = validated_data.pop('detail')
         detail_instance = models.HostDetail.objects.create(**detail)
-        return models.Host.objects.create(detail=detail_instance,**validated_data)
+        validated_data.pop('groups')
+        return models.Host.objects.create(detail=detail_instance, **validated_data)
 
     def update(self, instance, validated_data):
         detail = validated_data.pop('detail')
@@ -79,11 +82,16 @@ class HostSerializer(serializers.ModelSerializer):
 
 
 class HostPasswordSerializer(serializers.ModelSerializer):
-    password = serializers.StringRelatedField(source='passwd',read_only=True)
+    passwd = serializers.CharField(required=True, source='password')
 
     class Meta:
-        model=models.Host
-        fields = ('id', 'password')
+        model = models.Host
+        fields = (
+            'id', 'passwd',
+        )
+        read_only_fields = (
+            'id', 'passwd',
+        )
 
 
 class StorageSerializer(serializers.HyperlinkedModelSerializer):

@@ -6,7 +6,7 @@
 from .. import models, serializers
 from rest_framework import generics
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import Response, status
 from manager.permission import host as HostPermission
 from deveops.api import WebTokenAuthentication
@@ -24,7 +24,8 @@ __all__ = [
 class ManagerHostListByGroupAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
-    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         if self.kwargs['pk']=='0':

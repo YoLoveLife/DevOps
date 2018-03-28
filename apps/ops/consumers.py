@@ -1,17 +1,15 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python
-# Time 18-1-11
+# Time 18-3-28
 # Author Yo
 # Email YoLoveLife@outlook.com
 from __future__ import absolute_import, unicode_literals
 from channels.generic.websockets import WebsocketConsumer
-import paramiko
 import redis
-from manager.interactive import YoShellSendThread, YoShellRecvThread
-from manager.models import Host, Group
+from ops.models import META
 
 __all__ = [
-    "YoShellConsumer", "YoShellRecvThread", "YoShellSendThread"
+    "YoShellConsumer"
 ]
 
 class YoShellConsumer(WebsocketConsumer):
@@ -19,23 +17,19 @@ class YoShellConsumer(WebsocketConsumer):
     http_user_and_session = True
     channel_session = True
     channel_session_user = True
-    target = paramiko.SSHClient()
-    jumper = paramiko.SSHClient()
-    # 以replay_name作为key 推送redis任务
-    def push_mission(self,replay_name,msg):
-        return redis.StrictRedis().publish(replay_name,msg)
-        self.catch_redis().publish()
 
     # 获取redis 获取信息链接
+    @staticmethod
     def catch_redis_instance(self):
         return redis.StrictRedis()
 
 
-class ManagerConsumer(YoShellConsumer):
+class MetaConsumer(YoShellConsumer):
 
+    # 發起Ansible操作
     def before_connect(self,**kwargs):
-        host = Host.objects.filter(id=int(kwargs['pk'])).get()
-        self.target = host.catch_ssh_connect.instance
+        meta = META.objects.filter(id=int(kwargs['meta'])).get()
+        play_source = meta.to_yaml
         return host.catch_ssh_connect
 
     def connect(self, message, **kwargs):
@@ -47,7 +41,6 @@ class ManagerConsumer(YoShellConsumer):
             return
         else:
             chan = self.target.invoke_shell(height=int(kwargs['rows']),width=int(kwargs['cols']))
-            # chan.send('export JAVA_HOME=/usr/local/java')
             threadSend = YoShellSendThread(self.message,chan,self.catch_redis_instance())
             threadSend.setDaemon = True
             threadSend.start()
@@ -59,9 +52,8 @@ class ManagerConsumer(YoShellConsumer):
 
 
     def receive(self, text=None, bytes=None, **kwargs):
-        # 将用户的输入直接发送到redis的订阅者队列当中
-        if text is not None:
-            self.push_mission(self.message.reply_channel.name,text)
+        # 忽略用戶所有輸入內容
+        pass
 
     def disconnect(self, message, **kwargs):
         self.message.reply_channel.send(
