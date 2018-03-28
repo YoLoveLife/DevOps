@@ -4,10 +4,75 @@ from django.db import models
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from deveops.utils import sshkey,aes
+import django.utils.timezone as timezone
 
 __all__ = [
-    "ExtendUser"
+    "Key", "ExtendUser"
 ]
+
+def private_key_validator(key):
+    if not sshkey.private_key_validator(key):
+        raise ValidationError(
+            _('%(value)s is not an even number'),
+            params={'value': key},
+        )
+
+
+class Key(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, default='')
+
+    # 操作权限限定
+    _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator])
+    _public_key = models.TextField(max_length=4096, blank=True, null=True)
+    # 使用时间
+    _fetch_time = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        permissions = (
+            ('yo_list_key', u'罗列密钥'),
+            ('yo_create_key', u'创建密钥'),
+            ('yo_update_key', u'更新密钥'),
+            ('yo_delete_key', u'删除密钥'),
+        )
+
+    @property
+    def private_key(self):
+        if self._private_key:
+            key_str = aes.decrypt(self._private_key)
+            return key_str
+        else:
+            return None
+
+    @private_key.setter
+    def private_key(self, private_key):
+        self._private_key = aes.encrypt(private_key.encode('utf-8'))
+
+    @property
+    def public_key(self):
+        return aes.decrypt(self._public_key)
+
+    @public_key.setter
+    def public_key(self, public_key):
+        self._public_key = aes.encrypt(public_key.encode('utf-8'))
+
+    @property
+    def fetch_time(self):
+        return self._fetch_time
+
+    @fetch_time.setter
+    def fetch_time(self, fetch_time):
+        if fetch_time:
+            self._fetch_time = timezone.now
+
+    @property
+    def group_name(self):
+        if self.group.exists():
+            return self.group.get().name
+        else:
+            return u'未指定'
 
 class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
@@ -55,12 +120,6 @@ class ExtendUser(AbstractUser):
 
     def get_8531email(self):
         return self.username + '@8531.cn'
-
-    @property
-    def is_oper(self):
-        if self.groups.filter(name__icontains='运维').count() != 0:
-            return True
-        return False
 
     def get_group_name(self):
         if self.is_superuser == 1:

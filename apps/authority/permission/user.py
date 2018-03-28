@@ -26,8 +26,6 @@ class UserOpsListRequiredMixin(UserAPIRequiredMixin):
         perm_list=list(request.user.get_all_permissions())
         if request.user.is_superuser:
             return True
-        elif request.user.is_oper:
-            return True
         if perms in perm_list:
             return True
         else:
