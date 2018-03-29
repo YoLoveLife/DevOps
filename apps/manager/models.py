@@ -87,8 +87,13 @@ class Group(models.Model):
     __str__ = __unicode__
 
     @property
-    def users_list(self):
-        return list(self.hosts.values_list('connect_ip',flat=True))
+    def users_list_byconnectip(self):
+        return list(self.hosts.values_list('connect_ip', flat=True))
+
+    @property
+    def users_list_byhostname(self):
+        return list(self.hosts.values_list('hostname', flat=True))
+
 
     @property
     def catch_ssh_connect(self):

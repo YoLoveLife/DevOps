@@ -6,5 +6,5 @@
 from channels.routing import route
 from ops import consumers
 ops_routing = [
-    consumers.MetaConsumer.as_route(path=r'^/(?P<pk>[0-9]+)/wds/(?P<meta>[0-9]+)/$'),
+    consumers.MetaConsumer.as_route(path=r'^/ansible/(?P<meta>[0-9]+)/$'),
 ]

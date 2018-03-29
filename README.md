@@ -47,8 +47,8 @@ devEops正在不断成长
 ![LOGIN](img/login.png)</br>
 ### 资产管理
 ![GROUP](img/group.png)</br>
-### 堡垒机操作
-![JUMPER](img/jumper.png)</br>
+### 执行基于playbook的元操作
+![JUMPER](img/playbook.png)</br>
 ### 批量主机信息上传
 ![UPLOAD](img/upload.png)</br>
 ### 脚本编写
