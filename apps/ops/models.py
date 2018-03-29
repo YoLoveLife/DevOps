@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from manager.models import Group,Host
+import uuid
 
 __all__ = [
     'META', 'META_CONTENT'
@@ -31,8 +32,10 @@ class META_CONTENT(models.Model):
 
 class META(models.Model):
     id = models.IntegerField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
     hosts = models.ManyToManyField(Host, blank=True, related_name='metas', verbose_name=_("metas"))
+    info = models.CharField(default='',max_length=5000)
     contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
 
     class Meta:
