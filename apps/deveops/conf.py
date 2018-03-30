@@ -32,6 +32,7 @@ UPLOAD_ROOT = '/devEops/upload'
 MEDIA_ROOT = '/devEops/media'
 WORK_ROOT = '/devEops/workspace'
 
+
 # LDAP配置
 LDAP_SERVER = "ldap://10.100.61.6:389"
 LDAP_PASSWD = "7a$LIOOwxNO"
