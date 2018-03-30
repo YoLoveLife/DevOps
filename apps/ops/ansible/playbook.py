@@ -31,7 +31,7 @@ class Playbook(object):
 
     def import_task(self, play_source):
         from deveops.asgi import channel_layer
-        channel_layer.send(self.replay_name,{'text': '载入Task => '})
+        channel_layer.send(self.replay_name,{'text': 'Load Task => '})
 
         self.play = Play().load(play_source, variable_manager=self.variable_manager, loader=self.loader)
 
@@ -47,13 +47,13 @@ class Playbook(object):
                 stdout_callback=self.stdout_callback
             )
             from deveops.asgi import channel_layer
-            channel_layer.send(self.replay_name, {'text': '开始执行 => \r\n'})
+            channel_layer.send(self.replay_name, {'text': 'Start => \r\n'})
 
             result = tqm.run(self.play)
 
             from deveops.asgi import channel_layer
             channel_layer.send(self.replay_name,
-                               {'text': 'Playbook执行完毕\r\n'})
+                               {'text': 'Done\r\n'})
             channel_layer.send(self.replay_name,
                                {'close': True})
         finally:

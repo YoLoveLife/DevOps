@@ -133,10 +133,9 @@ class HostDetail(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
     systemtype = models.ForeignKey(System_Type, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
-    info = models.CharField(max_length=200, default="")
+    info = models.CharField(max_length=200, default="", null=True, blank=True)
     aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
     vmware_id = models.CharField(max_length=36, default='', blank=True, null=True)
-
 
 class Host(models.Model):
     SYSTEM_STATUS = (
@@ -146,7 +145,6 @@ class Host(models.Model):
     )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
 
     # 资产结构
     groups = models.ManyToManyField(Group, null=True, blank=True, related_name='hosts', verbose_name=_("Host"))
@@ -180,7 +178,15 @@ class Host(models.Model):
         )
 
     def __unicode__(self):
-        return str(self.uuid) + '-' +self.detail.info
+        uuid = None
+        if self.detail.aliyun_id:
+            uuid = str(self.detail.aliyun_id)
+        elif self.detail.vmware_id:
+            uuid = str(self.detail.vmware_id)
+        else:
+            uuid = 'None'
+        return uuid + '-' + self.detail.info
+
 
     __str__ = __unicode__
 
@@ -189,7 +195,7 @@ class Host(models.Model):
         if self._passwd:
             return aes.decrypt(self._passwd)
         else:
-            return ''
+            return 'nopassword'
 
     @password.setter
     def password(self, password):

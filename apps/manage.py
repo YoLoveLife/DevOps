@@ -6,14 +6,22 @@
 #!/usr/bin/env python
 import os
 import sys
-
+# from django.conf import settings
 if __name__ == "__main__":
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
+    # reload(sys)
+    # sys.setdefaultencoding('utf-8')
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
+    # os.environ['DJANGO_SETTINGS_MODULE'] = "deveops.settings"
+    # print(sys.path)
+    # reload(sys)
+    # PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # sys.path.append(PROJECT_DIR)
+    # print(sys.path)
+    # PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # sys.path.append(PROJECT_DIR)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
-    PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    sys.path.append(PROJECT_DIR)
-
+    # reload(os)
+    # print('environ',os.environ)
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
