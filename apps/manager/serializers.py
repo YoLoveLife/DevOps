@@ -54,16 +54,16 @@ class HostSerializer(serializers.ModelSerializer):
     label = serializers.CharField(source='__unicode__',read_only=True)
     detail = HostDetailSerializer(required=True)
     groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all())
-    passwd = serializers.CharField(required=True, source='password',)
+    passwd = serializers.CharField(required=False, allow_null=True, source='password',)
 
     class Meta:
         model = models.Host
         fields = (
-            'id', 'uuid', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', 'status', 'groups',
+            'id', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', 'status', 'groups',
             'passwd',
         )
         read_only_fields = (
-            'id', 'uuid', 'label'
+            'id', 'label'
         )
 
     def create(self, validated_data):

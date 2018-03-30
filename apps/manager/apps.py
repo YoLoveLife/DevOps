@@ -6,5 +6,6 @@ __all__ = [
     "ManagerConfig"
 ]
 
+
 class ManagerConfig(AppConfig):
     name = 'manager'

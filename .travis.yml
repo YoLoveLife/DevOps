@@ -6,7 +6,7 @@ services:
 install:
   - pip install -r requirements.txt
 before_script:
-  - mysql -e "CREATE DATABASE deveops;"
+  - mysql -e "CREATE DATABASE deveops_dev;"
   - python apps/manage.py makemigrations
 script:
   - python apps/manage.py migrate -v 3
