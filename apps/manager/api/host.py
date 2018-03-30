@@ -7,25 +7,27 @@ from .. import models, serializers
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from manager.permission import host as HostPermission
 from deveops.api import WebTokenAuthentication
 
-#from rest_framework.pagination import PageNumberPagination
-# pagination_class = PagePa
-# def paginate_queryset(self, queryset):
-
 __all__ = [
     'ManagerHostListByGroupAPI', 'ManagerHostListAPI', 'ManagerHostCreateAPI',
-    'ManagerHostDetailAPI','ManagerHostUpdateAPI','ManagerHostDeleteAPI'
+    'ManagerHostDetailAPI','ManagerHostUpdateAPI','ManagerHostDeleteAPI',
+    'HostPagination'
 ]
+
+
+class HostPagination(PageNumberPagination):
+    page_size = 10
 
 
 class ManagerHostListByGroupAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
-    # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    pagination_class = HostPagination
 
     def get_queryset(self):
         if self.kwargs['pk']=='0':
@@ -81,8 +83,8 @@ class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
-
+    # permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny]
 
 class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Host
@@ -103,7 +105,8 @@ class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
 
 class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.HostPasswordSerializer
-    permission_classes = [HostPermission.HostPasswordRequiredMixin,IsAuthenticated]
+    # permission_classes = [HostPermission.HostPasswordRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny]
     #
     # @decorator_manager(5, u'获取密码')
     # def timeline_create(self,user):

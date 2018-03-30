@@ -16,6 +16,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 from __future__ import absolute_import
 import os
+import sys
 import django.db.backends.mysql
 from deveops import conf as DEVEOPS_CONF
 ENVIRONMENT=DEVEOPS_CONF.ENVIRONMENT
@@ -23,6 +24,7 @@ ENVIRONMENT=DEVEOPS_CONF.ENVIRONMENT
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
+sys.path.append(PROJECT_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -51,14 +53,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
-    'bootstrap3',
+    # 'bootstrap3',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    # 'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djcelery', #celery
-    'kombu.transport.django', #celery
+    'django_celery_beat',
+    # 'djcelery', #celery
+    # 'kombu.transport.django', #celery
     'channels',
 ]
 
@@ -73,14 +76,6 @@ JWT_AUTH = {
 
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE':10,
-    # 'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        # 'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.IsAdminUser'
-    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     )
@@ -216,9 +211,9 @@ if ENVIRONMENT != 'TRAVIS':
         'django_auth_ldap.backend.LDAPBackend',
         'django.contrib.auth.backends.ModelBackend',
     )
-    AUTH_LDAP_SERVER_URI = "ldap://10.100.61.6:389"
+    AUTH_LDAP_SERVER_URI = DEVEOPS_CONF.LDAP_SERVER
     AUTH_LDAP_BIND_DN = "cn=tools,ou=Zabbix,ou=TEST,dc=zbjt,dc=com"
-    AUTH_LDAP_BIND_PASSWORD = "7a$LIOOwxNO"
+    AUTH_LDAP_BIND_PASSWORD = DEVEOPS_CONF.LDAP_PASSWD
 
     OU = unicode('ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
     AUTH_LDAP_GROUP_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(objectClass=groupOfNames)")
@@ -236,12 +231,6 @@ else:
     pass
 
 
-#Default devEops Env
-PING_PLAYBOOK_TASK_ID=1
-
-#RSA_KEY
-RSA_KEY=DEVEOPS_CONF.RSA_KEY
-
 #CHANNEL
 CHANNEL_LAYERS = {
     "default": {
@@ -255,17 +244,28 @@ CHANNEL_LAYERS = {
 
 
 # CELERY
-import djcelery
-djcelery.setup_loader()
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# BROKER_URL = 'redis://localhost:6379/0'
-BROKER_URL = 'django://'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND = 'django://'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = TIME_ZONE
+# import djcelery
+# djcelery.setup_loader()
+CELERY_BROKER_URL = 'redis://:{PASSWORD}@{HOST}:{PORT}/3'.format(
+    PASSWORD='',
+    HOST=DEVEOPS_CONF.REDIS_HOST,
+    PORT=DEVEOPS_CONF.REDIS_PORT
+)
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+CELERY_RESULT_EXPIRES = 3600
+# CELERY_WORKER_LOG_FORMAT = '%(asctime)s [%(module)s %(levelname)s] %(message)s'
+CELERY_WORKER_LOG_FORMAT = '%(message)s'
+# CELERY_WORKER_TASK_LOG_FORMAT = '%(asctime)s [%(module)s %(levelname)s] %(message)s'
+CELERY_WORKER_TASK_LOG_FORMAT = '%(message)s'
+# CELERY_WORKER_LOG_FORMAT = '%(asctime)s [%(module)s %(levelname)s] %(message)s'
+CELERY_TASK_EAGER_PROPAGATES = True
+CELERY_REDIRECT_STDOUTS = True
+CELERY_REDIRECT_STDOUTS_LEVEL = "INFO"
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
 
 
 #FileUpload

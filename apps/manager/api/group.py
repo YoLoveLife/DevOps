@@ -6,14 +6,20 @@
 from .. import models, serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from manager.permission import group as GroupPermission
 from deveops.api import WebTokenAuthentication
 
 __all__ = [
     'ManagerGroupListAPI', 'ManagerGroupCreateAPI', 'ManagerGroupDetailAPI',
-    'ManagerGroupUpdateAPI', 'ManagerGroupDeleteAPI'
+    'ManagerGroupUpdateAPI', 'ManagerGroupDeleteAPI',
+    'GroupPagination'
 ]
+
+
+class GroupPagination(PageNumberPagination):
+    page_size = 10
 
 
 class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
@@ -21,6 +27,7 @@ class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    # pagination_class = GroupPagination
 
 
 class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):

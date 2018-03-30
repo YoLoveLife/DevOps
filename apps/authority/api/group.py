@@ -2,6 +2,7 @@
 from .. import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response,status
 from rest_framework_jwt.views import ObtainJSONWebToken
 from deveops.api import WebTokenAuthentication
@@ -9,8 +10,13 @@ from authority.permission import group as GroupPermission
 
 __all__ = [
     "GroupListAPI", "GroupCreateAPI", "GroupUpdateAPI",
-    "GroupDeleteAPI"
+    "GroupDeleteAPI",
+    "GroupPagination"
 ]
+
+
+class GroupPagination(PageNumberPagination):
+    page_size = 10
 
 
 class GroupListAPI(generics.ListAPIView):
@@ -18,6 +24,7 @@ class GroupListAPI(generics.ListAPIView):
     serializer_class =serializers.GroupSerializer
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    # pagination_class = GroupPagination
 
 
 class GroupCreateAPI(generics.CreateAPIView):
