@@ -1,8 +1,10 @@
 # -*- coding:utf-8 -*-
+import json
+import shutil
 from collections import namedtuple
 from ansible.parsing.dataloader import DataLoader
-from ansible.vars import VariableManager
-from ansible.inventory import Inventory
+from ansible.vars.manager import VariableManager
+from ansible.inventory.manager import InventoryManager
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 import callback
@@ -16,7 +18,6 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become',
 
 class Playbook(object):
     def __init__(self, host_list, replay_name, key):
-        self.variable_manager = VariableManager()
         self.loader = DataLoader()
         f = open('/tmp/ddr.pri', 'w')
         f.write(key)
@@ -25,7 +26,10 @@ class Playbook(object):
                                become_method=None, become_user=None, check=False, private_key_file='/tmp/ddr.pri')
         self.stdout_callback = callback.AnsibleCallback(replay_name)
         self.replay_name = replay_name
-        self.inventory = Inventory(loader=self.loader, variable_manager=self.variable_manager, host_list=host_list)
+
+        self.inventory = InventoryManager(loader=self.loader, sources=host_list)
+
+        self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.variable_manager.set_inventory(self.inventory)
         self.play = None
 
@@ -34,6 +38,9 @@ class Playbook(object):
         channel_layer.send(self.replay_name,{'text': 'Load Task => '})
 
         self.play = Play().load(play_source, variable_manager=self.variable_manager, loader=self.loader)
+
+    def extra_vars(self,vars):
+        self.variable_manager.extra_vars(vars)
 
     def run(self):
         tqm = None
@@ -46,6 +53,7 @@ class Playbook(object):
                 passwords={},
                 stdout_callback=self.stdout_callback
             )
+
             from deveops.asgi import channel_layer
             channel_layer.send(self.replay_name, {'text': 'Start => \r\n'})
 
