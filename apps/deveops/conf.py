@@ -34,8 +34,8 @@ WORK_ROOT = '/devEops/workspace'
 
 # LDAP配置
 LDAP_SERVER = "ldap://0.0.0.0:389"
-LDAP_PASSWD = "7a$LIOOwxNO"
-LDAP_OU = unicode('ou=公司,ou=集团,dc=,dc=com','utf8')
+LDAP_PASSWD = ""
+LDAP_OU = unicode('ou=,ou=,dc=,dc=com','utf8')
 
 # VMWARE配置
 VMWARE_USERNAME = ""
