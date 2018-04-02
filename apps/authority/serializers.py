@@ -1,7 +1,7 @@
-import models
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
-from authority.models import ExtendUser,Group,Key
+from authority.models import ExtendUser,Group,Key,Jumper
 
 __all__ = [
     'UserSerializer', 'GroupSerializer', 'PermissionSerializer',
@@ -11,7 +11,7 @@ __all__ = [
 class UserSerializer(serializers.ModelSerializer):
     group_name = serializers.StringRelatedField(source="get_group_name", read_only=True)
     email8531 = serializers.StringRelatedField(source="get_8531email", read_only=True)
-    groups = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Group.objects.all())
+    groups = serializers.PrimaryKeyRelatedField(many=True, queryset=Group.objects.all())
 
     class Meta:
         model = ExtendUser
@@ -49,4 +49,15 @@ class KeySerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id', 'group_name', 'fetch_time'
+        )
+
+
+class JumperSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Jumper
+        fields = (
+            'id', 'connect_ip', 'sshport', 'name', 'info', 'status'
+        )
+        read_only_fields = (
+            'id', 'status'
         )

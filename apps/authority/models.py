@@ -7,9 +7,11 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from deveops.utils import sshkey,aes
 import django.utils.timezone as timezone
+from django.conf import settings
+import socket
 
 __all__ = [
-    "Key", "ExtendUser"
+    "Key", "ExtendUser", "Jumper"
 ]
 
 def private_key_validator(key):
@@ -69,10 +71,11 @@ class Key(models.Model):
 
     @property
     def group_name(self):
-        if self.group.exists():
-            return self.group.get().name
+        if self.group is not None:
+            return self.group.name
         else:
             return u'未指定'
+
 
 class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
@@ -136,3 +139,69 @@ class ExtendUser(AbstractUser):
                 return ''
             else:
                 return str.join(list)
+
+
+class Jumper(models.Model):
+    JUMPER_STATUS = (
+        (0, '不可达'),
+        (1, '可达'),
+    )
+    # 全局ID
+    id = models.AutoField(primary_key=True)
+    connect_ip = models.GenericIPAddressField(default='0.0.0.0')
+    # 跳板机端口
+    sshport = models.IntegerField(default='52000')
+    name = models.CharField(max_length=50, default="")
+    info = models.CharField(max_length=200, default="", blank=True, null=True)
+    _status = models.IntegerField(choices=JUMPER_STATUS, default=0)
+
+    class Meta:
+        permissions = (
+            ('yo_list_jumper', u'罗列跳板机'),
+            ('yo_create_jumper', u'创建跳板机'),
+            ('yo_update_jumper', u'更新跳板机'),
+            ('yo_delete_jumper', u'删除跳板机'),
+        )
+
+    def __unicode__(self):
+        return self.connect_ip + ' - ' + self.name
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self,status):
+        self._status = self.check_status()
+
+    def check_status(self):
+        s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.settimeout(settings.SSH_TIMEOUT)
+        try:
+            s.connect((str(self.connect_ip.encode('utf-8')), int(self.sshport)))
+        except socket.timeout:
+            self._status = 0
+            return 0
+        except Exception,e:
+            self._status = 0
+            return 0
+        self._status = 1
+        return 1
+
+    # @property
+    # def catch_ssh_connect(self):
+    #     msg = Message()
+    #     if self.check_status == True:
+    #         try:
+    #             jumper = paramiko.SSHClient()
+    #             jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    #             jumper.connect(self.connect_ip, username=self.sys_user.username,
+    #                            pkey=sshkey.ssh_private_key2obj(self.sys_user.private_key),
+    #                            port=self.sshport)
+    #             return msg.fuse_msg(1,'Jumper connection success',jumper)
+    #         except socket.timeout:
+    #             return msg.fuse_msg(0,'Jumper connection timeout',None)
+    #         except Exception,ex:
+    #             return msg.fuse_msg(0,'Jumper connection wrong',None)
+    #     else:
+    #         return msg.fuse_msg(0,'Jumper connection wrong', None)

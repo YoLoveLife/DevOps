@@ -6,6 +6,7 @@ from ..api import host as HostAPI
 urlpatterns=[
     # Resource group api
     url(r'^v1/group/$', GroupAPI.ManagerGroupListAPI.as_view()),
+    url(r'^v1/group/bypage/$', GroupAPI.ManagerGroupListByPageAPI.as_view()),
     url(r'^v1/group/create/$', GroupAPI.ManagerGroupCreateAPI.as_view()),
     url(r'^v1/group/(?P<pk>[0-9]+)/detail/$', GroupAPI.ManagerGroupDetailAPI.as_view()),
     url(r'^v1/group/(?P<pk>[0-9]+)/update/$',GroupAPI.ManagerGroupUpdateAPI.as_view()),
@@ -26,8 +27,8 @@ urlpatterns=[
     url(r'^v1/position/(?P<pk>[0-9]+)/delete/$', PositionAPI.ManagerPositionDeleteAPI.as_view()),
     #
     # Resource host api
-    url(r'^v1/hostbygroup/(?P<pk>[0-9]+)/$',HostAPI.ManagerHostListByGroupAPI.as_view()),
     url(r'^v1/host/$',HostAPI.ManagerHostListAPI.as_view()),
+    url(r'^v1/host/bypage/$', HostAPI.ManagerHostListByPageAPI.as_view()),
     url(r'^v1/host/create/$', HostAPI.ManagerHostCreateAPI.as_view()),
     url(r'^v1/host/(?P<pk>[0-9]+)/detail/$', HostAPI.ManagerHostDetailAPI.as_view()),
     url(r'^v1/host/(?P<pk>[0-9]+)/update/$', HostAPI.ManagerHostUpdateAPI.as_view()),

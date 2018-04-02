@@ -54,7 +54,7 @@ class META(models.Model):
             tasks.append(content.to_yaml)
         return {
             'tasks': tasks,
+            'gather_facts': 'no',
             'hosts': ','.join(hosts_list),
-            'gather_facts': 'no'
         }
 
