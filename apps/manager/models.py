@@ -9,7 +9,7 @@ import socket
 from deveops.utils.msg import Message
 from deveops.utils import sshkey,aes
 from django.contrib.auth.models import Group as PerGroup
-from authority.models import Key
+from authority.models import Key,Jumper
 
 __all__ = [
     "System_Type", "Group", "Host",
@@ -58,9 +58,10 @@ def upload_dir_path(filename):
 
 class Group(models.Model):
     GROUP_STATUS=(
-        (0,'禁用中'),
-        (1,'使用中'),
-        (2,'暂停中'),
+        (0, '禁用中'),
+        (1, '使用中'),
+        (2, '暂停中'),
+        (3, '不可达'),
     )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -68,11 +69,12 @@ class Group(models.Model):
     info = models.CharField(max_length=100, default='')
     framework = models.ImageField(upload_to=upload_dir_path, default='hacg.fun_01.jpg')
     users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
-    status = models.IntegerField(choices=GROUP_STATUS, default=0)
+    _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
 
     # 操作凭证
-    key = models.ForeignKey(Key, related_name='group', on_delete=models.SET_NULL, null=True, blank=True)
+    key = models.OneToOneField(Key, related_name='group', on_delete=models.SET_NULL, null=True, blank=True)
+    jumper = models.OneToOneField(Jumper, related_name='group', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         permissions = (('yo_list_group', u'罗列应用组'),
@@ -87,8 +89,25 @@ class Group(models.Model):
     __str__ = __unicode__
 
     @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        if status == 1:
+            if self.key is not None and self.jumper is not None and self.jumper.status == 1:
+                self._status = 1
+            else:
+                self._status = 3
+        else:
+            self._status = status
+
+    @property
     def users_list_byconnectip(self):
-        return list(self.hosts.values_list('connect_ip', flat=True))
+        if self._status != 1:
+            return []
+        else:
+            return list(self.hosts.values_list('connect_ip', flat=True))
 
     @property
     def users_list_byhostname(self):
@@ -137,11 +156,12 @@ class HostDetail(models.Model):
     aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
     vmware_id = models.CharField(max_length=36, default='', blank=True, null=True)
 
+
 class Host(models.Model):
     SYSTEM_STATUS = (
-        (0,'错误'),
-        (1,'正常'),
-        (2,'不可达'),
+        (0, '错误'),
+        (1, '正常'),
+        (2, '不可达'),
     )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID
@@ -159,12 +179,12 @@ class Host(models.Model):
     hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)
 
     # 用户端口
-    sshport = models.IntegerField(default='52000')
+    sshport = models.IntegerField(default='22')
     detail = models.ForeignKey(HostDetail, related_name='host', on_delete=models.SET_NULL, null=True)
     _passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
 
     # 服务器状态
-    status = models.IntegerField(default=1, choices=SYSTEM_STATUS)
+    _status = models.IntegerField(default=1, choices=SYSTEM_STATUS)
 
     class Meta:
         permissions = (
@@ -189,6 +209,14 @@ class Host(models.Model):
 
 
     __str__ = __unicode__
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self,status):
+        self._status = status
 
     @property
     def password(self):

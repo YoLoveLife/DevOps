@@ -35,15 +35,11 @@ Storage_Key={
 }
 from pyVim import connect
 import ssl
-try:
-    from deveops import conf as DEVEOPS_CONF
-    USERNAME = DEVEOPS_CONF.VMWARE_USERNAME
-    PASSWORD = DEVEOPS_CONF.VMWARE_PASSWD
-    SERVER = DEVEOPS_CONF.VMWARE_SERVER
-except ImportError:
-    USERNAME = "zbjt\yz2"
-    PASSWORD = "daiSgmiku2"
-    SERVER = '10.100.60.110'
+from deveops import conf as DEVEOPS_CONF
+USERNAME = DEVEOPS_CONF.VMWARE_USERNAME
+PASSWORD = DEVEOPS_CONF.VMWARE_PASSWD
+SERVER = DEVEOPS_CONF.VMWARE_SERVER
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 
@@ -134,7 +130,7 @@ def fetch_AllInstance():
 
 if __name__ == "__main__":
     cluster = VMconnect(SERVER)
-    vm = VMsearch("42262dfe-22c4-5546-0281-a1b22c390aac",cluster)
-    print(vm.summary)
+    vm = VMsearch("123",cluster)
+    print(vm.name)
     # print(FetchInfo(vm))
     VMdisconnect(cluster)

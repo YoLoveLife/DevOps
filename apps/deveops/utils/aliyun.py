@@ -6,9 +6,8 @@
 
 from aliyunsdkcore import client
 import json
-AccessKeyId='LTAI7ypdSL872FxD'
-AccessKeySecret='3f8MjiAxn3JbsuTuy43JR6o0ayPd82'
-clt = client.AcsClient(AccessKeyId, AccessKeySecret, 'cn-hangzhou')
+from deveops import conf
+clt = client.AcsClient(conf.ALIYUN_ACCESSKEY, conf.ALIYUN_ACCESSSECRET, 'cn-hangzhou')
 
 def fetch_Instance(instance):
     from aliyunsdkecs.request.v20140526 import DescribeInstanceAttributeRequest
@@ -20,6 +19,3 @@ def fetch_Instance(instance):
     except:
         return {}
     return json.loads(response)
-
-# if __name__ == '__main__':
-#     fetch_Instance('i-bp1c3euzhnq4pbi6j3xs')

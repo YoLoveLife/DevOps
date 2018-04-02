@@ -21,7 +21,7 @@ DB_PORT = '3306'
 SESSION_COOKIE_AGE = 30*60
 
 # SSH配置
-SSH_TIMEOUT = 5
+SSH_TIMEOUT = 2
 
 # Redis配置
 REDIS_HOST = 'localhost'
@@ -33,11 +33,15 @@ MEDIA_ROOT = '/devEops/media'
 WORK_ROOT = '/devEops/workspace'
 
 # LDAP配置
-LDAP_SERVER = "ldap://10.100.61.6:389"
+LDAP_SERVER = "ldap://0.0.0.0:389"
 LDAP_PASSWD = "7a$LIOOwxNO"
-LDAP_OU = unicode('ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
+LDAP_OU = unicode('ou=公司,ou=集团,dc=,dc=com','utf8')
 
 # VMWARE配置
-VMWARE_USERNAME = "zbjt\yz2"
-VMWARE_PASSWD = "daiSgmiku2"
-VMWARE_SERVER = "10.100.60.110"
+VMWARE_USERNAME = ""
+VMWARE_PASSWD = ""
+VMWARE_SERVER = ""
+
+# ALiyun配置
+ALIYUN_ACCESSKEY = ""
+ALIYUN_ACCESSSECRET = ""

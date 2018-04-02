@@ -10,13 +10,16 @@ __all__ = [
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    users = serializers.PrimaryKeyRelatedField(many=True,queryset=ExtendUser.objects.all())
-    pmn_groups = serializers.PrimaryKeyRelatedField(many=True,queryset=models.PerGroup.objects.all())
+    users = serializers.PrimaryKeyRelatedField(many=True, queryset=ExtendUser.objects.all())
+    pmn_groups = serializers.PrimaryKeyRelatedField(many=True, queryset=models.PerGroup.objects.all())
+    key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
+    jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
+    _status = serializers.IntegerField(required=True, source='status',)
 
     class Meta:
         model = models.Group
         fields = (
-            'id', 'name', 'info', 'uuid', 'status', 'users', 'framework', 'pmn_groups',
+            'id', 'name', 'info', 'uuid', '_status', 'users', 'framework', 'pmn_groups', 'key', 'jumper'
         )
         read_only_fields = (
             'id', 'framework'
@@ -55,11 +58,12 @@ class HostSerializer(serializers.ModelSerializer):
     detail = HostDetailSerializer(required=True)
     groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all())
     passwd = serializers.CharField(required=False, allow_null=True, source='password',)
+    _status = serializers.IntegerField(required=True, source='status',)
 
     class Meta:
         model = models.Host
         fields = (
-            'id', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', 'status', 'groups',
+            'id', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', '_status', 'groups',
             'passwd',
         )
         read_only_fields = (

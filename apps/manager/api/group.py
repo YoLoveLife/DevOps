@@ -5,7 +5,7 @@
 # Email YoLoveLife@outlook.com
 from .. import models, serializers
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from manager.permission import group as GroupPermission
@@ -14,12 +14,8 @@ from deveops.api import WebTokenAuthentication
 __all__ = [
     'ManagerGroupListAPI', 'ManagerGroupCreateAPI', 'ManagerGroupDetailAPI',
     'ManagerGroupUpdateAPI', 'ManagerGroupDeleteAPI',
-    'GroupPagination'
+    'GroupPagination', 'ManagerGroupListByPageAPI'
 ]
-
-
-class GroupPagination(PageNumberPagination):
-    page_size = 10
 
 
 class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
@@ -27,7 +23,18 @@ class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
-    # pagination_class = GroupPagination
+
+
+class GroupPagination(PageNumberPagination):
+    page_size = 10
+
+
+class ManagerGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
+    module = models.Group
+    serializer_class = serializers.GroupSerializer
+    queryset = models.Group.objects.all()
+    permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    pagination_class = GroupPagination
 
 
 class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
@@ -49,8 +56,8 @@ class ManagerGroupUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
-
+    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
 
 class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Group

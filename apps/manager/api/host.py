@@ -13,9 +13,9 @@ from manager.permission import host as HostPermission
 from deveops.api import WebTokenAuthentication
 
 __all__ = [
-    'ManagerHostListByGroupAPI', 'ManagerHostListAPI', 'ManagerHostCreateAPI',
+    'ManagerHostListAPI', 'ManagerHostCreateAPI',
     'ManagerHostDetailAPI','ManagerHostUpdateAPI','ManagerHostDeleteAPI',
-    'HostPagination'
+    'HostPagination', 'ManagerHostListByPageAPI'
 ]
 
 
@@ -23,25 +23,19 @@ class HostPagination(PageNumberPagination):
     page_size = 10
 
 
-class ManagerHostListByGroupAPI(WebTokenAuthentication,generics.ListAPIView):
-    module = models.Host
-    serializer_class = serializers.HostSerializer
-    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
-    pagination_class = HostPagination
-
-    def get_queryset(self):
-        if self.kwargs['pk']=='0':
-            queryset = models.Host.objects.all()
-            return queryset
-        queryset= models.Group.objects.get(id=self.kwargs['pk']).hosts
-        return queryset
-
-
 class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
     permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+
+
+class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
+    module = models.Host
+    serializer_class = serializers.HostSerializer
+    queryset = models.Host.objects.all()
+    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    pagination_class = HostPagination
 
 
 class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
@@ -85,6 +79,7 @@ class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     queryset = models.Host.objects.all()
     # permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
+
 
 class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Host
