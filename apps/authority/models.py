@@ -188,6 +188,8 @@ class Jumper(models.Model):
         self._status = 1
         return 1
 
+    def to_yaml(self):
+        return '-o ProxyCommand="ssh -p{PORT} -W %h:%p -q root@{IP} nc"'.format(PORT=self.sshport,IP=self.connect_ip)
     # @property
     # def catch_ssh_connect(self):
     #     msg = Message()

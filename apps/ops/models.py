@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 from manager.models import Group,Host
 import uuid
 
@@ -47,6 +48,18 @@ class META(models.Model):
     @property
     def to_yaml(self):
         tasks = []
+        try:
+            jumper = self.group.jumper
+            proxy_task = {
+                             u'set_fact':
+                                 {
+                                     'ansible_ssh_common_args':
+                                         '-o ProxyCommand="ssh -p{PORT} -W %h:%p root@{IP}"'.format(PORT=jumper.sshport, IP=jumper.connect_ip)
+                                 }
+                         }
+            tasks.append(proxy_task)
+        except ObjectDoesNotExist:
+            pass
         hosts_list = []
         for host in self.hosts.all():
             hosts_list.append(host.connect_ip)
