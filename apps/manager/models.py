@@ -107,12 +107,13 @@ class Group(models.Model):
         if self._status != 1:
             return []
         else:
-            return list(self.hosts.values_list('connect_ip', flat=True))
+            # Ansible 2.0.0.0
+            # return list(self.hosts.values_list('connect_ip', flat=True))
+            return ','.join(list(self.hosts.values_list('connect_ip', flat=True)))
 
     @property
     def users_list_byhostname(self):
         return list(self.hosts.values_list('hostname', flat=True))
-
 
     @property
     def catch_ssh_connect(self):
