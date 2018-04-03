@@ -1,6 +1,4 @@
 # -*- coding:utf-8 -*-
-import json
-import shutil
 from collections import namedtuple
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
@@ -13,17 +11,18 @@ __all__ = [
     "Options", "Playbook"
 ]
 
-Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check', 'private_key_file'])
+Options = namedtuple('Options', ['connection', 'module_path', 'forks',
+                                 'become', 'become_method', 'become_user', 'check', 'private_key_file','diff'])
 
 
 class Playbook(object):
     def __init__(self, host_list, replay_name, key):
         self.loader = DataLoader()
-        f = open('/tmp/ddr.pri', 'w')
-        f.write(key)
-        f.close()
-        self.options = Options(connection='smart', module_path='', forks=100, become=None,
-                               become_method=None, become_user=None, check=False, private_key_file='/tmp/ddr.pri')
+        self.options = Options(
+            connection='smart', module_path='', forks=100, become=None,
+            become_method=None, become_user=None, check=False,
+            private_key_file=self.write_key(key), diff=False
+        )
         self.stdout_callback = callback.AnsibleCallback(replay_name)
         self.replay_name = replay_name
 
@@ -32,6 +31,15 @@ class Playbook(object):
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.variable_manager.set_inventory(self.inventory)
         self.play = None
+
+    def write_key(self,key):
+        try:
+            f = open('/tmp/ddr.pri', 'w')
+            f.write(key)
+            f.close()
+        except Exception:
+            return '~/.ssh/id_rsa'
+        return '/tmp/ddr.pri'
 
     def import_task(self, play_source):
         from deveops.asgi import channel_layer
