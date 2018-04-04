@@ -45,7 +45,8 @@ class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
 
 
 class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
-    permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
+    # permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self):
         return models.Host.objects.filter(id=int(self.kwargs['pk'])).get()
