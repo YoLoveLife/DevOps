@@ -25,11 +25,10 @@ class Playbook(object):
         )
         self.stdout_callback = callback.AnsibleCallback(replay_name)
         self.replay_name = replay_name
-
-        self.inventory = InventoryManager(loader=self.loader, sources=host_list)
+        print('host_list',host_list.encode('utf-8'))
+        self.inventory = InventoryManager(loader=self.loader, sources=host_list.encode('utf-8')+',')
 
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
-        self.variable_manager.set_inventory(self.inventory)
         self.play = None
 
     def write_key(self,key):
