@@ -25,6 +25,7 @@ class Playbook(object):
         )
         self.stdout_callback = callback.AnsibleCallback(replay_name)
         self.replay_name = replay_name
+        print(host_list)
         print('host_list',host_list.encode('utf-8'))
         self.inventory = InventoryManager(loader=self.loader, sources=host_list.encode('utf-8')+',')
 

@@ -13,7 +13,7 @@ __all__ = [
 
 
 class META_CONTENT(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, default='')
     module = models.CharField(default='',max_length=20)
     args = models.CharField(default='', max_length=100)
@@ -34,7 +34,7 @@ class META_CONTENT(models.Model):
 
 class META(models.Model):
     # 指定某幾台主機進行操作的元操作
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='group_metas')
     # 當hosts為空 則說明該meta任務為本地執行
