@@ -9,7 +9,8 @@ from celery.task import periodic_task
 from celery.schedules import crontab
 from manager.models import Host,HostDetail,Position,System_Type
 
-@periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
+# @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
+@periodic_task(run_every=crontab(minute='*'))
 def vmwareInfoCatch():
     print('ZZCDDR-PPQ')
     from deveops.utils import vmware

@@ -22,7 +22,8 @@ class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    # permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class GroupPagination(PageNumberPagination):
