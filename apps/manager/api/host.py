@@ -25,9 +25,10 @@ class HostPagination(PageNumberPagination):
 
 class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Host
-    serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
+    serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    filter_fields = ('groups',)
 
 
 class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
