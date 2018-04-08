@@ -11,6 +11,7 @@ urlpatterns=[
     url(r'^v1/group/(?P<pk>[0-9]+)/detail/$', GroupAPI.ManagerGroupDetailAPI.as_view()),
     url(r'^v1/group/(?P<pk>[0-9]+)/update/$',GroupAPI.ManagerGroupUpdateAPI.as_view()),
     url(r'^v1/group/(?P<pk>[0-9]+)/delete/$',GroupAPI.ManagerGroupDeleteAPI.as_view()),
+    url(r'^v1/group/(?P<pk>[0-9]+)/framework/$', GroupAPI.ManagerGroupFrameworkAPI.as_view()),
     #
     # Resource systype api
     url(r'^v1/systype/$', SystypeAPI.ManagerSysTypeListAPI.as_view()),

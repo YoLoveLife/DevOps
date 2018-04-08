@@ -5,7 +5,7 @@ from authority.models import ExtendUser
 __all__ = [
     "GroupSerializer", "SystemTypeSerializer", 'PositionSerializer',
     "HostDetailSerializer", "HostSerializer", "HostPasswordSerializer",
-    "StorageSerializer"
+    "StorageSerializer" , 'FrameworkSerializer'
 ]
 
 
@@ -15,14 +15,23 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
     jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
     _status = serializers.IntegerField(required=True, source='status',)
+    _framework = serializers.CharField(required=False, source='framework')
 
     class Meta:
         model = models.Group
         fields = (
-            'id', 'name', 'info', 'uuid', '_status', 'users', 'framework', 'pmn_groups', 'key', 'jumper'
+            'id', 'name', 'info', 'uuid', '_status', 'users', '_framework', 'pmn_groups', 'key', 'jumper'
         )
         read_only_fields = (
-            'id', 'framework'
+            'id',
+        )
+
+
+class FrameworkSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Group
+        fields = (
+            '_framework',
         )
 
 

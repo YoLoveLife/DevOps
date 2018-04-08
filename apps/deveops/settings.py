@@ -176,15 +176,12 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 STATIC_URL = '/static/'
 
-# Upload files
-UPLOAD_ROOT = PROJECT_DIR + '/upload'
-
 # Media files
-MEDIA_ROOT = PROJECT_DIR + '/media'
+MEDIA_ROOT = PROJECT_DIR + DEVEOPS_CONF.MEDIA_ROOT
 MEDIA_URL = '/media/'
 
-#Work space
-WORK_ROOT= PROJECT_DIR + '/workspace'
+#Ops dir
+OPS_DIR = PROJECT_DIR + DEVEOPS_CONF.OPS_ROOT
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, "static"),
