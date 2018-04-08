@@ -32,23 +32,23 @@ class Playbook(object):
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.play = None
 
+    @staticmethod
     def write_key(self,key):
+        import time
+        file_name = int(time.time())
         try:
-            f = open('/tmp/ddr.pri', 'w')
+            f = open(file_name, 'w')
             f.write(key)
             f.close()
         except Exception:
             return '~/.ssh/id_rsa'
-        return '/tmp/ddr.pri'
+        return file_name
 
     def import_task(self, play_source):
         from deveops.asgi import channel_layer
         channel_layer.send(self.replay_name,{'text': 'Load Task => '})
 
         self.play = Play().load(play_source, variable_manager=self.variable_manager, loader=self.loader)
-
-    def extra_vars(self,vars):
-        self.variable_manager.extra_vars(vars)
 
     def run(self):
         tqm = None
@@ -67,7 +67,6 @@ class Playbook(object):
 
             result = tqm.run(self.play)
 
-            from deveops.asgi import channel_layer
             channel_layer.send(self.replay_name,
                                {'text': 'Done\r\n'})
             channel_layer.send(self.replay_name,

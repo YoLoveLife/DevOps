@@ -26,17 +26,19 @@ class MetaConsumer(WebsocketConsumer):
         meta = META.objects.filter(id=int(kwargs['meta'])).get()
         play_source = meta.to_yaml
         inventory = meta.group.users_list_byconnectip
-        key = meta.group.key.private_key
-        return play_source, inventory, key
+        if meta.group.key is not None:
+            return play_source, inventory, meta.group.key.private_key
+        else:
+            return play_source, inventory, None
+
 
     # 發起Ansible執行
     def connect(self, message, **kwargs):
-        try:
-            play_source, inventory, key = self.before_connect(**kwargs)
-        except ObjectDoesNotExist:
+        play_source, inventory, key = self.before_connect(**kwargs)
+        if key == None or len(play_source)==0:
             from deveops.asgi import channel_layer
-            channel_layer.send(self.replay_name, {'text': u'您执行的任务缺少必要的密钥或者跳板机请联系管理员解决'})
-            channel_layer.send(self.replay_name,{'close': True})
+            channel_layer.send(self.message.reply_channel.name, {'text': u'\r\n您执行的任务缺少必要的密钥或者跳板机请联系管理员解决'})
+            channel_layer.send(self.message.reply_channel.name, {'close': True})
             return
 
         threadSend = AnsibleRecvThread(play_source, inventory, key, self.message.reply_channel.name)

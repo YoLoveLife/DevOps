@@ -22,8 +22,7 @@ class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    # permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
 
 
 class GroupPagination(PageNumberPagination):
@@ -41,7 +40,8 @@ class ManagerGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
 class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
+    # permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class ManagerGroupDetailAPI(WebTokenAuthentication,generics.ListAPIView):
@@ -60,6 +60,7 @@ class ManagerGroupUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny,]
 
+
 class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
@@ -72,3 +73,11 @@ class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
             return Response({'detail': '该应用组下存在主机无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return super(ManagerGroupDeleteAPI,self).delete(request,*args,**kwargs)
+
+
+class ManagerGroupFrameworkAPI(WebTokenAuthentication,generics.UpdateAPIView):
+    module = models.Group
+    serializer_class = serializers.FrameworkSerializer
+    queryset = models.Group.objects.all()
+    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]

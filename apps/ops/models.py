@@ -4,6 +4,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 from manager.models import Group,Host
+from django.conf import settings
+import os
 import uuid
 
 __all__ = [
@@ -18,6 +20,7 @@ class META_CONTENT(models.Model):
     module = models.CharField(default='',max_length=20)
     args = models.CharField(default='', max_length=100)
     sort = models.IntegerField(default=0)
+    need_file = models.BooleanField(default=False)
 
     class Meta:
         permissions = (('yo_list_metacontent', u'罗列元操作内容'),
@@ -26,11 +29,33 @@ class META_CONTENT(models.Model):
                        ('yo_delete_metacontent', u'删除元操作内容'))
 
     @property
+    def args_clean(self):
+        if self.need_file == True:
+            args_list = self.args.split('file:')
+            return args_list[0]+args_list[1]
+        else:
+            return self.args
+
+    @property
     def to_yaml(self):
         return {
-            self.module: self.args, 'name': self.name
+            self.module: self.args_clean, 'name': self.name
         }
 
+    @property
+    def file_name(self):
+        FIND_LABLE="file:"
+        if self.need_file == True and self.args.find(FIND_LABLE)!=-1:
+            args_list = self.args.split(FIND_LABLE)
+            print(args_list)
+            file_name = args_list[1].split(' ')
+            return file_name[0]
+        else:
+            return ''
+
+def upload_dir_path(instance, filename):
+    # instance.group.id,
+    return u'{META_ID}/{FILE}'.format(META_ID=instance.id,FILE=filename)
 
 class META(models.Model):
     # 指定某幾台主機進行操作的元操作
@@ -41,12 +66,26 @@ class META(models.Model):
     hosts = models.ManyToManyField(Host, blank=True, null=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
     contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
+    ops_dir = models.ImageField(upload_to=upload_dir_path,default=settings.OPS_DIR,)
 
     class Meta:
         permissions = (('yo_list_meta', u'罗列元操作'),
                        ('yo_create_meta', u'创建元操作'),
                        ('yo_update_meta', u'更新元操作'),
                        ('yo_delete_meta', u'删除元操作'))
+
+    def create_ops_dir(self):
+        if not os.path.exists(settings.OPS_DIR + '/' + str(self.id) + '/'):
+            os.makedirs(settings.OPS_DIR+'/'+ str(self.id) +'/')
+        self.ops_dir = settings.OPS_DIR+'/' + str(self.id) + '/'
+
+    @property
+    def file_list(self):
+        files = []
+        for content in self.contents.all():
+            if content.need_file == True and content.file_name!="":
+                files.append(content.file_name)
+        return files
 
     @property
     def to_yaml(self):
@@ -64,8 +103,9 @@ class META(models.Model):
                 'hosts': 'localhost',
             }
         else:
-            try:
-                jumper = self.group.jumper
+            jumper = self.group.jumper
+            if jumper != None:
+                print(jumper)
                 proxy_task = {
                                  u'set_fact':
                                      {
@@ -81,8 +121,6 @@ class META(models.Model):
                     'gather_facts': 'no',
                     'hosts': ','.join(hosts_list)+',',
                 }
-            except ObjectDoesNotExist:
-                pass
         return obj
 
 
@@ -99,8 +137,8 @@ class Mission(models.Model):
                        ('yo_delete_mission', u'删除任务'))
 
     id = models.IntegerField(primary_key=True)
-    metas = models.ManyToManyField(META,blank=True,related_name='missions',verbose_name=_("Mission"))
-    info = models.CharField(default='',max_length=5000)
+    metas = models.ManyToManyField(META,blank=True, related_name='missions', verbose_name=_("Mission"))
+    info = models.CharField(default='', max_length=5000)
     need_validate = models.IntegerField(choices=VALIDATE, default=0)
 
 
