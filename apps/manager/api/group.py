@@ -22,7 +22,8 @@ class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    # permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
 
 
 class GroupPagination(PageNumberPagination):
@@ -74,10 +75,3 @@ class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
         else:
             return super(ManagerGroupDeleteAPI,self).delete(request,*args,**kwargs)
 
-
-class ManagerGroupFrameworkAPI(WebTokenAuthentication,generics.UpdateAPIView):
-    module = models.Group
-    serializer_class = serializers.FrameworkSerializer
-    queryset = models.Group.objects.all()
-    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]

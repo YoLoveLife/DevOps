@@ -40,7 +40,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'utils.apps.UtilsConfig',
+    'utils.apps.UtilsConfig',
     'authority.apps.AuthorityConfig',
     # 'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',

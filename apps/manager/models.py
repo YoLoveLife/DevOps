@@ -8,6 +8,7 @@ import paramiko
 import socket
 from deveops.utils.msg import Message
 from deveops.utils import sshkey,aes
+from utils.models import FILE
 from django.contrib.auth.models import Group as PerGroup
 from authority.models import Key,Jumper
 
@@ -67,7 +68,7 @@ class Group(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, default='')
     info = models.CharField(max_length=100, default='')
-    _framework = models.ImageField(upload_to=upload_dir_path, default='hacg.fun_01.jpg')
+    _framework = models.ForeignKey(FILE, related_name='groups', on_delete=models.SET_NULL, null=True)
     users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
     _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
@@ -102,9 +103,13 @@ class Group(models.Model):
         else:
             self._status = status
 
+    def framework_update(self):
+        self._framework.delete()
+        return True
+
     @property
     def framework(self):
-        return self._framework
+        return self._framework.file
 
     @framework.setter
     def framework(self, framework):
