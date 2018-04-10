@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 from manager.models import Group,Host
+from utils.models import FILE
 from django.conf import settings
 import os
 import uuid
@@ -12,7 +13,6 @@ __all__ = [
     'META', 'META_CONTENT',
     'Mission', 'Push_Mission'
 ]
-
 
 class META_CONTENT(models.Model):
     id = models.AutoField(primary_key=True)
@@ -47,15 +47,11 @@ class META_CONTENT(models.Model):
         FIND_LABLE="file:"
         if self.need_file == True and self.args.find(FIND_LABLE)!=-1:
             args_list = self.args.split(FIND_LABLE)
-            print(args_list)
             file_name = args_list[1].split(' ')
             return file_name[0]
         else:
             return ''
 
-def upload_dir_path(instance, filename):
-    # instance.group.id,
-    return u'{META_ID}/{FILE}'.format(META_ID=instance.id,FILE=filename)
 
 class META(models.Model):
     # 指定某幾台主機進行操作的元操作
@@ -66,7 +62,6 @@ class META(models.Model):
     hosts = models.ManyToManyField(Host, blank=True, null=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
     contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
-    ops_dir = models.ImageField(upload_to=upload_dir_path,default=settings.OPS_DIR,)
 
     class Meta:
         permissions = (('yo_list_meta', u'罗列元操作'),
@@ -74,10 +69,6 @@ class META(models.Model):
                        ('yo_update_meta', u'更新元操作'),
                        ('yo_delete_meta', u'删除元操作'))
 
-    def create_ops_dir(self):
-        if not os.path.exists(settings.OPS_DIR + '/' + str(self.id) + '/'):
-            os.makedirs(settings.OPS_DIR+'/'+ str(self.id) +'/')
-        self.ops_dir = settings.OPS_DIR+'/' + str(self.id) + '/'
 
     @property
     def file_list(self):
@@ -95,6 +86,7 @@ class META(models.Model):
         for host in self.hosts.all():
             hosts_list.append(host.connect_ip)
         if len(hosts_list) == 0:
+            # 主机列表为空说明本地执行
             for content in self.contents.all():
                 tasks.append(content.to_yaml)
             obj = {
@@ -122,6 +114,20 @@ class META(models.Model):
                     'hosts': ','.join(hosts_list)+',',
                 }
         return obj
+
+
+class Staff(models.Model):
+    id = models.AutoField(primary_key=True)
+    meta = models.ForeignKey(META, related_name='staffs')
+    files = models.ManyToManyField(FILE, null=True, blank=True, related_name='staff', verbose_name=_("Staff"))
+
+
+    @property
+    def ops_dir(self):
+        OPS_DIR = settings.OPS_DIR + '/' + self.uuid
+        if not os.path.exists(OPS_DIR):
+            os.makedirs(OPS_DIR)
+        return OPS_DIR
 
 
 class Mission(models.Model):
@@ -183,4 +189,5 @@ class Push_Mission(models.Model):
     @validate.setter
     def validate(self, validate):
         self._validate = validate
+
 
