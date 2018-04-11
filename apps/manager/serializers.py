@@ -16,8 +16,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
     jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
     _status = serializers.IntegerField(required=True, source='status',)
-    _framework = serializers.PrimaryKeyRelatedField(queryset=models.FILE.objects.all())
-    framework = serializers.ImageField(source="_framework.file", read_only=True)
+    _framework = serializers.PrimaryKeyRelatedField(queryset=models.FILE.objects.all(), allow_null=True)
+    framework = serializers.ImageField(source="_framework.image", read_only=True)
     class Meta:
         model = models.Group
         fields = (
@@ -28,7 +28,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def update(self, instance, validated_data):
-        instance.framework_update()
+        # instance.framework_update()
         # 刪除原有的外鍵以及相關的文件
         return super(GroupSerializer,self).update(instance,validated_data)
 

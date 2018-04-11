@@ -10,7 +10,8 @@ from rest_framework.pagination import PageNumberPagination
 
 __all__ = [
     'MetaPagination', 'OpsMetaListAPI', 'OpsMetaListByPageAPI',
-    'OpsMetaNeedFileCheckAPI'
+    'OpsMetaNeedFileCheckAPI', 'OpsMetaCreateAPI', 'OpsMetaDeleteAPI',
+    'OpsMetaDirAPI', 'OpsMetaUpdateAPI'
 ]
 
 
@@ -23,6 +24,9 @@ class OpsMetaListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MetaSerializer
     # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
+    filter_fields = ('group',)
+    from rest_framework.renderers import JSONRenderer
+    renderer_classes = [JSONRenderer,]
 
     def get_queryset(self):
         # queryset = models.META.objects.filter(group__users__id=self.request.user.id)

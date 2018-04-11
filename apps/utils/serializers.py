@@ -12,7 +12,7 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FILE
         fields = (
-            'id', 'file', 'create_time', 'user', 'type'
+            'id', 'file', 'create_time', 'user', 'type','image'
         )
         read_only_fields = (
             'id', 'create_time'

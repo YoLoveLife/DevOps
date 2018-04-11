@@ -19,7 +19,6 @@ class MetaContentSerializer(serializers.ModelSerializer):
         )
 
 
-from django.conf import settings
 class MetaSerializer(serializers.ModelSerializer):
     hosts = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Host.objects.all())
     contents = MetaContentSerializer(required=True, many=True, allow_null=True)
@@ -48,7 +47,6 @@ class MetaSerializer(serializers.ModelSerializer):
         obj = models.META.objects.create(**validated_data)
         obj.contents.add(*contests_list)
         obj.hosts = hosts
-        obj.create_ops_dir()
         obj.save()
 
         return obj
@@ -87,3 +85,36 @@ class OpsDirSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'ops_dir',
         )
+
+
+class MissionSerializer(serializers.ModelSerializer):
+    group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
+    metas = serializers.PrimaryKeyRelatedField(many=True, queryset=models.META.objects.all())
+    group_name = serializers.CharField(source="group.name",read_only=True)
+
+    class Meta:
+        model = models.Mission
+        fields = (
+            'id', 'group', 'metas', 'info', 'need_validate', 'group_name'
+        )
+        read_only_fields = (
+            'id', 'group_name'
+        )
+
+
+class PushMissionSerializer(serializers.ModelSerializer):
+    mission = serializers.PrimaryKeyRelatedField(queryset=models.Mission.objects.all())
+
+    class Meta:
+        model = models.Push_Mission
+        fields = (
+            'mission',
+        )
+
+    def create(self, validated_data):
+        mission = validated_data.pop('mission')
+        obj = models.Push_Mission(mission=mission)
+
+        obj.validate = not mission.need_validate
+        obj.save()
+        return obj

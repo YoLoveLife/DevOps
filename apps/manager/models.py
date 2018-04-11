@@ -104,7 +104,8 @@ class Group(models.Model):
             self._status = status
 
     def framework_update(self):
-        self._framework.delete()
+        if not self._framework is None:
+            self._framework.delete()
         return True
 
     @property
