@@ -2,12 +2,12 @@
 from rest_framework.permissions import BasePermission
 
 __all__ = [
-    "MetaAPIRequiredMixin", "MetaListRequiredMixin", "MetaCreateRequiredMixin",
-    "MetaUpdateRequiredMixin", "MetaDeleteRequiredMixin",
+    "MissionAPIRequiredMixin", "MissionListRequiredMixin", "MissionCreateRequiredMixin",
+    "MissionUpdateRequiredMixin", "MissionDeleteRequiredMixin",
 ]
 
 
-class MetaAPIRequiredMixin(BasePermission):
+class MissionAPIRequiredMixin(BasePermission):
     def has_permission(self, request, view):
         perms = self.permission_required
         perm_list=list(request.user.get_all_permissions())
@@ -21,19 +21,19 @@ class MetaAPIRequiredMixin(BasePermission):
             return False
 
 
-class MetaListRequiredMixin(MetaAPIRequiredMixin):
+class MissionListRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'utils.yo_list_meta'
 
 
-class MetaCreateRequiredMixin(MetaAPIRequiredMixin):
+class MissionCreateRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'utils.yo_create_meta'
 
 
-class MetaUpdateRequiredMixin(MetaAPIRequiredMixin):
+class MissionUpdateRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'utils.yo_update_meta'
 
 
-class MetaDeleteRequiredMixin(MetaAPIRequiredMixin):
+class MissionDeleteRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'utils.yo_delete_meta'
 
 
