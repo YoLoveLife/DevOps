@@ -13,6 +13,7 @@ urlpatterns=[
     url(r'^v1/meta/(?P<pk>[0-9]+)/opsdir/$', MetaAPI.OpsMetaDirAPI.as_view()),
     # Resource mission api
     url(r'^v1/mission/$', MissionAPI.OpsMissionListAPI.as_view()),
+    url(r'^v1/mission/byuser/$', MissionAPI.OpsMissionListByUserAPI.as_view()),
     url(r'^v1/mission/bypage/$', MissionAPI.OpsMissionListByPageAPI.as_view()),
     url(r'^v1/mission/create/$', MissionAPI.OpsMissionCreateAPI.as_view()),
     url(r'^v1/mission/(?P<pk>[0-9]+)/update/$', MissionAPI.OpsMissionUpdateAPI.as_view()),

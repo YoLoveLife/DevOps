@@ -22,19 +22,19 @@ class MissionAPIRequiredMixin(BasePermission):
 
 
 class MissionListRequiredMixin(MissionAPIRequiredMixin):
-    permission_required = u'utils.yo_list_meta'
+    permission_required = u'ops.yo_list_mission'
 
 
 class MissionCreateRequiredMixin(MissionAPIRequiredMixin):
-    permission_required = u'utils.yo_create_meta'
+    permission_required = u'ops.yo_create_mission'
 
 
 class MissionUpdateRequiredMixin(MissionAPIRequiredMixin):
-    permission_required = u'utils.yo_update_meta'
+    permission_required = u'ops.yo_update_mission'
 
 
 class MissionDeleteRequiredMixin(MissionAPIRequiredMixin):
-    permission_required = u'utils.yo_delete_meta'
+    permission_required = u'ops.yo_delete_mission'
 
 
 

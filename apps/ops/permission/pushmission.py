@@ -23,19 +23,19 @@ class PushMissionAPIRequiredMixin(BasePermission):
 
 
 class PushMissionListRequiredMixin(PushMissionAPIRequiredMixin):
-    permission_required = u'utils.yo_list_pushmission'
+    permission_required = u'ops.yo_list_pushmission'
 
 
 class PushMissionCreateRequiredMixin(PushMissionAPIRequiredMixin):
-    permission_required = u'utils.yo_create_pushmission'
+    permission_required = u'ops.yo_create_pushmission'
 
 
 class PushMissionUpdateRequiredMixin(PushMissionAPIRequiredMixin):
-    permission_required = u'utils.yo_update_pushmission'
+    permission_required = u'ops.yo_update_pushmission'
 
 
 class PushMissionDeleteRequiredMixin(PushMissionAPIRequiredMixin):
-    permission_required = u'utils.yo_delete_pushmission'
+    permission_required = u'ops.yo_delete_pushmission'
 
 
 
