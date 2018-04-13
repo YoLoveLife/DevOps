@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',
     'ops.apps.OpsConfig',
+    'work.apps.WorkConfig',
     # 'application.apps.MagicConfig',
     # 'execute.apps.ExecuteConfig',
     # 'timeline.apps.TimelineConfig',
@@ -181,7 +182,7 @@ MEDIA_ROOT = PROJECT_DIR + DEVEOPS_CONF.MEDIA_ROOT
 MEDIA_URL = '/media/'
 
 #Ops dir
-OPS_DIR = PROJECT_DIR + DEVEOPS_CONF.OPS_ROOT
+OPS_ROOT = PROJECT_DIR + DEVEOPS_CONF.OPS_ROOT
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, "static"),

@@ -11,7 +11,7 @@ from rest_framework.pagination import PageNumberPagination
 __all__ = [
     'MissionPagination', 'OpsMissionListAPI', 'OpsMissionListByPageAPI',
     'OpsMissionNeedFileCheckAPI', 'OpsMissionCreateAPI', 'OpsMissionDeleteAPI',
-    'OpsMissionUpdateAPI'
+    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI'
 ]
 
 
@@ -24,6 +24,9 @@ class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MissionSerializer
     # permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
+    # filter_fields = ('group',)
+    # from rest_framework.renderers import JSONRenderer
+    # renderer_classes = [JSONRenderer,]
 
     def get_queryset(self):
         # queryset = models.Mission.objects.filter(group__users__id=self.request.user.id)
@@ -41,8 +44,20 @@ class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     # 1、僅能查看自己所管理的應用組
     # 2、可以增删改自己所管理的应用组的所有Mission操作
     def get_queryset(self):
-        # queryset = models.Mission.objects.filter(group__users__id=self.request.user.id)
         queryset = models.Mission.objects.all()
+        return queryset
+
+
+class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
+    module = models.Mission
+    serializer_class = serializers.MissionSerializer
+    permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+
+    def get_queryset(self):
+        # 查询所有该用户所关联组的任务
+        pmn_groups = self.request.user.groups.all()
+        groups = models.Group.objects.filter(pmn_groups__in=pmn_groups)
+        queryset = models.Mission.objects.filter(group__in=groups)
         return queryset
 
 
@@ -50,7 +65,7 @@ class OpsMissionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     # permission_classes = [MissionPermission.MissionCreateRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [MissionPermission.MissionCreateRequiredMixin, IsAuthenticated]
 
 
 class OpsMissionUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):

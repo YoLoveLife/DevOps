@@ -98,7 +98,7 @@ class META(models.Model):
             }
         else:
             jumper = self.group.jumper
-            if jumper != None:
+            if jumper is not None:
                 proxy_task = {
                                  u'set_fact':
                                      {
@@ -142,6 +142,10 @@ class Mission(models.Model):
         for meta in self.metas.all():
             list.append(meta.to_yaml)
         return list
+
+    def model_to_dict(self):
+        from django.forms.models import model_to_dict
+        return model_to_dict(self)
 
 
 class META_SORT(models.Model):
