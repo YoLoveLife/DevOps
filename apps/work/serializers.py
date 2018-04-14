@@ -11,9 +11,9 @@ class CodeWorkStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Code_Work
         fields = (
-            'id','status',
+            'id', 'status',
         )
-        read_onlu_fields = (
+        read_only_fields = (
             'id',
         )
 
@@ -22,7 +22,7 @@ class CodeStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Code_Work
         fields = (
-            'id','status'
+            'id', 'status'
         )
 
 
@@ -30,14 +30,15 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
     mission = serializers.PrimaryKeyRelatedField(queryset=models.Mission.objects.all(), allow_null=True)
     push_mission = serializers.PrimaryKeyRelatedField(required=False,queryset=models.Push_Mission.objects.all(), allow_null=True)
     mission_info = serializers.CharField(source='mission.info', required=False, read_only=True)
+    username = serializers.CharField(source='user.full_name', required=False, read_only=True)
 
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'uuid', 'info', 'mission', 'push_mission', 'mission_info', 'status'
+            'id', 'uuid', 'info', 'mission', 'push_mission', 'mission_info', 'status', 'username'
         )
         read_only_fields = (
-            'id', 'uuid', 'push_mission', 'status'
+            'id', 'uuid', 'push_mission', 'status', 'username'
         )
 
     def create(self, validated_data):

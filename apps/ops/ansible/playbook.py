@@ -30,7 +30,7 @@ class Playbook(object):
 
         self.run_path = run_path
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
-        self.variable_manager.extra_vars = {'GIT':run_path}
+        self.variable_manager.extra_vars = {'BASE':run_path}
         self.play = []
 
     def delete_key(self):
@@ -41,7 +41,7 @@ class Playbook(object):
     def import_task(self, play_source):
         from deveops.asgi import channel_layer
         channel_layer.send(self.replay_name,{'text': 'Load Task => '})
-
+        print('renwu',play_source)
         for source in play_source:
             self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
 
@@ -65,7 +65,7 @@ class Playbook(object):
             # self.delete_key()
 
             channel_layer.send(self.replay_name,
-                               {'text': 'Done\r\n'})
+                               {'text': u'执行完毕\r\n'})
             channel_layer.send(self.replay_name,
                                {'close': True})
         finally:
