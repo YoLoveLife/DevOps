@@ -16,39 +16,34 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks',
 
 
 class Playbook(object):
-    def __init__(self, host_list, replay_name, key):
+    def __init__(self, run_path, host_list, replay_name, key):
         self.loader = DataLoader()
         self.options = Options(
             connection='smart', module_path='', forks=100, become=None,
             become_method=None, become_user=None, check=False,
-            private_key_file=self.write_key(key), diff=False
+            private_key_file=key, diff=False
         )
+        self.key = key
         self.stdout_callback = callback.AnsibleCallback(replay_name)
         self.replay_name = replay_name
-        print(host_list)
-        print('host_list',host_list.encode('utf-8'))
         self.inventory = InventoryManager(loader=self.loader, sources=host_list.encode('utf-8')+',')
 
+        self.run_path = run_path
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
-        self.play = None
+        self.variable_manager.extra_vars = {'BASE':run_path}
+        self.play = []
 
-    def write_key(self,key):
-        try:
-            f = open('/tmp/ddr.pri', 'w')
-            f.write(key)
-            f.close()
-        except Exception:
-            return '~/.ssh/id_rsa'
-        return '/tmp/ddr.pri'
+    def delete_key(self):
+        import os
+        if os.path.exists(self.key):
+            os.remove(self.key)
 
     def import_task(self, play_source):
         from deveops.asgi import channel_layer
         channel_layer.send(self.replay_name,{'text': 'Load Task => '})
-
-        self.play = Play().load(play_source, variable_manager=self.variable_manager, loader=self.loader)
-
-    def extra_vars(self,vars):
-        self.variable_manager.extra_vars(vars)
+        print('renwu',play_source)
+        for source in play_source:
+            self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
 
     def run(self):
         tqm = None
@@ -65,11 +60,12 @@ class Playbook(object):
             from deveops.asgi import channel_layer
             channel_layer.send(self.replay_name, {'text': 'Start => \r\n'})
 
-            result = tqm.run(self.play)
+            for p in self.play:
+                result = tqm.run(p)
+            # self.delete_key()
 
-            from deveops.asgi import channel_layer
             channel_layer.send(self.replay_name,
-                               {'text': 'Done\r\n'})
+                               {'text': u'执行完毕\r\n'})
             channel_layer.send(self.replay_name,
                                {'close': True})
         finally:

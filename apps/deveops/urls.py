@@ -28,7 +28,9 @@ urlpatterns = [
     # API
     url(r'^api-auth/', include('authority.urls.api_urls',namespace='api-auth')),
     url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
-    url(r'^api-ops/',include('ops.urls.api_urls',namespace='api-ops')),
+    url(r'^api-ops/', include('ops.urls.api_urls', namespace='api-ops')),
+    url(r'^api-utils/', include('utils.urls.api_urls', namespace='api-utils')),
+    url(r'^api-work/', include('work.urls.api_urls', namespace='api-work')),
     # url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
     # url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
     # url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),

@@ -3,61 +3,44 @@
 # Time 18-1-18
 # Author Yo
 # Email YoLoveLife@outlook.com
-
 from __future__ import unicode_literals
 from django.db import models
-from manager.models import Group,Sys_User
-import paramiko
 from django.conf import settings
-from deveops.utils import aes,sshkey
-from deveops.utils.msg import Message
-from django.conf import settings
-import socket
+from authority.models import ExtendUser
+import uuid
+__all__ = [
+    'FILE', 'IMAGE'
+]
 
 
-class Jumper(models.Model):
-    SYSTEM_STATUS=(
-        (0,'错误'),
-        (1,'正常'),
-        (2,'不可达'),
+def upload_media_path(instance,filename):
+    t = filename.split('.')
+    return str(instance.uuid) + '.' + t[-1]
+
+
+def upload_file_path(instance,filename):
+    t = filename.split('.')
+    return settings.OPS_ROOT + str(instance.uuid) + '.' + t[-1]
+
+
+class FILE(models.Model):
+    UPLOAD_TYPE=(
+        (0, '图片'),
+        (1, '文件')
     )
-    id=models.AutoField(primary_key=True) #全局ID
-    connect_ip = models.GenericIPAddressField(default='0.0.0.0')
-    sys_user = models.ForeignKey(Sys_User)
-    sshport = models.IntegerField(default='52000')#用户端口
-    info = models.CharField(max_length=200,default="")
-    groups = models.ManyToManyField(Group,related_name='jumpers')
-    status = models.IntegerField(default=1,choices=SYSTEM_STATUS)#服务器状态
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+    file = models.FileField(upload_to=upload_file_path, null=True, blank=True)
+    image = models.ImageField(upload_to=upload_media_path, null=True, blank=True)
+    # 上传时间
+    create_time = models.DateTimeField(auto_now_add=True)
+    # 上传用户
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True)
+    type = models.IntegerField(choices=UPLOAD_TYPE,default=0)
 
-    def __unicode__(self):
-        return self.connect_ip + ' - ' + self.info
-
-    @property
-    def check_status(self):
-        s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        s.settimeout(settings.SSH_TIMEOUT)
-        try:
-            s.connect((self.connect_ip,self.sshport))
-            return True
-        except socket.timeout:
-            return False
-        except Exception,e:
-            return False
-
-    @property
-    def catch_ssh_connect(self):
-        msg = Message()
-        if self.check_status == True:
-            try:
-                jumper = paramiko.SSHClient()
-                jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                jumper.connect(self.connect_ip, username=self.sys_user.username,
-                               pkey=sshkey.ssh_private_key2obj(self.sys_user.private_key),
-                               port=self.sshport)
-                return msg.fuse_msg(1,'Jumper connection success',jumper)
-            except socket.timeout:
-                return msg.fuse_msg(0,'Jumper connection timeout',None)
-            except Exception,ex:
-                return msg.fuse_msg(0,'Jumper connection wrong',None)
-        else:
-            return msg.fuse_msg(0,'Jumper connection wrong', None)
+    class Meta:
+        permissions = (
+            ('yo_list_file', u'罗列文件'),
+            ('yo_create_file', u'上传文件'),
+            ('yo_delete_file', u'删除文件'),
+        )

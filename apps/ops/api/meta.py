@@ -10,6 +10,8 @@ from rest_framework.pagination import PageNumberPagination
 
 __all__ = [
     'MetaPagination', 'OpsMetaListAPI', 'OpsMetaListByPageAPI',
+    'OpsMetaNeedFileCheckAPI', 'OpsMetaCreateAPI', 'OpsMetaDeleteAPI',
+    'OpsMetaDirAPI', 'OpsMetaUpdateAPI'
 ]
 
 
@@ -22,6 +24,9 @@ class OpsMetaListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MetaSerializer
     # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
+    filter_fields = ('group',)
+    from rest_framework.renderers import JSONRenderer
+    renderer_classes = [JSONRenderer,]
 
     def get_queryset(self):
         # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
@@ -47,7 +52,8 @@ class OpsMetaListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
 class OpsMetaCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
-    permission_classes = [MetaPermission.MetaCreateRequiredMixin,IsAuthenticated]
+    # permission_classes = [MetaPermission.MetaCreateRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
 
 
 class OpsMetaUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
@@ -62,3 +68,20 @@ class OpsMetaDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.MetaSerializer
     queryset = models.META.objects.all()
     permission_classes = [MetaPermission.MetaDeleteRequiredMixin,IsAuthenticated]
+
+
+class OpsMetaNeedFileCheckAPI(WebTokenAuthentication,generics.ListAPIView):
+    module = models.META
+    serializer_class = serializers.MetaNeedFileSerializer
+    # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
+
+    def get_queryset(self):
+        return models.META.objects.filter(id=int(self.kwargs['pk']))
+
+class OpsMetaDirAPI(WebTokenAuthentication,generics.UpdateAPIView):
+    module = models.META
+    serializer_class = serializers.OpsDirSerializer
+    queryset = models.META.objects.all()
+    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]

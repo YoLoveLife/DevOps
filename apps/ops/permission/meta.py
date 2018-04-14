@@ -22,19 +22,19 @@ class MetaAPIRequiredMixin(BasePermission):
 
 
 class MetaListRequiredMixin(MetaAPIRequiredMixin):
-    permission_required = u'manager.yo_list_meta'
+    permission_required = u'ops.yo_list_meta'
 
 
 class MetaCreateRequiredMixin(MetaAPIRequiredMixin):
-    permission_required = u'manager.yo_create_meta'
+    permission_required = u'ops.yo_create_meta'
 
 
 class MetaUpdateRequiredMixin(MetaAPIRequiredMixin):
-    permission_required = u'manager.yo_update_meta'
+    permission_required = u'ops.yo_update_meta'
 
 
 class MetaDeleteRequiredMixin(MetaAPIRequiredMixin):
-    permission_required = u'manager.yo_delete_meta'
+    permission_required = u'ops.yo_delete_meta'
 
 
 

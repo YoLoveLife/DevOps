@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import models
 from rest_framework import serializers
 from authority.models import ExtendUser
@@ -15,16 +16,21 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
     jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
     _status = serializers.IntegerField(required=True, source='status',)
-
+    _framework = serializers.PrimaryKeyRelatedField(queryset=models.FILE.objects.all(), allow_null=True)
+    framework = serializers.ImageField(source="_framework.image", read_only=True)
     class Meta:
         model = models.Group
         fields = (
-            'id', 'name', 'info', 'uuid', '_status', 'users', 'framework', 'pmn_groups', 'key', 'jumper'
+            'id', 'name', 'info', 'uuid', '_status', 'users', '_framework', 'pmn_groups', 'key', 'jumper', 'framework'
         )
         read_only_fields = (
             'id', 'framework'
         )
 
+    def update(self, instance, validated_data):
+        # instance.framework_update()
+        # 刪除原有的外鍵以及相關的文件
+        return super(GroupSerializer,self).update(instance,validated_data)
 
 class SystemTypeSerializer(serializers.ModelSerializer):
     class Meta:

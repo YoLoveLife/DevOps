@@ -23,21 +23,21 @@ class JumperListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
-    # permission_classes = [JumperPermission.JumperListRequiredMixin, IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [JumperPermission.JumperListRequiredMixin, IsAuthenticated]
 
 
 class JumperListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
-    # permission_classes = [JumperPermission.JumperListRequiredMixin, IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [JumperPermission.JumperListRequiredMixin, IsAuthenticated]
     pagination_class = JumperPagination
 
 
 class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):
-    serializer_class = [AllowAny]
+    serializer_class = serializers.JumperSerializer
+    permission_classes = [AllowAny,]
+
     def get_object(self):
         return models.Jumper.objects.filter(id=int(self.kwargs['pk'])).get()
 

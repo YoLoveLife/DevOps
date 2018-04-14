@@ -8,6 +8,7 @@ import paramiko
 import socket
 from deveops.utils.msg import Message
 from deveops.utils import sshkey,aes
+from utils.models import FILE
 from django.contrib.auth.models import Group as PerGroup
 from authority.models import Key,Jumper
 
@@ -51,9 +52,9 @@ class Position(models.Model):
         return self.name
 
 
-def upload_dir_path(filename):
+def upload_dir_path(instance, filename):
     # instance.group.id,
-    return u'framework/{0}'.format(filename)
+    return u'framework/{GROUP}/{FILE}'.format(GROUP=instance.id,FILE=filename)
 
 
 class Group(models.Model):
@@ -67,7 +68,8 @@ class Group(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, default='')
     info = models.CharField(max_length=100, default='')
-    framework = models.ImageField(upload_to=upload_dir_path, default='hacg.fun_01.jpg')
+    _framework = models.ForeignKey(FILE, related_name='groups', on_delete=models.SET_NULL, null=True)
+    # 超级管理员
     users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
     _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
@@ -101,6 +103,19 @@ class Group(models.Model):
                 self._status = 3
         else:
             self._status = status
+
+    def framework_update(self):
+        if not self._framework is None:
+            self._framework.delete()
+        return True
+
+    @property
+    def framework(self):
+        return self._framework.file
+
+    @framework.setter
+    def framework(self, framework):
+        self._framework = framework
 
     @property
     def users_list_byconnectip(self):
