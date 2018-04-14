@@ -46,8 +46,7 @@ class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
 
 
 class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
-    # permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
 
     def get_object(self):
         return models.Host.objects.filter(id=int(self.kwargs['pk'])).get()
@@ -79,8 +78,7 @@ class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    # permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
 
 
 class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):

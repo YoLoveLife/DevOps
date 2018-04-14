@@ -89,7 +89,7 @@ class META(models.Model):
             print(hosts_list)
         if len(hosts_list) == 0:
             # 主机列表为空说明本地执行
-            for content in self.contents.all():
+            for content in self.contents.all().order_by('sort'):
                 tasks.append(content.to_yaml)
             obj = {
                 'tasks': tasks,
@@ -107,7 +107,7 @@ class META(models.Model):
                                      }
                              }
                 tasks.append(proxy_task)
-                for content in self.contents.all():
+                for content in self.contents.all().order_by('sort'):
                     tasks.append(content.to_yaml)
                 obj = {
                     'tasks': tasks,
