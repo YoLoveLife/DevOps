@@ -39,7 +39,7 @@ class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):
     permission_classes = [AllowAny,]
 
     def get_object(self):
-        return models.Jumper.objects.filter(id=int(self.kwargs['pk'])).get()
+        return models.Jumper.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -59,6 +59,8 @@ class JumperUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
     permission_classes = [JumperPermission.JumperUpdateRequiredMixin, IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 
 class JumperDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -66,9 +68,12 @@ class JumperDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
     permission_classes = [JumperPermission.JumperDeleteRequiredMixin, IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
     def delete(self, request, *args, **kwargs):
-        jumper = models.Jumper.objects.get(id=int(kwargs['pk']))
+        jumper = self.get_object()
+        # jumper = models.Jumper.objects.get(id=int(kwargs['pk']))
         try:
             group = jumper.group
             return Response({'detail': u'该密钥属于应用组' + group.name + u'无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)

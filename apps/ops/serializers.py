@@ -28,10 +28,10 @@ class MetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.META
         fields = (
-            'id', 'hosts', 'contents', 'group', 'group_name', 'uuid', 'info'
+            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info'
         )
         read_only_fields = (
-            'id', 'uuid', 'group_name'
+            'id', 'uuid','group_name'
         )
 
     def create(self, validated_data):
@@ -91,14 +91,15 @@ class MissionSerializer(serializers.ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
     metas = serializers.PrimaryKeyRelatedField(many=True, queryset=models.META.objects.all())
     group_name = serializers.CharField(source="group.name",read_only=True)
+    counts = serializers.IntegerField(source="count",read_only=True)
 
     class Meta:
         model = models.Mission
         fields = (
-            'id', 'group', 'metas', 'info', 'need_validate', 'group_name'
+            'id', 'uuid', 'group', 'metas', 'info', 'need_validate', 'group_name', 'counts'
         )
         read_only_fields = (
-            'id', 'group_name'
+            'id', 'uuid', 'group_name', 'counts'
         )
 
 

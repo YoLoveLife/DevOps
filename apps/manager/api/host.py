@@ -28,15 +28,17 @@ class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Host.objects.all()
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
-    filter_fields = ('groups',)
+    filter_fields = '__all__'
 
 
 class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
     pagination_class = HostPagination
+    filter_fields = '__all__'
 
 
 class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
@@ -79,6 +81,8 @@ class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
     permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
+    lookup_field = "uuid"
+    lookup_url_kwarg = "pk"
 
 
 class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -86,7 +90,8 @@ class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
     permission_classes = [HostPermission.HostDeleteRequiredMixin,IsAuthenticated]
-
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
     # def delete(self, request, *args, **kwargs):
     #     host = models.Host.objects.get(id=int(kwargs['pk']))
     #     if host.storages.count() != 0:
@@ -111,5 +116,5 @@ class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
         # if self.count == 0:
         #     self.count = self.count + 1
         #     self.timeline_create(self.request.user)
-        host = models.Host.objects.filter(id=int(self.kwargs['pk']))
+        host = models.Host.objects.filter(uuid=self.kwargs['pk'])
         return host

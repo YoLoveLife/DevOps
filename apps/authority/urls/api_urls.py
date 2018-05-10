@@ -28,16 +28,16 @@ urlpatterns=[
     url(r'^v1/key/$', key.KeyListAPI.as_view()),
     url(r'^v1/key/bypage/$', key.KeyListByPageAPI.as_view()),
     url(r'^v1/key/create/$', key.KeyCreateAPI.as_view()),
-    url(r'^v1/key/(?P<pk>[0-9]+)/update/$', key.KeyUpdateAPI.as_view()),
-    url(r'^v1/key/(?P<pk>[0-9]+)/delete/$', key.KeyDeleteAPI.as_view()),
+    url(r'^v1/key/(?P<pk>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/update/$', key.KeyUpdateAPI.as_view()),
+    url(r'^v1/key/(?P<pk>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/delete/$', key.KeyDeleteAPI.as_view()),
     #
     # Resource jumper api
     url(r'^v1/jumper/$', jumper.JumperListAPI.as_view()),
     url(r'^v1/jumper/bypage/$', jumper.JumperListByPageAPI.as_view()),
-    url(r'^v1/jumper/(?P<pk>[0-9]+)/status/$', jumper.JumperStatusAPI.as_view()),
+    url(r'^v1/jumper/(?P<pk>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/status/$', jumper.JumperStatusAPI.as_view()),
     url(r'^v1/jumper/create/$', jumper.JumperCreateAPI.as_view()),
-    url(r'^v1/jumper/(?P<pk>[0-9]+)/update/$', jumper.JumperUpdateAPI.as_view()),
-    url(r'^v1/jumper/(?P<pk>[0-9]+)/delete/$', jumper.JumperDeleteAPI.as_view()),
+    url(r'^v1/jumper/(?P<pk>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/update/$', jumper.JumperUpdateAPI.as_view()),
+    url(r'^v1/jumper/(?P<pk>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/delete/$', jumper.JumperDeleteAPI.as_view()),
     #
     # Resource permission api
     url(r'^v1/permission/$',permission.PermissionListAPI.as_view()),

@@ -9,10 +9,12 @@ from deveops.utils import sshkey,aes
 import django.utils.timezone as timezone
 from django.conf import settings
 import socket
+import uuid
 
 __all__ = [
     "Key", "ExtendUser", "Jumper"
 ]
+
 
 def private_key_validator(key):
     if not sshkey.private_key_validator(key):
@@ -24,13 +26,14 @@ def private_key_validator(key):
 
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, default='')
 
     # 操作权限限定
     _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator])
     _public_key = models.TextField(max_length=4096, blank=True, null=True)
-    # 使用时间
-    _fetch_time = models.DateTimeField(default=timezone.now)
+    # 创建时间
+    _fetch_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         permissions = (
@@ -148,6 +151,7 @@ class Jumper(models.Model):
     )
     # 全局ID
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     connect_ip = models.GenericIPAddressField(default='0.0.0.0')
     # 跳板机端口
     sshport = models.IntegerField(default='52000')

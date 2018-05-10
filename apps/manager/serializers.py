@@ -21,10 +21,10 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Group
         fields = (
-            'id', 'name', 'info', 'uuid', '_status', 'users', '_framework', 'pmn_groups', 'key', 'jumper', 'framework'
+            'id', 'uuid', 'name', 'info', '_status', 'users', '_framework', 'pmn_groups', 'key', 'jumper', 'framework'
         )
         read_only_fields = (
-            'id', 'framework'
+            'id', 'uuid', 'framework'
         )
 
     def update(self, instance, validated_data):
@@ -70,10 +70,10 @@ class HostSerializer(serializers.ModelSerializer):
         model = models.Host
         fields = (
             'id', 'label', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', '_status', 'groups',
-            'passwd',
+            'passwd', 'uuid'
         )
         read_only_fields = (
-            'id', 'label'
+            'id', 'label', 'uuid'
         )
 
     def create(self, validated_data):

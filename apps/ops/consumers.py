@@ -34,12 +34,12 @@ class MetaConsumer(WebsocketConsumer):
     # 獲取要使用的Ansible內容
     def before_connect(self,**kwargs):
         # 查询必要数据
-        work = Code_Work.objects.filter(id=int(kwargs['work'])).get()
+        work = Code_Work.objects.filter(uuid=kwargs['work']).get()
         play_source = work.mission.to_yaml
         inventory = work.mission.group.users_list_byconnectip
 
         # 创建临时目录
-        TMP = settings.OPS_ROOT+str(work.uuid)+'/'
+        TMP = settings.OPS_ROOT+str(work.id)+'/'
         if not os.path.exists(TMP):
             os.makedirs(TMP)
 

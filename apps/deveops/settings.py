@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # 'execute.apps.ExecuteConfig',
     # 'timeline.apps.TimelineConfig',
     # 'upload.apps.UploadConfig',
+    'variable.apps.VariableConfig',
     'dns.apps.DnsConfig',
     'rest_framework',
     'rest_framework_jwt',
@@ -245,10 +246,11 @@ CHANNEL_LAYERS = {
 # CELERY
 # import djcelery
 # djcelery.setup_loader()
-CELERY_BROKER_URL = 'redis://:{PASSWORD}@{HOST}:{PORT}/3'.format(
+CELERY_BROKER_URL = 'redis://:{PASSWORD}@{HOST}:{PORT}/{SPACE}'.format(
     PASSWORD='',
     HOST=DEVEOPS_CONF.REDIS_HOST,
-    PORT=DEVEOPS_CONF.REDIS_PORT
+    PORT=DEVEOPS_CONF.REDIS_PORT,
+    SPACE=DEVEOPS_CONF.REDIS_SPACE,
 )
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'

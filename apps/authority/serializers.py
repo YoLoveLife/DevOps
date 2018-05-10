@@ -45,10 +45,10 @@ class KeySerializer(serializers.ModelSerializer):
     class Meta:
         model = Key
         fields = (
-            'id', 'name', 'private_key', 'public_key', 'group_name', 'fetch_time'
+            'id', 'uuid', 'name', 'private_key', 'public_key', 'group_name', 'fetch_time'
         )
         read_only_fields = (
-            'id', 'group_name', 'fetch_time'
+            'id', 'uuid', 'group_name', 'fetch_time'
         )
 
 
@@ -56,8 +56,8 @@ class JumperSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jumper
         fields = (
-            'id', 'connect_ip', 'sshport', 'name', 'info', 'status'
+            'id', 'uuid', 'connect_ip', 'sshport', 'name', 'info', 'status'
         )
         read_only_fields = (
-            'id', 'status'
+            'id', 'uuid', 'status'
         )

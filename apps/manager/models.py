@@ -20,8 +20,8 @@ __all__ = [
 
 class System_Type(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, default="")
-
     class Meta:
         permissions = (('yo_list_systype', u'罗列系统类型'),
                        ('yo_create_systype', u'新增系统类型'),
@@ -39,6 +39,7 @@ class System_Type(models.Model):
 
 class Position(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, default="") #字符长度
 
     class Meta:
@@ -66,6 +67,7 @@ class Group(models.Model):
     )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+
     name = models.CharField(max_length=100, default='')
     info = models.CharField(max_length=100, default='')
     _framework = models.ForeignKey(FILE, related_name='groups', on_delete=models.SET_NULL, null=True)
@@ -123,8 +125,8 @@ class Group(models.Model):
             return []
         else:
             # Ansible 2.0.0.0
-            # return list(self.hosts.values_list('connect_ip', flat=True))
-            return ','.join(list(self.hosts.values_list('connect_ip', flat=True)))
+            # return list(self.hosts.values_list('connect_ip', flat=True)) Only Normal Host
+            return ','.join(list(self.hosts.filter(_status=1).values_list('connect_ip', flat=True)))
 
     @property
     def users_list_byhostname(self):
@@ -181,7 +183,7 @@ class Host(models.Model):
     )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID
-
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     # 资产结构
     groups = models.ManyToManyField(Group, null=True, blank=True, related_name='hosts', verbose_name=_("Host"))
     # 所属应用

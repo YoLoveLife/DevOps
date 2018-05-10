@@ -15,12 +15,12 @@ __all__ = [
 
 def upload_media_path(instance,filename):
     t = filename.split('.')
-    return str(instance.uuid) + '.' + t[-1]
+    return str(instance.id) + '.' + t[-1]
 
 
 def upload_file_path(instance,filename):
     t = filename.split('.')
-    return settings.OPS_ROOT + str(instance.uuid) + '.' + t[-1]
+    return settings.OPS_ROOT + str(instance.id) + '.' + t[-1]
 
 
 class FILE(models.Model):

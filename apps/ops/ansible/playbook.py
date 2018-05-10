@@ -30,7 +30,7 @@ class Playbook(object):
 
         self.run_path = run_path
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
-        self.variable_manager.extra_vars = {'BASE':run_path}
+        self.variable_manager.extra_vars = {'BASE': run_path}
         self.play = []
 
     def delete_key(self):
