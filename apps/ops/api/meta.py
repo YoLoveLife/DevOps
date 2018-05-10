@@ -61,6 +61,8 @@ class OpsMetaUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.MetaSerializer
     queryset = models.META.objects.all()
     permission_classes = [MetaPermission.MetaUpdateRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 
 class OpsMetaDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -68,6 +70,8 @@ class OpsMetaDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.MetaSerializer
     queryset = models.META.objects.all()
     permission_classes = [MetaPermission.MetaDeleteRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 
 class OpsMetaNeedFileCheckAPI(WebTokenAuthentication,generics.ListAPIView):
@@ -75,9 +79,11 @@ class OpsMetaNeedFileCheckAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MetaNeedFileSerializer
     # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny,]
-
-    def get_queryset(self):
-        return models.META.objects.filter(id=int(self.kwargs['pk']))
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
+    #
+    # def get_queryset(self)
+    #     return models.META.objects.filter(id=int(self.kwargs['pk']))
 
 class OpsMetaDirAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.META

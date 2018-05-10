@@ -35,10 +35,10 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'uuid', 'info', 'mission', 'push_mission', 'mission_info', 'status', 'username'
+            'id', 'info', 'mission', 'push_mission', 'mission_info', 'status', 'username'
         )
         read_only_fields = (
-            'id', 'uuid', 'push_mission', 'status', 'username'
+            'id', 'push_mission', 'status', 'username'
         )
 
     def create(self, validated_data):

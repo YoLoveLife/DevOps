@@ -9,8 +9,9 @@ INDENT = 4
 
 class AnsibleCallback(CallbackBase):
 
-    def __init__(self, replay_name):
+    def __init__(self, replay_name, work):
         self.replay_name = replay_name
+        self.work = work
         return super(AnsibleCallback, self).__init__()
 
     def v2_runner_on_ok(self, result, **kwargs):
@@ -19,7 +20,6 @@ class AnsibleCallback(CallbackBase):
         channel_layer.send(self.replay_name,
                            {'text': message})
         channel_layer.send(self.replay_name, {'text':self._dump_results(result._result,indent=INDENT).replace('\n','\r\n')+'\r\n'})
-
 
     def v2_runner_on_unreachable(self, result):
         from deveops.asgi import channel_layer

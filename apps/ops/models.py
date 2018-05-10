@@ -17,6 +17,7 @@ __all__ = [
 
 class META_CONTENT(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, default='')
     module = models.CharField(default='',max_length=20)
     args = models.CharField(default='', max_length=100)
@@ -31,7 +32,7 @@ class META_CONTENT(models.Model):
 
     @property
     def args_clean(self):
-        if self.need_file == True:
+        if self.need_file is True:
             args_list = self.args.split('file:')
             return args_list[0]+args_list[1]
         else:
@@ -85,8 +86,8 @@ class META(models.Model):
         hosts_list = []
         obj = {}
         for host in self.hosts.all():
-            hosts_list.append(host.connect_ip)
-            print(hosts_list)
+            if host._status == 1:
+                hosts_list.append(host.connect_ip)
         if len(hosts_list) == 0:
             # 主机列表为空说明本地执行
             for content in self.contents.all().order_by('sort'):
@@ -124,6 +125,7 @@ class Mission(models.Model):
                        ('yo_update_mission', u'更新任务'),
                        ('yo_delete_mission', u'删除任务'))
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='group_missions')
     metas = models.ManyToManyField(META,blank=True, related_name='missions', verbose_name=_("Mission"))
     info = models.CharField(default='', max_length=5000)
@@ -143,6 +145,15 @@ class Mission(models.Model):
             list.append(meta.to_yaml)
         return list
 
+    @property
+    def count(self):
+        return self.push_missions.count()
+
+    @property
+    def playbook(self):
+        import yaml
+        return yaml.safe_dump_all(self.to_yaml)
+
     def model_to_dict(self):
         from django.forms.models import model_to_dict
         return model_to_dict(self)
@@ -151,6 +162,7 @@ class Mission(models.Model):
 class META_SORT(models.Model):
     # 针对meta的排序
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     mission = models.ForeignKey(Mission, on_delete=models.SET_NULL, null=True, related_name='sort')
     meta = models.ForeignKey(META, on_delete=models.SET_NULL, null=True, related_name='sort')
     sort = models.IntegerField(max_length=5,default=1)
@@ -168,8 +180,8 @@ class Push_Mission(models.Model):
                        ('yo_create_pushmission', u'创建推出任务'))
 
     id = models.AutoField(primary_key=True)
-    # 由哪個Mission推送出來的任務
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+    # 由哪個Mission推送出來的任務
     mission = models.ForeignKey(Mission, related_name='push_missions')
     # 是否通過驗證 該值由Mission的need_validate來初始化
     _validate = models.BooleanField(default=False)
@@ -178,6 +190,8 @@ class Push_Mission(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     # 任務結束時間
     finish_time = models.DateTimeField(auto_now=True)
+    # 執行內容
+    results = models.CharField(default='', max_length=5000)
 
     @property
     def done(self):

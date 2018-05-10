@@ -44,7 +44,7 @@ class CodeWorkExamAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         user = request.user
-        codework = models.Code_Work.objects.filter(id=int(kwargs['pk'])).get()
+        codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
         if codework.mission.group.users.filter(id=user.id).exists():
             return super(CodeWorkExamAPI,self).update(request, *args, **kwargs)
         else:

@@ -4,12 +4,14 @@ from __future__ import unicode_literals
 from manager.models import Host
 from softlib.models import Softlib
 from django.db import models
+import uuid
 # Create your models here.
 #
 __all__=['BaseApplication','Redis','DB','DBDetail','DBUser']
 
 class BaseApplication(models.Model):
-    id=models.AutoField(primary_key=True)
+    # id=models.AutoField(primary_key=True)
+    id = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, primary_key=True)
     host=models.ForeignKey(Host,default=None,blank=True,null=True)
     version=models.CharField(max_length=10)
     online=models.BooleanField(default=False)
@@ -53,7 +55,8 @@ class DB(BaseApplication):
         return self.dbuser.all()
 
 class DBDetail(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(primary_key=True)
+    id = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, primary_key=True)
     db = models.ForeignKey(DB,default=1,related_name='dbdetail')
     com_insert = models.CharField(max_length=100,default=0)
     com_update = models.CharField(max_length=100,default=0)
@@ -61,7 +64,8 @@ class DBDetail(models.Model):
     thread_running = models.CharField(max_length=100,default=0)
 
 class DBUser(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(primary_key=True)
+    id = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, primary_key=True)
     user = models.CharField(max_length=100,default='')
     ip = models.CharField(max_length=16,default='')
     db = models.ForeignKey(DB,default=1,related_name='dbuser')

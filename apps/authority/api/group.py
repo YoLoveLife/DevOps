@@ -47,11 +47,9 @@ class GroupUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
 
-
 class GroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupDeleteRequiredMixin,IsAuthenticated]
-
 

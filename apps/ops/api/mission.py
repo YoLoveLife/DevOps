@@ -6,12 +6,13 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from ..permission import mission as MissionPermission
 from deveops.api import WebTokenAuthentication
+from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 
 __all__ = [
     'MissionPagination', 'OpsMissionListAPI', 'OpsMissionListByPageAPI',
     'OpsMissionNeedFileCheckAPI', 'OpsMissionCreateAPI', 'OpsMissionDeleteAPI',
-    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI'
+    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionPlaybookAPI'
 ]
 
 
@@ -61,6 +62,19 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
         return queryset
 
 
+class OpsMissionPlaybookAPI(WebTokenAuthentication,APIView):
+    module = models.Mission
+    permission_classes = [AllowAny,]
+
+    def get_object(self):
+        return models.Mission.objects.filter(id=int(self.kwargs['pk'])).get()
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        data = {'id':obj.id,'playbook':obj.playbook}
+        return Response(data, status=status.HTTP_200_OK)
+
+
 class OpsMissionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
@@ -73,6 +87,8 @@ class OpsMissionUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.MissionSerializer
     queryset = models.Mission.objects.all()
     permission_classes = [MissionPermission.MissionUpdateRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 
 class OpsMissionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -80,3 +96,5 @@ class OpsMissionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.MissionSerializer
     queryset = models.Mission.objects.all()
     permission_classes = [MissionPermission.MissionDeleteRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'

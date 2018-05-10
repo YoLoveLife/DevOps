@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from timeline.decorator.manager import decorator_manager
 from deveops.api import WebTokenAuthentication
 
+
 class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.DNS
     serializer_class = serializers.GroupSerializer
