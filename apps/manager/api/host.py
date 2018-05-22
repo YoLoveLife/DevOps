@@ -51,7 +51,7 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
     permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
 
     def get_object(self):
-        return models.Host.objects.filter(id=int(self.kwargs['pk'])).get()
+        return models.Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
         from deveops.utils import aliyun
@@ -69,6 +69,23 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
             data = vmware.fetch_Instance(obj.detail.vmware_id)
             if data:
                 data['type'] = 'vmware'
+            else:
+                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+class ManagerAliyunIDDetailAPI(WebTokenAuthentication,APIView):
+    permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        from deveops.utils import aliyun
+        from deveops.utils import vmware
+        data = None
+        if self.kwargs['pk']:
+            data = aliyun.fetch_Instance(self.kwargs['pk'])
+            if data:
+                data['type'] = 'aliyun'
             else:
                 return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
             return Response(data, status=status.HTTP_200_OK)

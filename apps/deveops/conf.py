@@ -25,23 +25,25 @@ SSH_TIMEOUT = 2
 
 # Redis配置
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6389
+REDIS_PORT = 6379
+REDIS_SPACE = 3
 
 # 相关目录配置
-UPLOAD_ROOT = '/devEops/upload'
-MEDIA_ROOT = '/devEops/media'
-WORK_ROOT = '/devEops/workspace'
+MEDIA_ROOT = '/media/'
+OPS_ROOT = '/ops/'
 
 # LDAP配置
-LDAP_SERVER = "ldap://0.0.0.0:389"
-LDAP_PASSWD = ""
-LDAP_OU = unicode('ou=,ou=,dc=,dc=com','utf8')
+LDAP_SERVER = "ldap://10.100.61.6:389"
+LDAP_PASSWD = "7a$LIOOwxNO"
+LDAP_OU = 'ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com'
 
 # VMWARE配置
-VMWARE_USERNAME = ""
-VMWARE_PASSWD = ""
-VMWARE_SERVER = ""
+VMWARE_USERNAME = "zbjt\yz2"
+VMWARE_PASSWD = "daiSgmiku2"
+VMWARE_SERVER = "10.100.60.110"
 
 # ALiyun配置
-ALIYUN_ACCESSKEY = ""
-ALIYUN_ACCESSSECRET = ""
+ALIYUN_ACCESSKEY = "LTAIdXTBaAPhuqB7"
+ALIYUN_ACCESSSECRET = "e0LH3BJLSjFV4MiXsRmS4IScgtAhwE"
+ALIYUN_PAGESIZE = 10
+EXPIREDTIME = 10

@@ -32,6 +32,9 @@ sys.path.append(PROJECT_DIR)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '1x$!#dwp2_6^tdgs1nv8pwgutbc#4m%#qaz!m!0h_f*%6fp+vt'
 
+#ASGI
+ASGI_APPLICATION = 'deveops.routing.application'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -46,11 +49,12 @@ INSTALLED_APPS = [
     'manager.apps.ManagerConfig',
     'ops.apps.OpsConfig',
     'work.apps.WorkConfig',
-    # 'application.apps.MagicConfig',
+    # 'application.apps.ApplicationConfig',
     # 'execute.apps.ExecuteConfig',
     # 'timeline.apps.TimelineConfig',
     # 'upload.apps.UploadConfig',
     'variable.apps.VariableConfig',
+    'dashboard.apps.DashboardConfig',
     'dns.apps.DnsConfig',
     'rest_framework',
     'rest_framework_jwt',
@@ -78,7 +82,8 @@ JWT_AUTH = {
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    # 'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     )
@@ -215,7 +220,7 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_BIND_DN = "cn=tools,ou=Zabbix,ou=TEST,dc=zbjt,dc=com"
     AUTH_LDAP_BIND_PASSWORD = DEVEOPS_CONF.LDAP_PASSWD
 
-    OU = unicode('ou=集团所属公司,ou=浙报集团,dc=zbjt,dc=com','utf8')
+    OU = DEVEOPS_CONF.LDAP_OU
     AUTH_LDAP_GROUP_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(objectClass=groupOfNames)")
     AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
     AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")

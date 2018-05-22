@@ -53,11 +53,6 @@ class Position(models.Model):
         return self.name
 
 
-def upload_dir_path(instance, filename):
-    # instance.group.id,
-    return u'framework/{GROUP}/{FILE}'.format(GROUP=instance.id,FILE=filename)
-
-
 class Group(models.Model):
     GROUP_STATUS=(
         (0, '禁用中'),
@@ -129,6 +124,10 @@ class Group(models.Model):
             return ','.join(list(self.hosts.filter(_status=1).values_list('connect_ip', flat=True)))
 
     @property
+    def group_vars(self):
+        return self.vars.all()
+
+    @property
     def users_list_byhostname(self):
         return list(self.hosts.values_list('hostname', flat=True))
 
@@ -185,7 +184,7 @@ class Host(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     # 资产结构
-    groups = models.ManyToManyField(Group, null=True, blank=True, related_name='hosts', verbose_name=_("Host"))
+    groups = models.ManyToManyField(Group, blank=True, related_name='hosts', verbose_name=_("Host"))
     # 所属应用
     storages = models.ManyToManyField(Storage, blank=True, related_name='hosts', verbose_name=_('Host'))
 
@@ -215,19 +214,6 @@ class Host(models.Model):
             ('yo_webskt_host', u'远控主机')
         )
 
-    def __unicode__(self):
-        uuid = None
-        if self.detail.aliyun_id:
-            uuid = str(self.detail.aliyun_id)
-        elif self.detail.vmware_id:
-            uuid = str(self.detail.vmware_id)
-        else:
-            uuid = 'None'
-        return uuid + '-' + self.detail.info
-
-
-    __str__ = __unicode__
-
     @property
     def status(self):
         return self._status
@@ -245,7 +231,7 @@ class Host(models.Model):
 
     @password.setter
     def password(self, password):
-        self._passwd = aes.encrypt(password.encode('utf-8'))
+        self._passwd = aes.encrypt(password)
 
     def manage_user_get(self):
         dist = {}
@@ -285,7 +271,7 @@ class Host(models.Model):
                 except socket.error:
                     flag=u'socket出错'
                     continue
-                except Exception, ex:
+                except Exception as ex:
                     flag=u'主机连接故障'
                     continue
             else:

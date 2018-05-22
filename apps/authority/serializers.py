@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
 from authority.models import ExtendUser,Group,Key,Jumper
+from deveops.utils.rsa import ssh_keygen
 
 __all__ = [
     'UserSerializer', 'GroupSerializer', 'PermissionSerializer',
@@ -39,17 +40,21 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
 class KeySerializer(serializers.ModelSerializer):
-    private_key = serializers.CharField(max_length=4096, required=False)
-    public_key = serializers.CharField(max_length=4096, required=False)
-
+    pub_key = serializers.CharField(max_length=4096, required=False, source='public_key')
     class Meta:
         model = Key
         fields = (
-            'id', 'uuid', 'name', 'private_key', 'public_key', 'group_name', 'fetch_time'
+            'id', 'uuid', 'pub_key','name', 'group_name', 'fetch_time'
         )
         read_only_fields = (
-            'id', 'uuid', 'group_name', 'fetch_time'
+            'id', 'uuid', 'pub_key','group_name', 'fetch_time'
         )
+
+    def create(self, validated_data):
+        pri,pub = ssh_keygen()
+        validated_data['private_key'] = pri
+        validated_data['public_key'] = pub
+        return super(KeySerializer,self).create(validated_data)
 
 
 class JumperSerializer(serializers.ModelSerializer):

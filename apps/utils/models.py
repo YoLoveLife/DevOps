@@ -35,7 +35,7 @@ class FILE(models.Model):
     # 上传时间
     create_time = models.DateTimeField(auto_now_add=True)
     # 上传用户
-    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
     type = models.IntegerField(choices=UPLOAD_TYPE,default=0)
 
     class Meta:

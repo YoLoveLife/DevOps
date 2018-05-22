@@ -22,4 +22,5 @@ class ManagerDashboardAPI(WebTokenAuthentication,generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         con = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
+        print(con.hgetall('MANAGER_STATUS'))
         return Response(con.hgetall('MANAGER_STATUS'),status.HTTP_200_OK)

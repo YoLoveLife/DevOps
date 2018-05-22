@@ -15,17 +15,17 @@ __all__ = [
 class AnsibleRecvThread(threading.Thread):
     CACHE = 1024
 
-    def __init__(self, work, play_source, inventory, key, reply_channel_name):
+    def __init__(self, work, play_source, inventory, key, vars_dict, reply_channel_name):
         super(AnsibleRecvThread, self).__init__()
         self.reply_channel_name = reply_channel_name
         self.key = key
+        self.vars_dict = vars_dict
         self.play_source = play_source
         self.inventory = inventory
         self.work = work
 
     def run(self):
-        RUN_PATH = settings.OPS_ROOT+str(self.work.uuid)+'/'
-        p = playbook.Playbook(RUN_PATH, self.inventory, self.reply_channel_name, self.key)
+        p = playbook.Playbook(self.vars_dict, self.inventory, self.reply_channel_name, self.key, self.work.push_mission)
         p.import_task(self.play_source)
         p.run()
         self.work.status = 3

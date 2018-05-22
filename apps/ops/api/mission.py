@@ -12,7 +12,8 @@ from rest_framework.pagination import PageNumberPagination
 __all__ = [
     'MissionPagination', 'OpsMissionListAPI', 'OpsMissionListByPageAPI',
     'OpsMissionNeedFileCheckAPI', 'OpsMissionCreateAPI', 'OpsMissionDeleteAPI',
-    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionPlaybookAPI'
+    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionPlaybookAPI',
+    'OpsMissionNeedFileCheckAPI'
 ]
 
 
@@ -65,9 +66,11 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
 class OpsMissionPlaybookAPI(WebTokenAuthentication,APIView):
     module = models.Mission
     permission_classes = [AllowAny,]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
     def get_object(self):
-        return models.Mission.objects.filter(id=int(self.kwargs['pk'])).get()
+        return models.Mission.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -96,5 +99,15 @@ class OpsMissionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.MissionSerializer
     queryset = models.Mission.objects.all()
     permission_classes = [MissionPermission.MissionDeleteRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
+
+
+class OpsMissionNeedFileCheckAPI(WebTokenAuthentication, generics.ListAPIView):
+    module = models.Mission
+    serializer_class = serializers.MissionNeedFileSerializer
+    # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
+    queryset = models.Mission.objects.all()
+    permission_classes = [AllowAny,]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
