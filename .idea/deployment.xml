@@ -9,14 +9,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="devEops">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/devEops" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="prod-deveops">
+      <paths name="prod-devEops">
         <serverdata>
           <mappings>
             <mapping deploy="/devEops" local="$PROJECT_DIR$" web="/" />

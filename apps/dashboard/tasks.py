@@ -15,7 +15,6 @@ from deveops.utils import resolver
 
 connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
 
-
 @periodic_task(run_every=crontab(minute='*'))
 def aliyunECSExpiredInfoCatch():
     from dashboard.models import ExpiredAliyunECS
@@ -49,3 +48,29 @@ def aliyunRDSInfoCatch():
                 if 0 < (expiredTime - now).days < EXPIREDTIME:
                     dt['ExpiredDay'] = (expiredTime - now).days
                     ExpiredAliyunRDS(**resolver.AliyunRDS2Json.decode(dt)).save()
+
+
+@periodic_task(run_every=crontab(minute='*'))
+def managerStatusCatch():
+    connect.delete('MANAGER_STATUS')
+    from manager import models as Manager
+    host_count = Manager.Host.objects.count()
+    group_count = Manager.Group.objects.count()
+    status = {
+        'host_count':host_count,
+        'group_count':group_count,
+    }
+    systypes = Manager.System_Type.objects.all()
+    for sys in systypes:
+        status[sys.name] = sys.hosts_detail.count()
+
+    positions = Manager.Position.objects.all()
+    for pos in positions:
+        status['pos'+str(pos.id)] = pos.hosts_detail.count()
+
+    groups = Manager.Group.objects.all()
+    for group in groups:
+        status[group.uuid] = group.hosts.count()
+
+    connect.hmset('MANAGER_STATUS', status)
+

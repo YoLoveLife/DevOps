@@ -4,7 +4,7 @@ from ..api import expired as ExpiredAPI
 
 urlpatterns=[
     # Resource dashboard api
-    path(r'v1/dashboard/', DashboardAPI.DashboardAPI.as_view()),
+    path(r'v1/manager/', DashboardAPI.DashboardAPI.as_view()),
     #
     # Resource expire api
     path(r'v1/expired/ecs/bypage/', ExpiredAPI.DashboardExpiredECSAPI.as_view()),

@@ -1,12 +1,15 @@
 import json
+import shutil
 from collections import namedtuple
 from ansible.parsing.dataloader import DataLoader
-from ansible.vars import VariableManager
-from ansible.inventory import Inventory
+from ansible.vars.manager import VariableManager
+from ansible.inventory.manager import InventoryManager
+from ansible.inventory.group import Group
+from ansible.inventory.host import Host
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.plugins.callback import CallbackBase
-import json
+import ansible.constants as C
 class ResultCallback(CallbackBase):
     """A sample callback plugin used for performing an action as results come in
 
@@ -25,45 +28,53 @@ class ResultCallback(CallbackBase):
 
     def v2_runner_on_unreachable(self, result):
         host = result._host.get_name()
-        print "aaa"
+        print "unreachable"
 
 
     def v2_runner_on_failed(self, result, ignore_errors=False):
         host = result._host.get_name()
-        print "bbb"
+        print "failed"
 
     def v2_runner_on_no_hosts(self, task):
         self.runner_on_no_hosts()
-        print "ccc"
+        print "no_hosts"
 
 
-Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check'])
+Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become',
+                                 'become_method', 'become_user', 'check', 'diff'])
 # initialize needed objects
-variable_manager = VariableManager()
 loader = DataLoader()
-options = Options(connection='smart', module_path='', forks=100, become=None, become_method=None, become_user=None, check=False)
+options = Options(connection='smart', module_path='', forks=100, become=None, become_method=None, become_user=None, check=False,
+                  diff=False)
 passwords = dict(vault_pass='secret')
 
 # Instantiate our ResultCallback for handling results as they come in
 results_callback = ResultCallback()
 
 # create inventory and pass to var manager
-inventory = Inventory(loader=loader, variable_manager=variable_manager, host_list="/etc/ansible/hosts.py")
-variable_manager.set_inventory(inventory)
-# create play with tasks
-play_source =  dict(
-        name = "Ansible Play",
-        hosts = 'all',
-        gather_facts = 'no',
-        tasks = [
-            dict(action=dict(module='shell', args='hostname'), register='shell_out'),
-            #dict(action=dict(module='shell', args='hostname'), register='shell_out'),
-            #dict(action=dict(module='debug', args=dict(msg='{{shell_out.stdout}}')))
-         ]
-    )
-play = Play().load(play_source, variable_manager=variable_manager, loader=loader)
+inventory = InventoryManager(loader=loader, sources='10.100.62.75,169.254.1.48,10.101.30.179')
 
-# actually run it
+
+# inventory.add_group(group=[])
+# print('inventory',inventory.get_groups_dict())
+variable_manager = VariableManager(loader=loader, inventory=inventory)
+print('inventory', variable_manager.get_vars())
+# variable_manager.extra_vars('')
+
+# create play with tasks
+play_source = {
+    u'gather_facts': u'no',
+    u'tasks': [
+        # {u'set_fact': {'ansible_ssh_common_args':'-o ProxyCommand="ssh -p52000 -W %h:%p root@114.55.126.93"'}},
+        {u'shell': u'ls -lh', u'name': u'li'},
+        {u'shell': u'touch ~/{{app_name}}', u'name': u'zi'}],
+    u'hosts': u'localhost'
+}
+
+variable_manager.extra_vars = {'app_name': 'test'}
+play1 = Play().load(play_source, variable_manager=variable_manager, loader=loader)
+play2 = Play().load(play_source, variable_manager=variable_manager, loader=loader)
+
 tqm = None
 try:
     tqm = TaskQueueManager(
@@ -71,10 +82,11 @@ try:
               variable_manager=variable_manager,
               loader=loader,
               options=options,
-              passwords={},
+              passwords=passwords,
               stdout_callback=results_callback,  # Use our custom callback instead of the ``default`` callback plugin
           )
-    result = tqm.run(play)
+    result = tqm.run(play1)
 finally:
     if tqm is not None:
         tqm.cleanup()
+    shutil.rmtree(C.DEFAULT_LOCAL_TMP, True)
