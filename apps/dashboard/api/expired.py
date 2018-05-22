@@ -28,7 +28,7 @@ class ExpiredPagination(PageNumberPagination):
 class DashboardExpiredECSAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExpiredAliyunECS
     permission_classes = [AllowAny,]
-    queryset = models.ExpiredAliyunECS.objects.all().order_by('expired')
+    queryset = models.ExpiredAliyunECS.objects.all()
     serializer_class = serializers.DashboardExpiredAliyunECSSerializer
     pagination_class = ExpiredPagination
 
@@ -36,6 +36,6 @@ class DashboardExpiredECSAPI(WebTokenAuthentication,generics.ListAPIView):
 class DashboardExpiredRDSAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExpiredAliyunRDS
     permission_classes = [AllowAny,]
-    queryset = models.ExpiredAliyunRDS.objects.all().order_by('expired')
+    queryset = models.ExpiredAliyunRDS.objects.all()
     serializer_class = serializers.DashboardExpiredAliyunRDSSerializer
     pagination_class = ExpiredPagination

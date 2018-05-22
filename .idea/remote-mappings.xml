@@ -4,6 +4,7 @@
     <list>
       <list>
         <remote-mappings server-id="python@sftp://root@192.168.254.133:22/usr/bin/python" />
+        <remote-mappings server-id="python@ssh://root@192.168.122.111:22/usr/local/bin/python" />
       </list>
     </list>
   </component>
