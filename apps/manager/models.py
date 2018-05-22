@@ -189,8 +189,10 @@ class Host(models.Model):
     storages = models.ManyToManyField(Storage, blank=True, related_name='hosts', verbose_name=_('Host'))
 
     # 相关信息
-    connect_ip = models.GenericIPAddressField(default='', null=False)
-    service_ip = models.GenericIPAddressField(default='0.0.0.0', null=True)
+    # connect_ip = models.GenericIPAddressField(default='', null=False)
+    connect_ip = models.CharField(max_length=15, default='', null=False)
+    service_ip = models.CharField(max_length=15, default='0.0.0.0', null=True)
+    # service_ip = models.GenericIPAddressField(default='0.0.0.0', null=True)
 
     # 主机名称
     hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)

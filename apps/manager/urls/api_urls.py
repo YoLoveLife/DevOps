@@ -3,7 +3,6 @@ from ..api import group as GroupAPI
 from ..api import systype as SystypeAPI
 from ..api import position as PositionAPI
 from ..api import host as HostAPI
-from ..api import dashboard as DashboardAPI
 urlpatterns=[
     # Resource group api
     path(r'v1/group/', GroupAPI.ManagerGroupListAPI.as_view()),
@@ -41,8 +40,4 @@ urlpatterns=[
     # # Resource storage api
     # path(r'v1/storage/', api.ManagerStorageListAPI.as_view()),
     # path(r'v1/storage/(?P<pk>[0-9]+)/remove/', api.ManagerStorageRemoveAPI.as_view()),
-    #
-    # Resource dashboard api
-    path(r'v1/dashboard/', DashboardAPI.ManagerDashboardAPI.as_view()),
-    #
 ]
