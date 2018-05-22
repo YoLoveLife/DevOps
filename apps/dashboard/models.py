@@ -16,7 +16,7 @@ class ExpiredAliyun(models.Model):
     expired = models.IntegerField(default='0')
 
     class Meta:
-        ordering = ['id', ]
+        ordering = ['expired', 'id']
         abstract = True
 
 
