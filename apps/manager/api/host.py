@@ -38,7 +38,14 @@ class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny,]
     pagination_class = HostPagination
-    filter_fields = '__all__'
+    filter_fields = ('groups',)
+
+    def get_queryset(self):
+        query = self.request.query_params.get('connect_ip', None)
+        if query is not None:
+            return self.queryset.filter(connect_ip__icontains=query)
+        else:
+            return self.queryset
 
 
 class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
