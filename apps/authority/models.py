@@ -53,7 +53,8 @@ class Key(models.Model):
 
     @private_key.setter
     def private_key(self, private_key):
-        self._private_key = aes.encrypt(private_key.encode('utf-8'))
+        print('pri',str(aes.encrypt(private_key).decode()))
+        self._private_key = aes.encrypt(private_key).decode()
 
     @property
     def public_key(self):
@@ -61,7 +62,8 @@ class Key(models.Model):
 
     @public_key.setter
     def public_key(self, public_key):
-        self._public_key = aes.encrypt(public_key.encode('utf-8'))
+        print('pub',aes.encrypt(public_key).decode())
+        self._public_key = aes.encrypt(public_key).decode()
 
     @property
     def fetch_time(self):
@@ -182,11 +184,11 @@ class Jumper(models.Model):
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s.settimeout(settings.SSH_TIMEOUT)
         try:
-            s.connect((str(self.connect_ip.encode('utf-8')), int(self.sshport)))
+            s.connect((str(self.connect_ip), int(self.sshport)))
         except socket.timeout:
             self._status = 0
             return 0
-        except Exception,e:
+        except Exception as e:
             self._status = 0
             return 0
         self._status = 1

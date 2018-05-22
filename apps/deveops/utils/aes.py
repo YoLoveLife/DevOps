@@ -9,10 +9,8 @@ KEY_LENGTH = 16
 from itsdangerous import JSONWebSignatureSerializer, BadSignature, SignatureExpired
 
 def encrypt(text):
-    if isinstance(text, bytes):
-        value = text.decode("utf-8")
     s = JSONWebSignatureSerializer(SECRET_KEY)
-    return s.dumps(value)
+    return s.dumps(text)
 
 
 def decrypt(text):
@@ -25,4 +23,4 @@ def decrypt(text):
 if __name__ == '__main__':
     e = encrypt("dai123ku2")
     d = decrypt('eyJhbGciOiJIUzI1NiJ9.ImRhaVNnbWlrdTIi.dz1bGj8fmYSiUi65ezRUaYN9HCKTpQppAsUhMmEy4ww')
-    print e, d
+    print(e,d)

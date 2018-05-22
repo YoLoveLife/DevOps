@@ -22,7 +22,7 @@ class Variable(models.Model):
 
 
 class Var2Group(Variable):
-    group = models.ForeignKey(Group, related_name='vars', default=1)
+    group = models.ForeignKey(Group, related_name='vars', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         permissions = (('yo_list_var', u'罗列组参数'),

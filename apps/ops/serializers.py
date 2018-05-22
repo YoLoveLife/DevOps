@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import models
+from ops import models
 from rest_framework import serializers
 
 __all__ = [
@@ -46,7 +46,7 @@ class MetaSerializer(serializers.ModelSerializer):
 
         obj = models.META.objects.create(**validated_data)
         obj.contents.add(*contests_list)
-        obj.hosts = hosts
+        obj.hosts.set(hosts)
         obj.save()
 
         return obj
@@ -69,21 +69,13 @@ class MetaSerializer(serializers.ModelSerializer):
         return obj
 
 
-class MetaNeedFileSerializer(serializers.ModelSerializer):
+class MissionNeedFileSerializer(serializers.ModelSerializer):
     filelist = serializers.ListField(source='file_list',read_only=True)
 
     class Meta:
-        model = models.META
+        model = models.Mission
         fields = (
-            'id', 'filelist',
-        )
-
-
-class OpsDirSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = models.META
-        fields = (
-            'ops_dir',
+            'filelist',
         )
 
 

@@ -68,7 +68,8 @@ class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [GroupPermission.GroupDeleteRequiredMixin,IsAuthenticated]
+    # permission_classes = [GroupPermission.GroupDeleteRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
@@ -79,4 +80,14 @@ class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
             return Response({'detail': '该应用组下存在主机无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return super(ManagerGroupDeleteAPI,self).delete(request,*args,**kwargs)
+
+
+class ManagerGroupSelectHostAPI(WebTokenAuthentication, generics.UpdateAPIView):
+    module = models.Group
+    serializer_class = serializers.GroupSelectHostSerializer
+    queryset = models.Group.objects.all()
+    permission_classes = [AllowAny,]
+    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 

@@ -32,7 +32,8 @@ class META_CONTENT(models.Model):
 
     @property
     def args_clean(self):
-        if self.need_file is True:
+        FIND_LABLE="file:"
+        if self.need_file == True and self.args.find(FIND_LABLE)!=-1:
             args_list = self.args.split('file:')
             return args_list[0]+args_list[1]
         else:
@@ -61,7 +62,7 @@ class META(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='group_metas')
     # 當hosts為空 則說明該meta任務為本地執行
-    hosts = models.ManyToManyField(Host, blank=True, null=True, related_name='user_metas', verbose_name=_("metas"))
+    hosts = models.ManyToManyField(Host, blank=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
     contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
 
@@ -76,7 +77,7 @@ class META(models.Model):
     def file_list(self):
         files = []
         for content in self.contents.all():
-            if content.need_file == True and content.file_name!="":
+            if content.need_file is True and content.file_name != "":
                 files.append(content.file_name)
         return files
 
@@ -135,8 +136,17 @@ class Mission(models.Model):
     def file_list(self):
         list = []
         for meta in self.metas.all():
-            list = list + meta.file_list
+            if len(meta.file_list) !=0 :
+                list = list + meta.file_list
         return list
+
+    @property
+    def vars_dict(self):
+        dict = {}
+        vars = self.group.group_vars
+        for var in vars:
+            dict[var.key] = var.value
+        return dict
 
     @property
     def to_yaml(self):
@@ -165,7 +175,7 @@ class META_SORT(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     mission = models.ForeignKey(Mission, on_delete=models.SET_NULL, null=True, related_name='sort')
     meta = models.ForeignKey(META, on_delete=models.SET_NULL, null=True, related_name='sort')
-    sort = models.IntegerField(max_length=5,default=1)
+    sort = models.IntegerField(default=1)
 
 
 class Push_Mission(models.Model):
@@ -182,7 +192,7 @@ class Push_Mission(models.Model):
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     # 由哪個Mission推送出來的任務
-    mission = models.ForeignKey(Mission, related_name='push_missions')
+    mission = models.ForeignKey(Mission, related_name='push_missions', null=True, on_delete=models.SET_NULL)
     # 是否通過驗證 該值由Mission的need_validate來初始化
     _validate = models.BooleanField(default=False)
     _done = models.IntegerField(choices=DONE, default=0)
