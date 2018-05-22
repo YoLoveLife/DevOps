@@ -20,7 +20,7 @@ class AliyunECS2Json(object):
             for tag in data['Tags']['Tag']:
                 tags_list.append(tag['TagKey'] + tag['TagValue'])
             dt['tags'] = ':'.join(tags_list)
-        dt['aliyun_id'] = data['InstanceId']
+        dt['recognition_id'] = data['InstanceId']
         dt['expired'] = data['ExpiredDay']
         dt['instancename'] = data['InstanceName']
         return dt
@@ -31,8 +31,8 @@ class AliyunRDS2Json(object):
     def decode(data):
         dt = {}
         dt['status'] = data['DBInstanceStatus']
-        dt['dbinstanceid'] = data['DBInstanceId']
-        dt['dbinstancename'] = data['DBInstanceDescription']
+        dt['recognition_id'] = data['DBInstanceId']
+        dt['instancename'] = data['DBInstanceDescription']
         dt['expired'] = data['ExpiredDay']
         dt['version'] = data['EngineVersion']
         dt['readonly'] = len(data['ReadOnlyDBInstanceIds']['ReadOnlyDBInstanceId'])

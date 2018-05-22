@@ -39,25 +39,6 @@ def managerStatusCatch():
     connect.hmset('MANAGER_STATUS', status)
 
 
-@periodic_task(run_every=crontab(minute='*'))
-def aliyunECSExpiredInfoCatch():
-    from deveops.utils import aliyun
-    from deveops.conf import ALIYUN_PAGESIZE
-    from deveops.utils import resolver
-    from manager.models import ExpiredAliyunHost
-    import datetime
-    ExpiredAliyunHost.objects.all().delete()
-    countNumber = aliyun.fetch_ECSPage()
-    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-    now = datetime.datetime.now()
-    for num in range(1,threadNumber+1):
-        data = aliyun.fetch_Instances(num)
-        for dt in data:
-            expiredTime = datetime.datetime.strptime(dt['ExpiredTime'],'%Y-%m-%dT%H:%MZ')
-            if 0 < (expiredTime-now).days < EXPIREDTIME:
-                dt['ExpiredDay'] = (expiredTime-now).days
-                ExpiredAliyunHost(**resolver.AliyunECS2Json.decode(dt)).save()
-
 # @periodic_task(run_every=crontab(minute='*'))
 # def aliyunECSInfoCatch():
 #     from deveops.utils import aliyun

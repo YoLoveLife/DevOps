@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from application.models import DB
+# from application.models import DB
 from manager.models import Host
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
