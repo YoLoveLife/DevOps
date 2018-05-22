@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from expired import models
+from dashboard import models
 from rest_framework import serializers
 
 __all__ = [
