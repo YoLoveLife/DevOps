@@ -30,7 +30,9 @@ def aliyunECSExpiredInfoCatch():
             expiredTime = datetime.datetime.strptime(dt['ExpiredTime'],'%Y-%m-%dT%H:%MZ')
             if 0 < (expiredTime-now).days < EXPIREDTIME:
                 dt['ExpiredDay'] = (expiredTime-now).days
-                ExpiredAliyunECS(**resolver.AliyunECS2Json.decode(dt)).save()
+                instance_data = resolver.AliyunECS2Json.decode(dt)
+                instance_data.pop('os')
+                ExpiredAliyunECS(**instance_data).save()
 
 
 @periodic_task(run_every=crontab(minute='*'))

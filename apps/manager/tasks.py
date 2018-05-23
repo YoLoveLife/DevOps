@@ -14,18 +14,55 @@ import redis
 connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
 
 
-# @periodic_task(run_every=crontab(minute='*'))
-# def aliyunECSInfoCatch():
-#     from deveops.utils import aliyun
-#     from deveops.conf import ALIYUN_PAGESIZE
-#     from deveops.utils import resolver
-#     from manager.models import ExpiredAliyunHost
-#     countNumber = aliyun.fetch_ECSPage()
-#     threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-#     for num in range(1,threadNumber+1):
-#         data = aliyun.fetch_Instances(num)
-#         for dt in data:
+@periodic_task(run_every=crontab(minute='*'))
+def aliyunECSInfoCatch():
+    from deveops.utils import aliyun
+    from deveops.conf import ALIYUN_PAGESIZE
+    from deveops.utils import resolver
+    from manager.models import Host
+    import datetime
+    countNumber = aliyun.fetch_ECSPage()
+    now = datetime.datetime.now()
+    position = None
+    systype = None
+    if Position.objects.filter(name__contains='阿里云').exists():
+        position = Position.objects.filter(name__contains='阿里云').get()
+    else:
+        position = Position.objects.create(name='阿里云')
 
+    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
+    for num in range(1,threadNumber+1):
+        data = aliyun.fetch_Instances(num)
+        for dt in data:
+            expiredTime = datetime.datetime.strptime(dt['ExpiredTime'],'%Y-%m-%dT%H:%MZ')
+            dt['ExpiredDay'] = (expiredTime-now).days
+            data_dist = resolver.AliyunECS2Json.decode(dt)
+            query = Host.objects.filter(detail__aliyun_id=data_dist['recognition_id'])
+            status = 0
+            if System_Type.objects.filter(name__contains=data_dist['os']).exists():
+                systype = System_Type.objects.filter(name__contains=data_dist['os']).get()
+            else:
+                systype = System_Type.objects.create(name=data_dist['os'])
+
+            if data_dist['status']=='Stopped':
+                status = 0
+            else:
+                status = 1
+            if not query.exists(): # 如果不存在
+                detail_instance = HostDetail.objects.create(aliyun_id=data_dist['recognition_id'], info='', position=position,
+                                                            systemtype=systype)
+                host_instance = Host.objects.create(
+                    detail=detail_instance,
+                    connect_ip=data_dist['connect_ip'],
+                    hostname=data_dist['instancename'],
+                    status=status,
+                    password='nopassword'
+                )
+            else:
+                host_instance = query.get()
+                host_instance.detail.save()
+                host_instance.status = status
+                host_instance.save()
 
 
 # @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
@@ -36,13 +73,14 @@ def vmwareInfoCatch():
     position = None
     win_systype = None
     centos_systype = None
+
     if Position.objects.filter(name__contains='集团').exists():
         position = Position.objects.filter(name__contains='集团').get()
     else:
         position = Position.objects.create(name='集团内')
 
-    if System_Type.objects.filter(name__contains='Windows').exists():
-        win_systype = System_Type.objects.filter(name__contains='Windows').get()
+    if System_Type.objects.filter(name='Windows').exists():
+        win_systype = System_Type.objects.filter(name='Windows').get()
     else:
         win_systype = System_Type.objects.create(name='Windows')
 

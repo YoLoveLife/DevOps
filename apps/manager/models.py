@@ -233,7 +233,7 @@ class Host(models.Model):
 
     @password.setter
     def password(self, password):
-        self._passwd = aes.encrypt(password)
+        self._passwd = aes.encrypt(password).decode()
 
     def manage_user_get(self):
         dist = {}

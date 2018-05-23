@@ -32,6 +32,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         # 刪除原有的外鍵以及相關的文件
         return super(GroupSerializer,self).update(instance,validated_data)
 
+
 class GroupSelectHostSerializer(GroupSerializer):
     hosts = serializers.PrimaryKeyRelatedField(queryset=models.Host.objects.all(), many=True)
     class Meta:
@@ -39,11 +40,13 @@ class GroupSelectHostSerializer(GroupSerializer):
         fields = (
             'id', 'hosts'
         )
+
     def update(self, instance, validated_data):
         # instance.framework_update()
         # 刪除原有的外鍵以及相關的文件
-        print('123')
+        print(validated_data)
         return super(GroupSerializer,self).update(instance,validated_data)
+
 
 # class GroupSelectHostSerializer(serializers.Serializer):
 #     hosts = serializers.ListField()
