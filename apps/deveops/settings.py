@@ -241,7 +241,13 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(DEVEOPS_CONF.REDIS_HOST,DEVEOPS_CONF.REDIS_PORT)],
+            "hosts": [(
+                "redis://:{PASSWORD}@{HOST}:{PORT}/{SPACE}".format(
+                    PASSWORD=DEVEOPS_CONF.REDIS_PASSWD,
+                    HOST=DEVEOPS_CONF.REDIS_HOST,
+                    PORT=DEVEOPS_CONF.REDIS_PORT,
+                    SPACE=DEVEOPS_CONF.REDIS_SPACE)
+            )],
         },
         "ROUTING": "deveops.routing.routing",
     },
@@ -252,7 +258,7 @@ CHANNEL_LAYERS = {
 # import djcelery
 # djcelery.setup_loader()
 CELERY_BROKER_URL = 'redis://:{PASSWORD}@{HOST}:{PORT}/{SPACE}'.format(
-    PASSWORD='',
+    PASSWORD=DEVEOPS_CONF.REDIS_PASSWD,
     HOST=DEVEOPS_CONF.REDIS_HOST,
     PORT=DEVEOPS_CONF.REDIS_PORT,
     SPACE=DEVEOPS_CONF.REDIS_SPACE,

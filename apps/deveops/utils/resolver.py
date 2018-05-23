@@ -23,6 +23,7 @@ class AliyunECS2Json(object):
         dt['recognition_id'] = data['InstanceId']
         dt['expired'] = data['ExpiredDay']
         dt['instancename'] = data['InstanceName']
+        dt['os'] = data['OSName']
         return dt
 
 
