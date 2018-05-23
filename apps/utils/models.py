@@ -15,12 +15,12 @@ __all__ = [
 
 def upload_media_path(instance,filename):
     t = filename.split('.')
-    return str(instance.uuid) + '.' + t[-1]
+    return str(instance.id) + '.' + t[-1]
 
 
 def upload_file_path(instance,filename):
     t = filename.split('.')
-    return settings.OPS_ROOT + str(instance.uuid) + '.' + t[-1]
+    return settings.OPS_ROOT + str(instance.id) + '.' + t[-1]
 
 
 class FILE(models.Model):
@@ -35,7 +35,7 @@ class FILE(models.Model):
     # 上传时间
     create_time = models.DateTimeField(auto_now_add=True)
     # 上传用户
-    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
     type = models.IntegerField(choices=UPLOAD_TYPE,default=0)
 
     class Meta:

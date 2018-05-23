@@ -9,10 +9,12 @@ from deveops.utils import sshkey,aes
 import django.utils.timezone as timezone
 from django.conf import settings
 import socket
+import uuid
 
 __all__ = [
     "Key", "ExtendUser", "Jumper"
 ]
+
 
 def private_key_validator(key):
     if not sshkey.private_key_validator(key):
@@ -24,13 +26,14 @@ def private_key_validator(key):
 
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, default='')
 
     # 操作权限限定
     _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator])
     _public_key = models.TextField(max_length=4096, blank=True, null=True)
-    # 使用时间
-    _fetch_time = models.DateTimeField(default=timezone.now)
+    # 创建时间
+    _fetch_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         permissions = (
@@ -50,7 +53,8 @@ class Key(models.Model):
 
     @private_key.setter
     def private_key(self, private_key):
-        self._private_key = aes.encrypt(private_key.encode('utf-8'))
+        print('pri',str(aes.encrypt(private_key).decode()))
+        self._private_key = aes.encrypt(private_key).decode()
 
     @property
     def public_key(self):
@@ -58,7 +62,8 @@ class Key(models.Model):
 
     @public_key.setter
     def public_key(self, public_key):
-        self._public_key = aes.encrypt(public_key.encode('utf-8'))
+        print('pub',aes.encrypt(public_key).decode())
+        self._public_key = aes.encrypt(public_key).decode()
 
     @property
     def fetch_time(self):
@@ -148,6 +153,7 @@ class Jumper(models.Model):
     )
     # 全局ID
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     connect_ip = models.GenericIPAddressField(default='0.0.0.0')
     # 跳板机端口
     sshport = models.IntegerField(default='52000')
@@ -178,11 +184,11 @@ class Jumper(models.Model):
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s.settimeout(settings.SSH_TIMEOUT)
         try:
-            s.connect((str(self.connect_ip.encode('utf-8')), int(self.sshport)))
+            s.connect((str(self.connect_ip), int(self.sshport)))
         except socket.timeout:
             self._status = 0
             return 0
-        except Exception,e:
+        except Exception as e:
             self._status = 0
             return 0
         self._status = 1

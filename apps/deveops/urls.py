@@ -18,25 +18,26 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
+# from django.conf.urls import url
+from django.urls import include, path, re_path
 from django.views.static import serve
 from django.conf import settings
-from rest_framework_jwt.views import obtain_jwt_token
-import views
-from . import api
 urlpatterns = [
     # API
-    url(r'^api-auth/', include('authority.urls.api_urls',namespace='api-auth')),
-    url(r'^api-manager/', include('manager.urls.api_urls', namespace='api-manager')),
-    url(r'^api-ops/', include('ops.urls.api_urls', namespace='api-ops')),
-    url(r'^api-utils/', include('utils.urls.api_urls', namespace='api-utils')),
-    url(r'^api-work/', include('work.urls.api_urls', namespace='api-work')),
+    path(r'api-auth/', include('authority.urls.api_urls')),
+    path(r'api-manager/', include('manager.urls.api_urls')),
+    path(r'api-ops/', include('ops.urls.api_urls')),
+    path(r'api-utils/', include('utils.urls.api_urls')),
+    path(r'api-work/', include('work.urls.api_urls')),
+    path(r'api-var/', include('variable.urls.api_urls')),
+    # path(r'api-app/', include('application.urls.api_urls')),
     # url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
     # url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
     # url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
-    # url(r'^api-utils/',include('utils.urls.api_urls',namespace='api-utils')),
+    path(r'api-utils/', include('utils.urls.api_urls')),
+    path(r'api-dashboard/', include('dashboard.urls.api_urls')),
 
-    url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
+    re_path(r'media/(?P<path>.*)', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
 
 '''

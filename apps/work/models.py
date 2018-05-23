@@ -31,10 +31,11 @@ class Code_Work(Work):
         (1, u'文件上传'),
         (2, u'可执行'),
         (3, u'执行完毕'),
+        (4, u'正在执行'),
     )
     # 关联推出的任务
-    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True)
-    mission = models.ForeignKey(Mission, related_name='works', null=True, blank=True)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+    mission = models.ForeignKey(Mission, related_name='works', null=True, blank=True, on_delete=models.SET_NULL)
     push_mission = models.ForeignKey(Push_Mission, related_name='works', on_delete=models.SET_NULL, null=True, blank=True)
     status = models.IntegerField(choices=PROCESS_STATUS,default=0)
 
@@ -45,6 +46,13 @@ class Code_Work(Work):
                        ('yo_exam_codework',u'审核发布工单'),
                        ('yo_run_codework',u'运行发布工单'),
                        ('yo_delete_codework', u'删除应用组'))
+
+    @property
+    def vars_dict(self):
+        from django.conf import settings
+        dict = self.mission.vars_dict
+        dict['BASE'] = settings.OPS_ROOT+str(self.work.uuid)+'/'
+        return dict
 
 
 class Safety_Work(Work):

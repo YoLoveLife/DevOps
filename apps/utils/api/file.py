@@ -52,4 +52,6 @@ class UtilsFileDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.FileSerializer
     queryset = models.FILE.objects.all()
     permission_classes = [AllowAny, ]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
     # permission_classes = [FilePermission.FileDeleteRequiredMixin, IsAuthenticated]

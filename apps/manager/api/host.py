@@ -28,15 +28,24 @@ class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Host.objects.all()
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
-    filter_fields = ('groups',)
+    filter_fields = '__all__'
 
 
 class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
     pagination_class = HostPagination
+    filter_fields = ('groups',)
+
+    def get_queryset(self):
+        query = self.request.query_params.get('connect_ip', None)
+        if query is not None:
+            return self.queryset.filter(connect_ip__icontains=query)
+        else:
+            return self.queryset
 
 
 class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
@@ -49,7 +58,7 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
     permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
 
     def get_object(self):
-        return models.Host.objects.filter(id=int(self.kwargs['pk'])).get()
+        return models.Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
         from deveops.utils import aliyun
@@ -73,12 +82,31 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
         else:
             return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
+class ManagerAliyunIDDetailAPI(WebTokenAuthentication,APIView):
+    permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        from deveops.utils import aliyun
+        from deveops.utils import vmware
+        data = None
+        if self.kwargs['pk']:
+            data = aliyun.fetch_Instance(self.kwargs['pk'])
+            if data:
+                data['type'] = 'aliyun'
+            else:
+                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
 class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
     permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
+    lookup_field = "uuid"
+    lookup_url_kwarg = "pk"
 
 
 class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -86,7 +114,8 @@ class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
     permission_classes = [HostPermission.HostDeleteRequiredMixin,IsAuthenticated]
-
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
     # def delete(self, request, *args, **kwargs):
     #     host = models.Host.objects.get(id=int(kwargs['pk']))
     #     if host.storages.count() != 0:
@@ -111,5 +140,5 @@ class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
         # if self.count == 0:
         #     self.count = self.count + 1
         #     self.timeline_create(self.request.user)
-        host = models.Host.objects.filter(id=int(self.kwargs['pk']))
+        host = models.Host.objects.filter(uuid=self.kwargs['pk'])
         return host

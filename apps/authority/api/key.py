@@ -45,6 +45,8 @@ class KeyUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.KeySerializer
     queryset = models.Key.objects.all()
     permission_classes = [KeyPermission.KeyUpdateRequiredMixin, IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 
 class KeyDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -52,9 +54,12 @@ class KeyDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.KeySerializer
     queryset = models.Key.objects.all()
     permission_classes = [KeyPermission.KeyDeleteRequiredMixin, IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
     def delete(self, request, *args, **kwargs):
-        key = models.Key.objects.get(id=int(kwargs['pk']))
+        # key = models.Key.objects.get(id=int(kwargs['pk']))
+        key = self.get_object()
         try:
             group = key.group
             return Response({'detail': u'该密钥属于应用组'+group.name+u'无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)

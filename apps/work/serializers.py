@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import models
+from work import models
 from rest_framework import serializers
 
 __all__ = [
-    'CodeWorkSerializer',
+    'CodeWorkStatusSerializer', 'CodeWorkSerializer', 'CodeWorkCheckSerializer',
+    'CodeWorkRunSerializer'
 ]
 
 
@@ -18,12 +19,18 @@ class CodeWorkStatusSerializer(serializers.ModelSerializer):
         )
 
 
-class CodeStatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Code_Work
-        fields = (
-            'id', 'status'
-        )
+class CodeWorkCheckSerializer(CodeWorkStatusSerializer):
+    def update(self, instance, validated_data):
+        instance.status = 2
+        instance.save()
+        return super(CodeWorkCheckSerializer,self).update(instance, {})
+
+
+class CodeWorkRunSerializer(CodeWorkStatusSerializer):
+    def update(self, instance, validated_data):
+        instance.status = 4
+        instance.save()
+        return super(CodeWorkRunSerializer,self).update(instance,{})
 
 
 class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
@@ -31,14 +38,16 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
     push_mission = serializers.PrimaryKeyRelatedField(required=False,queryset=models.Push_Mission.objects.all(), allow_null=True)
     mission_info = serializers.CharField(source='mission.info', required=False, read_only=True)
     username = serializers.CharField(source='user.full_name', required=False, read_only=True)
+    create_time = serializers.DateTimeField(source='push_mission.create_time', format="%Y-%m-%dT%H:%M:%S", read_only=True)
+    finish_time = serializers.DateTimeField(source='push_mission.finish_time', format="%Y-%m-%dT%H:%M:%S", read_only=True)
 
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'uuid', 'info', 'mission', 'push_mission', 'mission_info', 'status', 'username'
+            'id', 'uuid', 'info', 'mission', 'push_mission', 'mission_info', 'status', 'username', 'create_time', 'finish_time'
         )
         read_only_fields = (
-            'id', 'uuid', 'push_mission', 'status', 'username'
+            'id', 'uuid', 'push_mission', 'status', 'username', 'create_time', 'finish_time'
         )
 
     def create(self, validated_data):
@@ -48,7 +57,7 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
         push_obj = models.Push_Mission.objects.create(mission=mission)
 
         push_obj.validate = not mission.need_validate
-        print(not mission.need_validate)
+        # print(not mission.need_validate)
         push_obj.save()
 
         obj = models.Code_Work.objects.create(push_mission=push_obj, mission=mission, **validated_data)

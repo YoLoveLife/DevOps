@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import models
+from ops import models
 from rest_framework import serializers
 
 __all__ = [
@@ -28,10 +28,10 @@ class MetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.META
         fields = (
-            'id', 'hosts', 'contents', 'group', 'group_name', 'uuid', 'info'
+            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info'
         )
         read_only_fields = (
-            'id', 'uuid', 'group_name'
+            'id', 'uuid','group_name'
         )
 
     def create(self, validated_data):
@@ -46,7 +46,7 @@ class MetaSerializer(serializers.ModelSerializer):
 
         obj = models.META.objects.create(**validated_data)
         obj.contents.add(*contests_list)
-        obj.hosts = hosts
+        obj.hosts.set(hosts)
         obj.save()
 
         return obj
@@ -69,21 +69,13 @@ class MetaSerializer(serializers.ModelSerializer):
         return obj
 
 
-class MetaNeedFileSerializer(serializers.ModelSerializer):
+class MissionNeedFileSerializer(serializers.ModelSerializer):
     filelist = serializers.ListField(source='file_list',read_only=True)
 
     class Meta:
-        model = models.META
+        model = models.Mission
         fields = (
-            'id', 'filelist',
-        )
-
-
-class OpsDirSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = models.META
-        fields = (
-            'ops_dir',
+            'filelist',
         )
 
 
@@ -91,14 +83,15 @@ class MissionSerializer(serializers.ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
     metas = serializers.PrimaryKeyRelatedField(many=True, queryset=models.META.objects.all())
     group_name = serializers.CharField(source="group.name",read_only=True)
+    counts = serializers.IntegerField(source="count",read_only=True)
 
     class Meta:
         model = models.Mission
         fields = (
-            'id', 'group', 'metas', 'info', 'need_validate', 'group_name'
+            'id', 'uuid', 'group', 'metas', 'info', 'need_validate', 'group_name', 'counts'
         )
         read_only_fields = (
-            'id', 'group_name'
+            'id', 'uuid', 'group_name', 'counts'
         )
 
 

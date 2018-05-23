@@ -12,7 +12,8 @@ from ..permission import codework as CodeWorkPermission
 from deveops.api import WebTokenAuthentication
 
 __all__ = [
-
+    'CodeWorkCheckAPI', 'CodeWorkCreateAPI', 'CodeWorkListByPageAPI',
+    'CodeWorkPagination', 'CodeWorkRunAPI', 'CodeWorkStatusAPI'
 ]
 
 
@@ -25,8 +26,8 @@ class CodeWorkListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     serializer_class = serializers.CodeWorkSerializer
     queryset = models.Code_Work.objects.all().order_by('-id')
     permission_classes = [AllowAny, ]
-    # permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
     pagination_class = CodeWorkPagination
+    filter_fields = '__all__'
 
 
 class CodeWorkCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
@@ -35,31 +36,41 @@ class CodeWorkCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [AllowAny,]
 
 
-class CodeWorkExamAPI(WebTokenAuthentication, generics.UpdateAPIView):
-    module = models.Code_Work
-    serializer_class = serializers.CodeStatusSerializer
-    # permission_classes = [CodeWorkPermission.CodeWorkExamRequiredMixin, IsAuthenticated]
-    permission_classes = [AllowAny,]
-    queryset = models.Code_Work.objects.all()
-
-    def update(self, request, *args, **kwargs):
-        user = request.user
-        codework = models.Code_Work.objects.filter(id=int(kwargs['pk'])).get()
-        if codework.mission.group.users.filter(id=user.id).exists():
-            return super(CodeWorkExamAPI,self).update(request, *args, **kwargs)
-        else:
-            return Response({'detail': u'您没有审核的权限'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-# class UtilsFileCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
-#     module = models.FILE
-#     serializer_class = serializers.FileSerializer
-#     permission_classes = [AllowAny, ]
-#     # permission_classes = [FilePermission.FileCreateRequiredMixin, IsAuthenticated]
-
-class CodeWorkRunAPI(WebTokenAuthentication, generics.UpdateAPIView):
+class CodeWorkStatusAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Code_Work
     serializer_class = serializers.CodeWorkStatusSerializer
     permission_classes = [AllowAny,]
     queryset = models.Code_Work.objects.all()
+    lookup_url_kwarg = 'pk'
+    lookup_field = 'uuid'
+
+
+class CodeWorkCheckAPI(CodeWorkStatusAPI):
+    serializer_class = serializers.CodeWorkCheckSerializer
+    # permission_classes = [CodeWorkPermission.CodeWorkExamRequiredMixin, IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
+        if codework.mission.group.users.filter(id=user.id).exists():
+            return super(CodeWorkCheckAPI,self).update(request, *args, **kwargs)
+        else:
+            return Response({'detail': u'您没有审核的权限'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class CodeWorkRunAPI(CodeWorkStatusAPI):
+    serializer_class = serializers.CodeWorkRunSerializer
+    # permission_classes = [CodeWorkPermission.CodeWorkExamRequiredMixin, IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
+        if codework.user.id == user.id:
+            return super(CodeWorkRunAPI,self).update(request, *args, **kwargs)
+        else:
+            return Response({'detail':u'您无法执行不是您发起的工单'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
 
 

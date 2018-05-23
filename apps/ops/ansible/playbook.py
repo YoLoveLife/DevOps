@@ -5,7 +5,7 @@ from ansible.vars.manager import VariableManager
 from ansible.inventory.manager import InventoryManager
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
-import callback
+from ops.ansible import callback
 
 __all__ = [
     "Options", "Playbook"
@@ -16,7 +16,7 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks',
 
 
 class Playbook(object):
-    def __init__(self, run_path, host_list, replay_name, key):
+    def __init__(self, vars_dict, host_list, replay_name, key, push_mission):
         self.loader = DataLoader()
         self.options = Options(
             connection='smart', module_path='', forks=100, become=None,
@@ -24,13 +24,12 @@ class Playbook(object):
             private_key_file=key, diff=False
         )
         self.key = key
-        self.stdout_callback = callback.AnsibleCallback(replay_name)
+        self.stdout_callback = callback.AnsibleCallback(replay_name, push_mission)
         self.replay_name = replay_name
         self.inventory = InventoryManager(loader=self.loader, sources=host_list.encode('utf-8')+',')
 
-        self.run_path = run_path
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
-        self.variable_manager.extra_vars = {'BASE':run_path}
+        self.variable_manager.extra_vars = vars_dict
         self.play = []
 
     def delete_key(self):

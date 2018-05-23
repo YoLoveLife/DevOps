@@ -8,11 +8,29 @@ from __future__ import absolute_import, unicode_literals
 from celery.task import periodic_task
 from celery.schedules import crontab
 from manager.models import Host,HostDetail,Position,System_Type
+from deveops.conf import REDIS_PORT,REDIS_SPACE,EXPIREDTIME
+import redis
+
+connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
+
+
+# @periodic_task(run_every=crontab(minute='*'))
+# def aliyunECSInfoCatch():
+#     from deveops.utils import aliyun
+#     from deveops.conf import ALIYUN_PAGESIZE
+#     from deveops.utils import resolver
+#     from manager.models import ExpiredAliyunHost
+#     countNumber = aliyun.fetch_ECSPage()
+#     threadNumber = int(countNumber/ALIYUN_PAGESIZE)
+#     for num in range(1,threadNumber+1):
+#         data = aliyun.fetch_Instances(num)
+#         for dt in data:
+
+
 
 # @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
 @periodic_task(run_every=crontab(minute='*'))
 def vmwareInfoCatch():
-    print('ZZCDDR-PPQ')
     from deveops.utils import vmware
     children = vmware.fetch_AllInstance()
     position = None
@@ -35,8 +53,8 @@ def vmwareInfoCatch():
 
     for child in children:
         '''
-        {'privateMemory': 8500, 
-        'powerState': 'poweredOn', 'name': 'DWETL02', 'uptimeSeconds': 12389645, 'numCpu': 8, 'overallCpuUsage': 0, 
+        {'privateMemory': 8500,
+        'powerState': 'poweredOn', 'name': 'DWETL02', 'uptimeSeconds': 12389645, 'numCpu': 8, 'overallCpuUsage': 0,
         'memoryMB': 16384, 'memorySizeMB': 16384, 'guestMemoryUsage': 0, 'committed': 24335576477L, 'hostMemoryUsage': 9265,
          'ipAddress': '10.100.63.69', 'sharedMemory': 1662, 'unshared': 24212668416L}
         '''

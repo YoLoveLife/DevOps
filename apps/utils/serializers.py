@@ -1,4 +1,4 @@
-import models
+from utils import models
 from rest_framework import serializers
 
 __all__ = [

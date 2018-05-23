@@ -52,10 +52,13 @@ class ManagerSysTypeUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.SystemTypeSerializer
     queryset = models.System_Type.objects.all()
     permission_classes = [SysTypePermission.SysTypeUpdateRequiredMixin,IsAuthenticated]
-
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 class ManagerSysTypeDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.System_Type
     serializer_class = serializers.SystemTypeSerializer
     queryset = models.System_Type.objects.all()
     permission_classes = [SysTypePermission.SysTypeDeleteRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'

@@ -49,10 +49,13 @@ class ManagerPositionUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.PositionSerializer
     queryset = models.Position.objects.all()
     permission_classes = [PositionPermission.PositionUpdateRequiredMixin,IsAuthenticated]
-
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
 class ManagerPositionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     queryset = models.Position.objects.all()
     permission_classes = [PositionPermission.PositionDeleteRequiredMixin,IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
