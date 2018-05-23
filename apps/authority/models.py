@@ -53,7 +53,6 @@ class Key(models.Model):
 
     @private_key.setter
     def private_key(self, private_key):
-        print('pri',str(aes.encrypt(private_key).decode()))
         self._private_key = aes.encrypt(private_key).decode()
 
     @property
