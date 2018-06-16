@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-from .. import models
-from .. import serializers
+from .. import models, serializers, filter
 from rest_framework.views import Response,status
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -23,30 +22,22 @@ class OpsMetaListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
     # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
-    filter_fields = ('group',)
-    from rest_framework.renderers import JSONRenderer
-    renderer_classes = [JSONRenderer,]
-
-    def get_queryset(self):
-        # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
-        queryset = models.META.objects.all()
-        return queryset
+    filter_class = filter.MetaFilter
+    queryset = models.META.objects.all()
+    # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
 
 
 class OpsMetaListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
-    permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
+    # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
+    queryset = models.META.objects.all()
+    # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
     pagination_class = MetaPagination
-
+    filter_class = filter.MetaFilter
     # 所有運維工程師有如下特點
     # 1、僅能查看自己所管理的應用組
     # 2、可以增删改自己所管理的应用组的所有Meta操作
-    def get_queryset(self):
-        # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
-        queryset = models.META.objects.all()
-        return queryset
 
 
 class OpsMetaCreateAPI(WebTokenAuthentication,generics.CreateAPIView):

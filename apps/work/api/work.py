@@ -3,7 +3,7 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models, serializers
+from .. import models, serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
@@ -27,7 +27,7 @@ class CodeWorkListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     queryset = models.Code_Work.objects.all().order_by('-id')
     permission_classes = [AllowAny, ]
     pagination_class = CodeWorkPagination
-    filter_fields = '__all__'
+    filter_class = filter.CodeWorkFilter
 
 
 class CodeWorkCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
@@ -71,6 +71,16 @@ class CodeWorkRunAPI(CodeWorkStatusAPI):
             return Response({'detail':u'您无法执行不是您发起的工单'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+class CodeWorkUploadFileAPI(generics.UpdateAPIView):
+    serializer_class = serializers.CodeWorkUploadFileSerializer
+    queryset = models.Code_Work.objects.all()
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
 
-
-
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
+        if codework.user.id == user.id:
+            return super(CodeWorkUploadFileAPI,self).update(request, *args, **kwargs)
+        else:
+            return Response({'detail':u'您无法对不是您发起的工单上传文件'}, status=status.HTTP_406_NOT_ACCEPTABLE)

@@ -15,9 +15,9 @@ __all__ = [
 class AnsibleRecvThread(threading.Thread):
     CACHE = 1024
 
-    def __init__(self, work, play_source, inventory, key, vars_dict, reply_channel_name):
+    def __init__(self, work, play_source, inventory, key, vars_dict, consumer):
         super(AnsibleRecvThread, self).__init__()
-        self.reply_channel_name = reply_channel_name
+        self.consumer = consumer
         self.key = key
         self.vars_dict = vars_dict
         self.play_source = play_source
@@ -25,7 +25,7 @@ class AnsibleRecvThread(threading.Thread):
         self.work = work
 
     def run(self):
-        p = playbook.Playbook(self.vars_dict, self.inventory, self.reply_channel_name, self.key, self.work.push_mission)
+        p = playbook.Playbook(self.vars_dict, self.inventory, self.consumer, self.key, self.work.push_mission)
         p.import_task(self.play_source)
         p.run()
         self.work.status = 3

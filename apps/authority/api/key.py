@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from .. import models,serializers
+from .. import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,7 +24,7 @@ class KeyListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.KeySerializer
     queryset = models.Key.objects.all()
     permission_classes = [KeyPermission.KeyListRequiredMixin, IsAuthenticated]
-
+    filter_class = filter.KeyFilter
 
 class KeyListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Key
@@ -32,6 +32,7 @@ class KeyListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Key.objects.all()
     permission_classes = [KeyPermission.KeyListRequiredMixin, IsAuthenticated]
     pagination_class = KeyPagination
+    filter_class = filter.KeyFilter
 
 
 class KeyCreateAPI(WebTokenAuthentication,generics.CreateAPIView):

@@ -51,7 +51,7 @@ class META_CONTENT(models.Model):
         if self.need_file == True and self.args.find(FIND_LABLE)!=-1:
             args_list = self.args.split(FIND_LABLE)
             file_name = args_list[1].split(' ')
-            return file_name[0]
+            return file_name[0][2:-2]
         else:
             return ''
 
@@ -179,10 +179,12 @@ class META_SORT(models.Model):
 
 
 class Push_Mission(models.Model):
-    DONE = (
-        (0, '未完成'),
-        (1, '已完成'),
-        (2, '出错')
+    STATUS = (
+        (0, '审核工单'), # 未审核
+        (1, '上传文件'), # 未上传文件
+        (2, '执行工单'), # 未执行
+        (3, '执行中'), # 执行中
+        (4, '执行完毕'), # 执行完毕
     )
 
     class Meta:
@@ -193,30 +195,23 @@ class Push_Mission(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     # 由哪個Mission推送出來的任務
     mission = models.ForeignKey(Mission, related_name='push_missions', null=True, on_delete=models.SET_NULL)
-    # 是否通過驗證 該值由Mission的need_validate來初始化
-    _validate = models.BooleanField(default=False)
-    _done = models.IntegerField(choices=DONE, default=0)
+    # 推出任务状态
+    _status = models.IntegerField(choices=STATUS, default=0)
     # 任務推出時間
     create_time = models.DateTimeField(auto_now_add=True)
     # 任務結束時間
     finish_time = models.DateTimeField(auto_now=True)
     # 執行內容
     results = models.CharField(default='', max_length=5000)
+    # 关联文件
+    files = models.ManyToManyField(FILE, related_name='pushs', blank=True)
 
     @property
-    def done(self):
-        return self._done
+    def status(self):
+        return self._status
 
-    @done.setter
-    def done(self, done):
-        self._done = done
-
-    @property
-    def validate(self):
-        return self._validate
-
-    @validate.setter
-    def validate(self, validate):
-        self._validate = validate
+    @status.setter
+    def status(self, status):
+        self._status = status
 
 

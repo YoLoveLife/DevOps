@@ -40,7 +40,7 @@ class UtilsFileListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     pagination_class = FilePagination
 
 
-class UtilsFileCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class UtilsFileCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer
     permission_classes = [AllowAny, ]

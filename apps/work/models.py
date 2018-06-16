@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from ops.models import Push_Mission,Mission
 from manager.models import Group
 from authority.models import ExtendUser
+from utils.models import FILE
 import uuid
 __all__ = [
     'Work', 'Code_Work', 'Safety_Work',
@@ -21,23 +22,15 @@ class Work(models.Model):
     info = models.TextField()
 
     class Meta:
-        ordering = ['id',]
+        ordering = ['id', ]
         abstract = True
 
 
 class Code_Work(Work):
-    PROCESS_STATUS = (
-        (0, u'未审核'),
-        (1, u'文件上传'),
-        (2, u'可执行'),
-        (3, u'执行完毕'),
-        (4, u'正在执行'),
-    )
     # 关联推出的任务
     user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
     mission = models.ForeignKey(Mission, related_name='works', null=True, blank=True, on_delete=models.SET_NULL)
     push_mission = models.ForeignKey(Push_Mission, related_name='works', on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.IntegerField(choices=PROCESS_STATUS,default=0)
 
     class Meta:
         permissions = (('yo_list_codework', u'罗列发布工单'),
@@ -47,12 +40,37 @@ class Code_Work(Work):
                        ('yo_run_codework',u'运行发布工单'),
                        ('yo_delete_codework', u'删除应用组'))
 
+
+    @property
+    def status(self):
+        return self.push_mission.status
+
+    @status.setter
+    def status(self,status):
+        self.push_mission.status = status
+        self.push_mission.save()
+
     @property
     def vars_dict(self):
         from django.conf import settings
         dict = self.mission.vars_dict
-        dict['BASE'] = settings.OPS_ROOT+str(self.work.uuid)+'/'
+        dict['BASE'] = settings.OPS_ROOT + str(self.uuid) + '/'
+        dict['TOOL'] = settings.TOOL_ROOT + '/'
+        if self.push_mission.files.count() !=0:
+            for file in self.push_mission.files.all():
+                dict[file.name] = settings.MEDIA_ROOT+'/'+file.file.name
         return dict
+
+    @property
+    def file_list(self):
+        return self.mission.file_list
+
+    @file_list.setter
+    def file_list(self,file_list):
+        fs =FILE.objects.filter(uuid__in=file_list)
+        self.push_mission.files.set(fs)
+        self.push_mission.status = 2
+        self.push_mission.save()
 
 
 class Safety_Work(Work):

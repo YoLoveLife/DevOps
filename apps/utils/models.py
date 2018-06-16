@@ -6,6 +6,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
+from deveops import conf
 from authority.models import ExtendUser
 import uuid
 __all__ = [
@@ -15,12 +16,12 @@ __all__ = [
 
 def upload_media_path(instance,filename):
     t = filename.split('.')
-    return str(instance.id) + '.' + t[-1]
+    return 'framework' + '/' + str(instance.uuid)
 
 
 def upload_file_path(instance,filename):
     t = filename.split('.')
-    return settings.OPS_ROOT + str(instance.id) + '.' + t[-1]
+    return 'work/' + str(instance.uuid)
 
 
 class FILE(models.Model):
@@ -29,6 +30,7 @@ class FILE(models.Model):
         (1, '文件')
     )
     id = models.AutoField(primary_key=True)
+    name = models.CharField(default=uuid.uuid4, max_length=100, null=True, blank=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     file = models.FileField(upload_to=upload_file_path, null=True, blank=True)
     image = models.ImageField(upload_to=upload_media_path, null=True, blank=True)

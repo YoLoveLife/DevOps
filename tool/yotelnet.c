@@ -14,7 +14,7 @@ int main(int argc,char *argv[]){
 	char* address;
 	if(argc!=3){
 		printf("Usage: %s address port\n",argv[0]);
-		return 1;
+		return 0;
 	}
 	
 	address = argv[1];
@@ -23,7 +23,7 @@ int main(int argc,char *argv[]){
 	sock = socket(AF_INET,SOCK_STREAM,0);
 	if(sock == -1){
 		printf("False");
-		return 1;
+		return 0;
 	}
 
 	struct sockaddr_in dst;
@@ -32,6 +32,7 @@ int main(int argc,char *argv[]){
 	h = gethostbyname(address);
 	if(h==NULL){
         printf("False");
+        return 0;
 	}
 	else{
         memcpy(&dst.sin_addr.s_addr,h->h_addr,4);
@@ -45,9 +46,9 @@ int main(int argc,char *argv[]){
 	if(connect(sock,(struct sockaddr *)&dst,sizeof(dst))<0){
 	//	perror("Connect failed.Error");
 		printf("False");
-		exit(1);
+		exit(0);
 	}else{
 		printf("True");
-		exit(1);
+		exit(0);
 	}
 }

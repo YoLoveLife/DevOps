@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from .. import models,serializers
+from .. import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,6 +24,7 @@ class JumperListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
     permission_classes = [JumperPermission.JumperListRequiredMixin, IsAuthenticated]
+    filter_class = filter.JumperFilter
 
 
 class JumperListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
@@ -32,6 +33,7 @@ class JumperListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Jumper.objects.all()
     permission_classes = [JumperPermission.JumperListRequiredMixin, IsAuthenticated]
     pagination_class = JumperPagination
+    filter_class = filter.JumperFilter
 
 
 class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):

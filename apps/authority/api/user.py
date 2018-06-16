@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from .. import models,serializers
+from .. import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import Response,status
@@ -46,7 +46,7 @@ class UserListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
     permission_classes = [UserPermission.UserListRequiredMixin,IsAuthenticated]
-
+    filter_class = filter.UserFilter
 
 class UserListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExtendUser
@@ -54,6 +54,7 @@ class UserListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.ExtendUser.objects.all()
     permission_classes = [UserPermission.UserListRequiredMixin,IsAuthenticated]
     pagination_class = UserPagination
+    filter_class = filter.UserFilter
 
 
 class UserOpsListAPI(WebTokenAuthentication,generics.ListAPIView):

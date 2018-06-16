@@ -1,0 +1,55 @@
+devEops - 浙报传媒开发自运维平台(测试)
+=====================
+{{WEEK_START}} - {{WEEK_END}}
+
+## <a name="cmdb"> 资产统计 </a>
+### 资产计数
+参数项|数 目
+:--------:|:--------:
+阿里云机器总数|{{ALIYUN_COUNT}}
+VMware机器总数|{{VMWARE_COUNT}}
+接管应用总数|{{GROUP_COUNT}}
+接管主机总数|{{HOST_COUNT}}
+
+### 资产图表
+#### 操作系统类型与主机总数
+![systype](./systype.png)
+
+#### 接管应用与主机总数
+![group](./group.png)
+
+查看[详细内容](http://deveops.8531.cn/dashboard)
+
+## <a name="manager"> 运维统计 </a>
+### 运维计数
+参数项|数 目
+:--------:|:--------:
+可用任务总数| {{MISSION_COUNT}}
+活跃用户总数| {{ACTIVITY_USER}}
+
+
+## <a name="pay"> 资费提醒 </a>
+**请相关系统管理员及DBA关注资源过期时间及时续费**
+### ECS资源过期列表
+UUID|实例名称|连接地址|过期时限
+:--------:|:--------:|:--------:|:--------:
+{% for ecs in ECS_EXPIRED %}{{ecs.recognition_id}}|{{ecs.instancename}}|{{ecs.connect_ip}}|{{ecs.expired}}天
+{% endfor %}
+
+### RDS资源过期列表
+UUID|实例名称|过期时限|数据库版本
+:--------:|:--------:|:--------:|:--------:
+{% for rds in RDS_EXPIRED %}{{rds.recognition_id}}|{{rds.instancename}}|{{rds.expired}}天|{{rds.version}}
+{% endfor %}
+
+### KVStore资源过期列表
+UUID|实例名称|过期时限|连接地址|版本
+:--------:|:--------:|:--------:|:--------:|:--------:
+{% for kvs in KVSTORE_EXPIRED %}{{kvs.recognition_id}}|{{kvs.instancename}}|{{kvs.expired}}天|{{kvs.connect_domain}}|{{kvs.version}}
+{% endfor %}
+
+### MongoDB资源过期列表
+UUID|实例名称|过期时限|类型|版本
+:--------:|:--------:|:--------:|:--------:|:--------:
+{% for mng in MONGODB_EXPIRED %}{{mng.recognition_id}}|{{mng.instancename}}|{{mng.expired}}天|{{mng.type}}|{{mng.version}}
+{% endfor %}

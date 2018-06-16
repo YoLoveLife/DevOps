@@ -195,20 +195,3 @@ class Jumper(models.Model):
 
     def to_yaml(self):
         return '-o ProxyCommand="ssh -p{PORT} -W %h:%p -q root@{IP} nc"'.format(PORT=self.sshport,IP=self.connect_ip)
-    # @property
-    # def catch_ssh_connect(self):
-    #     msg = Message()
-    #     if self.check_status == True:
-    #         try:
-    #             jumper = paramiko.SSHClient()
-    #             jumper.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    #             jumper.connect(self.connect_ip, username=self.sys_user.username,
-    #                            pkey=sshkey.ssh_private_key2obj(self.sys_user.private_key),
-    #                            port=self.sshport)
-    #             return msg.fuse_msg(1,'Jumper connection success',jumper)
-    #         except socket.timeout:
-    #             return msg.fuse_msg(0,'Jumper connection timeout',None)
-    #         except Exception,ex:
-    #             return msg.fuse_msg(0,'Jumper connection wrong',None)
-    #     else:
-    #         return msg.fuse_msg(0,'Jumper connection wrong', None)

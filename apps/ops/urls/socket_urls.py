@@ -6,5 +6,5 @@
 from ops import consumers
 from django.conf.urls import url
 ops_routing = [
-    url(r'^/ansible/(?P<work>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/$', consumers.MetaConsumer)
+    url(r'ansible/(?P<work>[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12})/', consumers.MetaConsumer),
 ]

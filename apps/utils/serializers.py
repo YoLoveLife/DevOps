@@ -8,14 +8,13 @@ __all__ = [
 
 class FileSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.name',read_only=True)
-
     class Meta:
         model = models.FILE
         fields = (
-            'id', 'file', 'create_time', 'user', 'type','image'
+            'id', 'file', 'create_time', 'user', 'type', 'image', 'name', 'uuid'
         )
         read_only_fields = (
-            'id', 'create_time'
+            'id', 'create_time', 'uuid'
         )
 
     def create(self, validated_data):

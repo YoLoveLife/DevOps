@@ -35,6 +35,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class GroupSelectHostSerializer(GroupSerializer):
     hosts = serializers.PrimaryKeyRelatedField(queryset=models.Host.objects.all(), many=True)
+
     class Meta:
         model = models.Group
         fields = (
@@ -42,10 +43,12 @@ class GroupSelectHostSerializer(GroupSerializer):
         )
 
     def update(self, instance, validated_data):
-        # instance.framework_update()
-        # 刪除原有的外鍵以及相關的文件
-        print(validated_data)
-        return super(GroupSerializer,self).update(instance,validated_data)
+        # instance.hosts.add(validated_data['hosts'])
+        instance.hosts.add(*validated_data['hosts'])
+        validated_data.pop('hosts')
+        return super(GroupSelectHostSerializer, self).update(instance, validated_data)
+        # print(validated_data)
+        # return super(GroupSelectHostSerializer,self).update(instance,validated_data)
 
 
 # class GroupSelectHostSerializer(serializers.Serializer):
@@ -118,7 +121,6 @@ class HostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         detail = validated_data.pop('detail')
         detail_instance = models.HostDetail.objects.create(**detail)
-        validated_data.pop('groups')
         return models.Host.objects.create(detail=detail_instance, **validated_data)
 
     def update(self, instance, validated_data):
@@ -140,14 +142,4 @@ class HostPasswordSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id', 'passwd',
-        )
-
-
-class StorageSerializer(serializers.HyperlinkedModelSerializer):
-    group_name = serializers.StringRelatedField(source="get_all_group_name",read_only=True)
-
-    class Meta:
-        model = models.Storage
-        fields = (
-            'id', 'disk_size', 'disk_path', 'info', 'group_name'
         )

@@ -25,5 +25,8 @@ class DashboardManagerAPI(WebTokenAuthentication,generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         con = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
         status_json = con.get('MANAGER_STATUS')
-        manager_status = json.loads(str(status_json, encoding='utf-8'))
+        if status_json is None:
+            manager_status = {}
+        else:
+            manager_status = json.loads(str(status_json, encoding='utf-8'))
         return Response(manager_status,status.HTTP_200_OK)

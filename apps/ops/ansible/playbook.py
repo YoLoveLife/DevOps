@@ -16,7 +16,7 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks',
 
 
 class Playbook(object):
-    def __init__(self, vars_dict, host_list, replay_name, key, push_mission):
+    def __init__(self, vars_dict, host_list, consumer, key, push_mission):
         self.loader = DataLoader()
         self.options = Options(
             connection='smart', module_path='', forks=100, become=None,
@@ -24,9 +24,10 @@ class Playbook(object):
             private_key_file=key, diff=False
         )
         self.key = key
-        self.stdout_callback = callback.AnsibleCallback(replay_name, push_mission)
-        self.replay_name = replay_name
-        self.inventory = InventoryManager(loader=self.loader, sources=host_list.encode('utf-8')+',')
+        self.stdout_callback = callback.AnsibleCallback(consumer, push_mission)
+        self.consumer = consumer
+        print('ddr',host_list)
+        self.inventory = InventoryManager(loader=self.loader, sources=host_list+',')
 
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.variable_manager.extra_vars = vars_dict
@@ -38,9 +39,7 @@ class Playbook(object):
             os.remove(self.key)
 
     def import_task(self, play_source):
-        from deveops.asgi import channel_layer
-        channel_layer.send(self.replay_name,{'text': 'Load Task => '})
-        print('renwu',play_source)
+        self.consumer.send('Load Task =>\r\n')
         for source in play_source:
             self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
 
@@ -55,18 +54,13 @@ class Playbook(object):
                 passwords={},
                 stdout_callback=self.stdout_callback
             )
-
-            from deveops.asgi import channel_layer
-            channel_layer.send(self.replay_name, {'text': 'Start => \r\n'})
-
+            self.consumer.send("Start => \r\n")
             for p in self.play:
                 result = tqm.run(p)
             # self.delete_key()
 
-            channel_layer.send(self.replay_name,
-                               {'text': u'执行完毕\r\n'})
-            channel_layer.send(self.replay_name,
-                               {'close': True})
+            self.consumer.send('执行完毕\r\n')
         finally:
+            self.consumer.close()
             if tqm is not None:
                 tqm.cleanup()

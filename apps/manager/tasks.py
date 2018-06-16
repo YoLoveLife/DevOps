@@ -4,7 +4,6 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 
-from __future__ import absolute_import, unicode_literals
 from celery.task import periodic_task
 from celery.schedules import crontab
 from manager.models import Host,HostDetail,Position,System_Type
@@ -13,8 +12,9 @@ import redis
 
 connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
 
+from celery import shared_task
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=crontab(minute=50,hour=0))
 def aliyunECSInfoCatch():
     from deveops.utils import aliyun
     from deveops.conf import ALIYUN_PAGESIZE
@@ -37,6 +37,8 @@ def aliyunECSInfoCatch():
             expiredTime = datetime.datetime.strptime(dt['ExpiredTime'],'%Y-%m-%dT%H:%MZ')
             dt['ExpiredDay'] = (expiredTime-now).days
             data_dist = resolver.AliyunECS2Json.decode(dt)
+            if not data_dist.__contains__('connect_ip'):
+                continue
             query = Host.objects.filter(detail__aliyun_id=data_dist['recognition_id'])
             status = 0
             if System_Type.objects.filter(name__contains=data_dist['os']).exists():
@@ -66,28 +68,16 @@ def aliyunECSInfoCatch():
 
 
 # @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=crontab(minute=55,hour=0))
 def vmwareInfoCatch():
     from deveops.utils import vmware
     children = vmware.fetch_AllInstance()
     position = None
-    win_systype = None
-    centos_systype = None
-
-    if Position.objects.filter(name__contains='集团').exists():
-        position = Position.objects.filter(name__contains='集团').get()
+    systype = None
+    if Position.objects.filter(name__contains='集团内').exists():
+        position = Position.objects.filter(name__contains='集团内').get()
     else:
         position = Position.objects.create(name='集团内')
-
-    if System_Type.objects.filter(name='Windows').exists():
-        win_systype = System_Type.objects.filter(name='Windows').get()
-    else:
-        win_systype = System_Type.objects.create(name='Windows')
-
-    if System_Type.objects.filter(name__contains='Linux').exists():
-        centos_systype = System_Type.objects.filter(name__contains='Linux').get()
-    else:
-        centos_systype = System_Type.objects.create(name='Linux')
 
     for child in children:
         '''
@@ -98,18 +88,23 @@ def vmwareInfoCatch():
         '''
         list = vmware.FetchInfo(child)
         status = 1
-        os = None
         if not list['powerState'] == 'poweredOn':
             status = 0
-        if list['guestFullName'].lower().find('windows') != -1:
-            os = win_systype
+            continue
+
+        if System_Type.objects.filter(name=list['guestFullName']).count() ==0:
+            systype = System_Type.objects.create(name=list['guestFullName'])
         else:
-            os = centos_systype
+            systype = System_Type.objects.filter(name=list['guestFullName']).get()
+
+        if not list.__contains__('ipAddress'):
+            continue
         if list['ipAddress'] is None:
             continue
+
         query = Host.objects.filter(detail__vmware_id=list['uuid'] ,connect_ip=list['ipAddress'])
         if not query.exists():
-            detail_instance = HostDetail.objects.create(vmware_id=list['uuid'], info='', position=position, systemtype=os)
+            detail_instance = HostDetail.objects.create(vmware_id=list['uuid'], info='', position=position, systemtype=systype)
             host_instance = Host.objects.create(
                 detail=detail_instance,
                 connect_ip=list['ipAddress'],

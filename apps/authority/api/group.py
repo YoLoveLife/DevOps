@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from .. import models,serializers
+from .. import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
@@ -24,6 +24,7 @@ class GroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    filter_class = filter.GroupFilter
 
 
 class GroupListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
@@ -32,6 +33,7 @@ class GroupListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
     pagination_class = GroupPagination
+    filter_class = filter.GroupFilter
 
 
 class GroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):

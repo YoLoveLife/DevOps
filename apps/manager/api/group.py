@@ -3,7 +3,7 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models, serializers
+from .. import models, serializers, filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
@@ -24,7 +24,7 @@ class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Group.objects.all()
     # permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny,]
-
+    filter_class = filter.GroupFilter
 
 class GroupPagination(PageNumberPagination):
     page_size = 10
@@ -36,6 +36,7 @@ class ManagerGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
     pagination_class = GroupPagination
+    filter_class = filter.GroupFilter
 
 
 class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
@@ -88,6 +89,4 @@ class ManagerGroupSelectHostAPI(WebTokenAuthentication, generics.UpdateAPIView):
     queryset = models.Group.objects.all()
     permission_classes = [AllowAny,]
     # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
-    lookup_field = 'uuid'
-    lookup_url_kwarg = 'pk'
 

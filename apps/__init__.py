@@ -3,3 +3,4 @@
 # Time 06 09:22
 # Author Yo
 # Email YoLoveLife@outlook.com
+from __future__ import absolute_import

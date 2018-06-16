@@ -107,7 +107,5 @@ class PushMissionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         mission = validated_data.pop('mission')
         obj = models.Push_Mission(mission=mission)
-
-        obj.validate = not mission.need_validate
         obj.save()
         return obj

@@ -14,7 +14,7 @@ from authority.models import Key,Jumper
 
 __all__ = [
     "System_Type", "Group", "Host",
-    "Storage", "Position", "HostDetail"
+    "Position", "HostDetail"
 ]
 
 
@@ -67,7 +67,7 @@ class Group(models.Model):
     info = models.CharField(max_length=100, default='')
     _framework = models.ForeignKey(FILE, related_name='groups', on_delete=models.SET_NULL, null=True)
     # 超级管理员
-    users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
+    users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetusers', verbose_name=_("assetusers"))
     _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
 
@@ -131,39 +131,6 @@ class Group(models.Model):
     def users_list_byhostname(self):
         return list(self.hosts.values_list('hostname', flat=True))
 
-    @property
-    def catch_ssh_connect(self):
-        if self.jumpers.count() <1:
-            msg = Message()
-            return msg.fuse_msg('该应用组无关联跳板机', None),0,0
-        else:
-            for jumper in self.jumpers.all():
-                msg = jumper.catch_ssh_connect
-                return msg, jumper.connect_ip, jumper.sshport
-
-
-class Storage(models.Model):
-    id = models.AutoField(primary_key=True)#全局ID
-    disk_size = models.CharField(max_length=100,default="")
-    disk_path = models.CharField(max_length=100,default="")
-    info = models.CharField(max_length=100,default="")
-
-    def __unicode__(self):
-        return self.disk_path + ' - ' + self.info
-
-    __str__ = __unicode__
-
-    def get_all_group_name(self):
-        list = []
-        for host in self.hosts.all():
-            for group in host.groups.all():
-                list.append(group.name)
-        result={}.fromkeys(list).keys()
-        strlist= []
-        for r in result:
-            strlist.append(r)
-        return ",".join(strlist)
-
 
 class HostDetail(models.Model):
     id=models.AutoField(primary_key=True) #全局ID
@@ -185,8 +152,6 @@ class Host(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     # 资产结构
     groups = models.ManyToManyField(Group, blank=True, related_name='hosts', verbose_name=_("Host"))
-    # 所属应用
-    storages = models.ManyToManyField(Storage, blank=True, related_name='hosts', verbose_name=_('Host'))
 
     # 相关信息
     # connect_ip = models.GenericIPAddressField(default='', null=False)
@@ -244,38 +209,3 @@ class Host(models.Model):
         for key in dist:
             list.append(dist[key])
         return list
-
-    @property
-    def catch_ssh_connect(self):
-        target = paramiko.SSHClient()
-        target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        flag = 'host-none'
-        msg = Message()
-        for group in self.groups.all():
-            msg,sship,sshport = group.catch_ssh_connect
-            if msg.status == 1:
-                try:
-                    transport = msg.instance.get_transport()
-                    dest_addr = (self.connect_ip,int(self.sshport))
-                    local_addr = (sship,int(sshport))
-                    jumperchannel = transport.open_channel("direct-tcpip", dest_addr, local_addr)
-                    target.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-                    target.connect(self.connect_ip, username=self.sys_user.username,pkey=sshkey.ssh_private_key2obj(self.sys_user.private_key),
-                                   sock=jumperchannel, port=int(self.sshport))
-                    return msg.fuse_msg(1,u'主机连接成功',target)
-                except paramiko.SSHException:
-                    flag=u'主机SSH错误'
-                    continue
-                except socket.timeout:
-                    flag=u'主机连接超时'
-                    continue
-                except socket.error:
-                    flag=u'socket出错'
-                    continue
-                except Exception as ex:
-                    flag=u'主机连接故障'
-                    continue
-            else:
-                continue
-        return msg.fuse_msg(0,flag,None)

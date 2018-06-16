@@ -3,7 +3,7 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models, serializers
+from .. import models, serializers, filter
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -28,7 +28,7 @@ class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.Host.objects.all()
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
-    filter_fields = '__all__'
+    filter_class = filter.HostFilter
 
 
 class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
@@ -38,14 +38,7 @@ class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny,]
     pagination_class = HostPagination
-    filter_fields = ('groups',)
-
-    def get_queryset(self):
-        query = self.request.query_params.get('connect_ip', None)
-        if query is not None:
-            return self.queryset.filter(connect_ip__icontains=query)
-        else:
-            return self.queryset
+    filter_class = filter.HostFilter
 
 
 class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):

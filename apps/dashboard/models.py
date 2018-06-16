@@ -33,3 +33,17 @@ class ExpiredAliyunRDS(ExpiredAliyun):
     version = models.CharField(max_length=100,default='')
     readonly = models.IntegerField(default='0')
 
+
+class ExpiredAliyunKVStore(ExpiredAliyun):
+    recognition_id = models.CharField(max_length=100,default='')
+    instancename = models.CharField(max_length=100, default='noname')
+    connect_domain = models.CharField(max_length=100,default='0.0.0.0')
+    version = models.CharField(max_length=100, default='4.0')
+    type = models.CharField(max_length=100, default='redis')
+
+
+class ExpiredAliyunMongoDB(ExpiredAliyun):
+    recognition_id = models.CharField(max_length=100,default='')
+    instancename = models.CharField(max_length=100, default='noname')
+    version = models.CharField(max_length=100, default='4.0')
+    type = models.CharField(max_length=100, default='MongoDB')
