@@ -10,6 +10,7 @@ import django.utils.timezone as timezone
 from django.conf import settings
 import socket
 import uuid
+import pyotp
 
 __all__ = [
     "Key", "ExtendUser", "Jumper"
@@ -22,7 +23,6 @@ def private_key_validator(key):
             _('%(value)s is not an even number'),
             params={'value': key},
         )
-
 
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
@@ -85,6 +85,7 @@ class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
+    qrcode = models.CharField(max_length=29,default=pyotp.random_base32(29))
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -96,7 +97,6 @@ class ExtendUser(AbstractUser):
         related_name="user_set",
         related_query_name="user",
     )
-
     class Meta:
         permissions = (
             ('yo_list_user', u'罗列用户'),
@@ -143,6 +143,11 @@ class ExtendUser(AbstractUser):
                 return ''
             else:
                 return str.join(list)
+
+    def check_qrcode(self,verifycode):
+        t = pyotp.TOTP(self.qrcode)
+        result = t.verify(verifycode)
+        return result
 
 
 class Jumper(models.Model):

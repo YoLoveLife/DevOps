@@ -17,6 +17,7 @@ urlpatterns=[
     path(r'v1/opsuser/bypage/', user.UserOpsListByPageAPI.as_view()),
     path(r'v1/user/<int:pk>/update/', user.UserUpdateAPI.as_view()),
     path(r'v1/user/<int:pk>/delete/', user.UserDeleteAPI.as_view()),
+    path(r'v1/user/qrcode/', user.UserQRCodeAPI.as_view()),
     #
     # Resource group api
     path(r'v1/group/', group.GroupListAPI.as_view()),
