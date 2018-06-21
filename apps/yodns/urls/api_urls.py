@@ -1,5 +1,5 @@
 from django.urls import path
-from dns import api as DNSAPI
+from yodns import api as DNSAPI
 urlpatterns=[
     # Resource DNS api
     path(r'v1/dns/', DNSAPI.DNSListAPI.as_view()),

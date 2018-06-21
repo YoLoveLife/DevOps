@@ -68,7 +68,7 @@ def aliyunECSInfoCatch():
 
 
 # @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
-@periodic_task(run_every=crontab(minute=55,hour=0))
+@periodic_task(run_every=crontab(minute=31,hour=8))
 def vmwareInfoCatch():
     from deveops.utils import vmware
     children = vmware.fetch_AllInstance()

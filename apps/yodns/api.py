@@ -3,7 +3,7 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from dns import models,serializers,filter
+from yodns import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from deveops.api import WebTokenAuthentication
@@ -38,9 +38,12 @@ class DNSCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [AllowAny,]
 
     def create(self, request, *args, **kwargs):
-        father = models.DNS.objects.get(id=request.data['father'])
-        if father.sons.filter(name__in=[request.data['name'],]).exists():
-            return Response({'detail':'域名树重复'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        if 'father' in request.data:
+            father = models.DNS.objects.get(id=request.data['father'])
+            if father.sons.filter(name__in=[request.data['name'],]).exists():
+                return Response({'detail':'域名树重复'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            else:
+                return super(DNSCreateAPI, self).create(request, *args, **kwargs)
         else:
             return super(DNSCreateAPI, self).create(request, *args, **kwargs)
 

@@ -110,7 +110,7 @@ def weeklyDashboard():
     smtp.sendMail('devEops平台运维周报', msg, ['yz2@8531.cn','wzz@8531.cn','xubin@8531.cn','xuchenliang@8531.cn'])
 
 
-@periodic_task(run_every=crontab(minute=1,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=crontab(minute=1,hour=1))
 def aliyunECSExpiredInfoCatch():
     ExpiredAliyunECS.objects.all().delete()
     countNumber = aliyun.fetch_ECSPage()
@@ -127,7 +127,7 @@ def aliyunECSExpiredInfoCatch():
                 ExpiredAliyunECS(**instance_data).save()
 
 
-@periodic_task(run_every=crontab(minute=2,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=crontab(minute=2,hour=1))
 def aliyunRDSInfoCatch():
     ExpiredAliyunRDS.objects.all().delete()
     countNumber = aliyun.fetch_RDSPage()
@@ -143,7 +143,7 @@ def aliyunRDSInfoCatch():
                     ExpiredAliyunRDS(**resolver.AliyunRDS2Json.decode(dt)).save()
 
 
-@periodic_task(run_every=crontab(minute=3,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=crontab(minute=3,hour=1))
 def aliyunKVStoreInfoCatch():
     ExpiredAliyunKVStore.objects.all().delete()
     countNumber = aliyun.fetch_KVStorePage()
@@ -158,7 +158,7 @@ def aliyunKVStoreInfoCatch():
                 ExpiredAliyunKVStore(**resolver.AliyunKVStore2Json.decode(dt)).save()
 
 
-@periodic_task(run_every=crontab(minute=4,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=crontab(minute=4,hour=1))
 def aliyunMongoDBInfoCatch():
     ExpiredAliyunMongoDB.objects.all().delete()
     countNumber = aliyun.fetch_MongoDBPage()

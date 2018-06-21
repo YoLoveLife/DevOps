@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from dns import models
+from yodns import models
 from rest_framework import serializers
 
 __all__ = [
