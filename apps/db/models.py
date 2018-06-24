@@ -58,6 +58,13 @@ class Instance(models.Model):
     def password(self, password):
         self._admin_passwd = aes.encrypt(password).decode()
 
+    @property
+    def group_name(self):
+        if self.group is not None:
+            return self.group.name
+        else:
+            return ""
+
 
 class Role(models.Model):
     ROLE_PERMISSIONS_STR_NUMBER = {
@@ -80,7 +87,8 @@ class Role(models.Model):
     }
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50,default="")
+    name = models.CharField(max_length=50, default="")
+    info = models.CharField(max_length=50, default="")
     instance = models.ForeignKey(Instance, default=None, null=True, on_delete=models.SET_NULL, related_name="roles")
     can_select = models.BooleanField(default=False)
     can_update = models.BooleanField(default=False)
@@ -100,14 +108,14 @@ class Role(models.Model):
 
     @property
     def group_name(self):
-        if self.instance is not None and self.instance.group is not None:
-            return self.instance.group.name
+        if self.instance is not None:
+            return self.instance.group_name
         else:
             return ""
 
     def reset_permission(self):
         for permission in self.ROLE_PERMISSIONS_STR_NUMBER:
-            setattr(self,'can_'+permission,False)
+            setattr(self,'can_'+permission, False)
 
     @property
     def permission_list(self):
@@ -158,3 +166,30 @@ class User(models.Model):
     @status.setter
     def status(self,status):
         self._status = status
+
+    @property
+    def password(self):
+        if self._passwd:
+            return aes.decrypt(self._passwd)
+        else:
+            return 'nopassword'
+
+    @password.setter
+    def password(self, password):
+        self._passwd = aes.encrypt(password).decode()
+
+
+    @property
+    def role_info(self):
+        if self.role is not None:
+            return self.role.info
+        else:
+            return ""
+
+    @property
+    def group_name(self):
+        if self.role is not None:
+            return self.role.group_name
+        else:
+            return ""
+

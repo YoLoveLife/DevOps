@@ -62,3 +62,26 @@ class DBRoleFilter(django_filters.FilterSet):
     @staticmethod
     def name_filter(queryset, first_name, value):
         return queryset.filter(name__icontains=value)
+
+
+class DBUserFilter(django_filters.FilterSet):
+    username = django_filters.CharFilter(method="username_filter")
+    info = django_filters.CharFilter(method="info_filter")
+    status = django_filters.CharFilter(method="status_filter")
+    class Meta:
+        model = models.User
+        fields = ['username', 'info', 'status']
+
+
+    @staticmethod
+    def username_filter(queryset, first_name, value):
+        return queryset.filter(username__icontains=value)
+
+    @staticmethod
+    def info_filter(queryset, first_name, value):
+        return queryset.filter(info__icontains=value)
+
+
+    @staticmethod
+    def status_filter(queryset, first_name, value):
+        return queryset.filter(_status=value)
