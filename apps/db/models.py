@@ -60,17 +60,35 @@ class Instance(models.Model):
 
 
 class Role(models.Model):
+    ROLE_PERMISSIONS_STR_NUMBER = {
+        'select': 1,
+        'update': 2,
+        'delete': 3,
+        'insert': 4,
+        'create': 5,
+        'drop': 6,
+        'alter': 7,
+    }
+    ROLE_PERMISSIONS_NUMBER_STR = {
+        1:'select',
+        2:'update',
+        3:'delete',
+        4:'insert',
+        5:'create',
+        6:'drop',
+        7:'alter',
+    }
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50,default="")
-    instance = models.ForeignKey(Instance, default=None, blank=True, null=True, on_delete=models.SET_NULL, related_name="roles")
-    select = models.BooleanField(default=False)
-    update = models.BooleanField(default=False)
-    delete = models.BooleanField(default=False)
-    insert = models.BooleanField(default=False)
-    create = models.BooleanField(default=False)
-    drop = models.BooleanField(default=False)
-    alter = models.BooleanField(default=False)
+    instance = models.ForeignKey(Instance, default=None, null=True, on_delete=models.SET_NULL, related_name="roles")
+    can_select = models.BooleanField(default=False)
+    can_update = models.BooleanField(default=False)
+    can_delete = models.BooleanField(default=False)
+    can_insert = models.BooleanField(default=False)
+    can_create = models.BooleanField(default=False)
+    can_drop = models.BooleanField(default=False)
+    can_alter = models.BooleanField(default=False)
 
     class Meta:
         permissions = (
@@ -87,14 +105,23 @@ class Role(models.Model):
         else:
             return ""
 
+    def reset_permission(self):
+        for permission in self.ROLE_PERMISSIONS_STR_NUMBER:
+            setattr(self,'can_'+permission,False)
+
     @property
     def permission_list(self):
         l = []
         for item in self.__dict__.keys():
-            if item != 'uuid' and item != 'id' and item != 'instance_id' and item != 'name' and item!= '_state':
-                if getattr(self,item):
-                    l.append(item.upper())
+            if getattr(self,item) is True:
+                l.append(self.ROLE_PERMISSIONS_STR_NUMBER[item[4:]])
         return l
+
+    @permission_list.setter
+    def permission_list(self,permissions):
+        self.reset_permission()
+        for permission in permissions:
+            setattr(self,'can_'+self.ROLE_PERMISSIONS_NUMBER_STR[permission], True)
 
 
     @property

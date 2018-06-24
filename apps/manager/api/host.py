@@ -124,6 +124,8 @@ class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.HostPasswordSerializer
     # permission_classes = [HostPermission.HostPasswordRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
     #
     # @decorator_manager(5, u'获取密码')
     # def timeline_create(self,user):
@@ -135,3 +137,9 @@ class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
         #     self.timeline_create(self.request.user)
         host = models.Host.objects.filter(uuid=self.kwargs['pk'])
         return host
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.check_qrcode(kwargs['qrcode']):
+            return super(ManagerHostPasswordAPI,self).get(request, *args, **kwargs)
+        else:
+            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)

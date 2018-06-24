@@ -104,8 +104,8 @@ class HostDetailSerializer(serializers.ModelSerializer):
 
 class HostSerializer(serializers.ModelSerializer):
     detail = HostDetailSerializer(required=True)
-    groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all())
-    passwd = serializers.CharField(required=False, allow_null=True, source='password',)
+    groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all(),)
+    passwd = serializers.CharField(required=False, allow_null=True, source='password',write_only=True)
     _status = serializers.IntegerField(required=True, source='status',)
 
     class Meta:
@@ -116,6 +116,9 @@ class HostSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id', 'uuid'
+        )
+        write_only_fields = (
+            'passwd',
         )
 
     def create(self, validated_data):
@@ -133,7 +136,7 @@ class HostSerializer(serializers.ModelSerializer):
 
 
 class HostPasswordSerializer(serializers.ModelSerializer):
-    passwd = serializers.CharField(required=True, source='password')
+    passwd = serializers.CharField(source='password', read_only=True)
 
     class Meta:
         model = models.Host

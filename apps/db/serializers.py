@@ -26,13 +26,14 @@ class DBInstanceSerializer(serializers.HyperlinkedModelSerializer):
 
 class DBRoleSerializer(serializers.HyperlinkedModelSerializer):
     instance = serializers.PrimaryKeyRelatedField(required=True, queryset=models.Instance.objects.all(),allow_null=True)
-    permissions = serializers.ListField(source='permission_list')
-    group = serializers.CharField(source="group_name")
+    instance_name = serializers.CharField(source="instance.name", read_only=True)
+    permissions = serializers.ListField(source='permission_list', allow_null=True)
+    group = serializers.CharField(source="group_name", read_only=True)
     class Meta:
         model = models.Role
         fields = (
-            'id', 'uuid', 'name', 'select', 'update', 'delete', 'insert', 'create', 'drop', 'alter', 'permissions', 'group', 'instance'
+            'id', 'uuid', 'name', 'permissions', 'group', 'instance_name','instance'
         )
         read_only_fields = (
-            'id', 'uuid', 'permissions', 'group'
+            'id', 'uuid', 'group', 'instance_name'
         )

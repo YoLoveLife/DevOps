@@ -25,7 +25,7 @@ class DBInstanceFilter(django_filters.FilterSet):
 
     @staticmethod
     def is_master_filter(queryset, first_name, value):
-        print('kkkkkk',value)
+
         return queryset.filter(is_master=value)
 
     @staticmethod
@@ -45,31 +45,20 @@ class DBInstanceFilter(django_filters.FilterSet):
 class DBRoleFilter(django_filters.FilterSet):
     group = django_filters.CharFilter(method="group_filter")
     name = django_filters.CharFilter(method="name_filter")
-    update = django_filters.CharFilter(method="update_filter")
-    delete = django_filters.CharFilter(method="delete_filter")
-    drop = django_filters.CharFilter(method="drop_filter")
+
     class Meta:
         model = models.Role
-        fields = ['group', 'update', 'delete', 'drop']
+        fields = ['group', 'name',
+                  'can_select', 'can_update', 'can_delete',
+                  'can_insert', 'can_create', 'can_drop',
+                  'can_alter']
 
     @staticmethod
     def group_filter(queryset, first_name, value):
-        groups = Group.objects.filter(name=value)
+        groups = Group.objects.filter(Q(name__icontains=value)|Q(uuid=value))
         instances = models.Instance.objects.filter(group__in=groups)
         return queryset.filter(instance__in=instances)
 
     @staticmethod
     def name_filter(queryset, first_name, value):
         return queryset.filter(name__icontains=value)
-
-    @staticmethod
-    def update_filter(queryset, first_name, value):
-        return queryset.filter(update=value)
-
-    @staticmethod
-    def delete_filter(queryset, first_name, value):
-        return queryset.filter(delete=value)
-
-    @staticmethod
-    def drop_filter(queryset, first_name, value):
-        return queryset.filter(drop=value)

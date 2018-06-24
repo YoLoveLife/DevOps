@@ -107,7 +107,7 @@ def weeklyDashboard():
         f.write(html)
 
     msg = '本周平台周报地址http://deveops.8531.cn:8888/media/dashboard/'+ datetime.datetime.now().strftime('%Y-%m-%d')+'/index.html'
-    smtp.sendMail('devEops平台运维周报', msg, ['yz2@8531.cn','wzz@8531.cn','xubin@8531.cn','xuchenliang@8531.cn'])
+    smtp.sendMail('devEops平台运维周报', msg, ['yz2@8531.cn'])#,'wzz@8531.cn','xubin@8531.cn','xuchenliang@8531.cn'])
 
 
 @periodic_task(run_every=crontab(minute=1,hour=1))
