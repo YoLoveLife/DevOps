@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from authority.models import ExtendUser
 import uuid
-from manager.models import Group,Host
+from manager.models import Group,Host,Position
 from deveops.utils import aes
 
 __all__ = [
@@ -26,6 +26,7 @@ class Instance(models.Model):
     port = models.IntegerField(default=3306)
     is_master = models.BooleanField(default=True)
     admin_user = models.CharField(default='root',max_length=100)
+    # position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='instances')
     _admin_passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
     _status = models.IntegerField(default=0, choices=INSTANCE_STATUS)
 

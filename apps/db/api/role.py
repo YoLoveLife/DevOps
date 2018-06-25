@@ -6,6 +6,7 @@
 from db import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from django.core.exceptions import ObjectDoesNotExist
 from deveops.api import WebTokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
@@ -38,7 +39,14 @@ class DBRoleCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [AllowAny,]
 
     def create(self, request, *args, **kwargs):
-        return super(DBRoleCreateAPI, self).create(request, *args, **kwargs)
+        try:
+            instance = models.Instance.objects.get(id=request.data['instance'])
+            if instance.roles.filter(name=request.data['name']).exists():
+                return Response({'detail': '当前角色名称已经在该实例中存在'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            else:
+                return super(DBRoleCreateAPI, self).create(request, *args, **kwargs)
+        except ObjectDoesNotExist as e:
+            return Response({'detail':'当前Instance已经被删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class DBRoleUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):

@@ -22,7 +22,7 @@ from tool import smtp
 connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
 
 
-@periodic_task(run_every=crontab(minute=30,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=crontab(minute="*"))
 def weeklyDashboard():
     import jinja2
     loader = jinja2.FileSystemLoader(settings.BASE_DIR+'/apps/dashboard/docs/', encoding='utf-8')
