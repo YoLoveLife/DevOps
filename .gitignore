@@ -1,5 +1,5 @@
 .idea/
 *.pyc
-#deveops/conf.py
+deveops/conf.py
 migrations/
 ops/
