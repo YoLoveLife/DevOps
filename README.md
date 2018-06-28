@@ -48,7 +48,7 @@ devEops正在不断成长
 
 ### 仪表盘界面
  :satisfied: 根据资源的检出位置|操作系统类型|运维操作 等图表化展现</br>
-并且每周提供可供保存的静态页面的报告 ** (有！但是很丑！) ** :grin:
+并且每周提供可供保存的静态页面的报告 **有！但是很丑！ ** :grin:
 ![DASHBOARD](img/dashboard.png)
 
 ### 资产管理
@@ -83,7 +83,7 @@ devEops正在不断成长
 ![MISSION](img/mission.png)
 
 ### 工单系统
-用户根据自身权限可以 ** 发布工单(涉及任务)** 进行执行</br>
+用户根据自身权限可以 ** 发布工单(涉及任务) ** 进行执行</br>
 ![CODEWORK](img/work.png)
 选择工单后用户可以进行执行 :punch: 系统建立websocket将所有执行结果返回
 ![RUN](img/run.png)
