@@ -87,7 +87,9 @@ def FetchStorage(vm):
 
 
 def FetchHardware(vm):
-    obj = vm.config.hardware
+    obj = []
+    if vm.config.hardware is not None:
+        obj = vm.config.hardware
     return to_list(obj, Hardware_Key.keys())
 
 

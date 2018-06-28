@@ -4,7 +4,7 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 import django_filters
-from dns import models
+from yodns import models
 from django.db.models import Q
 
 __all__ = ['DNSFilter',
@@ -14,9 +14,12 @@ __all__ = ['DNSFilter',
 class DNSFilter(django_filters.FilterSet):
     dns_name = django_filters.CharFilter(method="dnsname_filter")
     level = django_filters.CharFilter(method="level_filter")
+    inner_dig = django_filters.CharFilter(method="inner_dig_filter")
+    dig = django_filters.CharFilter(method="dig_filter")
     class Meta:
         model = models.DNS
         fields = ['group', 'dns_name', 'inner_dig', 'dig',]
+
 
     @staticmethod
     def dnsname_filter(queryset, first_name, value):
@@ -30,3 +33,9 @@ class DNSFilter(django_filters.FilterSet):
             return queryset.filter(Q(father__father__isnull=True) & ~Q(father__isnull=True))
         else:
             return queryset.exclude(Q(father__isnull=True) | Q(father__father__isnull=True))
+
+
+    @staticmethod
+    def inner_dig_filter(queryset, first_name, value):
+        return queryset.filter(inner_dig__icontains=value)
+

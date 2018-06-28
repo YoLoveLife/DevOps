@@ -1,10 +1,6 @@
-devEops - 浙报传媒开发自运维平台
+devEops - 浙报传媒开发自运维平台(测试)
 =====================
 {{WEEK_START}} - {{WEEK_END}}
-## 目录
-* [资产统计](#cmdb)
-* [运维统计](#manager)
-* [资费提醒](#pay)
 
 ## <a name="cmdb"> 资产统计 </a>
 ### 资产计数
@@ -32,12 +28,6 @@ VMware机器总数|{{VMWARE_COUNT}}
 活跃用户总数| {{ACTIVITY_USER}}
 
 
-### 运维图表
-![work](./work.png)
-如图所示是本周内所有执行工单的个数
-设计到应用系统
-
-
 ## <a name="pay"> 资费提醒 </a>
 **请相关系统管理员及DBA关注资源过期时间及时续费**
 ### ECS资源过期列表
@@ -52,12 +42,14 @@ UUID|实例名称|过期时限|数据库版本
 {% for rds in RDS_EXPIRED %}{{rds.recognition_id}}|{{rds.instancename}}|{{rds.expired}}天|{{rds.version}}
 {% endfor %}
 
-### Redis资源过期列表
-UUID|实例名称|过期时限
-:--------:|:--------:|:--------:
-{{REDIS_EXPIRED}}
+### KVStore资源过期列表
+UUID|实例名称|过期时限|连接地址|版本
+:--------:|:--------:|:--------:|:--------:|:--------:
+{% for kvs in KVSTORE_EXPIRED %}{{kvs.recognition_id}}|{{kvs.instancename}}|{{kvs.expired}}天|{{kvs.connect_domain}}|{{kvs.version}}
+{% endfor %}
 
 ### MongoDB资源过期列表
-UUID|实例名称|过期时限
-:--------:|:--------:|:--------:
-{{MONGODB_EXPIRED}}
+UUID|实例名称|过期时限|类型|版本
+:--------:|:--------:|:--------:|:--------:|:--------:
+{% for mng in MONGODB_EXPIRED %}{{mng.recognition_id}}|{{mng.instancename}}|{{mng.expired}}天|{{mng.type}}|{{mng.version}}
+{% endfor %}

@@ -12,11 +12,11 @@ __all__ = [
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(many=True, queryset=ExtendUser.objects.all())
-    pmn_groups = serializers.PrimaryKeyRelatedField(many=True, queryset=models.PerGroup.objects.all())
+    pmn_groups = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.PerGroup.objects.all())
     key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
     jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
     _status = serializers.IntegerField(required=True, source='status',)
-    _framework = serializers.PrimaryKeyRelatedField(queryset=models.FILE.objects.all(), allow_null=True)
+    _framework = serializers.PrimaryKeyRelatedField(required=False, queryset=models.FILE.objects.all(), allow_null=True, write_only=True)
     framework = serializers.ImageField(source="_framework.image", read_only=True)
     class Meta:
         model = models.Group
@@ -25,6 +25,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         )
         read_only_fields = (
             'id', 'uuid', 'framework'
+        )
+        write_onlu_fields = (
+            '_framework'
         )
 
     def update(self, instance, validated_data):
@@ -104,18 +107,21 @@ class HostDetailSerializer(serializers.ModelSerializer):
 
 class HostSerializer(serializers.ModelSerializer):
     detail = HostDetailSerializer(required=True)
-    groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all())
-    passwd = serializers.CharField(required=False, allow_null=True, source='password',)
+    groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all(),)
+    passwd = serializers.CharField(required=False, allow_null=True, source='password',write_only=True)
     _status = serializers.IntegerField(required=True, source='status',)
 
     class Meta:
         model = models.Host
         fields = (
-            'id', 'detail', 'connect_ip', 'service_ip', 'hostname', 'sshport', '_status', 'groups',
+            'id', 'detail', 'connect_ip', 'hostname', 'sshport', '_status', 'groups',
             'passwd', 'uuid'
         )
         read_only_fields = (
             'id', 'uuid'
+        )
+        write_only_fields = (
+            'passwd',
         )
 
     def create(self, validated_data):
@@ -133,7 +139,7 @@ class HostSerializer(serializers.ModelSerializer):
 
 
 class HostPasswordSerializer(serializers.ModelSerializer):
-    passwd = serializers.CharField(required=True, source='password')
+    passwd = serializers.CharField(source='password', read_only=True)
 
     class Meta:
         model = models.Host

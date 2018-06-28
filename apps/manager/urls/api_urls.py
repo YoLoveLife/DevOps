@@ -35,7 +35,7 @@ urlpatterns=[
     path(r'v1/host/<str:pk>/detail/byalid/', HostAPI.ManagerAliyunIDDetailAPI.as_view()),
     path(r'v1/host/<uuid:pk>/update/', HostAPI.ManagerHostUpdateAPI.as_view()),
     path(r'v1/host/<uuid:pk>/delete/', HostAPI.ManagerHostDeleteAPI.as_view()),
-    path(r'v1/host/<uuid:pk>/passwd/', HostAPI.ManagerHostPasswordAPI.as_view()),
+    path(r'v1/host/<uuid:pk>/<int:qrcode>/passwd/', HostAPI.ManagerHostPasswordAPI.as_view()),
     #
     # # Resource storage api
     # path(r'v1/storage/', api.ManagerStorageListAPI.as_view()),

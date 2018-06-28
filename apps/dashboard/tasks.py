@@ -8,7 +8,7 @@ from __future__ import absolute_import, unicode_literals
 from celery.task import periodic_task
 from celery.schedules import crontab
 from pyecharts import Pie
-from deveops.conf import ALIYUN_PAGESIZE,REDIS_PORT,REDIS_SPACE,EXPIREDTIME
+from deveops.conf import ALIYUN_PAGESIZE,REDIS_PORT,REDIS_SPACE,EXPIREDTIME,DASHBOARD_TIME,EXPIRED_TIME,MANAGER_TIME
 from deveops import settings
 import redis, datetime, json, os
 from deveops.utils import aliyun
@@ -22,7 +22,7 @@ from tool import smtp
 connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
 
 
-@periodic_task(run_every=crontab(minute=30,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=DASHBOARD_TIME)
 def weeklyDashboard():
     import jinja2
     loader = jinja2.FileSystemLoader(settings.BASE_DIR+'/apps/dashboard/docs/', encoding='utf-8')
@@ -107,10 +107,10 @@ def weeklyDashboard():
         f.write(html)
 
     msg = '本周平台周报地址http://deveops.8531.cn:8888/media/dashboard/'+ datetime.datetime.now().strftime('%Y-%m-%d')+'/index.html'
-    smtp.sendMail('devEops平台运维周报', msg, ['yz2@8531.cn','wzz@8531.cn','xubin@8531.cn','xuchenliang@8531.cn'])
+    smtp.sendMail('devEops平台运维周报', msg, ['yz2@8531.cn'])#,'wzz@8531.cn','xubin@8531.cn','xuchenliang@8531.cn'])
 
 
-@periodic_task(run_every=crontab(minute=1,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=EXPIRED_TIME)
 def aliyunECSExpiredInfoCatch():
     ExpiredAliyunECS.objects.all().delete()
     countNumber = aliyun.fetch_ECSPage()
@@ -127,7 +127,7 @@ def aliyunECSExpiredInfoCatch():
                 ExpiredAliyunECS(**instance_data).save()
 
 
-@periodic_task(run_every=crontab(minute=2,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=EXPIRED_TIME)
 def aliyunRDSInfoCatch():
     ExpiredAliyunRDS.objects.all().delete()
     countNumber = aliyun.fetch_RDSPage()
@@ -143,7 +143,7 @@ def aliyunRDSInfoCatch():
                     ExpiredAliyunRDS(**resolver.AliyunRDS2Json.decode(dt)).save()
 
 
-@periodic_task(run_every=crontab(minute=3,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=EXPIRED_TIME)
 def aliyunKVStoreInfoCatch():
     ExpiredAliyunKVStore.objects.all().delete()
     countNumber = aliyun.fetch_KVStorePage()
@@ -158,7 +158,7 @@ def aliyunKVStoreInfoCatch():
                 ExpiredAliyunKVStore(**resolver.AliyunKVStore2Json.decode(dt)).save()
 
 
-@periodic_task(run_every=crontab(minute=4,hour=1,day_of_week="sunday"))
+@periodic_task(run_every=EXPIRED_TIME)
 def aliyunMongoDBInfoCatch():
     ExpiredAliyunMongoDB.objects.all().delete()
     countNumber = aliyun.fetch_MongoDBPage()
@@ -175,7 +175,7 @@ def aliyunMongoDBInfoCatch():
                 ExpiredAliyunMongoDB(**resolver.AliyunMongoDB2Json.decode(dt)).save()
 
 
-@periodic_task(run_every=crontab(minute=10,hour=1))
+@periodic_task(run_every=MANAGER_TIME)
 def managerStatusCatch():
     connect.delete('MANAGER_STATUS')
 

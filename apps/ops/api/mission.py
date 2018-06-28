@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from .. import models
+from .. import models,filter
 from .. import serializers
 from rest_framework.views import Response,status
 from rest_framework import generics
@@ -26,6 +26,7 @@ class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MissionSerializer
     # permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
     permission_classes = [AllowAny]
+    filter_class = filter.MissionFilter
     # filter_fields = ('group',)
     # from rest_framework.renderers import JSONRenderer
     # renderer_classes = [JSONRenderer,]
@@ -41,6 +42,7 @@ class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MissionSerializer
     permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
     pagination_class = MissionPagination
+    filter_class = filter.MissionFilter
 
     # 所有運維工程師有如下特點
     # 1、僅能查看自己所管理的應用組
@@ -54,6 +56,7 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    filter_class = filter.MissionFilter
 
     def get_queryset(self):
         # 查询所有该用户所关联组的任务

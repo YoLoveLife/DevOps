@@ -10,6 +10,7 @@ import django.utils.timezone as timezone
 from django.conf import settings
 import socket
 import uuid
+import pyotp
 
 __all__ = [
     "Key", "ExtendUser", "Jumper"
@@ -61,7 +62,6 @@ class Key(models.Model):
 
     @public_key.setter
     def public_key(self, public_key):
-        print('pub',aes.encrypt(public_key).decode())
         self._public_key = aes.encrypt(public_key).decode()
 
     @property
@@ -85,6 +85,7 @@ class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
+    qrcode = models.CharField(max_length=29,default=pyotp.random_base32(29))
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -96,7 +97,6 @@ class ExtendUser(AbstractUser):
         related_name="user_set",
         related_query_name="user",
     )
-
     class Meta:
         permissions = (
             ('yo_list_user', u'罗列用户'),
@@ -143,6 +143,11 @@ class ExtendUser(AbstractUser):
                 return ''
             else:
                 return str.join(list)
+
+    def check_qrcode(self,verifycode):
+        t = pyotp.TOTP(self.qrcode)
+        result = t.verify(verifycode)
+        return result
 
 
 class Jumper(models.Model):
@@ -193,5 +198,16 @@ class Jumper(models.Model):
         self._status = 1
         return 1
 
+    @property
     def to_yaml(self):
-        return '-o ProxyCommand="ssh -p{PORT} -W %h:%p -q root@{IP} nc"'.format(PORT=self.sshport,IP=self.connect_ip)
+        return {
+            u'set_fact':
+                {
+                    'ansible_ssh_common_args':
+                        '-o ProxyCommand="ssh -p{PORT} -i {KEY} -W %h:%p root@{IP}"'.format(
+                            PORT=self.sshport,
+                            IP=self.connect_ip,
+                            KEY='{{KEY}}'
+                        )
+                }
+        }

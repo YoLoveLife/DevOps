@@ -7,14 +7,9 @@
 from celery.task import periodic_task
 from celery.schedules import crontab
 from manager.models import Host,HostDetail,Position,System_Type
-from deveops.conf import REDIS_PORT,REDIS_SPACE,EXPIREDTIME
-import redis
+from django.conf import settings
 
-connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
-
-from celery import shared_task
-
-@periodic_task(run_every=crontab(minute=50,hour=0))
+@periodic_task(run_every=settings.MANAGER_TIME)
 def aliyunECSInfoCatch():
     from deveops.utils import aliyun
     from deveops.conf import ALIYUN_PAGESIZE
@@ -68,52 +63,89 @@ def aliyunECSInfoCatch():
 
 
 # @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
-@periodic_task(run_every=crontab(minute=55,hour=0))
-def vmwareInfoCatch():
-    from deveops.utils import vmware
-    children = vmware.fetch_AllInstance()
-    position = None
-    systype = None
-    if Position.objects.filter(name__contains='集团内').exists():
-        position = Position.objects.filter(name__contains='集团内').get()
+# @periodic_task(run_every=crontab(minute=31,hour=8))
+# def vmwareInfoCatch():
+#     from deveops.utils import vmware
+#     children = vmware.fetch_AllInstance()
+#     position = None
+#     systype = None
+#     if Position.objects.filter(name__contains='集团内').exists():
+#         position = Position.objects.filter(name__contains='集团内').get()
+#     else:
+#         position = Position.objects.create(name='集团内')
+#
+#     for child in children:
+#         '''
+#         {'privateMemory': 8500,
+#         'powerState': 'poweredOn', 'name': 'DWETL02', 'uptimeSeconds': 12389645, 'numCpu': 8, 'overallCpuUsage': 0,
+#         'memoryMB': 16384, 'memorySizeMB': 16384, 'guestMemoryUsage': 0, 'committed': 24335576477L, 'hostMemoryUsage': 9265,
+#          'ipAddress': '10.100.63.69', 'sharedMemory': 1662, 'unshared': 24212668416L}
+#         '''
+#         list = vmware.FetchInfo(child)
+#         status = 1
+#         if not list['powerState'] == 'poweredOn':
+#             status = 0
+#             continue
+#
+#         if System_Type.objects.filter(name=list['guestFullName']).count() ==0:
+#             systype = System_Type.objects.create(name=list['guestFullName'])
+#         else:
+#             systype = System_Type.objects.filter(name=list['guestFullName']).get()
+#
+#         if not list.__contains__('ipAddress'):
+#             continue
+#         if list['ipAddress'] is None:
+#             continue
+#
+#         query = Host.objects.filter(detail__vmware_id=list['uuid'] ,connect_ip=list['ipAddress'])
+#         if not query.exists():
+#             detail_instance = HostDetail.objects.create(vmware_id=list['uuid'], info='', position=position, systemtype=systype)
+#             host_instance = Host.objects.create(
+#                 detail=detail_instance,
+#                 connect_ip=list['ipAddress'],
+#                 hostname=list['name'],
+#                 status=status,
+#                 password='nopassword'
+#             )
+#         else:
+#             host_instance = query.get()
+#             host_instance.detail.save()
+#             host_instance.status = status
+#             host_instance.save()
+
+def host_maker(dict_models):
+    systype_query = System_Type.objects.filter(name=dict_models['detail']['systemtype'])
+    if not systype_query.exists():
+        systype = System_Type.objects.create(name=dict_models['detail']['systemtype'])
+        dict_models['detail']['systemtype'] = systype
     else:
-        position = Position.objects.create(name='集团内')
+        dict_models['detail']['systemtype'] = systype_query.get()
 
-    for child in children:
-        '''
-        {'privateMemory': 8500,
-        'powerState': 'poweredOn', 'name': 'DWETL02', 'uptimeSeconds': 12389645, 'numCpu': 8, 'overallCpuUsage': 0,
-        'memoryMB': 16384, 'memorySizeMB': 16384, 'guestMemoryUsage': 0, 'committed': 24335576477L, 'hostMemoryUsage': 9265,
-         'ipAddress': '10.100.63.69', 'sharedMemory': 1662, 'unshared': 24212668416L}
-        '''
-        list = vmware.FetchInfo(child)
-        status = 1
-        if not list['powerState'] == 'poweredOn':
-            status = 0
-            continue
+    position_query = Position.objects.filter(name=dict_models['detail']['position'])
+    if not position_query.exists():
+        posistion = Position.objects.create(name=dict_models['detail']['position'])
+        dict_models['detail']['position'] = posistion
+    else:
+        dict_models['detail']['position'] = position_query.get()
 
-        if System_Type.objects.filter(name=list['guestFullName']).count() ==0:
-            systype = System_Type.objects.create(name=list['guestFullName'])
-        else:
-            systype = System_Type.objects.filter(name=list['guestFullName']).get()
+    detail_dict = dict_models.pop('detail')
+    detail = HostDetail.objects.create(**detail_dict)
+    dict_models['detail'] = detail
 
-        if not list.__contains__('ipAddress'):
-            continue
-        if list['ipAddress'] is None:
-            continue
+    host = Host.objects.create(**dict_models)
 
-        query = Host.objects.filter(detail__vmware_id=list['uuid'] ,connect_ip=list['ipAddress'])
-        if not query.exists():
-            detail_instance = HostDetail.objects.create(vmware_id=list['uuid'], info='', position=position, systemtype=systype)
-            host_instance = Host.objects.create(
-                detail=detail_instance,
-                connect_ip=list['ipAddress'],
-                hostname=list['name'],
-                status=status,
-                password='nopassword'
-            )
-        else:
-            host_instance = query.get()
-            host_instance.detail.save()
-            host_instance.status = status
-            host_instance.save()
+
+
+@periodic_task(run_every=settings.MANAGER_TIME)
+def vmware2cmdb():
+    from deveops.tools import vmware
+    API = vmware.VmwareTool()
+    childrens = API.get_all_vms()
+    for child in childrens:
+        dict_models = API.get_vm_models(child)
+        host_query = Host.objects.filter(detail__vmware_id=dict_models['detail']['vmware_id'], connect_ip=dict_models['connect_ip'])
+        if not host_query.exists():
+            host_maker(dict_models)
+
+
+

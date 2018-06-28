@@ -21,7 +21,6 @@ APPS_DIR = BASE_DIR+'/apps'
 import sys
 sys.path.append(APPS_DIR)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -50,7 +49,8 @@ INSTALLED_APPS = [
     # 'upload.apps.UploadConfig',
     'variable.apps.VariableConfig',
     'dashboard.apps.DashboardConfig',
-    'dns.apps.DnsConfig',
+    'yodns.apps.YoDnsConfig',
+    'db.apps.DBConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
@@ -191,6 +191,9 @@ WORK_ROOT = MEDIA_ROOT + DEVEOPS_CONF.WORK_ROOT
 #Dashboard dir
 DASHBOARD_ROOT = MEDIA_ROOT + DEVEOPS_CONF.DASHBOARD_ROOT
 
+#QCode dir
+QCODE_ROOT = MEDIA_ROOT + DEVEOPS_CONF.QCODE_ROOT
+
 #Tool dir
 TOOL_ROOT = BASE_DIR + DEVEOPS_CONF.TOOL_ROOT
 
@@ -238,6 +241,23 @@ if ENVIRONMENT != 'TRAVIS':
     # AUTH_LDAP_MIRROR_GROUPS = True
 else:
     pass
+
+#VMARE
+VMWARE_USERNAME = DEVEOPS_CONF.VMWARE_USERNAME
+VMWARE_PASSWD = DEVEOPS_CONF.VMWARE_PASSWD
+VMWARE_SERVER = DEVEOPS_CONF.VMWARE_SERVER
+
+# DNS
+INNER_DNS = DEVEOPS_CONF.INNER_DNS
+OUTER_DNS = DEVEOPS_CONF.OUTER_DNS
+
+
+#CRONTAB
+DASHBOARD_TIME = DEVEOPS_CONF.DASHBOARD_TIME
+EXPIRED_TIME = DEVEOPS_CONF.EXPIRED_TIME
+MANAGER_TIME = DEVEOPS_CONF.MANAGER_TIME
+DNS_TIME = DEVEOPS_CONF.DNS_TIME
+
 
 
 #CHANNEL

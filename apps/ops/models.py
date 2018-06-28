@@ -85,38 +85,53 @@ class META(models.Model):
     def to_yaml(self):
         tasks = []
         hosts_list = []
-        obj = {}
         for host in self.hosts.all():
-            if host._status == 1:
+            if host.status == 1:
                 hosts_list.append(host.connect_ip)
-        if len(hosts_list) == 0:
-            # 主机列表为空说明本地执行
-            for content in self.contents.all().order_by('sort'):
-                tasks.append(content.to_yaml)
-            obj = {
-                'tasks': tasks,
-                'gather_facts': 'no',
-                'hosts': 'localhost',
-            }
-        else:
-            jumper = self.group.jumper
-            if jumper is not None:
-                proxy_task = {
-                                 u'set_fact':
-                                     {
-                                         'ansible_ssh_common_args':
-                                             '-o ProxyCommand="ssh -p{PORT} -W %h:%p root@{IP}"'.format(PORT=jumper.sshport, IP=jumper.connect_ip)
-                                     }
-                             }
-                tasks.append(proxy_task)
-                for content in self.contents.all().order_by('sort'):
-                    tasks.append(content.to_yaml)
-                obj = {
-                    'tasks': tasks,
-                    'gather_facts': 'no',
-                    'hosts': ','.join(hosts_list)+',',
-                }
-        return obj
+        if self.group.jumper is not None:
+            tasks.append(self.group.jumper.to_yaml)
+
+        for content in self.contents.all().order_by('sort'):
+            tasks.append(content.to_yaml)
+
+        return  {
+            'tasks': tasks,
+            'gather_facts': 'no',
+            'hosts': hosts_list or 'localhost',
+        }
+
+        #
+        # for host in self.hosts.all():
+        #     if host._status == 1:
+        #         hosts_list.append(host.connect_ip)
+        # if len(hosts_list) == 0:
+        #     # 主机列表为空说明本地执行
+        #     for content in self.contents.all().order_by('sort'):
+        #         tasks.append(content.to_yaml)
+        #     obj = {
+        #         'tasks': tasks,
+        #         'gather_facts': 'no',
+        #         'hosts': 'localhost',
+        #     }
+        # else:
+        #     jumper = self.group.jumper
+        #     if jumper is not None:
+        #         proxy_task = {
+        #                          u'set_fact':
+        #                              {
+        #                                  'ansible_ssh_common_args':
+        #                                      '-o ProxyCommand="ssh -p{PORT} -W %h:%p root@{IP}"'.format(PORT=jumper.sshport, IP=jumper.connect_ip)
+        #                              }
+        #                      }
+        #         tasks.append(proxy_task)
+        #         for content in self.contents.all().order_by('sort'):
+        #             tasks.append(content.to_yaml)
+        #         obj = {
+        #             'tasks': tasks,
+        #             'gather_facts': 'no',
+        #             'hosts': ','.join(hosts_list)+',',
+        #         }
+        # return obj
 
 
 class Mission(models.Model):

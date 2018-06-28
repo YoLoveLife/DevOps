@@ -156,7 +156,6 @@ class Host(models.Model):
     # 相关信息
     # connect_ip = models.GenericIPAddressField(default='', null=False)
     connect_ip = models.CharField(max_length=15, default='', null=False)
-    service_ip = models.CharField(max_length=15, default='0.0.0.0', null=True)
     # service_ip = models.GenericIPAddressField(default='0.0.0.0', null=True)
 
     # 主机名称
