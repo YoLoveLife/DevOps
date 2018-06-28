@@ -45,40 +45,47 @@ devEops正在不断成长
 ## <a name="looklike"> 平台一览 </a>
 ### 登陆界面
 ![LOGIN](img/login.png)</br>
+
 ### 仪表盘界面
-根据资源的检出位置|操作系统类型|运维操作 等图表化展现</br>
-~~并且每周提供可供保存的静态页面的报告(有！但是很丑！)
+ :satisfied: 根据资源的检出位置|操作系统类型|运维操作 等图表化展现</br>
+并且每周提供可供保存的静态页面的报告**(有！但是很丑！)** :grin:
 ![DASHBOARD](img/dashboard.png)
+
 ### 资产管理
-资产根据来源(VMWARE|ALIYUN)入库 运维人员进行归类
+ :open_mouth: 资产根据来源(VMWARE|ALIYUN)入库 **运维人员进行归类**
 ![GROUP](img/group.png)</br>
 应用组可定义架构图 关联跳板机以及密钥 :key: </br>
-应用组可全局添加参数 该参数会注入运维操作中的变量中</br>
+**应用组可全局添加参数 该参数会注入运维操作中的变量中**</br>
 ![HOST](img/host.png)
 主机可以根据任意信息进行检索</br>
-~~根据VMware|ALIYUN API可进行详细信息(~~监控|配置)获取查看</br>
+根据VMware|ALIYUN **API可进行详细信息(监控|配置)获取查看**</br>
+
 ### 域名管理
-基于树结构的域名管理 定时解析域名 保证记录域名解析正确 供正反向查询
+基于树结构的域名管理 :relieved: 定时解析域名 保证记录域名解析正确 **供正反向查询**
 ![DNS](img/dns.png)
+
 ### 密钥管理
-基于服务器端直接生成的ssh-rsa密钥 私钥将会直接加密存储入数据库</br>
-只有当您做运维操作|SSH连接的时候才会解析并且使用</br>
+**基于服务器端直接生成的ssh-rsa密钥** 私钥将会直接加密存储入数据库</br>
+只有当您做运维操作|SSH连接的时候才会解析并且使用 :expressionless: </br>
 ![KEY](img/key.png)
+
 ### QR-Code
-基于Google-Authority的二次验证 目前用户体系中已经包含验证+生成</br>
+基于Google-Authority的**二次验证** :confused: 目前用户体系中已经包含验证+生成</br>
 ![QRCODE](img/qrcode.png)
+
 ### 元操作及任务
 基于Ansible的数据模型 将用户的Ansible直接存储入数据库中</br>
-当用户使用任务直接从CMDB中导出需要执行的主机列表以及参数列表注入Ansible-API中</br>
+当用户使用任务直接从CMDB中导出需要执行的主机列表以及参数列表 :smirk: 注入Ansible-API中</br>
 ![META](img/meta.png)
-选择元操作所涉及的主机范围</br>
+选择元操作所涉及的主机范围 :neutral_face: </br>
 ![META](img/meta_bt.png)
 选择某个应用组下的若干个元操作组成一个任务</br>
 ![MISSION](img/mission.png)
+
 ### 工单系统
-用户根据自身权限可以发布工单(涉及任务)进行执行</br>
+用户根据自身权限可以**发布工单(涉及任务)**进行执行</br>
 ![CODEWORK](img/work.png)
-选择工单后用户可以进行执行 系统建立websocket将所有执行结果返回
+选择工单后用户可以进行执行 :punch: 系统建立websocket将所有执行结果返回
 ![RUN](img/run.png)
 
 ## <a name="howtoinstall"> 如何安装 </a>
@@ -90,8 +97,8 @@ $ cd path/to/project/folder/
 #安装python第三方库
 $ pip install -r requirements.txt
 
-#连接本地数据库并创建数据表结构
-$ vim apps/deveops/settings.py #DATABASES中输入数据库连接方法
+#连接本地资源并创建数据表结构
+$ vim deveops/conf.py #里面包含了所有连接数据以及定时任务
 $ python apps/manage.py makemigrations
 $ python apps/manage.py migrate
 
