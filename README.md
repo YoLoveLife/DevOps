@@ -105,5 +105,6 @@ $ python apps/manage.py migrate
 #启动服务
 $ python apps/manage.py runserver &
 #默认启动在8000端口 你可能需要一个nginx做Web服务器
+请务必配置一下Nginx代理来限制project/media下的访问权限 否则会出现问题
 ```
 ## <a name="whatcando"> 自运维功能实现 </a>
