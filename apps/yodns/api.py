@@ -70,4 +70,4 @@ class DNSDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
         if dns_obj.sons.exists():
             return Response({'detail':'该域名节点下存在子节点'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return super(DNSDeleteAPI, self).create(request, *args, **kwargs)
+            return super(DNSDeleteAPI, self).delete(request, *args, **kwargs)

@@ -16,7 +16,7 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks',
 
 
 class Playbook(object):
-    def __init__(self, vars_dict, host_list, consumer, key, push_mission):
+    def __init__(self, host_list, consumer, key, push_mission):
         self.loader = DataLoader()
         self.options = Options(
             connection='smart', module_path='', forks=100, become=None,
@@ -26,11 +26,10 @@ class Playbook(object):
         self.key = key
         self.stdout_callback = callback.AnsibleCallback(consumer, push_mission)
         self.consumer = consumer
-        print('ddr',host_list)
+
         self.inventory = InventoryManager(loader=self.loader, sources=host_list+',')
 
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
-        self.variable_manager.extra_vars = vars_dict
         self.play = []
 
     def delete_key(self):
@@ -38,9 +37,15 @@ class Playbook(object):
         if os.path.exists(self.key):
             os.remove(self.key)
 
+    def import_vars(self, vars_dict):
+        self.consumer.send('Load Vars =>\r\n')
+        vars_dict['KEY']=self.key
+        self.variable_manager.extra_vars = vars_dict
+
     def import_task(self, play_source):
         self.consumer.send('Load Task =>\r\n')
         for source in play_source:
+            print('source',source)
             self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
 
     def run(self):
@@ -57,7 +62,7 @@ class Playbook(object):
             self.consumer.send("Start => \r\n")
             for p in self.play:
                 result = tqm.run(p)
-            # self.delete_key()
+            self.delete_key()
 
             self.consumer.send('执行完毕\r\n')
         finally:

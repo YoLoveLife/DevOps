@@ -19,7 +19,7 @@ application = ProtocolTypeRouter({
     #         manager_routing
     #     )
     # ),
-    'websocket': SessionMiddleware(
+    'websocket': AuthMiddlewareStack(
         URLRouter(
             ops_routing
         )

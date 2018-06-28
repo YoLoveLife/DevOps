@@ -62,7 +62,6 @@ class Key(models.Model):
 
     @public_key.setter
     def public_key(self, public_key):
-        print('pub',aes.encrypt(public_key).decode())
         self._public_key = aes.encrypt(public_key).decode()
 
     @property
@@ -199,5 +198,16 @@ class Jumper(models.Model):
         self._status = 1
         return 1
 
+    @property
     def to_yaml(self):
-        return '-o ProxyCommand="ssh -p{PORT} -W %h:%p -q root@{IP} nc"'.format(PORT=self.sshport,IP=self.connect_ip)
+        return {
+            u'set_fact':
+                {
+                    'ansible_ssh_common_args':
+                        '-o ProxyCommand="ssh -p{PORT} -i {KEY} -W %h:%p root@{IP}"'.format(
+                            PORT=self.sshport,
+                            IP=self.connect_ip,
+                            KEY='{{KEY}}'
+                        )
+                }
+        }

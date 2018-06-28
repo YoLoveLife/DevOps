@@ -7,7 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 from celery.task import periodic_task
 from celery.schedules import crontab
-from deveops.conf import INNER_DNS,OUTER_DNS
+from django.conf import settings
 from yodns.models import DNS
 from django.db.models import Q
 from dns import resolver
@@ -30,9 +30,9 @@ def reflush(obj,nameserver):
     return ''
 
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=settings.DNS_TIME)
 def DNSFlush():
     for dns in DNS.objects.all().exclude(Q(father__isnull=True)|Q(father__father__isnull=True)):
-        dns.inner_dig = reflush(dns,INNER_DNS)
-        dns.dig = reflush(dns,OUTER_DNS)
+        dns.inner_dig = reflush(dns,settings.INNER_DNS)
+        dns.dig = reflush(dns,settings.OUTER_DNS)
         dns.save()
