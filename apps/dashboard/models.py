@@ -21,7 +21,7 @@ class ExpiredAliyun(models.Model):
 
 
 class ExpiredAliyunECS(ExpiredAliyun):
-    connect_ip = models.GenericIPAddressField(default='', null=True)
+    connect_ip = models.CharField(max_length=15, default='', null=True)
     tags = models.CharField(max_length=100,default='')
     recognition_id = models.CharField(max_length=100,default='')
     instancename = models.CharField(max_length=100,default='noname')

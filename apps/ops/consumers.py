@@ -33,7 +33,6 @@ class MetaConsumer(WebsocketConsumer):
         pass
 
     def websocket_disconnect(self, message):
-        print('closecloseclosecloseclosecloseclose')
         self.close()
 
     def websocket_connect(self, message):
@@ -57,10 +56,12 @@ class MetaConsumer(WebsocketConsumer):
         # 判断该工单是否具备可执行的先决条件
         try:
             self.write_key(work.mission.group.key, KEY)
-            # import uuid
-            # isinstance(work.mission.group.jumper.uuid, uuid.UUID)
+            import uuid
+            isinstance(work.mission.group.jumper.uuid, uuid.UUID)
         except AttributeError as attr_error:
-            self.send('\r\n您执行的任务缺少必要的密钥或者跳板机请联系管理员解决')
+            self.send('ERROR')
+            work.push_mission.results_append("您执行的任务缺少必要的密钥或者跳板机请联系管理员解决;")
+            work.push_mission.status = settings.OPS_PUSH_MISSION_LACK_OF_KEY_OR_JUMPER
             self.close()
 
         threadSend = AnsibleRecvThread(work, play_source, inventory, KEY, vars_dict, self)

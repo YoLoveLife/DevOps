@@ -11,6 +11,7 @@ from deveops.utils import sshkey,aes
 from utils.models import FILE
 from django.contrib.auth.models import Group as PerGroup
 from authority.models import Key,Jumper
+from django.conf import settings
 
 __all__ = [
     "System_Type", "Group", "Host",
@@ -55,10 +56,9 @@ class Position(models.Model):
 
 class Group(models.Model):
     GROUP_STATUS=(
-        (0, '禁用中'),
-        (1, '使用中'),
-        (2, '暂停中'),
-        (3, '不可达'),
+        (settings.GROUP_PAUSE, '暂停中'),
+        (settings.GROUP_UNREACHABLE, '不可达'),
+        (settings.GROUP_CAN_BE_USE, '正常'),
     )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -143,9 +143,9 @@ class HostDetail(models.Model):
 
 class Host(models.Model):
     SYSTEM_STATUS = (
-        (0, '错误'),
-        (1, '正常'),
-        (2, '不可达'),
+        (settings.HOST_CAN_BE_USE, '正常'),
+        (settings.HOST_CLOSE, '关机'),
+        (settings.HOST_PAUSE, '暂停'),
     )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID

@@ -6,112 +6,9 @@
 
 from celery.task import periodic_task
 from celery.schedules import crontab
-from manager.models import Host,HostDetail,Position,System_Type
+from manager.models import Host,HostDetail,Position,System_Type,Group
 from django.conf import settings
-
-@periodic_task(run_every=settings.MANAGER_TIME)
-def aliyunECSInfoCatch():
-    from deveops.utils import aliyun
-    from deveops.conf import ALIYUN_PAGESIZE
-    from deveops.utils import resolver
-    from manager.models import Host
-    import datetime
-    countNumber = aliyun.fetch_ECSPage()
-    now = datetime.datetime.now()
-    position = None
-    systype = None
-    if Position.objects.filter(name__contains='阿里云').exists():
-        position = Position.objects.filter(name__contains='阿里云').get()
-    else:
-        position = Position.objects.create(name='阿里云')
-
-    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-    for num in range(1,threadNumber+1):
-        data = aliyun.fetch_Instances(num)
-        for dt in data:
-            expiredTime = datetime.datetime.strptime(dt['ExpiredTime'],'%Y-%m-%dT%H:%MZ')
-            dt['ExpiredDay'] = (expiredTime-now).days
-            data_dist = resolver.AliyunECS2Json.decode(dt)
-            if not data_dist.__contains__('connect_ip'):
-                continue
-            query = Host.objects.filter(detail__aliyun_id=data_dist['recognition_id'])
-            status = 0
-            if System_Type.objects.filter(name__contains=data_dist['os']).exists():
-                systype = System_Type.objects.filter(name__contains=data_dist['os']).get()
-            else:
-                systype = System_Type.objects.create(name=data_dist['os'])
-
-            if data_dist['status']=='Stopped':
-                status = 0
-            else:
-                status = 1
-            if not query.exists(): # 如果不存在
-                detail_instance = HostDetail.objects.create(aliyun_id=data_dist['recognition_id'], info='', position=position,
-                                                            systemtype=systype)
-                host_instance = Host.objects.create(
-                    detail=detail_instance,
-                    connect_ip=data_dist['connect_ip'],
-                    hostname=data_dist['instancename'],
-                    status=status,
-                    password='nopassword'
-                )
-            else:
-                host_instance = query.get()
-                host_instance.detail.save()
-                host_instance.status = status
-                host_instance.save()
-
-
-# @periodic_task(run_every=crontab(minute=0,hour=[0,3,6,9,12,15,18,21]))
-# @periodic_task(run_every=crontab(minute=31,hour=8))
-# def vmwareInfoCatch():
-#     from deveops.utils import vmware
-#     children = vmware.fetch_AllInstance()
-#     position = None
-#     systype = None
-#     if Position.objects.filter(name__contains='集团内').exists():
-#         position = Position.objects.filter(name__contains='集团内').get()
-#     else:
-#         position = Position.objects.create(name='集团内')
-#
-#     for child in children:
-#         '''
-#         {'privateMemory': 8500,
-#         'powerState': 'poweredOn', 'name': 'DWETL02', 'uptimeSeconds': 12389645, 'numCpu': 8, 'overallCpuUsage': 0,
-#         'memoryMB': 16384, 'memorySizeMB': 16384, 'guestMemoryUsage': 0, 'committed': 24335576477L, 'hostMemoryUsage': 9265,
-#          'ipAddress': '10.100.63.69', 'sharedMemory': 1662, 'unshared': 24212668416L}
-#         '''
-#         list = vmware.FetchInfo(child)
-#         status = 1
-#         if not list['powerState'] == 'poweredOn':
-#             status = 0
-#             continue
-#
-#         if System_Type.objects.filter(name=list['guestFullName']).count() ==0:
-#             systype = System_Type.objects.create(name=list['guestFullName'])
-#         else:
-#             systype = System_Type.objects.filter(name=list['guestFullName']).get()
-#
-#         if not list.__contains__('ipAddress'):
-#             continue
-#         if list['ipAddress'] is None:
-#             continue
-#
-#         query = Host.objects.filter(detail__vmware_id=list['uuid'] ,connect_ip=list['ipAddress'])
-#         if not query.exists():
-#             detail_instance = HostDetail.objects.create(vmware_id=list['uuid'], info='', position=position, systemtype=systype)
-#             host_instance = Host.objects.create(
-#                 detail=detail_instance,
-#                 connect_ip=list['ipAddress'],
-#                 hostname=list['name'],
-#                 status=status,
-#                 password='nopassword'
-#             )
-#         else:
-#             host_instance = query.get()
-#             host_instance.detail.save()
-#             host_instance.status = status
-#             host_instance.save()
+import redis, json
 
 def host_maker(dict_models):
     systype_query = System_Type.objects.filter(name=dict_models['detail']['systemtype'])
@@ -135,7 +32,6 @@ def host_maker(dict_models):
     host = Host.objects.create(**dict_models)
 
 
-
 @periodic_task(run_every=settings.MANAGER_TIME)
 def vmware2cmdb():
     from deveops.tools import vmware
@@ -148,4 +44,52 @@ def vmware2cmdb():
             host_maker(dict_models)
 
 
+@periodic_task(run_every=settings.MANAGER_TIME)
+def aliyun2cmdb():
+    from deveops.tools.aliyun import ecs
+    API = ecs.AliyunECSTool()
+    for page in range(1,API.pagecount+1):
+        results = API.get_instances(page)
+        for result in results.get('Instances').get('Instance'):
+            dict_models = API.get_aliyun_models(result)
+            host_query = Host.objects.filter(detail__aliyun_id=dict_models['detail']['aliyun_id'], connect_ip=dict_models['connect_ip'])
+            if not host_query.exists():
+                host_maker(dict_models)
 
+
+connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
+
+
+@periodic_task(run_every=crontab(minute='*'))
+def statistics():
+    connect.delete('MANAGER_STATUS')
+
+    status = {}
+    # 資產計數
+    status['host_count'] = Host.objects.count()
+    status['group_count'] = Group.objects.count()
+
+    # 類型統計
+    systypes = System_Type.objects.all()
+    sys_list = []
+    for sys in systypes:
+        sys_list.append({'name': sys.name,'value': sys.hosts_detail.count()})
+    status['systemtype'] = sys_list
+    # 不同系统类型所涉及的主机个数
+
+    positions = Position.objects.all()
+    pos_list = []
+    for pos in positions:
+        pos_list.append({'name': pos.name,'value': pos.hosts_detail.count()})
+    status['position'] = pos_list
+    # 不同位置所涉及的主机个数
+
+    groups = Group.objects.all()
+    group_list = []
+    for group in groups:
+        group_list.append({'name': group.name,'value': group.hosts.count()})
+    status['groups'] = group_list
+
+    status_json = json.dumps(status)
+    connect.set('MANAGER_STATUS',status_json)
+    print('get',connect.get('MANAGER_STATUS'))

@@ -8,27 +8,22 @@ from __future__ import absolute_import, unicode_literals
 from celery.task import periodic_task
 from celery.schedules import crontab
 from pyecharts import Pie
-from deveops.conf import ALIYUN_PAGESIZE,REDIS_PORT,REDIS_SPACE,EXPIREDTIME,DASHBOARD_TIME,EXPIRED_TIME,MANAGER_TIME
 from deveops import settings
 import redis, datetime, json, os
-from deveops.utils import aliyun
-from deveops.utils import resolver
-from manager import models as ManagerModels
 from ops import models as OpsModels
 from authority import models as AuthModels
 from dashboard.models import ExpiredAliyunECS,ExpiredAliyunRDS,ExpiredAliyunKVStore,ExpiredAliyunMongoDB
 from tool import smtp
 
-connect = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
+connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
 
-
-@periodic_task(run_every=DASHBOARD_TIME)
+@periodic_task(run_every=settings.DASHBOARD_TIME)
 def weeklyDashboard():
     import jinja2
     loader = jinja2.FileSystemLoader(settings.BASE_DIR+'/apps/dashboard/docs/', encoding='utf-8')
     env = jinja2.Environment(loader=loader)
     template = env.get_template("week")
-
+    print('123',connect.keys())
     status_json = connect.get('MANAGER_STATUS')
     manager_status = json.loads(str(status_json, encoding='utf-8'))
     now = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -110,104 +105,60 @@ def weeklyDashboard():
     smtp.sendMail('devEops平台运维周报', msg, ['yz2@8531.cn'])#,'wzz@8531.cn','xubin@8531.cn','xuchenliang@8531.cn'])
 
 
-@periodic_task(run_every=EXPIRED_TIME)
-def aliyunECSExpiredInfoCatch():
+def obj_maker(MODELS,dict_models):
+    MODELS.objects.create(**dict_models)
+
+
+@periodic_task(run_every=settings.EXPIRED_TIME)
+def expired_aliyun_ecs():
     ExpiredAliyunECS.objects.all().delete()
-    countNumber = aliyun.fetch_ECSPage()
-    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-    now = datetime.datetime.now()
-    for num in range(1,threadNumber+2):
-        data = aliyun.fetch_Instances(num)
-        for dt in data:
-            expiredTime = datetime.datetime.strptime(dt['ExpiredTime'],'%Y-%m-%dT%H:%MZ')
-            if 0 < (expiredTime-now).days < EXPIREDTIME:
-                dt['ExpiredDay'] = (expiredTime-now).days
-                instance_data = resolver.AliyunECS2Json.decode(dt)
-                instance_data.pop('os')
-                ExpiredAliyunECS(**instance_data).save()
+    from deveops.tools.aliyun import ecs
+    API = ecs.AliyunECSTool()
+    for page in range(1,API.pagecount+1):
+        results = API.get_instances(page)
+        for result in results:
+            dict_models = API.get_aliyun_expired_models(result)
+            if dict_models.get('expired')< 20:
+                obj_maker(ExpiredAliyunECS, dict_models)
 
 
-@periodic_task(run_every=EXPIRED_TIME)
-def aliyunRDSInfoCatch():
+@periodic_task(run_every=settings.EXPIRED_TIME)
+def expired_aliyun_rds():
     ExpiredAliyunRDS.objects.all().delete()
-    countNumber = aliyun.fetch_RDSPage()
-    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-    now = datetime.datetime.now()
-    for num in range(1,threadNumber+2):
-        data = aliyun.fetch_RDSs(num)
-        for dt in data:
-            if not dt['DBInstanceId'][0:2] == 'rr':
-                expiredTime = datetime.datetime.strptime(dt['ExpireTime'],'%Y-%m-%dT%H:%M:%SZ')
-                if 0 < (expiredTime - now).days < EXPIREDTIME:
-                    dt['ExpiredDay'] = (expiredTime - now).days
-                    ExpiredAliyunRDS(**resolver.AliyunRDS2Json.decode(dt)).save()
+    from deveops.tools.aliyun import rds
+    API = rds.AliyunRDSTool()
+    for page in range(1,API.pagecount+1):
+        results = API.get_instances(page)
+        for result in results:
+            if not API.is_readonly(result):
+                dict_models = API.get_aliyun_expired_models(result)
+                if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+                    obj_maker(ExpiredAliyunRDS,dict_models)
 
-
-@periodic_task(run_every=EXPIRED_TIME)
-def aliyunKVStoreInfoCatch():
+@periodic_task(run_every=settings.EXPIRED_TIME)
+def expired_aliyun_kvstore():
     ExpiredAliyunKVStore.objects.all().delete()
-    countNumber = aliyun.fetch_KVStorePage()
-    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-    now = datetime.datetime.now()
-    for num in range(1,threadNumber+2):
-        data = aliyun.fetch_KVStores(num)
-        for dt in data:
-            expiredTime = datetime.datetime.strptime(dt['EndTime'],'%Y-%m-%dT%H:%M:%SZ')
-            if 0 < (expiredTime - now).days < EXPIREDTIME:
-                dt['ExpiredDay'] = (expiredTime - now).days
-                ExpiredAliyunKVStore(**resolver.AliyunKVStore2Json.decode(dt)).save()
+    from deveops.tools.aliyun import kvstore
+    API = kvstore.AliyunKVStoreTool()
+    for page in range(1,API.pagecount+1):
+        results = API.get_instances(page)
+        for result in results:
+            dict_models = API.get_aliyun_expired_models(result)
+            if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+                obj_maker(ExpiredAliyunKVStore,dict_models)
 
 
-@periodic_task(run_every=EXPIRED_TIME)
-def aliyunMongoDBInfoCatch():
+@periodic_task(run_every=settings.EXPIRED_TIME)
+def expired_aliyun_mongodb():
     ExpiredAliyunMongoDB.objects.all().delete()
-    countNumber = aliyun.fetch_MongoDBPage()
-    threadNumber = int(countNumber/ALIYUN_PAGESIZE)
-    if threadNumber ==0:
-        threadNumber= threadNumber+1
-    now = datetime.datetime.now()
-    for num in range(1,threadNumber+2):
-        data = aliyun.fetch_MongoDBs(num)
-        for dt in data:
-            expiredTime = datetime.datetime.strptime(dt['ExpireTime'],'%Y-%m-%dT%H:%MZ')
-            if 0 < (expiredTime - now).days < EXPIREDTIME:
-                dt['ExpiredDay'] = (expiredTime - now).days
-                ExpiredAliyunMongoDB(**resolver.AliyunMongoDB2Json.decode(dt)).save()
-
-
-@periodic_task(run_every=MANAGER_TIME)
-def managerStatusCatch():
-    connect.delete('MANAGER_STATUS')
-
-    status = {}
-    # 資產計數
-    from manager import models as Manager
-    status['host_count'] = Manager.Host.objects.count()
-    status['group_count'] = Manager.Group.objects.count()
-
-    # 類型統計
-    systypes = Manager.System_Type.objects.all()
-    sys_list = []
-    for sys in systypes:
-        sys_list.append({'name': sys.name,'value': sys.hosts_detail.count()})
-    status['systemtype'] = sys_list
-    # 不同系统类型所涉及的主机个数
-
-    positions = Manager.Position.objects.all()
-    pos_list = []
-    for pos in positions:
-        pos_list.append({'name': pos.name,'value': pos.hosts_detail.count()})
-    status['position'] = pos_list
-    # 不同位置所涉及的主机个数
-
-    groups = Manager.Group.objects.all()
-    group_list = []
-    for group in groups:
-        group_list.append({'name': group.name,'value': group.hosts.count()})
-    status['groups'] = group_list
-
-    status_json = json.dumps(status)
-    connect.set('MANAGER_STATUS',status_json)
+    from deveops.tools.aliyun import mongodb
+    API = mongodb.AliyunMongoDBTool()
+    for page in range(1,API.pagecount+1):
+        results = API.get_instances(page)
+        for result in results:
+            dict_models = API.get_aliyun_expired_models(result)
+            if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+                obj_maker(ExpiredAliyunMongoDB, dict_models)
 
 
 

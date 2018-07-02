@@ -195,11 +195,12 @@ class META_SORT(models.Model):
 
 class Push_Mission(models.Model):
     STATUS = (
-        (0, '审核工单'), # 未审核
-        (1, '上传文件'), # 未上传文件
-        (2, '执行工单'), # 未执行
-        (3, '执行中'), # 执行中
-        (4, '执行完毕'), # 执行完毕
+        (settings.OPS_PUSH_MISSION_WAIT_EXAM, '审核工单'), # 未审核
+        (settings.OPS_PUSH_MISSION_WAIT_UPLOAD, '上传文件'), # 未上传文件
+        (settings.OPS_PUSH_MISSION_WAIT_RUN, '执行工单'), # 未执行
+        (settings.OPS_PUSH_MISSION_RUNNING, '执行中'), # 执行中
+        (settings.OPS_PUSH_MISSION_SUCCESS, '执行完毕'), # 执行完毕
+        (settings.OPS_PUSH_MISSION_FAILED, '执行失败'), # 执行失败
     )
 
     class Meta:
@@ -227,6 +228,9 @@ class Push_Mission(models.Model):
 
     @status.setter
     def status(self, status):
-        self._status = status
+        # 当任务状态已经小于0为异常状态的时候不改写状态值
+        if self._status >= 0:
+            self._status = status
 
-
+    def results_append(self,results):
+        self.results = self.results + results

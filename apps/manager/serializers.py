@@ -18,6 +18,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     _status = serializers.IntegerField(required=True, source='status',)
     _framework = serializers.PrimaryKeyRelatedField(required=False, queryset=models.FILE.objects.all(), allow_null=True, write_only=True)
     framework = serializers.ImageField(source="_framework.image", read_only=True)
+
     class Meta:
         model = models.Group
         fields = (
@@ -26,7 +27,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = (
             'id', 'uuid', 'framework'
         )
-        write_onlu_fields = (
+        write_only_fields = (
             '_framework'
         )
 

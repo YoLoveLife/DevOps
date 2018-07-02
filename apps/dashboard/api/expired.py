@@ -11,8 +11,6 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from deveops.api import WebTokenAuthentication
-import redis
-from deveops.conf import REDIS_PORT,REDIS_SPACE
 
 __all__ = [
     "ExpiredPagination",

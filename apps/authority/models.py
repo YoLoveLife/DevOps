@@ -85,7 +85,7 @@ class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
-    qrcode = models.CharField(max_length=29,default=pyotp.random_base32(29))
+    qrcode = models.CharField(max_length=29,default=pyotp.random_base32(29),editable=False)
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
