@@ -5,6 +5,7 @@ from ansible.vars.manager import VariableManager
 from ansible.inventory.manager import InventoryManager
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
+from ansible.errors import AnsibleParserError,AnsibleUndefinedVariable
 from ops.ansible import callback
 
 __all__ = [
@@ -26,7 +27,7 @@ class Playbook(object):
         self.key = key
         self.stdout_callback = callback.AnsibleCallback(consumer, push_mission)
         self.consumer = consumer
-
+        self.push_mission = push_mission
         self.inventory = InventoryManager(loader=self.loader, sources=host_list+',')
 
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
@@ -38,15 +39,26 @@ class Playbook(object):
             os.remove(self.key)
 
     def import_vars(self, vars_dict):
-        self.consumer.send('Load Vars =>\r\n')
-        vars_dict['KEY']=self.key
-        self.variable_manager.extra_vars = vars_dict
+        try:
+            self.push_mission.results_append('参数载入成功;')
+            vars_dict['KEY']=self.key
+            self.variable_manager.extra_vars = vars_dict
+        except AnsibleUndefinedVariable as e:
+            self.push_mission.results_append('参数识别失败;')
+            self.consumer.send('ERROR')
+            self.consumer.close()
+        self.consumer.send('OK')
 
     def import_task(self, play_source):
-        self.consumer.send('Load Task =>\r\n')
-        for source in play_source:
-            print('source',source)
-            self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
+        try:
+            for source in play_source:
+                self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
+            self.push_mission.results_append('任务载入成功;')
+        except AnsibleParserError as e:
+            self.push_mission.results_append('错误或者丢失模块;')
+            self.consumer.send('ERROR')
+            self.consumer.close()
+        self.consumer.send('OK')
 
     def run(self):
         tqm = None
@@ -59,12 +71,10 @@ class Playbook(object):
                 passwords={},
                 stdout_callback=self.stdout_callback
             )
-            self.consumer.send("Start => \r\n")
             for p in self.play:
                 result = tqm.run(p)
             self.delete_key()
-
-            self.consumer.send('执行完毕\r\n')
+            self.consumer.send("OK")
         finally:
             self.consumer.close()
             if tqm is not None:

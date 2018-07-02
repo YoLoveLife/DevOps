@@ -3,14 +3,10 @@
 # Time 18-6-26
 # Author Yo
 # Email YoLoveLife@outlook.com
-import os
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
-django.setup()
-
-
-
-
+# import os
+# import django
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
+# django.setup()
 import atexit
 from pyVim import connect
 from pyVmomi import vmodl
@@ -45,9 +41,9 @@ class VmwareTool(object):
     @staticmethod
     def get_vm_status(info):
         if info != 'poweredOn':
-            return 0
+            return DJANGO_SETTINGS.HOST_CLOSE
         else:
-            return 1
+            return DJANGO_SETTINGS.HOST_CAN_BE_USE
 
     @staticmethod
     def get_vm_models(vm):

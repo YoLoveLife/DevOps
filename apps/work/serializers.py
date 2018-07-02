@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from work import models
+from django.conf import settings
 from rest_framework import serializers
 
 __all__ = [
@@ -21,16 +22,16 @@ class CodeWorkStatusSerializer(serializers.ModelSerializer):
 
 class CodeWorkCheckSerializer(CodeWorkStatusSerializer):
     def update(self, instance, validated_data):
-        instance.status = 2
-        instance.save()
+        instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
+        instance.push_mission.save()
         return super(CodeWorkCheckSerializer,self).update(instance, {})
 
 
 class CodeWorkRunSerializer(CodeWorkStatusSerializer):
     def update(self, instance, validated_data):
-        instance.status = 4
+        instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
         instance.save()
-        return super(CodeWorkRunSerializer,self).update(instance,{})
+        return super(CodeWorkRunSerializer,self).update(instance, {})
 
 
 class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
@@ -58,22 +59,24 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
         push_obj = models.Push_Mission.objects.create(mission=mission)
 
         # 任务是否需要审核
-        if mission.need_validate is True:
-            push_obj.status = 0
+        if mission.need_validate:
+            push_obj.status = settings.OPS_PUSH_MISSION_WAIT_EXAM
         # 任务是否需要上传文件
-        elif len(mission.file_list) != 0:
-            push_obj.status = 1
+        elif mission.file_list:
+            push_obj.status = settings.OPS_PUSH_MISSION_WAIT_UPLOAD
         else:
-            push_obj.status = 2
+            push_obj.status = settings.OPS_PUSH_MISSION_WAIT_RUN
+
         push_obj.save()
 
         obj = models.Code_Work.objects.create(push_mission=push_obj, mission=mission, **validated_data)
-        obj.save()
+
         return obj
 
 
 class CodeWorkUploadFileSerializer(serializers.ModelSerializer):
     files = serializers.ListField(source="file_list")
+
     class Meta:
         model = models.Code_Work
         fields = (

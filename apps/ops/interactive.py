@@ -28,6 +28,5 @@ class AnsibleRecvThread(threading.Thread):
         p = playbook.Playbook(self.inventory, self.consumer, self.key, self.work.push_mission)
         p.import_vars(self.vars_dict)
         p.import_task(self.play_source)
+        self.work.push_mission.status = settings.OPS_PUSH_MISSION_RUNNING
         p.run()
-        self.work.status = 3
-        self.work.save()

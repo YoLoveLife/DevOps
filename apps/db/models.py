@@ -20,6 +20,7 @@ class Instance(models.Model):
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     # 关联的主机
+    aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
     group = models.ForeignKey(Group, default=None, blank=True, null=True, on_delete=models.SET_NULL)
     hosts = models.ManyToManyField(Host, blank=True, related_name='dbs', verbose_name=_("dbs"))
     name = models.CharField(max_length=100, default='')

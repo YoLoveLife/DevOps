@@ -11,7 +11,7 @@ from rest_framework.views import Response, status
 from deveops.api import WebTokenAuthentication
 import redis
 import json
-from deveops.conf import REDIS_PORT,REDIS_SPACE
+from django.conf import settings
 
 __all__ = [
     "DashboardManagerAPI",
@@ -23,8 +23,9 @@ class DashboardManagerAPI(WebTokenAuthentication,generics.ListAPIView):
     # def get(self, request, *args, **kwargs):
 
     def get(self, request, *args, **kwargs):
-        con = redis.StrictRedis(port=REDIS_PORT,db=REDIS_SPACE)
-        status_json = con.get('MANAGER_STATUS')
+        connect = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_SPACE,
+                                    password=settings.REDIS_PASSWD)
+        status_json = connect.get('MANAGER_STATUS')
         if status_json is None:
             manager_status = {}
         else:

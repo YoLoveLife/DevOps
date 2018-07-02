@@ -54,12 +54,13 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
         return models.Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
-        from deveops.utils import aliyun
+        from deveops.tools import aliyun
+        API = aliyun.ecs.AliyunECSTool()
         from deveops.utils import vmware
         obj = self.get_object()
         data = None
         if obj.detail.aliyun_id:
-            data = aliyun.fetch_Instance(obj.detail.aliyun_id)
+            data = API.get_instance(obj.detail.aliyun_id)
             if data:
                 data['type'] = 'aliyun'
             else:

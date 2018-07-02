@@ -6,6 +6,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from ops.models import Push_Mission,Mission
 from manager.models import Group
 from authority.models import ExtendUser
@@ -45,11 +46,6 @@ class Code_Work(Work):
     def status(self):
         return self.push_mission.status
 
-    @status.setter
-    def status(self,status):
-        self.push_mission.status = status
-        self.push_mission.save()
-
     @property
     def vars_dict(self):
         from django.conf import settings
@@ -69,8 +65,7 @@ class Code_Work(Work):
     def file_list(self,file_list):
         fs =FILE.objects.filter(uuid__in=file_list)
         self.push_mission.files.set(fs)
-        self.push_mission.status = 2
-        self.push_mission.save()
+        self.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
 
 
 class Safety_Work(Work):
