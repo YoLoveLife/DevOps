@@ -54,8 +54,9 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
         return models.Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
-        from deveops.tools import aliyun
-        API = aliyun.ecs.AliyunECSTool()
+        from deveops.tools.aliyun import ecs,cms
+        API = ecs.AliyunECSTool()
+        API = cms.AliyunCMSTool()
         from deveops.utils import vmware
         obj = self.get_object()
         data = None
@@ -81,7 +82,6 @@ class ManagerAliyunIDDetailAPI(WebTokenAuthentication,APIView):
 
     def get(self, request, *args, **kwargs):
         from deveops.utils import aliyun
-        from deveops.utils import vmware
         data = None
         if self.kwargs['pk']:
             data = aliyun.fetch_Instance(self.kwargs['pk'])

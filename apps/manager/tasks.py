@@ -32,7 +32,7 @@ def host_maker(dict_models):
     host = Host.objects.create(**dict_models)
 
 
-@periodic_task(run_every=settings.MANAGER_TIME)
+@periodic_task(run_every=crontab(minute='*'))
 def vmware2cmdb():
     from deveops.tools import vmware
     API = vmware.VmwareTool()
@@ -50,7 +50,7 @@ def aliyun2cmdb():
     API = ecs.AliyunECSTool()
     for page in range(1,API.pagecount+1):
         results = API.get_instances(page)
-        for result in results.get('Instances').get('Instance'):
+        for result in results:
             dict_models = API.get_aliyun_models(result)
             host_query = Host.objects.filter(detail__aliyun_id=dict_models['detail']['aliyun_id'], connect_ip=dict_models['connect_ip'])
             if not host_query.exists():
@@ -61,35 +61,46 @@ connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db
 
 
 @periodic_task(run_every=crontab(minute='*'))
-def statistics():
-    connect.delete('MANAGER_STATUS')
-
-    status = {}
-    # 資產計數
-    status['host_count'] = Host.objects.count()
-    status['group_count'] = Group.objects.count()
-
-    # 類型統計
+def statistics_systemtype():
+    connect.delete('SYSTEMTYPE_STATUS')
     systypes = System_Type.objects.all()
-    sys_list = []
+    sys_name = []
+    sys_value = []
     for sys in systypes:
-        sys_list.append({'name': sys.name,'value': sys.hosts_detail.count()})
-    status['systemtype'] = sys_list
-    # 不同系统类型所涉及的主机个数
+        sys_name.append(sys.name)
+        sys_value.append(sys.hosts_detail.count())
 
-    positions = Position.objects.all()
-    pos_list = []
-    for pos in positions:
-        pos_list.append({'name': pos.name,'value': pos.hosts_detail.count()})
-    status['position'] = pos_list
-    # 不同位置所涉及的主机个数
+    connect.set('SYSTEMTYPE_STATUS', {"name":sys_name,"value":sys_value})
+
+@periodic_task(run_every=crontab(minute='*'))
+def statistics_group():
+    connect.delete('GROUP_STATUS')
 
     groups = Group.objects.all()
-    group_list = []
+    group_name = []
+    group_value = []
     for group in groups:
-        group_list.append({'name': group.name,'value': group.hosts.count()})
-    status['groups'] = group_list
+        group_name.append(group.name)
+        group_value.append(group.hosts.count())
+    connect.set('GROUP_STATUS', {'name':group_name,'value':group_value})
 
-    status_json = json.dumps(status)
-    connect.set('MANAGER_STATUS',status_json)
-    print('get',connect.get('MANAGER_STATUS'))
+@periodic_task(run_every=crontab(minute='*'))
+def statistics_position():
+    connect.delete('POSITION_STATUS')
+
+    positions = Position.objects.all()
+    position_name = []
+    position_value = []
+    for pos in positions:
+        position_name.append(pos.name)
+        position_value.append(pos.hosts_detail.count())
+    connect.set('POSITION_STATUS', {'name':position_name,'value':position_value})
+
+
+@periodic_task(run_every=crontab(minute='*'))
+def statistics_manager():
+    host_count = Host.objects.count()
+    group_count = Group.objects.count()
+
+    connect.set('HOST_COUNT', host_count)
+    connect.set('GROUP_COUNT', group_count)
