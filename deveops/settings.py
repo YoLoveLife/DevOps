@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'yodns.apps.YoDnsConfig',
     'db.apps.DBConfig',
+    'monitor.apps.MonitorConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',

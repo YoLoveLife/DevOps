@@ -38,6 +38,7 @@ urlpatterns = [
     # url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
     path(r'api-utils/', include('utils.urls.api_urls')),
     path(r'api-dashboard/', include('dashboard.urls.api_urls')),
+    path(r'api-monitor/', include('monitor.urls.api_urls')),
 
     re_path(r'media/(?P<path>.*)', serve, {"document_root": settings.MEDIA_ROOT}),
 ]

@@ -4,8 +4,8 @@ devEops :laughing: 开发自运维平台 :no_mouth: 后端
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/YoLoveLife/devEops/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) :yum: </br>
 
-Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand: </br>
-:heart: 感谢所有 :star: 我的人 你们是我努力的动力</br>
+Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand:  汪子哲 :fist: 徐晨亮 :facepunch: 张雨萍</br>
+:heart: 感谢所有 :star: 我的人 你们是我前行的动力</br>
 该项目为devEops的后端部分 前端部分请关注 :heart: [devEops-Web](https://github.com/YoLoveLife/devEopsWeb)</br>
 
 运维体系解决方案(正在成长中)</br>
@@ -105,6 +105,6 @@ $ python apps/manage.py migrate
 #启动服务
 $ python apps/manage.py runserver &
 #默认启动在8000端口 你可能需要一个nginx做Web服务器
-请务必配置一下Nginx代理来限制project/media下的访问权限 否则会出现问题
+请务必配置一下Nginx代理来限制project/media下的访问权限 否则重要信息泄露的问题
 ```
 ## <a name="whatcando"> 自运维功能实现 </a>
