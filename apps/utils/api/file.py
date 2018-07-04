@@ -34,7 +34,7 @@ class UtilsFileListAPI(WebTokenAuthentication,generics.ListAPIView):
 class UtilsFileListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer
-    queryset = models.FILE.objects.all()
+    queryset = models.FILE.objects.filter(type=1)
     permission_classes = [AllowAny, ]
     # permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
     pagination_class = FilePagination

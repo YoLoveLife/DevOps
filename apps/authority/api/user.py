@@ -79,11 +79,19 @@ class UserOpsListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     pagination_class = UserPagination
 
 
+class UserCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
+    module = models.ExtendUser
+    serializer_class = serializers.UserSerializer
+    queryset = models.ExtendUser.objects.all()
+    # permission_classes = [UserPermission.UserCreateRequiredMixin, IsAuthenticated]
+    permission_classes = [AllowAny,]
+
+
 class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
-    permission_classes = [UserPermission.UserUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [UserPermission.UserUpdateRequiredMixin, IsAuthenticated]
 
 
 class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):

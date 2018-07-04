@@ -26,7 +26,19 @@ class Work(models.Model):
         ordering = ['id', ]
         abstract = True
 
+"""
+Check_Work
+判断工单
+由一个Mission组成其运行内容
+关联一个Push_Mission记录其运行过程
 
+"""
+"""
+Code_Work
+流程工单
+由一个Mission组成其运行内容 
+关联一个Push_Mission记录其运行过程
+"""
 class Code_Work(Work):
     # 关联推出的任务
     user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)

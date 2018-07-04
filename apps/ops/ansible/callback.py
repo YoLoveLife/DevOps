@@ -43,4 +43,6 @@ class JudgementCallback(AnsibleCallback):
     def v2_runner_on_ok(self, result, **kwargs):
         r = self._dump_results(result._result, indent=INDENT)
         if r.has_key('stdout'):
-            self.judgement = self.judgement and (r['stdout'] == "True")
+            self.judgement = self.judgement and (r['stdout'] == "True" or r['stdout'] == "true")
+        if self.judgement is not True:
+            self.push_mission.status = settings.OPS_PUSH_MISSION_FAILED
