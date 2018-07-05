@@ -9,8 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
-# from variable.permission import var2group as Var2GroupPermission
+from variable.permission import var2group as Var2GroupPermission
 from deveops.api import WebTokenAuthentication
+
 
 
 class VariablePagination(PageNumberPagination):
@@ -21,18 +22,18 @@ class Variable2GroupListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Var2Group
     queryset = models.Var2Group.objects.all()
     serializer_class = serializers.Var2GroupSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [Var2GroupPermission.Var2GroupListRequiredMixin, IsAuthenticated]
     filter_fields = '__all__'
 
 
 class Variable2GroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Var2Group
     serializer_class = serializers.Var2GroupSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [Var2GroupPermission.Var2GroupCreateRequiredMixin, IsAuthenticated]
 
 
 class Variable2GroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Var2Group
     serializer_class = serializers.Var2GroupSerializer
     queryset = models.Var2Group.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [Var2GroupPermission.Var2GroupDeleteRequiredMixin, IsAuthenticated]

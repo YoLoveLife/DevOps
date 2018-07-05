@@ -16,5 +16,4 @@ __all__ = [
 class OpsPushMissionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.Push_Mission
     serializer_class = serializers.PushMissionSerializer
-    # permission_classes = [PushMissionPermission.PushMissionCreateRequiredMixin]
-    permission_classes = [AllowAny, ]
+    permission_classes = [PushMissionPermission.PushMissionCreateRequiredMixin]

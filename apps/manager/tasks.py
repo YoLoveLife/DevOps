@@ -32,7 +32,7 @@ def host_maker(dict_models):
     host = Host.objects.create(**dict_models)
 
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=settings.MANAGER_TIME)
 def vmware2cmdb():
     from deveops.tools import vmware
     API = vmware.VmwareTool()
@@ -60,7 +60,7 @@ def aliyun2cmdb():
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
 
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=crontab(minute='*/5'))
 def statistics_systemtype():
     connect.delete('SYSTEMTYPE_STATUS')
     systypes = System_Type.objects.all()
@@ -72,7 +72,7 @@ def statistics_systemtype():
 
     connect.set('SYSTEMTYPE_STATUS', {"name":sys_name,"value":sys_value})
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=crontab(minute='*/5'))
 def statistics_group():
     connect.delete('GROUP_STATUS')
 
@@ -84,7 +84,7 @@ def statistics_group():
         group_value.append(group.hosts.count())
     connect.set('GROUP_STATUS', {'name':group_name,'value':group_value})
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=crontab(minute='*/5'))
 def statistics_position():
     connect.delete('POSITION_STATUS')
 
@@ -97,7 +97,7 @@ def statistics_position():
     connect.set('POSITION_STATUS', {'name':position_name,'value':position_value})
 
 
-@periodic_task(run_every=crontab(minute='*'))
+@periodic_task(run_every=crontab(minute='*/5'))
 def statistics_manager():
     host_count = Host.objects.count()
     group_count = Group.objects.count()

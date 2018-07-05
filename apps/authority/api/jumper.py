@@ -11,7 +11,7 @@ from deveops.api import WebTokenAuthentication
 
 __all__ = [
     "JumperListAPI", "JumperCreateAPI", "JumperUpdateAPI",
-    "JumperDeleteAPI", 'JumperPagination', 'JumperListByPage'
+    "JumperDeleteAPI", 'JumperPagination', 'JumperListByPageAPI',
 ]
 
 
@@ -19,7 +19,7 @@ class JumperPagination(PageNumberPagination):
     page_size = 10
 
 
-class JumperListAPI(WebTokenAuthentication,generics.ListAPIView):
+class JumperListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
@@ -27,7 +27,7 @@ class JumperListAPI(WebTokenAuthentication,generics.ListAPIView):
     filter_class = filter.JumperFilter
 
 
-class JumperListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
+class JumperListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()
@@ -38,7 +38,7 @@ class JumperListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
 
 class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):
     serializer_class = serializers.JumperSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [JumperPermission.JumperStatusRequiredMixin, IsAuthenticated]
 
     def get_object(self):
         return models.Jumper.objects.filter(uuid=self.kwargs['pk']).get()
@@ -50,13 +50,13 @@ class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):
         return Response({'detail': '刷新成功'}, status=status.HTTP_200_OK)
 
 
-class JumperCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class JumperCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
     permission_classes = [JumperPermission.JumperCreateRequiredMixin, IsAuthenticated]
 
 
-class JumperUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class JumperUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
     queryset = models.Jumper.objects.all()

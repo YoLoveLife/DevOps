@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from deveops.api import WebTokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
+from db.permission import role as RolePermission
 
 class DBRolePagination(PageNumberPagination):
     page_size = 10
@@ -19,7 +20,7 @@ class DBRoleListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Role
     serializer_class = serializers.DBRoleSerializer
     queryset = models.Role.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [RolePermission.DBRoleListRequiredMixin, IsAuthenticated]
     filter_class = filter.DBRoleFilter
 
 
@@ -27,7 +28,7 @@ class DBRoleListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Role
     serializer_class = serializers.DBRoleSerializer
     queryset = models.Role.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [RolePermission.DBRoleListRequiredMixin, IsAuthenticated]
     pagination_class = DBRolePagination
     filter_class = filter.DBRoleFilter
 
@@ -36,7 +37,7 @@ class DBRoleCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Role
     serializer_class = serializers.DBRoleSerializer
     queryset = models.Role.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [RolePermission.DBRoleCreateRequiredMixin, IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         try:
@@ -53,7 +54,7 @@ class DBRoleUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Role
     serializer_class = serializers.DBRoleSerializer
     queryset = models.Role.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [RolePermission.DBRoleUpdateRequiredMixin, IsAuthenticated]
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 
@@ -62,7 +63,7 @@ class DBRoleDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Role
     serializer_class = serializers.DBRoleSerializer
     queryset = models.Role.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [RolePermission.DBRoleDeleteRequiredMixin, IsAuthenticated]
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 

@@ -9,10 +9,12 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from deveops.api import WebTokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
+from db.permission import instance as InstancePermission
 
 __all__ = [
     "DBInstancePagination", "DBInstanceListAPI",
-    "DBInstanceListByPageAPI"
+    "DBInstanceListByPageAPI", "DBInstanceCreateAPI", "DBInstanceDeleteAPI",
+    "DBInstanceUpdateAPI",
 ]
 
 
@@ -24,7 +26,7 @@ class DBInstanceListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Instance
     serializer_class = serializers.DBInstanceSerializer
     queryset = models.Instance.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     filter_class = filter.DBInstanceFilter
 
 
@@ -32,7 +34,7 @@ class DBInstanceListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Instance
     serializer_class = serializers.DBInstanceSerializer
     queryset = models.Instance.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     pagination_class = DBInstancePagination
     filter_class = filter.DBInstanceFilter
 
@@ -41,7 +43,7 @@ class DBInstanceCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Instance
     serializer_class = serializers.DBInstanceSerializer
     queryset = models.Instance.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [InstancePermission.DBInstanceCreateRequiredMixin, IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         return super(DBInstanceCreateAPI, self).create(request, *args, **kwargs)
@@ -51,7 +53,7 @@ class DBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Instance
     serializer_class = serializers.DBInstanceSerializer
     queryset = models.Instance.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [InstancePermission.DBInstanceUpdateRequiredMixin, IsAuthenticated]
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 
@@ -69,7 +71,7 @@ class DBInstanceDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Instance
     serializer_class = serializers.DBInstanceSerializer
     queryset = models.Instance.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [InstancePermission.DBInstanceDeleteRequiredMixin, IsAuthenticated]
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 

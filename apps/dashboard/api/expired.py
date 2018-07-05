@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from deveops.api import WebTokenAuthentication
+from dashboard.permission import expired as ExpirePermission
 
 __all__ = [
     "ExpiredPagination",
@@ -25,7 +26,7 @@ class ExpiredPagination(PageNumberPagination):
 
 class DashboardExpiredECSAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExpiredAliyunECS
-    permission_classes = [AllowAny,]
+    permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
     queryset = models.ExpiredAliyunECS.objects.all()
     serializer_class = serializers.DashboardExpiredAliyunECSSerializer
     pagination_class = ExpiredPagination
@@ -33,7 +34,7 @@ class DashboardExpiredECSAPI(WebTokenAuthentication,generics.ListAPIView):
 
 class DashboardExpiredRDSAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExpiredAliyunRDS
-    permission_classes = [AllowAny,]
+    permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
     queryset = models.ExpiredAliyunRDS.objects.all()
     serializer_class = serializers.DashboardExpiredAliyunRDSSerializer
     pagination_class = ExpiredPagination

@@ -86,6 +86,7 @@ class ExtendUser(AbstractUser):
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
     qrcode = models.CharField(max_length=29,default=pyotp.random_base32(29),editable=False)
+    have_qrcode = models.BooleanField(default=False)
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -170,6 +171,7 @@ class Jumper(models.Model):
             ('yo_list_jumper', u'罗列跳板机'),
             ('yo_create_jumper', u'创建跳板机'),
             ('yo_update_jumper', u'更新跳板机'),
+            ('yo_status_jumper', u'刷新跳板机器'),
             ('yo_delete_jumper', u'删除跳板机'),
         )
 

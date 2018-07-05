@@ -46,12 +46,15 @@ class Code_Work(Work):
     push_mission = models.ForeignKey(Push_Mission, related_name='works', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
-        permissions = (('yo_list_codework', u'罗列发布工单'),
-                       ('yo_create_codework', u'新增发布工单'),
-                       ('yo_detail_codework', u'详细查看发布工单'),
-                       ('yo_exam_codework',u'审核发布工单'),
-                       ('yo_run_codework',u'运行发布工单'),
-                       ('yo_delete_codework', u'删除应用组'))
+        permissions = (
+            ('yo_list_codework', u'罗列发布工单'),
+            ('yo_create_codework', u'新增发布工单'),
+            ('yo_detail_codework', u'详细查看发布工单'),
+            ('yo_exam_codework', u'审核发布工单'),
+            ('yo_run_codework', u'运行发布工单'),
+            ('yo_upload_codework', u'为工单上传文件'),
+            ('yo_delete_codework', u'删除应用组'),
+        )
 
 
     @property

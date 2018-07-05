@@ -23,11 +23,11 @@ class HostPagination(PageNumberPagination):
     page_size = 10
 
 
-class ManagerHostListAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerHostListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Host
     queryset = models.Host.objects.all()
     serializer_class = serializers.HostSerializer
-    permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
+    permission_classes = [HostPermission.HostListRequiredMixin, IsAuthenticated]
     filter_class = filter.HostFilter
 
 
@@ -35,20 +35,19 @@ class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    # permission_classes = [HostPermission.HostListRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [HostPermission.HostListRequiredMixin, IsAuthenticated]
     pagination_class = HostPagination
     filter_class = filter.HostFilter
 
 
-class ManagerHostCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class ManagerHostCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
-    permission_classes = [HostPermission.HostCreateRequiredMixin,IsAuthenticated]
+    permission_classes = [HostPermission.HostCreateRequiredMixin, IsAuthenticated]
 
 
-class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
-    permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
+class ManagerHostDetailAPI(WebTokenAuthentication, APIView):
+    permission_classes = [HostPermission.HostDetailRequiredMixin, IsAuthenticated]
 
     def get_object(self):
         return models.Host.objects.filter(uuid=self.kwargs['pk']).get()
@@ -77,8 +76,8 @@ class ManagerHostDetailAPI(WebTokenAuthentication,APIView):
         else:
             return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-class ManagerAliyunIDDetailAPI(WebTokenAuthentication,APIView):
-    permission_classes = [HostPermission.HostDetailRequiredMixin,IsAuthenticated]
+class ManagerAliyunIDDetailAPI(WebTokenAuthentication, APIView):
+    permission_classes = [HostPermission.HostDetailRequiredMixin, IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         from deveops.utils import aliyun
@@ -94,20 +93,20 @@ class ManagerAliyunIDDetailAPI(WebTokenAuthentication,APIView):
             return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-class ManagerHostUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    permission_classes = [HostPermission.HostUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [HostPermission.HostUpdateRequiredMixin, IsAuthenticated]
     lookup_field = "uuid"
     lookup_url_kwarg = "pk"
 
 
-class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
+class ManagerHostDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()
-    permission_classes = [HostPermission.HostDeleteRequiredMixin,IsAuthenticated]
+    permission_classes = [HostPermission.HostDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
     # def delete(self, request, *args, **kwargs):
@@ -121,10 +120,9 @@ class ManagerHostDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     #         return Response({'detail': '删除成功'}, status=status.HTTP_201_CREATED)
 
 
-class ManagerHostPasswordAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
     serializer_class = serializers.HostPasswordSerializer
-    # permission_classes = [HostPermission.HostPasswordRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [HostPermission.HostPasswordRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
     #

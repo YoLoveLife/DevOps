@@ -25,7 +25,7 @@ class CodeWorkListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Code_Work
     serializer_class = serializers.CodeWorkSerializer
     queryset = models.Code_Work.objects.all().order_by('-id')
-    permission_classes = [AllowAny, ]
+    permission_classes = [CodeWorkPermission.CodeWorkListRequiredMixin, IsAuthenticated]
     pagination_class = CodeWorkPagination
     filter_class = filter.CodeWorkFilter
 

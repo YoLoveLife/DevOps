@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from deveops.api import WebTokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
+from db.permission import user as UserPermission
 
 
 class DBUserPagination(PageNumberPagination):
@@ -19,7 +20,7 @@ class DBUserListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.User
     serializer_class = serializers.DBUserSerializer
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [UserPermission.DBUserListRequiredMixin, IsAuthenticated]
     filter_class = filter.DBUserFilter
 
 
@@ -27,7 +28,7 @@ class DBUserListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.User
     serializer_class = serializers.DBUserSerializer
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [UserPermission.DBUserListRequiredMixin, IsAuthenticated]
     pagination_class = DBUserPagination
     filter_class = filter.DBUserFilter
 
@@ -36,7 +37,7 @@ class DBUserCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.User
     serializer_class = serializers.DBUserSerializer
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [UserPermission.DBUserCreateRequiredMixin, IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         return super(DBUserCreateAPI, self).create(request, *args, **kwargs)
@@ -46,7 +47,7 @@ class DBUserUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.User
     serializer_class = serializers.DBUserSerializer
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [UserPermission.DBUserUpdateRequiredMixin, IsAuthenticated]
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 
@@ -55,7 +56,7 @@ class DBUserDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.User
     serializer_class = serializers.DBUserSerializer
     queryset = models.User.objects.all()
-    permission_classes = [AllowAny,]
+    permission_classes = [UserPermission.DBUserDeleteRequiredMixin, IsAuthenticated]
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 

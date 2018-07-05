@@ -31,7 +31,7 @@ def reflush(obj,nameserver):
 
 
 @periodic_task(run_every=settings.DNS_TIME)
-def DNSFlush():
+def dns_flush():
     for dns in DNS.objects.all().exclude(Q(father__isnull=True)|Q(father__father__isnull=True)):
         dns.inner_dig = reflush(dns,settings.INNER_DNS)
         dns.dig = reflush(dns,settings.OUTER_DNS)
