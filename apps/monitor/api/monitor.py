@@ -14,7 +14,7 @@ from rest_framework.views import Response, status
 from deveops.api import WebTokenAuthentication
 from monitor.permission import monitor as MonitorPermission
 __all__ = [
-    'MonitorPagination', 'MonitorHostAliyunDetailCPUAPI'
+    'MonitorPagination', 'MonitorHostAliyunDetailCPUAPI', 'MonitorHostAliyunDetailMemoryAPI',
 ]
 
 
@@ -23,8 +23,7 @@ class MonitorPagination(PageNumberPagination):
 
 
 class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
-    # permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
 
     def get_object(self):
         return Host.objects.filter(uuid=self.kwargs['pk']).get()
@@ -41,7 +40,7 @@ class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
 
 
 class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
 
     def get_object(self):
         return Host.objects.filter(uuid=self.kwargs['pk']).get()

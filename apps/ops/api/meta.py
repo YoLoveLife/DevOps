@@ -18,10 +18,10 @@ class MetaPagination(PageNumberPagination):
     page_size = 10
 
 
-class OpsMetaListAPI(WebTokenAuthentication,generics.ListAPIView):
+class OpsMetaListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
-    # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
+    permission_classes = [MetaPermission.MetaListRequiredMixin, IsAuthenticated]
     filter_class = filter.MetaFilter
     queryset = models.META.objects.all()
     # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
@@ -30,7 +30,7 @@ class OpsMetaListAPI(WebTokenAuthentication,generics.ListAPIView):
 class OpsMetaListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
-    # permission_classes = [MetaPermission.MetaListRequiredMixin,IsAuthenticated]
+    permission_classes = [MetaPermission.MetaListRequiredMixin, IsAuthenticated]
     queryset = models.META.objects.all()
     # queryset = models.META.objects.filter(group__users__id=self.request.user.id)
     pagination_class = MetaPagination
@@ -43,8 +43,7 @@ class OpsMetaListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
 class OpsMetaCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
-    # permission_classes = [MetaPermission.MetaCreateRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [MetaPermission.MetaCreateRequiredMixin,IsAuthenticated]
 
 
 class OpsMetaUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):

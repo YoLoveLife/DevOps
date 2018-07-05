@@ -16,7 +16,7 @@ __all__ = [
 ]
 
 class ManagerDashboardAPI(WebTokenAuthentication,generics.ListAPIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     # def get(self, request, *args, **kwargs):
 
     def get(self, request, *args, **kwargs):

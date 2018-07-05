@@ -4,6 +4,7 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from .. import models, serializers
+from django.conf import settings
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
@@ -24,34 +25,38 @@ class FilePagination(PageNumberPagination):
 
 class UtilsFileListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.FILE
-    queryset = models.FILE.objects.all()
     serializer_class = serializers.FileSerializer
-    permission_classes = [AllowAny, ]
-    # permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
-    # filter_fields = ('groups',)
+    permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        query_set = models.FILE.objects.filter(user=user,)
+        return query_set
 
 
 class UtilsFileListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer
-    queryset = models.FILE.objects.filter(type=1)
-    permission_classes = [AllowAny, ]
-    # permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
+    permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
     pagination_class = FilePagination
+
+    def get_queryset(self):
+        user = self.request.user
+        query_set = models.FILE.objects.filter(user=user,)
+        return query_set
 
 
 class UtilsFileCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer
-    permission_classes = [AllowAny, ]
-    # permission_classes = [FilePermission.FileCreateRequiredMixin, IsAuthenticated]
+    permission_classes = [FilePermission.FileCreateRequiredMixin, IsAuthenticated]
 
 
-class UtilsFileDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
+class UtilsFileDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer
     queryset = models.FILE.objects.all()
-    permission_classes = [AllowAny, ]
+    permission_classes = [FilePermission.FileDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
-    # permission_classes = [FilePermission.FileDeleteRequiredMixin, IsAuthenticated]
+

@@ -18,13 +18,13 @@ __all__ = [
 ]
 
 
-class ManagerGroupListAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerGroupListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    # permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [GroupPermission.GroupListRequiredMixin, IsAuthenticated]
     filter_class = filter.GroupFilter
+
 
 class GroupPagination(PageNumberPagination):
     page_size = 10
@@ -34,43 +34,40 @@ class ManagerGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [GroupPermission.GroupListRequiredMixin,IsAuthenticated]
+    permission_classes = [GroupPermission.GroupListRequiredMixin, IsAuthenticated]
     pagination_class = GroupPagination
     filter_class = filter.GroupFilter
 
 
-class ManagerGroupCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class ManagerGroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    # permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
 
 
-class ManagerGroupDetailAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerGroupDetailAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [GroupPermission.GroupDetailRequiredMixin,IsAuthenticated]
+    permission_classes = [GroupPermission.GroupDetailRequiredMixin, IsAuthenticated]
 
     def get_queryset(self):
         return models.Group.objects.filter(id=int(self.kwargs['pk']))
 
 
-class ManagerGroupUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class ManagerGroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [GroupPermission.GroupUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
 
-class ManagerGroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
+class ManagerGroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
     queryset = models.Group.objects.all()
-    # permission_classes = [GroupPermission.GroupDeleteRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [GroupPermission.GroupDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
@@ -87,6 +84,5 @@ class ManagerGroupSelectHostAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSelectHostSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [AllowAny,]
-    # permission_classes = [GroupPermission.GroupUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [GroupPermission.GroupUpdateRequiredMixin, IsAuthenticated]
 

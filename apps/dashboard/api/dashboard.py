@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from django.conf import settings
 
 class DashboardSystypeAPI(WebTokenAuthentication, APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
 
     def get(self, request, *args, **kwargs):
         connect = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_SPACE,
@@ -31,7 +31,7 @@ class DashboardSystypeAPI(WebTokenAuthentication, APIView):
 
 
 class DashboardGroupAPI(WebTokenAuthentication, APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
 
     def get(self, request, *args, **kwargs):
         connect = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_SPACE,

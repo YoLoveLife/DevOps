@@ -29,6 +29,9 @@ class CodeWorkCreateRequiredMixin(CodeWorkAPIRequiredMixin):
 class CodeWorkExamRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_exam_codework'
 
+class CodeWorkUploadRequiredMixin(CodeWorkAPIRequiredMixin):
+    permission_required = u'work.yo_upload_codework'
+
 class CodeWorkDeleteRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_delete_codework'
 

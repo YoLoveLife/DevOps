@@ -25,6 +25,9 @@ class Var2Group(Variable):
     group = models.ForeignKey(Group, related_name='vars', null=True, on_delete=models.SET_NULL)
 
     class Meta:
-        permissions = (('yo_list_var', u'罗列组参数'),
-                       ('yo_change_var', u'修改组参数'))
+        permissions = (
+            ('yo_list_group_var', u'罗列组参数'),
+            ('yo_change_group_var', u'新增组参数'),
+            ('yo_delete_group_var', u'删除组参数'),
+        )
 

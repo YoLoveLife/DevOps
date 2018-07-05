@@ -3,6 +3,7 @@ from .. import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import Response,status
+from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_jwt.views import ObtainJSONWebToken
 from deveops.api import WebTokenAuthentication
@@ -17,8 +18,8 @@ import base64
 __all__ = [
     "UserLoginAPI", "UserInfoAPI", "UserListAPI",
     "UserOpsListAPI", "UserUpdateAPI", "UserDeleteAPI",
-    "UserListByPageAPI", 'UserPagination', 'UserOpsListByPageAPIUserOpsListByPageAPI',
-    'UserQRCodeAPI'
+    "UserListByPageAPI", 'UserPagination', 'UserOpsListByPageAPI',
+    'UserQRCodeAPI', 'UserCreateAPI',
 ]
 
 
@@ -28,8 +29,7 @@ class UserLoginAPI(ObtainJSONWebToken):
         return response
 
 
-class UserInfoAPI(WebTokenAuthentication,generics.ListAPIView):
-    module = models.ExtendUser
+class UserInfoAPI(WebTokenAuthentication, APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -48,14 +48,15 @@ class UserPagination(PageNumberPagination):
     page_size = 10
 
 
-class UserListAPI(WebTokenAuthentication,generics.ListAPIView):
+class UserListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
     permission_classes = [UserPermission.UserListRequiredMixin,IsAuthenticated]
     filter_class = filter.UserFilter
 
-class UserListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
+
+class UserListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
@@ -64,18 +65,18 @@ class UserListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     filter_class = filter.UserFilter
 
 
-class UserOpsListAPI(WebTokenAuthentication,generics.ListAPIView):
+class UserOpsListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.filter(groups__name__contains='运维')
-    permission_classes = [UserPermission.UserOpsListRequiredMixin,IsAuthenticated]
+    permission_classes = [UserPermission.UserOpsListRequiredMixin, IsAuthenticated]
 
 
-class UserOpsListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
+class UserOpsListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.filter(groups__name__contains='运维')
-    permission_classes = [UserPermission.UserOpsListRequiredMixin,IsAuthenticated]
+    permission_classes = [UserPermission.UserOpsListRequiredMixin, IsAuthenticated]
     pagination_class = UserPagination
 
 
@@ -83,8 +84,7 @@ class UserCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
-    # permission_classes = [UserPermission.UserCreateRequiredMixin, IsAuthenticated]
-    permission_classes = [AllowAny,]
+    permission_classes = [UserPermission.UserCreateRequiredMixin, IsAuthenticated]
 
 
 class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
@@ -123,10 +123,15 @@ def get_qrcode(user):
         return '/media/qrcode/' + file_name + '.png'
 
 
-class UserQRCodeAPI(WebTokenAuthentication,generics.ListAPIView):
-    module = models.ExtendUser
-    permission_classes = [IsAuthenticated]
+class UserQRCodeAPI(WebTokenAuthentication, APIView):
+    permission_classes = [IsAuthenticated,]
 
     def get(self, request, *args, **kwargs):
-        dist = {"url":get_qrcode(request.user)}
-        return Response(dist, status=status.HTTP_201_CREATED)
+        user = request.user
+        if user.have_qrcode is False:
+            dist = {"url":get_qrcode(request.user)}
+            user.have_qrcode = True
+            user.save()
+            return Response(dist, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'detail': '当前用户已经扫描过QRCode 如有需要请联系管理员'}, status=status.HTTP_406_NOT_ACCEPTABLE)

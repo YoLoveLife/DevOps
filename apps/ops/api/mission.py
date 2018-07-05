@@ -24,8 +24,7 @@ class MissionPagination(PageNumberPagination):
 class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
-    # permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
-    permission_classes = [AllowAny]
+    permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
     filter_class = filter.MissionFilter
     # filter_fields = ('group',)
     # from rest_framework.renderers import JSONRenderer
@@ -65,10 +64,10 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
         queryset = models.Mission.objects.filter(group__in=groups)
         return queryset
 
-
-class OpsMissionPlaybookAPI(WebTokenAuthentication,APIView):
+# :TODO 剧本展现
+class OpsMissionPlaybookAPI(WebTokenAuthentication, APIView):
     module = models.Mission
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
@@ -81,31 +80,31 @@ class OpsMissionPlaybookAPI(WebTokenAuthentication,APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class OpsMissionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
-    # permission_classes = [MissionPermission.MissionCreateRequiredMixin,IsAuthenticated]
     permission_classes = [MissionPermission.MissionCreateRequiredMixin, IsAuthenticated]
 
 
-class OpsMissionUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     queryset = models.Mission.objects.all()
-    permission_classes = [MissionPermission.MissionUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [MissionPermission.MissionUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
 
-class OpsMissionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
+class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     queryset = models.Mission.objects.all()
-    permission_classes = [MissionPermission.MissionDeleteRequiredMixin,IsAuthenticated]
+    permission_classes = [MissionPermission.MissionDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
 
+# :TODO 执行任务的文件列表传入
 class OpsMissionNeedFileCheckAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionNeedFileSerializer

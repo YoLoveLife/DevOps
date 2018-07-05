@@ -26,6 +26,7 @@ class KeyListAPI(WebTokenAuthentication,generics.ListAPIView):
     permission_classes = [KeyPermission.KeyListRequiredMixin, IsAuthenticated]
     filter_class = filter.KeyFilter
 
+
 class KeyListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Key
     serializer_class = serializers.KeySerializer
@@ -59,7 +60,6 @@ class KeyDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
 
     def delete(self, request, *args, **kwargs):
-        # key = models.Key.objects.get(id=int(kwargs['pk']))
         key = self.get_object()
         try:
             group = key.group

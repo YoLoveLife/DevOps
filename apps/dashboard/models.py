@@ -18,6 +18,9 @@ class ExpiredAliyun(models.Model):
     class Meta:
         ordering = ['expired', 'id']
         abstract = True
+        permissions = (
+            ('yo_list_expired', u'罗列过期资源'),
+        )
 
 
 class ExpiredAliyunECS(ExpiredAliyun):

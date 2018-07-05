@@ -33,3 +33,6 @@ class JumperUpdateRequiredMixin(JumperAPIRequiredMixin):
 class JumperDeleteRequiredMixin(JumperAPIRequiredMixin):
     permission_required = u'authority.yo_delete_jumper'
 
+
+class JumperStatusRequiredMixin(JumperAPIRequiredMixin):
+    permission_required = u'authority.yo_status_jumper'
