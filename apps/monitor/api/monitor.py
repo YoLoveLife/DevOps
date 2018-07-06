@@ -54,3 +54,37 @@ class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
         API.get_mem_results()
         results = API.get_line_opts(API.get_results(), '内存使用率')
         return Response(results, status.HTTP_200_OK)
+
+
+class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
+    permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
+
+    def get_object(self):
+        return Host.objects.filter(uuid=self.kwargs['pk']).get()
+
+    def get(self, request, *args, **kwargs):
+        from deveops.tools.aliyun.cms import AliyunECSCMSTool
+        API = AliyunECSCMSTool()
+        API.request_to_period(API, '900')
+        API.request_to_day(API)
+        API.request_to_instance(API, self.get_object().detail.aliyun_id)
+        API.get_read_iops_results()
+        results = API.get_line_opts(API.get_results(), '磁盘读取Count/Second')
+        return Response(results, status.HTTP_200_OK)
+
+
+class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
+    permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
+
+    def get_object(self):
+        return Host.objects.filter(uuid=self.kwargs['pk']).get()
+
+    def get(self, request, *args, **kwargs):
+        from deveops.tools.aliyun.cms import AliyunECSCMSTool
+        API = AliyunECSCMSTool()
+        API.request_to_period(API, '900')
+        API.request_to_day(API)
+        API.request_to_instance(API, self.get_object().detail.aliyun_id)
+        API.get_in_net_results()
+        results = API.get_line_opts(API.get_results(), '网络流入流量bits/s')
+        return Response(results, status.HTTP_200_OK)

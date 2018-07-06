@@ -11,12 +11,12 @@ __all__ = [
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    users = serializers.PrimaryKeyRelatedField(many=True, queryset=ExtendUser.objects.all())
+    users = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=ExtendUser.objects.all())
     pmn_groups = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.PerGroup.objects.all())
     key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
     jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
     _status = serializers.IntegerField(required=True, source='status',)
-    _framework = serializers.PrimaryKeyRelatedField(required=False, queryset=models.FILE.objects.all(), allow_null=True, write_only=True)
+    _framework = serializers.PrimaryKeyRelatedField(required=False, queryset=models.IMAGE.objects.all(), allow_null=True, write_only=True)
     framework = serializers.ImageField(source="_framework.image", read_only=True)
 
     class Meta:

@@ -145,7 +145,7 @@ class ExtendUser(AbstractUser):
             else:
                 return str.join(list)
 
-    def check_qrcode(self,verifycode):
+    def check_qrcode(self, verifycode):
         t = pyotp.TOTP(self.qrcode)
         result = t.verify(verifycode)
         return result

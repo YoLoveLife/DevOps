@@ -8,7 +8,7 @@ import paramiko
 import socket
 from deveops.utils.msg import Message
 from deveops.utils import sshkey,aes
-from utils.models import FILE
+from utils.models import IMAGE
 from django.contrib.auth.models import Group as PerGroup
 from authority.models import Key,Jumper
 from django.conf import settings
@@ -65,9 +65,9 @@ class Group(models.Model):
 
     name = models.CharField(max_length=100, default='')
     info = models.CharField(max_length=100, default='')
-    _framework = models.ForeignKey(FILE, related_name='groups', on_delete=models.SET_NULL, null=True)
+    _framework = models.ForeignKey(IMAGE, related_name='groups', on_delete=models.SET_NULL, null=True)
     # 超级管理员
-    users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetusers', verbose_name=_("assetusers"))
+    users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
     _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
 

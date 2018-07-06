@@ -24,11 +24,12 @@ class MetaSerializer(serializers.ModelSerializer):
     contents = MetaContentSerializer(required=True, many=True, allow_null=True)
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
     group_name = serializers.CharField(source="group.name",read_only=True)
+    qrcode = serializers.CharField(required=True, write_only=True,)
 
     class Meta:
         model = models.META
         fields = (
-            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info'
+            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info', 'qrcode'
         )
         read_only_fields = (
             'id', 'uuid','group_name'

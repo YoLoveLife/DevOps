@@ -231,6 +231,7 @@ class Push_Mission(models.Model):
         # 当任务状态已经小于0为异常状态的时候不改写状态值
         if self._status >= 0:
             self._status = status
+            self.save()
 
     def results_append(self,results):
         self.results = self.results + results

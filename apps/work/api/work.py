@@ -10,6 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from ..permission import codework as CodeWorkPermission
 from deveops.api import WebTokenAuthentication
+from rest_framework.views import APIView
 
 __all__ = [
     'CodeWorkCheckAPI', 'CodeWorkCreateAPI', 'CodeWorkListByPageAPI',
@@ -71,7 +72,7 @@ class CodeWorkRunAPI(CodeWorkStatusAPI):
             return Response({'detail':u'您无法执行不是您发起的工单'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-class CodeWorkUploadFileAPI(generics.UpdateAPIView):
+class CodeWorkUploadFileAPI(WebTokenAuthentication, generics.UpdateAPIView):
     serializer_class = serializers.CodeWorkUploadFileSerializer
     queryset = models.Code_Work.objects.all()
     lookup_field = 'uuid'
@@ -84,3 +85,17 @@ class CodeWorkUploadFileAPI(generics.UpdateAPIView):
             return super(CodeWorkUploadFileAPI,self).update(request, *args, **kwargs)
         else:
             return Response({'detail':u'您无法对不是您发起的工单上传文件'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class CodeWorkResultsAPI(WebTokenAuthentication, generics.ListAPIView):
+    queryset = models.Code_Work.objects.all()
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
+    permission_classes = [AllowAny,]
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.status > 0:
+            return Response({'detail': u'该工单处于正常状态'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return Response({'results': obj.push_mission.results.replace('\n','')}, status=status.HTTP_406_NOT_ACCEPTABLE)
