@@ -47,8 +47,8 @@ class AliyunCMSTool(object):
 
     @staticmethod
     def request_to_day(obj):
-        now = datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')
-        seven = (datetime.datetime.now() - datetime.timedelta(days=2)).strftime('%Y-%m-%d 00:00:00')
+        now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        seven = (datetime.datetime.now() - datetime.timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')
         obj.request.add_query_param('StartTime', seven)
         obj.request.add_query_param('EndTime', now)
 
@@ -84,19 +84,24 @@ class AliyunCMSTool(object):
         maximum = []
         for result in json.loads(results):
             d = datetime.datetime.fromtimestamp(result['timestamp']/1000)
-            str1 = d.strftime("%Y-%m-%d %H:%M")
+            str1 = d.strftime("%Y/%m/%d %H:%M:%S") #"%Y/%m/%d %H:%M:%S"
             time.append(str1)
-            minimum.append(result['Minimum'])
-            maximum.append(result['Maximum'])
+            minimum.append(round(result['Minimum'],2))
+            maximum.append(round(result['Maximum'],2))
             # average.append(result['Average'])
         from pyecharts import Line
         from pyecharts.base import TRANSLATOR
         line = Line(title)
-        line.add("最小值", time, minimum, mark_point=['max'], mark_line=["average",], )
+        line.add("最小值", time, minimum, mark_point=['max'], mark_line=["average",], is_smooth=True, is_liquid_animation=True)
         # line.add("平均值", time, average, mark_point=["average", "min"])
-        line.add("最大值", time, maximum, mark_point=['max'], mark_line=["average",], )
+        line.add("最大值", time, maximum, mark_point=['max'], mark_line=["average",], is_smooth=True, is_liquid_animation=True)
         snippet = TRANSLATOR.translate(line.options)
-        return json.loads(snippet.as_snippet())
+        response = json.loads(snippet.as_snippet())
+        # :TODO pyecharts参数修改
+        #pyecharts没有具体的参数可以指定scale暂时这么处理
+        response['yAxis'][0]['scale'] = True
+        response['tooltip']['trigger'] = 'axis'
+        return response
 
 
 class AliyunECSCMSTool(AliyunCMSTool):
@@ -110,6 +115,18 @@ class AliyunECSCMSTool(AliyunCMSTool):
     def get_mem_results(self):
         AliyunCMSTool.request_to_metric(self, 'memory_usedutilization')
 
+    def get_read_iops_results(self):
+        AliyunCMSTool.request_to_metric(self, 'DiskReadIOPS')
+
+    def get_write_iops_results(self):
+        AliyunCMSTool.request_to_metric(self, 'DiskWriteIOS')
+
+    def get_in_net_results(self):
+        AliyunCMSTool.request_to_metric(self, 'IntranetInRate')
+
+    def get_out_net_results(self):
+        AliyunCMSTool.request_to_metric(self, 'IntranetOutRate')
+
 
 class AliyunRDSCMSTool(AliyunCMSTool):
     def __init__(self):
@@ -122,3 +139,11 @@ class AliyunRDSCMSTool(AliyunCMSTool):
     def get_mem_results(self):
         AliyunCMSTool.request_to_metric(self, 'MemoryUsage')
 
+    def get_iops_results(self):
+        AliyunCMSTool.request_to_metric(self, 'IOPSUsage')
+
+    def get_connect_results(self):
+        AliyunCMSTool.request_to_metric(self, 'ConnectionUsage')
+
+    def get_delay_results(self):
+        AliyunCMSTool.request_to_metric(self, 'DataDelay')

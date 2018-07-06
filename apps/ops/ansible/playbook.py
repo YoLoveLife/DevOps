@@ -6,6 +6,7 @@ from ansible.inventory.manager import InventoryManager
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.errors import AnsibleParserError,AnsibleUndefinedVariable
+from django.conf import settings
 from ops.ansible import callback
 
 __all__ = [
@@ -39,6 +40,7 @@ class Playbook(object):
             os.remove(self.key)
 
     def import_vars(self, vars_dict):
+        self.push_mission.status = settings.OPS_PUSH_MISSION_IMPORT_VAR
         try:
             self.push_mission.results_append('参数载入成功;')
             vars_dict['KEY']=self.key
@@ -50,6 +52,7 @@ class Playbook(object):
         self.consumer.send('OK')
 
     def import_task(self, play_source):
+        self.push_mission.status = settings.OPS_PUSH_MISSION_IMPORT_TASKS
         try:
             for source in play_source:
                 self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
@@ -74,6 +77,7 @@ class Playbook(object):
             for p in self.play:
                 result = tqm.run(p)
             self.delete_key()
+            self.push_mission.status = settings.OPS_PUSH_MISSION_SUCCESS
             self.consumer.send("OK")
         finally:
             self.consumer.close()

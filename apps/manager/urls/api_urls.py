@@ -12,6 +12,7 @@ urlpatterns=[
     path(r'v1/group/<uuid:pk>/update/', GroupAPI.ManagerGroupUpdateAPI.as_view()),
     path(r'v1/group/<uuid:pk>/delete/', GroupAPI.ManagerGroupDeleteAPI.as_view()),
     path(r'v1/group/<int:pk>/selecthost/', GroupAPI.ManagerGroupSelectHostAPI.as_view()),
+    path(r'v1/group/byops/', GroupAPI.ManagerGroupListByOpsAPI.as_view()),
     #
     # Resource systype api
     path(r'v1/systype/', SystypeAPI.ManagerSysTypeListAPI.as_view()),
@@ -31,7 +32,6 @@ urlpatterns=[
     path(r'v1/host/',HostAPI.ManagerHostListAPI.as_view()),
     path(r'v1/host/bypage/', HostAPI.ManagerHostListByPageAPI.as_view()),
     path(r'v1/host/create/', HostAPI.ManagerHostCreateAPI.as_view()),
-
     path(r'v1/host/<uuid:pk>/detail/byuuid/', HostAPI.ManagerHostDetailAPI.as_view()),
     path(r'v1/host/<str:pk>/detail/byalid/', HostAPI.ManagerAliyunIDDetailAPI.as_view()),
     path(r'v1/host/<uuid:pk>/update/', HostAPI.ManagerHostUpdateAPI.as_view()),

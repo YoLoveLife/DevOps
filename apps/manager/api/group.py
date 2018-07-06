@@ -26,6 +26,17 @@ class ManagerGroupListAPI(WebTokenAuthentication, generics.ListAPIView):
     filter_class = filter.GroupFilter
 
 
+class ManagerGroupListByOpsAPI(WebTokenAuthentication, generics.ListAPIView):
+    module = models.Group
+    serializer_class = serializers.GroupSerializer
+    permission_classes = [GroupPermission.GroupListRequiredMixin, IsAuthenticated]
+    filter_class = filter.GroupFilter
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.assetgroups
+
+
 class GroupPagination(PageNumberPagination):
     page_size = 10
 

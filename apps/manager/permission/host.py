@@ -19,6 +19,8 @@ class HostAPIRequiredMixin(BasePermission):
         else:
             return False
 
+    # def has_object_permission(self, request, view, obj):
+
 
 class HostListRequiredMixin(HostAPIRequiredMixin):
     permission_required = u'manager.yo_list_host'
