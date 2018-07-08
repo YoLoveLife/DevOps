@@ -139,6 +139,7 @@ class HostSerializer(serializers.ModelSerializer):
         return super(HostSerializer,self).update(instance,validated_data)
 
 
+
 class HostPasswordSerializer(serializers.ModelSerializer):
     passwd = serializers.CharField(source='password', read_only=True)
 

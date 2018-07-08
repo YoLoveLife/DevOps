@@ -1,4 +1,6 @@
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     "GroupAPIRequiredMixin", "GroupCreateRequiredMixin", "GroupChangeRequiredMixin",
@@ -7,6 +9,7 @@ __all__ = [
 
 
 class GroupAPIRequiredMixin(BasePermission):
+
     def has_permission(self, request, view):
         perms = self.permission_required
         perm_list=list(request.user.get_all_permissions())
@@ -25,6 +28,9 @@ class GroupListRequiredMixin(GroupAPIRequiredMixin):
 class GroupCreateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_create_pmngroup'
 
+    @decorator_api(settings.TIMELIME_PMNGROUP_CREATE)
+    def has_permission(self, request, view):
+        return request, super(GroupCreateRequiredMixin, self).has_permission(request, view)
 
 class GroupUpdateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_update_pmngroup'
