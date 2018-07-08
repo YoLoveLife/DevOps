@@ -220,7 +220,7 @@ class Push_Mission(models.Model):
     # 執行內容
     results = models.CharField(default='', max_length=5000)
     # 关联文件
-    files = models.ManyToManyField(FILE, related_name='pushs', blank=True)
+    files = models.ManyToManyField(FILE, related_name='pushmission', blank=True)
 
     @property
     def status(self):

@@ -40,6 +40,13 @@ class FILE(models.Model):
             ('yo_delete_file', u'删除文件'),
         )
 
+    @property
+    def mission_used(self):
+        if self.pushmission is None:
+            return '未使用'
+        else:
+            return self.pushmission.works.get().uuid
+
 
 class IMAGE(models.Model):
     id = models.AutoField(primary_key=True)

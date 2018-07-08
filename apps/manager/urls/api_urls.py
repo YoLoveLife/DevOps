@@ -37,10 +37,4 @@ urlpatterns=[
     path(r'v1/host/<uuid:pk>/update/', HostAPI.ManagerHostUpdateAPI.as_view()),
     path(r'v1/host/<uuid:pk>/delete/', HostAPI.ManagerHostDeleteAPI.as_view()),
     path(r'v1/host/<uuid:pk>/<int:qrcode>/passwd/', HostAPI.ManagerHostPasswordAPI.as_view()),
-    #
-    # Resource dashboard api
-    # path(r'v1/host/<uuid:pk>/')
-    # # Resource storage api
-    # path(r'v1/storage/', api.ManagerStorageListAPI.as_view()),
-    # path(r'v1/storage/(?P<pk>[0-9]+)/remove/', api.ManagerStorageRemoveAPI.as_view()),
 ]
