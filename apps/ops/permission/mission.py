@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     "MissionAPIRequiredMixin", "MissionListRequiredMixin", "MissionCreateRequiredMixin",
@@ -28,14 +30,25 @@ class MissionListRequiredMixin(MissionAPIRequiredMixin):
 class MissionCreateRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'ops.yo_create_mission'
 
+    @decorator_api(settings.TIMELINE_MISSION_CREATE)
+    def has_permission(self, request, view):
+        return request, super(MissionCreateRequiredMixin, self).has_permission(request, view)
+
 
 class MissionUpdateRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'ops.yo_update_mission'
+
+    @decorator_api(settings.TIMELINE_MISSION_UPDATE)
+    def has_permission(self, request, view):
+        return request, super(MissionUpdateRequiredMixin, self).has_permission(request, view)
 
 
 class MissionDeleteRequiredMixin(MissionAPIRequiredMixin):
     permission_required = u'ops.yo_delete_mission'
 
+    @decorator_api(settings.TIMELINE_MISSION_DELETE)
+    def has_permission(self, request, view):
+        return request, super(MissionDeleteRequiredMixin, self).has_permission(request, view)
 
 
 

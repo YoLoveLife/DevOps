@@ -7,7 +7,7 @@ from rest_framework.views import Response, status
 from rest_framework.pagination import PageNumberPagination
 from authority.permission import jumper as JumperPermission
 from deveops.api import WebTokenAuthentication
-
+from rest_framework.views import APIView
 
 __all__ = [
     "JumperListAPI", "JumperCreateAPI", "JumperUpdateAPI",
@@ -36,8 +36,7 @@ class JumperListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     filter_class = filter.JumperFilter
 
 
-class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):
-    serializer_class = serializers.JumperSerializer
+class JumperStatusAPI(WebTokenAuthentication, APIView):
     permission_classes = [JumperPermission.JumperStatusRequiredMixin, IsAuthenticated]
 
     def get_object(self):
@@ -46,7 +45,6 @@ class JumperStatusAPI(WebTokenAuthentication, generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
         obj.check_status()
-        obj.save()
         return Response({'detail': '刷新成功'}, status=status.HTTP_200_OK)
 
 
@@ -75,7 +73,6 @@ class JumperDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         jumper = self.get_object()
-        # jumper = models.Jumper.objects.get(id=int(kwargs['pk']))
         try:
             group = jumper.group
             return Response({'detail': u'该密钥属于应用组' + group.name + u'无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)

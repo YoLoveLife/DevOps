@@ -3,8 +3,8 @@ from timeline.decorator import decorator_api
 from django.conf import settings
 
 __all__ = [
-    "GroupAPIRequiredMixin", "GroupCreateRequiredMixin", "GroupChangeRequiredMixin",
-    "GroupDeleteRequiredMixin"
+    "GroupAPIRequiredMixin", "GroupListRequiredMixin","GroupCreateRequiredMixin",
+    "GroupUpdateRequiredMixin","GroupDeleteRequiredMixin"
 ]
 
 
@@ -32,10 +32,18 @@ class GroupCreateRequiredMixin(GroupAPIRequiredMixin):
     def has_permission(self, request, view):
         return request, super(GroupCreateRequiredMixin, self).has_permission(request, view)
 
+
 class GroupUpdateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_update_pmngroup'
+
+    @decorator_api(settings.TIMELINE_PMNGROUP_UPDATE)
+    def has_permission(self, request, view):
+        return request, super(GroupUpdateRequiredMixin, self).has_permission(request, view)
 
 
 class GroupDeleteRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_delete_pmngroup'
 
+    @decorator_api(settings.TIMELINE_PMNGROUP_DELETE)
+    def has_permission(self, request, view):
+        return request, super(GroupDeleteRequiredMixin, self).has_permission(request, view)

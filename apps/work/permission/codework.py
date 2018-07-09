@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     'CodeWorkAPIRequiredMixin', 'CodeWorkCreateRequiredMixin',
@@ -26,13 +28,29 @@ class CodeWorkListRequiredMixin(CodeWorkAPIRequiredMixin):
 class CodeWorkCreateRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_create_codework'
 
+    @decorator_api(settings.TIMELINE_WORK_CREATE)
+    def has_permission(self, request, view):
+        return request, super(CodeWorkCreateRequiredMixin, self).has_permission(request, view)
+
 class CodeWorkExamRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_exam_codework'
+
+    @decorator_api(settings.TIMELINE_WORK_EXAM)
+    def has_permission(self, request, view):
+        return request, super(CodeWorkExamRequiredMixin, self).has_permission(request, view)
+
 
 class CodeWorkUploadRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_upload_codework'
 
+    @decorator_api(settings.TIMELINE_WORK_UPLOAD)
+    def has_permission(self, request, view):
+        return request, super(CodeWorkUploadRequiredMixin, self).has_permission(request, view)
+
+
 class CodeWorkDeleteRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_delete_codework'
 
-
+    @decorator_api(settings.TIMELINE_WORK_DELETE)
+    def has_permission(self, request, view):
+        return request, super(CodeWorkDeleteRequiredMixin, self).has_permission(request, view)

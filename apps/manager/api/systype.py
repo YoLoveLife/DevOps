@@ -16,20 +16,17 @@ __all__ = [
 ]
 
 
-class ManagerSysTypeListAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerSysTypeListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.System_Type
     serializer_class = serializers.SystemTypeSerializer
-    permission_classes = [SysTypePermission.SysTypeListRequiredMixin,IsAuthenticated]
-
-    def get_queryset(self):
-        queryset = models.System_Type.objects.all()
-        return queryset
+    permission_classes = [SysTypePermission.SysTypeListRequiredMixin, IsAuthenticated]
+    queryset = models.System_Type.objects.all()
 
 
-class ManagerSysTypeCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class ManagerSysTypeCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.System_Type
     serializer_class = serializers.SystemTypeSerializer
-    permission_classes = [SysTypePermission.SysTypeCreateRequiredMixin,IsAuthenticated]
+    permission_classes = [SysTypePermission.SysTypeCreateRequiredMixin, IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         if models.System_Type.objects.filter(name=request.data['name']).count()>0:
@@ -38,27 +35,28 @@ class ManagerSysTypeCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
             return super(ManagerSysTypeCreateAPI,self).create(request,*args,**kwargs)
 
 
-class ManagerSysTypeDetailAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerSysTypeDetailAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.System_Type
     serializer_class = serializers.SystemTypeSerializer
-    permission_classes = [SysTypePermission.SysTypeDetailRequiredMixin,IsAuthenticated]
+    permission_classes = [SysTypePermission.SysTypeDetailRequiredMixin, IsAuthenticated]
 
     def get_queryset(self):
         return models.System_Type.objects.filter(id=int(self.kwargs['pk']))
 
 
-class ManagerSysTypeUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class ManagerSysTypeUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.System_Type
     serializer_class = serializers.SystemTypeSerializer
     queryset = models.System_Type.objects.all()
-    permission_classes = [SysTypePermission.SysTypeUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [SysTypePermission.SysTypeUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
-class ManagerSysTypeDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
+
+class ManagerSysTypeDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.System_Type
     serializer_class = serializers.SystemTypeSerializer
     queryset = models.System_Type.objects.all()
-    permission_classes = [SysTypePermission.SysTypeDeleteRequiredMixin,IsAuthenticated]
+    permission_classes = [SysTypePermission.SysTypeDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'

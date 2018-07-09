@@ -21,3 +21,19 @@ class DashboardExpiredAliyunRDSSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'status', 'recognition_id', 'expired', 'instancename', 'version', 'readonly'
         )
+
+
+class DashboardExpiredAliyunKVStoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ExpiredAliyunMongoDB
+        fields = (
+            'id', 'status', 'recognition_id', 'expired', 'instancename', 'version', 'connect_domain'
+        )
+
+
+class DashboardExpiredAliyunMongoDBSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ExpiredAliyunMongoDB
+        fields = (
+            'id', 'status', 'recognition_id', 'expired', 'instancename', 'version',
+        )

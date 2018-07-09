@@ -6,6 +6,8 @@ __all__ = [
     "ExpiredAliyun",
     "ExpiredAliyunECS",
     "ExpiredAliyunRDS",
+    "ExpiredAliyunKVStore",
+    "ExpiredAliyunMongoDB",
 ]
 
 

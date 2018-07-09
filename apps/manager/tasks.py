@@ -16,14 +16,14 @@ def host_maker(dict_models):
         systype = System_Type.objects.create(name=dict_models['detail']['systemtype'])
         dict_models['detail']['systemtype'] = systype
     else:
-        dict_models['detail']['systemtype'] = systype_query.get()
+        dict_models['detail']['systemtype'] = systype_query[0]
 
     position_query = Position.objects.filter(name=dict_models['detail']['position'])
     if not position_query.exists():
         posistion = Position.objects.create(name=dict_models['detail']['position'])
         dict_models['detail']['position'] = posistion
     else:
-        dict_models['detail']['position'] = position_query.get()
+        dict_models['detail']['position'] = position_query[0]
 
     detail_dict = dict_models.pop('detail')
     detail = HostDetail.objects.create(**detail_dict)

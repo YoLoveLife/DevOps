@@ -59,6 +59,20 @@ class UtilsFileCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [FilePermission.FileCreateRequiredMixin, IsAuthenticated]
 
 
+class UtilsFileUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
+    module = models.FILE
+    serializer_class = serializers.FileSerializer
+    permission_classes = [FilePermission.FileUpdateRequiredMixin, IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
+
+    def get_queryset(self):
+        user = self.request.user
+        query_set = models.FILE.objects.filter(user=user,)
+        return query_set
+
+
+
 class UtilsFileDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer

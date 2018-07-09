@@ -1,7 +1,6 @@
 from django.urls import path
 from ..api import meta as MetaAPI
 from ..api import mission as MissionAPI
-from ..api import pushmission as Push_MissionAPI
 urlpatterns=[
     # Resource meta api
     path(r'v1/meta/', MetaAPI.OpsMetaListAPI.as_view()),
@@ -18,6 +17,4 @@ urlpatterns=[
     path(r'v1/mission/create/', MissionAPI.OpsMissionCreateAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/update/', MissionAPI.OpsMissionUpdateAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/delete/', MissionAPI.OpsMissionDeleteAPI.as_view()),
-    # Resource push_mission api
-    # path(r'v1/pushmission/', Push_MissionAPI.OpsPushMissionCreateAPI.as_view()),
 ]

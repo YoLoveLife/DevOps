@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
 __all__ = [
-    "GroupAPIRequiredMixin", "GroupListRequiredMixin"
+    "PermissionAPIRequiredMixin", "PermissionListRequiredMixin"
 ]
 
 

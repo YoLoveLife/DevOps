@@ -16,17 +16,17 @@ __all__ = [
 ]
 
 
-class ManagerPositionListAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerPositionListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     queryset = models.Position.objects.all()
-    permission_classes = [PositionPermission.PositionListRequiredMixin,IsAuthenticated]
+    permission_classes = [PositionPermission.PositionListRequiredMixin, IsAuthenticated]
 
 
-class ManagerPositionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
+class ManagerPositionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
-    permission_classes = [PositionPermission.PositionCreateRequiredMixin,IsAuthenticated]
+    permission_classes = [PositionPermission.PositionCreateRequiredMixin, IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         if models.Position.objects.filter(name=request.data['name']).count()>0:
@@ -35,27 +35,28 @@ class ManagerPositionCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
             return super(ManagerPositionCreateAPI,self).create(request,*args,**kwargs)
 
 
-class ManagerPositionDetailAPI(WebTokenAuthentication,generics.ListAPIView):
+class ManagerPositionDetailAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
-    permission_classes = [PositionPermission.PositionDetailRequiredMixin,IsAuthenticated]
+    permission_classes = [PositionPermission.PositionDetailRequiredMixin, IsAuthenticated]
 
     def get_queryset(self):
         return models.Position.objects.filter(id=int(self.kwargs['pk']))
 
 
-class ManagerPositionUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class ManagerPositionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     queryset = models.Position.objects.all()
-    permission_classes = [PositionPermission.PositionUpdateRequiredMixin,IsAuthenticated]
+    permission_classes = [PositionPermission.PositionUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
-class ManagerPositionDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
+
+class ManagerPositionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Position
     serializer_class = serializers.PositionSerializer
     queryset = models.Position.objects.all()
-    permission_classes = [PositionPermission.PositionDeleteRequiredMixin,IsAuthenticated]
+    permission_classes = [PositionPermission.PositionDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'

@@ -9,4 +9,6 @@ urlpatterns=[
     # Resource expire api
     path(r'v1/expired/ecs/bypage/', ExpiredAPI.DashboardExpiredECSAPI.as_view()),
     path(r'v1/expired/rds/bypage/', ExpiredAPI.DashboardExpiredRDSAPI.as_view()),
+    path(r'v1/expired/kvstore/bypage/', ExpiredAPI.DashboardExpiredKVStoreAPI.as_view()),
+    path(r'v1/expired/mongodb/bypage/', ExpiredAPI.DashboardExpiredMongoDBAPI.as_view()),
 ]
