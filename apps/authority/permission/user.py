@@ -1,8 +1,9 @@
 from rest_framework.permissions import BasePermission
-
+from timeline.decorator import decorator_api
+from django.conf import settings
 __all__ = [
     "UserAPIRequiredMixin", "UserOpsListRequiredMixin", "UserCreateRequiredMixin",
-    "UserChangeRequiredMixin", "UserDeleteRequiredMixin"
+    "UserListRequiredMixin", "UserDeleteRequiredMixin", "UserUpdateRequiredMixin",
 ]
 
 
@@ -39,11 +40,22 @@ class UserListRequiredMixin(UserAPIRequiredMixin):
 class UserCreateRequiredMixin(UserAPIRequiredMixin):
     permission_required = u'authority.yo_create_user'
 
+    @decorator_api(settings.TIMELINE_USER_CREATE)
+    def has_permission(self, request, view):
+        return request, super(UserCreateRequiredMixin, self).has_permission(request, view)
+
 
 class UserUpdateRequiredMixin(UserAPIRequiredMixin):
     permission_required = u'authority.yo_update_user'
+
+    @decorator_api(settings.TIMELINE_USER_UPDATE)
+    def has_permission(self, request, view):
+        return request, super(UserUpdateRequiredMixin, self).has_permission(request, view)
 
 
 class UserDeleteRequiredMixin(UserAPIRequiredMixin):
     permission_required = u'authority.yo_delete_user'
 
+    @decorator_api(settings.TIMELINE_USER_DELETE)
+    def has_permission(self, request, view):
+        return request, super(UserDeleteRequiredMixin, self).has_permission(request, view)

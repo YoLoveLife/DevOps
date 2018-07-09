@@ -38,3 +38,18 @@ class DashboardExpiredRDSAPI(WebTokenAuthentication,generics.ListAPIView):
     queryset = models.ExpiredAliyunRDS.objects.all()
     serializer_class = serializers.DashboardExpiredAliyunRDSSerializer
     pagination_class = ExpiredPagination
+
+class DashboardExpiredKVStoreAPI(WebTokenAuthentication, generics.ListAPIView):
+    module = models.ExpiredAliyunKVStore
+    permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
+    queryset = models.ExpiredAliyunKVStore.objects.all()
+    serializer_class = serializers.DashboardExpiredAliyunKVStoreSerializer
+    pagination_class = ExpiredPagination
+
+
+class DashboardExpiredMongoDBAPI(WebTokenAuthentication, generics.ListAPIView):
+    module = models.ExpiredAliyunMongoDB
+    permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
+    queryset = models.ExpiredAliyunMongoDB.objects.all()
+    serializer_class = serializers.DashboardExpiredAliyunMongoDBSerializer
+    pagination_class = ExpiredPagination

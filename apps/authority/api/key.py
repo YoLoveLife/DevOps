@@ -11,7 +11,7 @@ from deveops.api import WebTokenAuthentication
 
 __all__ = [
     "KeyListAPI", "KeyCreateAPI", "KeyUpdateAPI",
-    "KeyDeleteAPI", 'KeyPagination', 'KeyListByPage'
+    "KeyDeleteAPI", 'KeyPagination', 'KeyListByPageAPI'
 ]
 
 

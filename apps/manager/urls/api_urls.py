@@ -32,8 +32,6 @@ urlpatterns=[
     path(r'v1/host/',HostAPI.ManagerHostListAPI.as_view()),
     path(r'v1/host/bypage/', HostAPI.ManagerHostListByPageAPI.as_view()),
     path(r'v1/host/create/', HostAPI.ManagerHostCreateAPI.as_view()),
-    path(r'v1/host/<uuid:pk>/detail/byuuid/', HostAPI.ManagerHostDetailAPI.as_view()),
-    path(r'v1/host/<str:pk>/detail/byalid/', HostAPI.ManagerAliyunIDDetailAPI.as_view()),
     path(r'v1/host/<uuid:pk>/update/', HostAPI.ManagerHostUpdateAPI.as_view()),
     path(r'v1/host/<uuid:pk>/delete/', HostAPI.ManagerHostDeleteAPI.as_view()),
     path(r'v1/host/<uuid:pk>/<int:qrcode>/passwd/', HostAPI.ManagerHostPasswordAPI.as_view()),

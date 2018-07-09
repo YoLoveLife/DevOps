@@ -34,7 +34,7 @@ class ManagerGroupListByOpsAPI(WebTokenAuthentication, generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.assetgroups
+        return user.assetgroups.all()
 
 
 class GroupPagination(PageNumberPagination):

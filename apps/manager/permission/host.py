@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     "HostAPIRequiredMixin", "HostListRequiredMixin", "HostCreateRequiredMixin",
@@ -19,8 +21,6 @@ class HostAPIRequiredMixin(BasePermission):
         else:
             return False
 
-    # def has_object_permission(self, request, view, obj):
-
 
 class HostListRequiredMixin(HostAPIRequiredMixin):
     permission_required = u'manager.yo_list_host'
@@ -28,6 +28,10 @@ class HostListRequiredMixin(HostAPIRequiredMixin):
 
 class HostCreateRequiredMixin(HostAPIRequiredMixin):
     permission_required = u'manager.yo_create_host'
+
+    @decorator_api(settings.TIMELINE_HOST_CREATE)
+    def has_permission(self, request, view):
+        return request, super(HostCreateRequiredMixin, self).has_permission(request, view)
 
 
 class HostDetailRequiredMixin(HostAPIRequiredMixin):
@@ -37,9 +41,17 @@ class HostDetailRequiredMixin(HostAPIRequiredMixin):
 class HostUpdateRequiredMixin(HostAPIRequiredMixin):
     permission_required = u'manager.yo_update_host'
 
+    @decorator_api(settings.TIMELINE_HOST_UPDATE)
+    def has_permission(self, request, view):
+        return request, super(HostUpdateRequiredMixin, self).has_permission(request, view)
+
 
 class HostDeleteRequiredMixin(HostAPIRequiredMixin):
     permission_required = u'manager.yo_delete_host'
+
+    @decorator_api(settings.TIMELINE_HOST_DELETE)
+    def has_permission(self, request, view):
+        return request, super(HostDeleteRequiredMixin, self).has_permission(request, view)
 
 
 class HostPasswordRequiredMixin(HostAPIRequiredMixin):

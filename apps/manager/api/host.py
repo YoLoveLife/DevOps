@@ -14,7 +14,7 @@ from deveops.api import WebTokenAuthentication
 
 __all__ = [
     'ManagerHostListAPI', 'ManagerHostCreateAPI',
-    'ManagerHostDetailAPI','ManagerHostUpdateAPI','ManagerHostDeleteAPI',
+    'ManagerHostUpdateAPI','ManagerHostDeleteAPI',
     'HostPagination', 'ManagerHostListByPageAPI'
 ]
 
@@ -44,53 +44,6 @@ class ManagerHostCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostCreateRequiredMixin, IsAuthenticated]
-
-
-class ManagerHostDetailAPI(WebTokenAuthentication, APIView):
-    permission_classes = [HostPermission.HostDetailRequiredMixin, IsAuthenticated]
-
-    def get_object(self):
-        return models.Host.objects.filter(uuid=self.kwargs['pk']).get()
-
-    def get(self, request, *args, **kwargs):
-        from deveops.tools.aliyun import ecs,cms
-        API = ecs.AliyunECSTool()
-        API = cms.AliyunCMSTool()
-        from deveops.utils import vmware
-        obj = self.get_object()
-        data = None
-        if obj.detail.aliyun_id:
-            data = API.get_instance(obj.detail.aliyun_id)
-            if data:
-                data['type'] = 'aliyun'
-            else:
-                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
-            return Response(data, status=status.HTTP_200_OK)
-        elif obj.detail.vmware_id:
-            data = vmware.fetch_Instance(obj.detail.vmware_id)
-            if data:
-                data['type'] = 'vmware'
-            else:
-                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
-            return Response(data, status=status.HTTP_200_OK)
-        else:
-            return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-class ManagerAliyunIDDetailAPI(WebTokenAuthentication, APIView):
-    permission_classes = [HostPermission.HostDetailRequiredMixin, IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        from deveops.utils import aliyun
-        data = None
-        if self.kwargs['pk']:
-            data = aliyun.fetch_Instance(self.kwargs['pk'])
-            if data:
-                data['type'] = 'aliyun'
-            else:
-                return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
-            return Response(data, status=status.HTTP_200_OK)
-        else:
-            return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -125,15 +78,8 @@ class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
     permission_classes = [HostPermission.HostPasswordRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
-    #
-    # @decorator_manager(5, u'获取密码')
-    # def timeline_create(self,user):
-    #     return user,None
 
-    def get_queryset(self):#此处时由于RestFramework的permission会被调用两次 只能在这里使用装饰器
-        # if self.count == 0:
-        #     self.count = self.count + 1
-        #     self.timeline_create(self.request.user)
+    def get_queryset(self):# 此处时由于RestFramework的permission会被调用两次 只能在这里使用装饰器
         host = models.Host.objects.filter(uuid=self.kwargs['pk'])
         return host
 

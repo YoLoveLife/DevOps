@@ -6,7 +6,6 @@ from authority.models import ExtendUser
 __all__ = [
     "GroupSerializer", "SystemTypeSerializer", 'PositionSerializer',
     "HostDetailSerializer", "HostSerializer", "HostPasswordSerializer",
-    "StorageSerializer"
 ]
 
 

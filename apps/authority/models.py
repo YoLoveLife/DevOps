@@ -193,11 +193,14 @@ class Jumper(models.Model):
             s.connect((str(self.connect_ip), int(self.sshport)))
         except socket.timeout:
             self._status = 0
+            self.save()
             return 0
         except Exception as e:
             self._status = 0
+            self.save()
             return 0
         self._status = 1
+        self.save()
         return 1
 
     @property

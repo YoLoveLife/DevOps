@@ -37,6 +37,7 @@ class MetaSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         contents = validated_data.pop('contents')
+        validated_data.pop('qrcode')
         id_list = []
         for content in contents:
             content_instance = models.META_CONTENT.objects.create(**content)
@@ -54,6 +55,7 @@ class MetaSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         contents = validated_data.pop('contents')
+        validated_data.pop('qrcode')
         obj = super(MetaSerializer,self).update(instance,validated_data)
         for content in obj.contents.all():
             content.delete()
@@ -94,19 +96,3 @@ class MissionSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id', 'uuid', 'group_name', 'counts'
         )
-
-
-class PushMissionSerializer(serializers.ModelSerializer):
-    mission = serializers.PrimaryKeyRelatedField(queryset=models.Mission.objects.all())
-
-    class Meta:
-        model = models.Push_Mission
-        fields = (
-            'mission',
-        )
-
-    def create(self, validated_data):
-        mission = validated_data.pop('mission')
-        obj = models.Push_Mission(mission=mission)
-        obj.save()
-        return obj

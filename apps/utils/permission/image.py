@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     'ImageAPIRequiredMixin', 'ImageCreateRequiredMixin',
@@ -26,8 +28,14 @@ class ImageListRequiredMixin(ImageAPIRequiredMixin):
 class ImageCreateRequiredMixin(ImageAPIRequiredMixin):
     permission_required = u'utils.yo_create_image'
 
+    @decorator_api(settings.TIMELINE_UTILS_IMAGE_CREATE)
+    def has_permission(self, request, view):
+        return request, super(ImageCreateRequiredMixin, self).has_permission(request, view)
+
 
 class ImageDeleteRequiredMixin(ImageAPIRequiredMixin):
     permission_required = u'utils.yo_delete_image'
 
-
+    @decorator_api(settings.TIMELINE_UTILS_IMAGE_DELETE)
+    def has_permission(self, request, view):
+        return request, super(ImageDeleteRequiredMixin, self).has_permission(request, view)

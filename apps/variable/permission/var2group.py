@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     "Var2GroupAPIRequiredMixin", "Var2GroupListRequiredMixin", "Var2GroupCreateRequiredMixin",
@@ -28,8 +30,15 @@ class Var2GroupListRequiredMixin(Var2GroupAPIRequiredMixin):
 class Var2GroupCreateRequiredMixin(Var2GroupAPIRequiredMixin):
     permission_required = u'ops.yo_change_group_var'
 
+    @decorator_api(settings.TIMELINE_VAR_CREATE)
+    def has_permission(self, request, view):
+        return request, super(Var2GroupCreateRequiredMixin, self).has_permission(request, view)
+
 
 class Var2GroupDeleteRequiredMixin(Var2GroupAPIRequiredMixin):
     permission_required = u'ops.yo_delete_group_var'
 
+    @decorator_api(settings.TIMELINE_VAR_DELETE)
+    def has_permission(self, request, view):
+        return request, super(Var2GroupDeleteRequiredMixin, self).has_permission(request, view)
 

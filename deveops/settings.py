@@ -40,14 +40,10 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'utils.apps.UtilsConfig',
     'authority.apps.AuthorityConfig',
-    # 'softlib.apps.SoftlibConfig',
     'manager.apps.ManagerConfig',
     'ops.apps.OpsConfig',
     'work.apps.WorkConfig',
-    # 'application.apps.ApplicationConfig',
-    # 'execute.apps.ExecuteConfig',
-    # 'timeline.apps.TimelineConfig',
-    # 'upload.apps.UploadConfig',
+    'timeline.apps.TimelineConfig',
     'variable.apps.VariableConfig',
     'dashboard.apps.DashboardConfig',
     'yodns.apps.YoDnsConfig',
@@ -56,16 +52,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
-    # 'bootstrap3',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    # 'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_beat',
+    'channels',
+    # 'django.contrib.messages',
+    # 'bootstrap3',
     # 'djcelery', #celery
     # 'kombu.transport.django', #celery
-    'channels',
 ]
 
 #JWF

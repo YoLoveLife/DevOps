@@ -13,7 +13,7 @@ __all__ = [
     'MissionPagination', 'OpsMissionListAPI', 'OpsMissionListByPageAPI',
     'OpsMissionNeedFileCheckAPI', 'OpsMissionCreateAPI', 'OpsMissionDeleteAPI',
     'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionPlaybookAPI',
-    'OpsMissionNeedFileCheckAPI'
+    'OpsMissionNeedFileCheckAPI',
 ]
 
 
@@ -26,13 +26,9 @@ class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     serializer_class = serializers.MissionSerializer
     permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
     filter_class = filter.MissionFilter
-    # filter_fields = ('group',)
-    # from rest_framework.renderers import JSONRenderer
-    # renderer_classes = [JSONRenderer,]
 
     def get_queryset(self):
-        # queryset = models.Mission.objects.filter(group__users__id=self.request.user.id)
-        queryset = models.Mission.objects.all()
+        queryset = models.Mission.objects.filter(group_id__in=[self.request.user.id])
         return queryset
 
 
@@ -47,7 +43,7 @@ class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     # 1、僅能查看自己所管理的應用組
     # 2、可以增删改自己所管理的应用组的所有Mission操作
     def get_queryset(self):
-        queryset = models.Mission.objects.all()
+        queryset = models.Mission.objects.filter(group_id__in=[self.request.user.id])
         return queryset
 
 
@@ -87,7 +83,8 @@ class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
 
     # 校验用户QR-Code
     def create(self, request, *args, **kwargs):
-        if 'qrcode' in kwargs.keys() and self.request.user.check_qrcode(kwargs['qrcode']):
+        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+            request.data.pop('qrcode')
             return super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -103,7 +100,7 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     lookup_url_kwarg = 'pk'
 
     def update(self, request, *args, **kwargs):
-        if 'qrcode' in kwargs.keys() and self.request.user.check_qrcode(kwargs['qrcode']):
+        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             return super(OpsMissionUpdateAPI, self).create(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -118,7 +115,7 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
 
     def delete(self, request, *args, **kwargs):
-        if 'qrcode' in kwargs.keys() and self.request.user.check_qrcode(kwargs['qrcode']):
+        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             return super(OpsMissionDeleteAPI, self).create(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)

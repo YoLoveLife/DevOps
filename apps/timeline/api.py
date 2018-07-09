@@ -3,7 +3,7 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-import models, serializers
+from timeline import models, serializers
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status

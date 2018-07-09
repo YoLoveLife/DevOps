@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
+from timeline.decorator import decorator_api
+from django.conf import settings
 
 __all__ = [
     "DNSAPIRequiredMixin", "DNSListRequiredMixin", "DNSCreateRequiredMixin",
@@ -26,15 +28,25 @@ class DNSListRequiredMixin(DNSAPIRequiredMixin):
 class DNSCreateRequiredMixin(DNSAPIRequiredMixin):
     permission_required = u'dns.yo_create_dns'
 
+    @decorator_api(settings.TIMELINE_DNS_CREATE)
+    def has_permission(self, request, view):
+        return request, super(DNSCreateRequiredMixin, self).has_permission(request, view)
+
 
 class DNSUpdateRequiredMixin(DNSAPIRequiredMixin):
     permission_required = u'dns.yo_update_dns'
+
+    @decorator_api(settings.TIMELINE_DNS_UPDATE)
+    def has_permission(self, request, view):
+        return request, super(DNSUpdateRequiredMixin, self).has_permission(request, view)
 
 
 class DNSDeleteRequiredMixin(DNSAPIRequiredMixin):
     permission_required = u'dns.yo_delete_dns'
 
-
+    @decorator_api(settings.TIMELINE_DNS_DELETE)
+    def has_permission(self, request, view):
+        return request, super(DNSDeleteRequiredMixin, self).has_permission(request, view)
 
 
 

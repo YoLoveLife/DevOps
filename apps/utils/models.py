@@ -37,6 +37,7 @@ class FILE(models.Model):
         permissions = (
             ('yo_list_file', u'罗列文件'),
             ('yo_create_file', u'上传文件'),
+            ('yo_update_file', u'修改文件'),
             ('yo_delete_file', u'删除文件'),
         )
 

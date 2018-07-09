@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from manager import models
+from timeline import models
 from rest_framework import serializers
 from authority.models import ExtendUser
 
