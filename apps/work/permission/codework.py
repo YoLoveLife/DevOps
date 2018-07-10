@@ -48,9 +48,25 @@ class CodeWorkUploadRequiredMixin(CodeWorkAPIRequiredMixin):
         return request, super(CodeWorkUploadRequiredMixin, self).has_permission(request, view)
 
 
+class CodeWorkRunRequiredMixin(CodeWorkAPIRequiredMixin):
+    permission_required = u'work.yo_run_codework'
+
+    @decorator_api(settings.TIMELINE_WORK_RUN)
+    def has_permission(self, request, view):
+        return request, super(CodeWorkRunRequiredMixin, self).has_permission(request, view)
+
+
 class CodeWorkDeleteRequiredMixin(CodeWorkAPIRequiredMixin):
     permission_required = u'work.yo_delete_codework'
 
     @decorator_api(settings.TIMELINE_WORK_DELETE)
     def has_permission(self, request, view):
         return request, super(CodeWorkDeleteRequiredMixin, self).has_permission(request, view)
+
+
+class CodeWorkResultsRequiredMixin(CodeWorkAPIRequiredMixin):
+    permission_required = u'work.yo_results_codework'
+
+    @decorator_api(settings.TIMELINE_WORK_RESULTS)
+    def has_permission(self, request, view):
+        return request, super(CodeWorkResultsRequiredMixin, self).has_permission(request, view)

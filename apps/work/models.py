@@ -54,6 +54,7 @@ class Code_Work(Work):
             ('yo_run_codework', u'运行发布工单'),
             ('yo_upload_codework', u'为工单上传文件'),
             ('yo_delete_codework', u'删除应用组'),
+            ('yo_results_codework', u'查看错误工单信息'),
         )
 
 
@@ -69,7 +70,7 @@ class Code_Work(Work):
         dict['TOOL'] = settings.TOOL_ROOT + '/'
         if self.push_mission.files.count() !=0:
             for file in self.push_mission.files.all():
-                dict[file.name] = settings.MEDIA_ROOT+'/'+file.file.name
+                dict[file.var_name] = settings.MEDIA_ROOT+'/'+file.file.name
         return dict
 
     @property
@@ -81,6 +82,7 @@ class Code_Work(Work):
         fs =FILE.objects.filter(uuid__in=file_list)
         self.push_mission.files.set(fs)
         self.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
+        self.push_mission.save()
 
 
 class Safety_Work(Work):

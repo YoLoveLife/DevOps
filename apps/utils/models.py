@@ -26,6 +26,8 @@ def upload_file_path(instance,filename):
 class FILE(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(default=uuid.uuid4, max_length=100, null=True, blank=True)
+    # 文件使用时注入的参数名称
+    var_name = models.CharField(default='', max_length=100 ,null=True, blank=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     file = models.FileField(upload_to=upload_file_path, null=True, blank=True)
     # 上传时间
@@ -46,7 +48,7 @@ class FILE(models.Model):
         if self.pushmission is None:
             return '未使用'
         else:
-            return self.pushmission.works.get().uuid
+            return self.pushmission.get().works.get().uuid
 
 
 class IMAGE(models.Model):

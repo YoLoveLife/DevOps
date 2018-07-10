@@ -28,7 +28,9 @@ class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     filter_class = filter.MissionFilter
 
     def get_queryset(self):
-        queryset = models.Mission.objects.filter(group_id__in=[self.request.user.id])
+        pmn_groups = self.request.user.groups.all()
+        groups = models.Group.objects.filter(pmn_groups__in=pmn_groups)
+        queryset = models.Mission.objects.filter(group__in=groups)
         return queryset
 
 
@@ -42,8 +44,11 @@ class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     # 所有運維工程師有如下特點
     # 1、僅能查看自己所管理的應用組
     # 2、可以增删改自己所管理的应用组的所有Mission操作
+
     def get_queryset(self):
-        queryset = models.Mission.objects.filter(group_id__in=[self.request.user.id])
+        user = self.request.user
+        groups = models.Group.objects.filter(users=user)
+        queryset = models.Mission.objects.filter(group_id__in=groups)
         return queryset
 
 
@@ -59,6 +64,7 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
         groups = models.Group.objects.filter(pmn_groups__in=pmn_groups)
         queryset = models.Mission.objects.filter(group__in=groups)
         return queryset
+
 
 # :TODO 剧本展现
 class OpsMissionPlaybookAPI(WebTokenAuthentication, APIView):

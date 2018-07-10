@@ -78,7 +78,8 @@ class AliyunECSTool(object):
             'expired': AliyunECSTool.get_expired_day(json_results.get('ExpiredTime')),
             'recognition_id': json_results.get('InstanceId'),
             'instancename': json_results.get('InstanceName'),
-            'tags': ':'.join(tags_list)
+            'tags': ':'.join(tags_list),
+            'status': json_results.get('Status')
         }
 
     def get_page_number(self):

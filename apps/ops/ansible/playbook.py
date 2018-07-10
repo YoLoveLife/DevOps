@@ -42,9 +42,10 @@ class Playbook(object):
     def import_vars(self, vars_dict):
         self.push_mission.status = settings.OPS_PUSH_MISSION_IMPORT_VAR
         try:
-            self.push_mission.results_append('参数载入成功;')
             vars_dict['KEY']=self.key
             self.variable_manager.extra_vars = vars_dict
+            self.push_mission.results_append('参数载入成功;')
+            self.push_mission.results_append(vars_dict)
         except AnsibleUndefinedVariable as e:
             self.push_mission.results_append('参数识别失败;')
             self.consumer.send('ERROR')
@@ -54,6 +55,7 @@ class Playbook(object):
     def import_task(self, play_source):
         self.push_mission.status = settings.OPS_PUSH_MISSION_IMPORT_TASKS
         try:
+            self.push_mission.results_append(play_source)
             for source in play_source:
                 self.play.append(Play().load(source, variable_manager=self.variable_manager, loader=self.loader))
             self.push_mission.results_append('任务载入成功;')
@@ -78,7 +80,7 @@ class Playbook(object):
                 result = tqm.run(p)
             self.delete_key()
             self.push_mission.status = settings.OPS_PUSH_MISSION_SUCCESS
-            self.consumer.send("OK")
+            self.consumer.send("SUCCESS")
         finally:
             self.consumer.close()
             if tqm is not None:

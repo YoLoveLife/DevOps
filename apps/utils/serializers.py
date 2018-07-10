@@ -8,11 +8,11 @@ __all__ = [
 
 class FileSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.full_name', read_only=True)
-    mission_uuid = serializers.BooleanField(source='mission_used', read_only=True)
+    mission_uuid = serializers.CharField(source='mission_used', read_only=True)
     class Meta:
         model = models.FILE
         fields = (
-            'id', 'file', 'create_time', 'user', 'name', 'uuid','mission_uuid'
+            'id', 'file', 'create_time', 'user', 'name', 'uuid','mission_uuid', 'var_name'
         )
         read_only_fields = (
             'id', 'create_time', 'uuid', 'mission_uuid',

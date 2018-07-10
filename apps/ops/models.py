@@ -22,7 +22,6 @@ class META_CONTENT(models.Model):
     module = models.CharField(default='',max_length=20)
     args = models.CharField(default='', max_length=100)
     sort = models.IntegerField(default=0)
-    need_file = models.BooleanField(default=False)
 
     class Meta:
         permissions = (('yo_list_metacontent', u'罗列元操作内容'),
@@ -33,7 +32,7 @@ class META_CONTENT(models.Model):
     @property
     def args_clean(self):
         FIND_LABLE="file:"
-        if self.need_file == True and self.args.find(FIND_LABLE)!=-1:
+        if self.args.find(FIND_LABLE)!=-1:
             args_list = self.args.split('file:')
             return args_list[0]+args_list[1]
         else:
@@ -48,7 +47,7 @@ class META_CONTENT(models.Model):
     @property
     def file_name(self):
         FIND_LABLE="file:"
-        if self.need_file == True and self.args.find(FIND_LABLE)!=-1:
+        if self.args.find(FIND_LABLE)!=-1:
             args_list = self.args.split(FIND_LABLE)
             file_name = args_list[1].split(' ')
             return file_name[0][2:-2]
@@ -77,7 +76,7 @@ class META(models.Model):
     def file_list(self):
         files = []
         for content in self.contents.all():
-            if content.need_file is True and content.file_name != "":
+            if content.file_name != "":
                 files.append(content.file_name)
         return files
 
@@ -86,7 +85,7 @@ class META(models.Model):
         tasks = []
         hosts_list = []
         for host in self.hosts.all():
-            if host.status == 1:
+            if host.status == settings.HOST_CAN_BE_USE:
                 hosts_list.append(host.connect_ip)
         if self.group.jumper is not None:
             tasks.append(self.group.jumper.to_yaml)
@@ -99,39 +98,6 @@ class META(models.Model):
             'gather_facts': 'no',
             'hosts': hosts_list or 'localhost',
         }
-
-        #
-        # for host in self.hosts.all():
-        #     if host._status == 1:
-        #         hosts_list.append(host.connect_ip)
-        # if len(hosts_list) == 0:
-        #     # 主机列表为空说明本地执行
-        #     for content in self.contents.all().order_by('sort'):
-        #         tasks.append(content.to_yaml)
-        #     obj = {
-        #         'tasks': tasks,
-        #         'gather_facts': 'no',
-        #         'hosts': 'localhost',
-        #     }
-        # else:
-        #     jumper = self.group.jumper
-        #     if jumper is not None:
-        #         proxy_task = {
-        #                          u'set_fact':
-        #                              {
-        #                                  'ansible_ssh_common_args':
-        #                                      '-o ProxyCommand="ssh -p{PORT} -W %h:%p root@{IP}"'.format(PORT=jumper.sshport, IP=jumper.connect_ip)
-        #                              }
-        #                      }
-        #         tasks.append(proxy_task)
-        #         for content in self.contents.all().order_by('sort'):
-        #             tasks.append(content.to_yaml)
-        #         obj = {
-        #             'tasks': tasks,
-        #             'gather_facts': 'no',
-        #             'hosts': ','.join(hosts_list)+',',
-        #         }
-        # return obj
 
 
 class Mission(models.Model):
@@ -235,3 +201,4 @@ class Push_Mission(models.Model):
 
     def results_append(self,results):
         self.results = self.results + results
+        self.save()

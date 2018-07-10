@@ -22,7 +22,13 @@ class CodeWorkStatusSerializer(serializers.ModelSerializer):
 
 class CodeWorkCheckSerializer(CodeWorkStatusSerializer):
     def update(self, instance, validated_data):
-        instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
+        print(instance.file_list)
+        if len(instance.file_list) != 0:
+            print('OPS_PUSH_MISSION_WAIT_UPLOAD')
+            instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_UPLOAD
+        else:
+            print('OPS_PUSH_MISSION_WAIT_RUN')
+            instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
         instance.push_mission.save()
         return super(CodeWorkCheckSerializer,self).update(instance, {})
 
