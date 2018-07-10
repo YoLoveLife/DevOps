@@ -27,6 +27,8 @@ def reflush(obj,nameserver):
                 return rr.address
         except Exception as e:
             pass
+    except resolver.NXDOMAIN as e:
+        return ''
     return ''
 
 

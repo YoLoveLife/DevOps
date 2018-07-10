@@ -48,7 +48,7 @@ class CodeWorkStatusAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
 class CodeWorkCheckAPI(CodeWorkStatusAPI):
     serializer_class = serializers.CodeWorkCheckSerializer
-    # permission_classes = [CodeWorkPermission.CodeWorkExamRequiredMixin, IsAuthenticated]
+    permission_classes = [CodeWorkPermission.CodeWorkExamRequiredMixin, IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         user = request.user
@@ -61,7 +61,7 @@ class CodeWorkCheckAPI(CodeWorkStatusAPI):
 
 class CodeWorkRunAPI(CodeWorkStatusAPI):
     serializer_class = serializers.CodeWorkRunSerializer
-    # permission_classes = [CodeWorkPermission.CodeWorkExamRequiredMixin, IsAuthenticated]
+    permission_classes = [CodeWorkPermission.CodeWorkRunRequiredMixin, IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         user = request.user
@@ -75,6 +75,7 @@ class CodeWorkRunAPI(CodeWorkStatusAPI):
 class CodeWorkUploadFileAPI(WebTokenAuthentication, generics.UpdateAPIView):
     serializer_class = serializers.CodeWorkUploadFileSerializer
     queryset = models.Code_Work.objects.all()
+    permission_classes = [CodeWorkPermission.CodeWorkUploadRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
@@ -91,11 +92,11 @@ class CodeWorkResultsAPI(WebTokenAuthentication, generics.ListAPIView):
     queryset = models.Code_Work.objects.all()
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
-    permission_classes = [AllowAny,]
+    permission_classes = [CodeWorkPermission.CodeWorkRunRequiredMixin, IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
         if obj.status > 0:
             return Response({'detail': u'该工单处于正常状态'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return Response({'results': obj.push_mission.results.replace('\n','')}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'results': obj.push_mission.results}, status=status.HTTP_202_ACCEPTED)

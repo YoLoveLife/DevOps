@@ -12,7 +12,7 @@ class MetaContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.META_CONTENT
         fields = (
-            'id', 'name', 'module', 'args', 'sort', 'need_file'
+            'id', 'name', 'module', 'args', 'sort',
         )
         read_only_fields = (
             'id',
@@ -21,6 +21,7 @@ class MetaContentSerializer(serializers.ModelSerializer):
 
 class MetaSerializer(serializers.ModelSerializer):
     hosts = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Host.objects.all())
+    need_files = serializers.ListField(source="file_list", read_only=True)
     contents = MetaContentSerializer(required=True, many=True, allow_null=True)
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
     group_name = serializers.CharField(source="group.name",read_only=True)
@@ -29,7 +30,7 @@ class MetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.META
         fields = (
-            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info', 'qrcode'
+            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info', 'qrcode', 'need_files'
         )
         read_only_fields = (
             'id', 'uuid','group_name'

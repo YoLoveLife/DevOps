@@ -118,7 +118,7 @@ def expired_aliyun_ecs():
         results = API.get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_expired_models(result)
-            if dict_models.get('expired')< 20:
+            if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
                 obj_maker(ExpiredAliyunECS, dict_models)
 
 

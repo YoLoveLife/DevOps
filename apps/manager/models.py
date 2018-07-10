@@ -116,7 +116,7 @@ class Group(models.Model):
 
     @property
     def users_list_byconnectip(self):
-        if self._status != 1:
+        if self._status != settings.GROUP_CAN_BE_USE:
             return []
         else:
             # Ansible 2.0.0.0

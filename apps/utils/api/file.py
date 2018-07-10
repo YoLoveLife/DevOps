@@ -32,10 +32,10 @@ class UtilsFileListAPI(WebTokenAuthentication,generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        end_time = datetime.datetime.now().strftime('%Y-%m-%d')
-        start_time = (datetime.datetime.now() - datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+        end_time = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        start_time = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
         query_set = models.FILE.objects.filter(user=user,
-                                               pushmission__isnull=False,
+                                               pushmission__isnull=True,
                                                create_time__range=(start_time, end_time))
         return query_set
 
