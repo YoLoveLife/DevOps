@@ -95,5 +95,5 @@ class ManagerGroupSelectHostAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSelectHostSerializer
     queryset = models.Group.objects.all()
-    permission_classes = [GroupPermission.GroupUpdateRequiredMixin, IsAuthenticated]
+    permission_classes = [GroupPermission.GroupSelectHostRequiredMixin, IsAuthenticated]
 

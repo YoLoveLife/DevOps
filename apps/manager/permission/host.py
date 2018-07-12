@@ -58,5 +58,9 @@ class HostPasswordRequiredMixin(HostAPIRequiredMixin):
     permission_required = u'manager.yo_passwd_host'
 
 
+class HostSelectGroupRequiredMixin(HostAPIRequiredMixin):
+    permission_required = u'manager.yo_host_sort_group'
 
-
+    @decorator_api(settings.TIMELINE_HOST_SORT)
+    def has_permission(self, request, view):
+        return request, super(HostSelectGroupRequiredMixin, self).has_permission(request, view)

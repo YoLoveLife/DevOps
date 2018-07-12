@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj
 
 class GroupSerializer(serializers.ModelSerializer):
-    permissions = serializers.PrimaryKeyRelatedField(many=True,queryset=Permission.objects.all())
+    permissions = serializers.PrimaryKeyRelatedField(required=False, many=True,queryset=Permission.objects.all())
 
     class Meta:
         model = Group

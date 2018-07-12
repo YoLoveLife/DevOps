@@ -20,9 +20,6 @@ class ExpiredAliyun(models.Model):
     class Meta:
         ordering = ['expired', 'id']
         abstract = True
-        permissions = (
-            ('yo_list_expired', u'罗列过期资源'),
-        )
 
 
 class ExpiredAliyunECS(ExpiredAliyun):
@@ -30,6 +27,11 @@ class ExpiredAliyunECS(ExpiredAliyun):
     tags = models.CharField(max_length=100,default='')
     recognition_id = models.CharField(max_length=100,default='')
     instancename = models.CharField(max_length=100,default='noname')
+
+    class Meta:
+        permissions = (
+            ('yo_list_expired', u'罗列过期资源'),
+        )
 
 
 class ExpiredAliyunRDS(ExpiredAliyun):

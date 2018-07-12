@@ -30,7 +30,7 @@ class GroupListAPI(WebTokenAuthentication, generics.ListAPIView):
 class GroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    queryset = models.Group.objects.all()
+    queryset = models.Group.objects.all().order_by('id')
     permission_classes = [GroupPermission.GroupListRequiredMixin, IsAuthenticated]
     pagination_class = GroupPagination
     filter_class = filter.GroupFilter

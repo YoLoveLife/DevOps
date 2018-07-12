@@ -56,9 +56,9 @@ class Position(models.Model):
 
 class Group(models.Model):
     GROUP_STATUS=(
-        (settings.GROUP_PAUSE, '暂停中'),
-        (settings.GROUP_UNREACHABLE, '不可达'),
-        (settings.GROUP_CAN_BE_USE, '正常'),
+        (settings.STATUS_GROUP_PAUSE, '暂停中'),
+        (settings.STATUS_GROUP_UNREACHABLE, '不可达'),
+        (settings.STATUS_GROUP_CAN_BE_USE, '正常'),
     )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -80,7 +80,8 @@ class Group(models.Model):
                        ('yo_create_group', u'新增应用组'),
                        ('yo_update_group', u'修改应用组'),
                        ('yo_detail_group', u'详细查看应用组'),
-                       ('yo_delete_group', u'删除应用组'))
+                       ('yo_delete_group', u'删除应用组'),
+                       ('yo_group_sort_host', u'批量归类主机'))
 
     def __unicode__(self):
         return self.name
@@ -116,7 +117,7 @@ class Group(models.Model):
 
     @property
     def users_list_byconnectip(self):
-        if self._status != settings.GROUP_CAN_BE_USE:
+        if self._status != settings.STATUS_GROUP_CAN_BE_USE:
             return []
         else:
             # Ansible 2.0.0.0
@@ -143,9 +144,9 @@ class HostDetail(models.Model):
 
 class Host(models.Model):
     SYSTEM_STATUS = (
-        (settings.HOST_CAN_BE_USE, '正常'),
-        (settings.HOST_CLOSE, '关机'),
-        (settings.HOST_PAUSE, '暂停'),
+        (settings.STATUS_HOST_CAN_BE_USE, '正常'),
+        (settings.STATUS_HOST_CLOSE, '关机'),
+        (settings.STATUS_HOST_PAUSE, '暂停'),
     )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID
@@ -175,7 +176,7 @@ class Host(models.Model):
             ('yo_create_host', u'新增主机'),
             ('yo_update_host', u'修改主机'),
             ('yo_delete_host', u'删除主机'),
-            ('yo_detail_host', u'详细查看主机'),
+            ('yo_host_sort_group', u'更改主机应用组'),
             ('yo_passwd_host', u'获取主机密码'),
             ('yo_webskt_host', u'远控主机')
         )
@@ -199,6 +200,7 @@ class Host(models.Model):
     def password(self, password):
         self._passwd = aes.encrypt(password).decode()
 
+    # :TODO 详细页面 管理用户
     def manage_user_get(self):
         dist = {}
         for group in self.groups.all():

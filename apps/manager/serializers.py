@@ -37,7 +37,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GroupSelectHostSerializer(GroupSerializer):
-    hosts = serializers.PrimaryKeyRelatedField(queryset=models.Host.objects.all(), many=True)
+    hosts = serializers.PrimaryKeyRelatedField(required=True, queryset=models.Host.objects.all(), many=True)
 
     class Meta:
         model = models.Group
@@ -52,6 +52,8 @@ class GroupSelectHostSerializer(GroupSerializer):
         return super(GroupSelectHostSerializer, self).update(instance, validated_data)
         # print(validated_data)
         # return super(GroupSelectHostSerializer,self).update(instance,validated_data)
+
+
 
 
 # class GroupSelectHostSerializer(serializers.Serializer):
@@ -107,10 +109,9 @@ class HostDetailSerializer(serializers.ModelSerializer):
 
 class HostSerializer(serializers.ModelSerializer):
     detail = HostDetailSerializer(required=True)
-    groups = serializers.PrimaryKeyRelatedField(many=True, required=False, allow_null=True, queryset=models.Group.objects.all(),)
     passwd = serializers.CharField(required=False, allow_null=True, source='password',write_only=True)
     _status = serializers.IntegerField(required=True, source='status',)
-
+    groups = serializers.PrimaryKeyRelatedField(read_only=True ,many=True,)
     class Meta:
         model = models.Host
         fields = (
@@ -118,7 +119,7 @@ class HostSerializer(serializers.ModelSerializer):
             'passwd', 'uuid'
         )
         read_only_fields = (
-            'id', 'uuid'
+            'id', 'uuid', 'groups'
         )
         write_only_fields = (
             'passwd',
@@ -132,8 +133,8 @@ class HostSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         detail = validated_data.pop('detail')
         for v in detail:
-            if hasattr(instance.detail,v):
-                setattr(instance.detail,v,detail.get(v))
+            if hasattr(instance.detail, v):
+                setattr(instance.detail, v, detail.get(v))
         instance.detail.save()
         return super(HostSerializer,self).update(instance,validated_data)
 
@@ -149,4 +150,14 @@ class HostPasswordSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id', 'passwd',
+        )
+
+
+class HostSelectGroupSerializer(GroupSerializer):
+    groups = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Group.objects.all())
+
+    class Meta:
+        model = models.Host
+        fields = (
+            'id', 'groups'
         )
