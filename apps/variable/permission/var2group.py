@@ -24,11 +24,11 @@ class Var2GroupAPIRequiredMixin(BasePermission):
 
 
 class Var2GroupListRequiredMixin(Var2GroupAPIRequiredMixin):
-    permission_required = u'ops.yo_list_group_var'
+    permission_required = u'variable.yo_list_group_var'
 
 
 class Var2GroupCreateRequiredMixin(Var2GroupAPIRequiredMixin):
-    permission_required = u'ops.yo_change_group_var'
+    permission_required = u'variable.yo_change_group_var'
 
     @decorator_api(settings.TIMELINE_VAR_CREATE)
     def has_permission(self, request, view):
@@ -36,7 +36,7 @@ class Var2GroupCreateRequiredMixin(Var2GroupAPIRequiredMixin):
 
 
 class Var2GroupDeleteRequiredMixin(Var2GroupAPIRequiredMixin):
-    permission_required = u'ops.yo_delete_group_var'
+    permission_required = u'variable.yo_delete_group_var'
 
     @decorator_api(settings.TIMELINE_VAR_DELETE)
     def has_permission(self, request, view):

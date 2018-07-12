@@ -10,7 +10,7 @@
 import json
 import datetime
 from aliyunsdkcore import client
-from aliyunsdkecs.request.v20140526 import DescribeInstanceStatusRequest,DescribeInstancesRequest,DescribeInstanceAttributeRequest
+from aliyunsdkecs.request.v20140526 import DescribeInstancesFullStatusRequest,DescribeInstanceStatusRequest,DescribeInstancesRequest,DescribeInstanceAttributeRequest
 from django.conf import settings
 
 
@@ -30,9 +30,9 @@ class AliyunECSTool(object):
     @staticmethod
     def get_ecs_status(status):
         if status == 'Running':
-            return settings.HOST_CAN_BE_USE
+            return settings.STATUS_HOST_CAN_BE_USE
         else:
-            return settings.HOST_CLOSE
+            return settings.STATUS_HOST_CLOSE
 
     @staticmethod
     def get_expired_day(time):
@@ -82,6 +82,17 @@ class AliyunECSTool(object):
             'status': json_results.get('Status')
         }
 
+    @staticmethod
+    def get_aliyun_instance_status(json_results):
+        status = json_results.get('InstanceFullStatusSet').get('InstanceFullStatusType')[0]
+        if status.get('HealthStatus').get('HealthStatus').get('Name') != 'Ok':
+            return None
+        else:
+            return AliyunECSTool.get_ecs_status(
+                status.get('Status').get('Name')
+            )
+
+
     def get_page_number(self):
         request = DescribeInstanceStatusRequest.DescribeInstanceStatusRequest()
         request.add_query_param('PageNumber', 1)
@@ -93,16 +104,19 @@ class AliyunECSTool(object):
         result = self.get_json_results(response)
         return int(result['TotalCount']/settings.ALIYUN_PAGESIZE)+1
 
-    def get_instances_status(self, page):
+
+    def get_instance_status(self, instance_id):
         request = DescribeInstancesFullStatusRequest.DescribeInstancesFullStatusRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
-        request.add_query_param('PageNumber', page)
+        request.add_query_param('PageNumber', 1)
+        request.add_query_param('InstanceId.1', instance_id)
         try:
             response = self.clt.do_action_with_exception(request)
         except:
             return {}
         return self.get_json_results(response)
+
 
     def get_instance(self, instance_id):
         # request = DescribeInstancesRequest.DescribeInstancesRequest()

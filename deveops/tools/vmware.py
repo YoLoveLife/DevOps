@@ -41,9 +41,9 @@ class VmwareTool(object):
     @staticmethod
     def get_vm_status(info):
         if info != 'poweredOn':
-            return DJANGO_SETTINGS.HOST_CLOSE
+            return DJANGO_SETTINGS.STATUS_HOST_CLOSE
         else:
-            return DJANGO_SETTINGS.HOST_CAN_BE_USE
+            return DJANGO_SETTINGS.STATUS_HOST_CAN_BE_USE
 
     @staticmethod
     def get_vm_models(vm):

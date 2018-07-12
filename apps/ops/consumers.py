@@ -15,7 +15,6 @@ __all__ = [
     "MetaConsumer"
 ]
 
-
 class MetaConsumer(WebsocketConsumer):
 
     def write_key(self, key, file_path):

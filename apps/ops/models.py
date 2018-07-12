@@ -85,7 +85,7 @@ class META(models.Model):
         tasks = []
         hosts_list = []
         for host in self.hosts.all():
-            if host.status == settings.HOST_CAN_BE_USE:
+            if host.status == settings.STATUS_HOST_CAN_BE_USE:
                 hosts_list.append(host.connect_ip)
         if self.group.jumper is not None:
             tasks.append(self.group.jumper.to_yaml)
@@ -168,10 +168,6 @@ class Push_Mission(models.Model):
         (settings.OPS_PUSH_MISSION_SUCCESS, '执行完毕'), # 执行完毕
         (settings.OPS_PUSH_MISSION_FAILED, '执行失败'), # 执行失败
     )
-
-    class Meta:
-        permissions = (('yo_list_pushmission', u'罗列推出任务'),
-                       ('yo_create_pushmission', u'创建推出任务'))
 
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)

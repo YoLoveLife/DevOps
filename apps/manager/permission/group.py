@@ -51,3 +51,11 @@ class GroupDeleteRequiredMixin(GroupAPIRequiredMixin):
     @decorator_api(settings.TIMELINE_GROUP_DELETE)
     def has_permission(self, request, view):
         return request, super(GroupDeleteRequiredMixin, self).has_permission(request, view)
+
+
+class GroupSelectHostRequiredMixin(GroupAPIRequiredMixin):
+    permission_required = u'manager.yo_group_sort_host'
+
+    @decorator_api(settings.TIMELINE_GROUP_SORT)
+    def has_permission(self, request, view):
+        return request, super(GroupSelectHostRequiredMixin, self).has_permission(request, view)

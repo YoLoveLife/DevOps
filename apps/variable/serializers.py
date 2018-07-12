@@ -13,5 +13,8 @@ class Var2GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Var2Group
         fields = (
-            'id', 'key', 'value', 'group'
+            'id', 'key', 'value', 'group', 'uuid'
+        )
+        read_only_fields = (
+            'id', 'uuid'
         )

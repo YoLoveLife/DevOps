@@ -88,3 +88,12 @@ class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
             return super(ManagerHostPasswordAPI,self).get(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class ManagerHostSelectGroupAPI(WebTokenAuthentication, generics.UpdateAPIView):
+    serializer_class = serializers.HostSelectGroupSerializer
+    permission_classes = [HostPermission.HostSelectGroupRequiredMixin , IsAuthenticated]
+    queryset = models.Host.objects.all()
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
+

@@ -48,7 +48,7 @@ class AliyunCMSTool(object):
     @staticmethod
     def request_to_day(obj):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        seven = (datetime.datetime.now() - datetime.timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')
+        seven = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')
         obj.request.add_query_param('StartTime', seven)
         obj.request.add_query_param('EndTime', now)
 

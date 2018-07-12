@@ -56,6 +56,23 @@ def aliyun2cmdb():
             if not host_query.exists():
                 host_maker(dict_models)
 
+@periodic_task(run_every=settings.MANAGER_TIME)
+def cmdb2aliyun():
+    from deveops.tools.aliyun import ecs
+    from django.db.models import Q
+    API = ecs.AliyunECSTool()
+    queryset = Host.objects.filter(~Q(detail__aliyun_id=''))
+    for host in queryset:
+        results = API.get_instance_status(host.detail.aliyun_id)
+        print(results.get('InstanceFullStatusSet').get('InstanceFullStatusType')[0])
+        status = API.get_aliyun_instance_status(results)
+        if status is None:
+            host.delete()
+        elif host.status == settings.STATUS_HOST_PAUSE:
+            continue
+        else:
+            host.status = status
+
 
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
 
