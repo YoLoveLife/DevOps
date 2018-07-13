@@ -40,3 +40,52 @@ class CodeWorkFilter(django_filters.FilterSet):
     @staticmethod
     def info_filter(queryset, first_name, value):
         return queryset.filter(info__icontains=value)
+
+
+class SafeWorkFilter(django_filters.FilterSet):
+    src_group = django_filters.CharFilter(method="src_group_filter")
+    src_hosts = django_filters.CharFilter(method="src_hosts_filter")
+    dest_group = django_filters.CharFilter(method="dest_group_filter")
+    dest_hosts = django_filters.CharFilter(method="dest_hosts_filter")
+    info = django_filters.CharFilter(method="info_filter")
+
+    class Meta:
+        model = models.Safe_Work
+        fields = [
+            'src_group' , 'src_hosts', 'info',
+            'dest_group', 'dest_hosts', 'dest_port'
+        ]
+
+    @staticmethod
+    def src_group_filter(queryset, first_name, value):
+        group = models.Group.objects.filter(name__icontains=value)
+        return queryset.filter(src_group=group)
+
+
+    @staticmethod
+    def src_hosts_filter(queryset, first_name, value):
+        hosts = models.Host.objects.filter(
+            Q(hostname__icontains=value)|Q(connect_ip__icontains=value)
+        )
+        return queryset.filter(src_hosts__in=hosts)
+
+
+    @staticmethod
+    def dest_group_filter(queryset, first_name, value):
+        group = models.Group.objects.filter(name__icontains=value)
+        return queryset.filter(dest_group=group)
+
+
+    @staticmethod
+    def dest_hosts_filter(queryset, first_name, value):
+        hosts = models.Host.objects.filter(
+            Q(hostname__icontains=value)|Q(connect_ip__icontains=value)
+        )
+        return queryset.filter(dest_hosts__in=hosts)
+
+
+    @staticmethod
+    def info_filter(queryset, first_name, value):
+        return queryset.filter(
+            Q(src_info__icontains=value)|Q(dest_info__icontains=value)
+        )

@@ -8,7 +8,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from ops.models import Push_Mission,Mission
-from manager.models import Group
+from manager.models import Group,Host
 from authority.models import ExtendUser
 from utils.models import FILE
 import uuid
@@ -53,7 +53,6 @@ class Code_Work(Work):
             ('yo_exam_codework', u'审核发布工单'),
             ('yo_run_codework', u'运行发布工单'),
             ('yo_upload_codework', u'为工单上传文件'),
-            ('yo_delete_codework', u'删除应用组'),
             ('yo_results_codework', u'查看错误工单信息'),
         )
 
@@ -85,6 +84,42 @@ class Code_Work(Work):
         self.push_mission.save()
 
 
-class Safety_Work(Work):
-    # 关联安全开启
-    groups = models.ManyToManyField(Group, blank=True, related_name='works', verbose_name=_("works"))
+class Safe_Work(Work):
+    SAFE_WORK_STATUS = (
+        (settings.SAFEWORK_REJECT, '拒绝'),
+        (settings.SAFEWORK_WAIT_RUN, '等待执行'),
+        (settings.SAFEWORK_WAIT_DONE, '正在执行'),
+        (settings.SAFEWORK_DONE, '执行完毕'),
+    )
+    _status = models.IntegerField(default=settings.SAFEWORK_WAIT_RUN, choices=SAFE_WORK_STATUS)
+
+    # 来源
+    src_group = models.OneToOneField(Group, related_name='src_safe_work', on_delete=models.SET_NULL, null=True, blank=True)
+    src_hosts = models.ManyToManyField(Host,blank=True, related_name='missions', verbose_name=_("Mission"))
+    src_info = models.TextField()
+
+    # 目标
+    dest_group = models.OneToOneField(Group, related_name='dest_safe_work', on_delete=models.SET_NULL, null=True, blank=True)
+    dest_hosts = models.ManyToManyField(Host, blank=True, related_name='missions', verbose_name=_("Mission"))
+    dest_port = models.IntegerField(max_length=11, default=0, null=True)
+    dest_info = models.TextField()
+
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+    executor = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+
+
+    class Meta:
+        permissions = (
+            ('yo_list_safework', u'罗列安全工单'),
+            ('yo_create_safework', u'新增安全工单'),
+            ('yo_status_safework', u'修改安全工单状态'),
+            ('yo_detail_safework', u'详细查看安全工单')
+        )
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        self._status = status

@@ -34,13 +34,14 @@ class CodeWorkListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
 class CodeWorkCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Code_Work
     serializer_class = serializers.CodeWorkSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [CodeWorkPermission.CodeWorkCreateRequiredMixin, IsAuthenticated]
 
 
+# Base Class
 class CodeWorkStatusAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Code_Work
     serializer_class = serializers.CodeWorkStatusSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     queryset = models.Code_Work.objects.all()
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
