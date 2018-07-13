@@ -25,7 +25,7 @@ class AliyunRDSTool(object):
 
     @staticmethod
     def is_readonly(results):
-        if results.get('DBInstanceId')[0:2] == 'rr' or results.get('DBInstanceId')[0:2]:
+        if results.get('DBInstanceId')[0:2] and results.get('DBInstanceId')[0:2] == 'rr':
             return True
         else:
             return False
@@ -80,7 +80,8 @@ class AliyunRDSTool(object):
             'recognition_id': json_results.get('DBInstanceId'),
             'instancename': json_results.get('DBInstanceDescription'),
             'version': json_results.get('EngineVersion'),
-            'readonly': len(json_results['ReadOnlyDBInstanceIds']['ReadOnlyDBInstanceId'])
+            'readonly': len(json_results['ReadOnlyDBInstanceIds']['ReadOnlyDBInstanceId']),
+            'status': 'Running'
         }
 
     # @staticmethod

@@ -20,7 +20,7 @@ class META_CONTENT(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, default='')
     module = models.CharField(default='',max_length=20)
-    args = models.CharField(default='', max_length=100)
+    args = models.CharField(default='', max_length=200)
     sort = models.IntegerField(default=0)
 
     class Meta:

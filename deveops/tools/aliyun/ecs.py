@@ -85,7 +85,7 @@ class AliyunECSTool(object):
     @staticmethod
     def get_aliyun_instance_status(json_results):
         status = json_results.get('InstanceFullStatusSet').get('InstanceFullStatusType')[0]
-        if status.get('HealthStatus').get('HealthStatus').get('Name') != 'Ok':
+        if status.get('HealthStatus').get('Name') != 'Ok':
             return None
         else:
             return AliyunECSTool.get_ecs_status(

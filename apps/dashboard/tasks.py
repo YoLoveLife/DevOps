@@ -14,6 +14,7 @@ from ops import models as OpsModels
 from authority import models as AuthModels
 from dashboard.models import ExpiredAliyunECS,ExpiredAliyunRDS,ExpiredAliyunKVStore,ExpiredAliyunMongoDB
 from tool import smtp
+from timeline.decorator import decorator_task
 
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
 
@@ -118,7 +119,7 @@ def expired_aliyun_ecs():
         results = API.get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_expired_models(result)
-            if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+            if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
                 obj_maker(ExpiredAliyunECS, dict_models)
 
 
@@ -132,8 +133,9 @@ def expired_aliyun_rds():
         for result in results:
             if not API.is_readonly(result):
                 dict_models = API.get_aliyun_expired_models(result)
-                if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+                if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
                     obj_maker(ExpiredAliyunRDS,dict_models)
+
 
 @periodic_task(run_every=settings.EXPIRED_TIME)
 def expired_aliyun_kvstore():
@@ -144,7 +146,7 @@ def expired_aliyun_kvstore():
         results = API.get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_expired_models(result)
-            if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+            if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
                 obj_maker(ExpiredAliyunKVStore,dict_models)
 
 
@@ -156,8 +158,8 @@ def expired_aliyun_mongodb():
     for page in range(1,API.pagecount+1):
         results = API.get_instances(page)
         for result in results:
-            dict_models = API.get_aliyun_expired_models(result)
-            if dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
+            dict_models = API.get_aliyun_expired_models(result )
+            if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
                 obj_maker(ExpiredAliyunMongoDB, dict_models)
 
 

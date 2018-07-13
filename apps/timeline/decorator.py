@@ -15,3 +15,15 @@ def decorator_api(timeline_type,):
             return is_validated #DOT TOUCH it's magic
         return inner_wrapper
     return wrapper
+
+
+def decorator_task(timeline_type,):
+    def wrapper(func):
+        def inner_wrapper(*args, **kwargs):
+            results = func(*args, **kwargs)
+            history = History(type=timeline_type, )
+            history.is_validated = True
+            history.save()
+            return None  # DOT TOUCH it's magic
+        return inner_wrapper
+    return wrapper

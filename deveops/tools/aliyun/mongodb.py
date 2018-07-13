@@ -73,7 +73,8 @@ class AliyunMongoDBTool(object):
             'recognition_id': json_results.get('DBInstanceId'),
             'instancename': json_results.get('DBInstanceDescription'),
             'version': json_results.get('EngineVersion'),
-            'type': json_results.get('Engine')
+            'type': json_results.get('Engine'),
+            'status': 'Running',
         }
 
     # @staticmethod

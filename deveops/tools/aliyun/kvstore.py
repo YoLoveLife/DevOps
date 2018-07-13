@@ -74,7 +74,8 @@ class AliyunKVStoreTool(object):
             'instancename': json_results.get('InstanceName'),
             'version': json_results.get('EngineVersion'),
             'connect_domain': json_results.get('ConnectionDomain'),
-            'type': json_results.get('InstanceType')
+            'type': json_results.get('InstanceType'),
+            'status': 'Running'
         }
 
     # @staticmethod

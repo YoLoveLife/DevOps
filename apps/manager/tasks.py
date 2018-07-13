@@ -9,6 +9,8 @@ from celery.schedules import crontab
 from manager.models import Host,HostDetail,Position,System_Type,Group
 from django.conf import settings
 import redis, json
+from timeline.decorator import decorator_task
+
 
 def host_maker(dict_models):
     systype_query = System_Type.objects.filter(name=dict_models['detail']['systemtype'])
@@ -56,6 +58,7 @@ def aliyun2cmdb():
             if not host_query.exists():
                 host_maker(dict_models)
 
+
 @periodic_task(run_every=settings.MANAGER_TIME)
 def cmdb2aliyun():
     from deveops.tools.aliyun import ecs
@@ -64,9 +67,9 @@ def cmdb2aliyun():
     queryset = Host.objects.filter(~Q(detail__aliyun_id=''))
     for host in queryset:
         results = API.get_instance_status(host.detail.aliyun_id)
-        print(results.get('InstanceFullStatusSet').get('InstanceFullStatusType')[0])
         status = API.get_aliyun_instance_status(results)
         if status is None:
+            # TODO: 提供一个逾期时间来延缓主机过期
             host.delete()
         elif host.status == settings.STATUS_HOST_PAUSE:
             continue

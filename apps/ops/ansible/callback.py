@@ -13,7 +13,7 @@ class AnsibleCallback(CallbackBase):
     def __init__(self, consumer, push_mission):
         self.consumer = consumer
         self.push_mission = push_mission
-        return super(AnsibleCallback, self).__init__()
+        super(AnsibleCallback, self).__init__()
 
     def v2_runner_on_ok(self, result, **kwargs):
         self.consumer.send('OK')
