@@ -13,8 +13,6 @@ from django.conf import settings
 import pyotp
 import os
 from qrcode import QRCode,constants
-import base64
-
 __all__ = [
     "UserLoginAPI", "UserInfoAPI", "UserListAPI",
     "UserOpsListAPI", "UserUpdateAPI", "UserDeleteAPI",
@@ -24,6 +22,9 @@ __all__ = [
 
 
 class UserLoginAPI(ObtainJSONWebToken):
+    def __init__(self):
+        super(UserLoginAPI, self).__init__()
+
     def post(self, request, *args, **kwargs):
         response = super(UserLoginAPI,self).post(request,*args,**kwargs)
         return response
@@ -105,7 +106,7 @@ def get_qrcode(user):
     file_name = str(aes.encrypt(user.qrcode),encoding='utf-8')
     file = settings.QCODE_ROOT+'/'+file_name+'.png'
     if not os.path.exists(file):
-        data = pyotp.totp.TOTP(user.qrcode).provisioning_uri('=v=', issuer_name="devEops")
+        data = pyotp.totp.TOTP(user.qrcode).provisioning_uri(user.username, issuer_name="devEops")
         qr = QRCode(
             version=1,
             error_correction=constants.ERROR_CORRECT_L,

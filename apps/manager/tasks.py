@@ -11,7 +11,6 @@ from django.conf import settings
 import redis, json
 from timeline.decorator import decorator_task
 
-
 def host_maker(dict_models):
     systype_query = System_Type.objects.filter(name=dict_models['detail']['systemtype'])
     if not systype_query.exists():
@@ -32,6 +31,12 @@ def host_maker(dict_models):
     dict_models['detail'] = detail
 
     host = Host.objects.create(**dict_models)
+
+
+def host_updater(obj, dict_models):
+    dict_models.pop('detail')
+    dict_models['_status'] = dict_models.pop('status')
+    obj.update(**dict_models)
 
 
 @periodic_task(run_every=settings.MANAGER_TIME)
@@ -57,6 +62,8 @@ def aliyun2cmdb():
             host_query = Host.objects.filter(detail__aliyun_id=dict_models['detail']['aliyun_id'], connect_ip=dict_models['connect_ip'])
             if not host_query.exists():
                 host_maker(dict_models)
+            else:
+                host_updater(host_query,dict_models)
 
 
 @periodic_task(run_every=settings.MANAGER_TIME)

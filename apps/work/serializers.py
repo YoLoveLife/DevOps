@@ -10,10 +10,11 @@ __all__ = [
 
 
 class CodeWorkStatusSerializer(serializers.ModelSerializer):
+    qrcode = serializers.CharField(required=True, write_only=True,)
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'status',
+            'id', 'status', 'qrcode'
         )
         read_only_fields = (
             'id',
@@ -22,7 +23,6 @@ class CodeWorkStatusSerializer(serializers.ModelSerializer):
 
 class CodeWorkCheckSerializer(CodeWorkStatusSerializer):
     def update(self, instance, validated_data):
-        print(instance.file_list)
         if len(instance.file_list) != 0:
             instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_UPLOAD
         else:
@@ -80,11 +80,12 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
 
 class CodeWorkUploadFileSerializer(serializers.ModelSerializer):
     files = serializers.ListField(source="file_list")
+    qrcode = serializers.CharField(required=True, write_only=True,)
 
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'files'
+            'id', 'files', 'qrcode',
         )
 
 

@@ -196,5 +196,5 @@ class Push_Mission(models.Model):
             self.save()
 
     def results_append(self,results):
-        self.results = self.results + results
+        self.results = self.results + str(results)
         self.save()

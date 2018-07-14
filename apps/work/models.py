@@ -65,7 +65,7 @@ class Code_Work(Work):
     def vars_dict(self):
         from django.conf import settings
         dict = self.mission.vars_dict
-        dict['BASE'] = settings.OPS_ROOT + str(self.uuid) + '/'
+        dict['BASE'] = settings.OPS_ROOT + '/' + str(self.uuid) + '/'
         dict['TOOL'] = settings.TOOL_ROOT + '/'
         if self.push_mission.files.count() !=0:
             for file in self.push_mission.files.all():
@@ -95,17 +95,19 @@ class Safe_Work(Work):
 
     # 来源
     src_group = models.OneToOneField(Group, related_name='src_safe_work', on_delete=models.SET_NULL, null=True, blank=True)
-    src_hosts = models.ManyToManyField(Host,blank=True, related_name='missions', verbose_name=_("Mission"))
+    src_hosts = models.ManyToManyField(Host,blank=True, related_name='src_safe_work', verbose_name=_("src_safe_work"))
     src_info = models.TextField()
 
     # 目标
     dest_group = models.OneToOneField(Group, related_name='dest_safe_work', on_delete=models.SET_NULL, null=True, blank=True)
-    dest_hosts = models.ManyToManyField(Host, blank=True, related_name='missions', verbose_name=_("Mission"))
-    dest_port = models.IntegerField(max_length=11, default=0, null=True)
+    dest_hosts = models.ManyToManyField(Host, blank=True, related_name='dest_safe_work', verbose_name=_("dest_safe_work"))
+    dest_port = models.IntegerField(default=0, null=True)
     dest_info = models.TextField()
 
-    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
-    executor = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL,
+                             related_name='safe_work')
+    executor = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL,
+                                 related_name='exe_safe_work')
 
 
     class Meta:

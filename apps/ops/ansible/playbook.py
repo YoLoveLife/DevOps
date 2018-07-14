@@ -13,7 +13,7 @@ __all__ = [
     "Options", "Playbook"
 ]
 
-Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'host_key_checking',
+Options = namedtuple('Options', ['connection', 'module_path', 'forks',
                                  'become', 'become_method', 'become_user', 'check', 'private_key_file','diff'])
 
 
