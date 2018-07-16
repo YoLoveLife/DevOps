@@ -2,7 +2,7 @@
 
 您会惊喜的发现，现在我们的资产支持**多方位的检索**，您可以更快的找到自己所关注的资源，方便您进行归类整理。
 
-![SEARCH](DevOps/docs/version/img/host.png)  
+![SEARCH](img/host.png)  
 
 我们为您预设了诸多您可能用的上的检索条件，例如在主机中您可以根据机器的IP|主机名称|位置|系统等信息来进行检索。  
 让您更快的找到您管理的资源。
@@ -30,7 +30,7 @@ devEops会自动帮您维护资产信息。
 
 devEops引入了`Google Authority`作为重要操作的凭证。  
 您可以通过右上角的QRCode来获取您的唯一认证信息，**注意只能获取一次**。
-![QRCODE](DevOps/docs/version/img/qrcode.png)  
+![QRCODE](img/qrcode.png)  
 请下载具有身份验证器相关的功能保存您的QRCode  
 您可能会被要求在**任何需要认证**您身份的地方使用到该凭证，请务必保存好。 
 如果您不小心丢失了认证信息，您可能需要通知管理员为您重置了。
@@ -41,7 +41,7 @@ devEops引入了`Google Authority`作为重要操作的凭证。
 
 2.0版本为了拉近用户与机器之间的距离，devEops做了很多努力。  
 通过阿里云API以及~~VMware~~的API来获取您所想要看到的所有性能信息。  
-![QRCODE](DevOps/docs/version/img/monitor.png)  
+![QRCODE](img/monitor.png)  
 
 您可以在资产信息中针对对应的主机查看详细的信息，我想这是您一直想要的。
 
@@ -53,7 +53,7 @@ devEops引入了`Google Authority`作为重要操作的凭证。
 是的，我们想解决批量上传文件的问题。
 2.0版本运维工程师可以通过工单定义上传文件的路径。  
 您只需要在使用模块copy的时候使用 `src=file:{{WAR}} dest=/storage01/app.jar`  
-![CENTER](DevOps/docs/version/img/center.png)
+![CENTER](img/center.png)
 当您执行工单的时候，平台会要求您提供一份已经在**分发中心已经上传成功**的文件。  
 该文件就会以工单配置的形式分发到服务器上。
 这个文件也可能是您的代码包，目前我们只支持**300M**以下的文件分发。
@@ -64,7 +64,7 @@ devEops引入了`Google Authority`作为重要操作的凭证。
 我想您其实并不需要工单具体是**如何执行**的是吗？  
 1.0版本中我们将所有的执行细节展现给用户浏览，但是这恰恰是用户所**不关心**的。  
 您只关心工单究竟成功完成没有，是吗？  
-![PROCESS](DevOps/docs/version/img/process.png)
+![PROCESS](img/process.png)
 我们提供了更加友善的工单执行界面：**简洁 | 明了**  
 我想您会喜欢这种进度条的方式。
 
@@ -74,7 +74,7 @@ devEops引入了`Google Authority`作为重要操作的凭证。
 我们认为在所有的业务中，是**不存在所谓的标准化**的。  
 我们其实无法妥协已经上线的业务和未上线的业务，使他们的软件安装目录和业务发布目录全部相同。  
 我们在业务的最大范围**应用组**中引入概念`组参数`。  
-![VARS](DevOps/docs/version/img/vars.png)
+![VARS](img/vars.png)
 您可以在配置工单的**任何地方**引入该变量，使用**{{变量}}**的方式。  
 该变量会在工单执行的时候注入到您的工单中。
 
