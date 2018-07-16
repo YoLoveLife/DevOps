@@ -13,7 +13,7 @@ def ssh_keygen():
         key = RSAKey.generate(2048)
         key.write_private_key(output)
         private_key = output.getvalue()
-        publick_key = '{HEAD} {KEY} {DOMAIN}'.format(HEAD='ssh-rsa', KEY=key.get_base64(), DOMAIN='yo@yolovelife.com')
+        publick_key = '{HEAD} {KEY} {DOMAIN}'.format(HEAD='ssh-rsa', KEY=key.get_base64(), DOMAIN='deveops@yolovelife.com')
     except IOError as e:
         raise IOError('gen_keys: there was an error writing to the file')
     return private_key,publick_key

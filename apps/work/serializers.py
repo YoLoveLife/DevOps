@@ -10,10 +10,11 @@ __all__ = [
 
 
 class CodeWorkStatusSerializer(serializers.ModelSerializer):
+    qrcode = serializers.CharField(required=True, write_only=True,)
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'status',
+            'id', 'status', 'qrcode'
         )
         read_only_fields = (
             'id',
@@ -22,12 +23,9 @@ class CodeWorkStatusSerializer(serializers.ModelSerializer):
 
 class CodeWorkCheckSerializer(CodeWorkStatusSerializer):
     def update(self, instance, validated_data):
-        print(instance.file_list)
         if len(instance.file_list) != 0:
-            print('OPS_PUSH_MISSION_WAIT_UPLOAD')
             instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_UPLOAD
         else:
-            print('OPS_PUSH_MISSION_WAIT_RUN')
             instance.push_mission.status = settings.OPS_PUSH_MISSION_WAIT_RUN
         instance.push_mission.save()
         return super(CodeWorkCheckSerializer,self).update(instance, {})
@@ -82,9 +80,49 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
 
 class CodeWorkUploadFileSerializer(serializers.ModelSerializer):
     files = serializers.ListField(source="file_list")
+    qrcode = serializers.CharField(required=True, write_only=True,)
 
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'files'
+            'id', 'files', 'qrcode',
         )
+
+
+class SafeWorkSerializer(serializers.HyperlinkedModelSerializer):
+    src_group = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Group.objects.all(), allow_null=True)
+    src_hosts = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.Group.objects.all(),
+                                                   allow_null=True)
+
+    dest_group = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Group.objects.all(), allow_null=True)
+    dest_hosts = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.Group.objects.all(),
+                                                   allow_null=True)
+
+    class Meta:
+        model = models.Safe_Work
+        fields = (
+            'id', 'uuid',
+            'src_group', 'src_hosts', 'src_info',
+            'dest_group', 'dest_hosts', 'dest_port', 'dest_info', 'status'
+        )
+
+
+class SafeWorkStatusSerializer(SafeWorkSerializer):
+    class Meta:
+        model = models.Safe_Work
+        fields = (
+            'id', 'status',
+        )
+        read_only_fields = (
+            'id',
+        )
+
+    def update(self, instance, validated_data):
+        status = validated_data.pop('status')
+        if status == 'done':
+            validated_data['status'] = settings.SAFEWORK_DONE
+        elif status == 'reject':
+            validated_data['status'] = settings.SAFEWORK_REJECT
+        elif status == 'run':
+            validated_data['status'] = settings.SAFEWORK_WAIT_DONE
+        return super(SafeWorkStatusSerializer, self).update(instance, validated_data)

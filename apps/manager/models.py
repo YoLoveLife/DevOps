@@ -164,7 +164,7 @@ class Host(models.Model):
 
     # 用户端口
     sshport = models.IntegerField(default='22')
-    detail = models.ForeignKey(HostDetail, related_name='host', on_delete=models.SET_NULL, null=True)
+    detail = models.ForeignKey(HostDetail, related_name='host', on_delete=models.CASCADE, null=True)
     _passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
 
     # 服务器状态

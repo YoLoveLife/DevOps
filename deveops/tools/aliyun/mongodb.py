@@ -17,7 +17,7 @@ import datetime
 class AliyunMongoDBTool(object):
     def __init__(self):
         self.clt = client.AcsClient(settings.ALIYUN_ACCESSKEY, settings.ALIYUN_ACCESSSECRET, 'cn-hangzhou')
-        self.pagecount = self.get_page_number()
+        self.pagecount = self.request_get_page_number()
 
     @staticmethod
     def get_json_results(results):
@@ -27,7 +27,7 @@ class AliyunMongoDBTool(object):
     def request_to_json(request):
         return request.set_accept_format('json')
 
-    def get_page_number(self):
+    def request_get_page_number(self):
         request = DescribeDBInstancesRequest.DescribeDBInstancesRequest()
         request.add_query_param('PageNumber', 1)
         request.add_query_param('PageSize', 30)
@@ -38,7 +38,7 @@ class AliyunMongoDBTool(object):
         result = self.get_json_results(response)
         return int(result.get('TotalCount')/settings.ALIYUN_PAGESIZE)+1
 
-    def get_instance(self, instance_id):
+    def request_get_instance(self, instance_id):
         request = DescribeDBInstancesRequest.DescribeDBInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
@@ -49,7 +49,7 @@ class AliyunMongoDBTool(object):
             return {}
         return self.get_json_results(response).get('DBInstances').get('DBInstance')[0]
 
-    def get_instances(self, page):
+    def request_get_instances(self, page):
         request = DescribeDBInstancesRequest.DescribeDBInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
@@ -73,7 +73,8 @@ class AliyunMongoDBTool(object):
             'recognition_id': json_results.get('DBInstanceId'),
             'instancename': json_results.get('DBInstanceDescription'),
             'version': json_results.get('EngineVersion'),
-            'type': json_results.get('Engine')
+            'type': json_results.get('Engine'),
+            'status': 'Running',
         }
 
     # @staticmethod

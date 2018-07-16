@@ -34,13 +34,14 @@ class CodeWorkListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
 class CodeWorkCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Code_Work
     serializer_class = serializers.CodeWorkSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [CodeWorkPermission.CodeWorkCreateRequiredMixin, IsAuthenticated]
 
 
+# Base Class
 class CodeWorkStatusAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Code_Work
     serializer_class = serializers.CodeWorkStatusSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     queryset = models.Code_Work.objects.all()
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
@@ -52,6 +53,10 @@ class CodeWorkCheckAPI(CodeWorkStatusAPI):
 
     def update(self, request, *args, **kwargs):
         user = request.user
+        if 'qrcode' in request.data.keys() and user.check_qrcode(request.data.get('qrcode')):
+            pass
+        else:
+            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
         if codework.mission.group.users.filter(id=user.id).exists():
             return super(CodeWorkCheckAPI,self).update(request, *args, **kwargs)
@@ -65,6 +70,11 @@ class CodeWorkRunAPI(CodeWorkStatusAPI):
 
     def update(self, request, *args, **kwargs):
         user = request.user
+        if 'qrcode' in request.data.keys() and user.check_qrcode(request.data.get('qrcode')):
+            pass
+        else:
+            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
         codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
         if codework.user.id == user.id:
             return super(CodeWorkRunAPI,self).update(request, *args, **kwargs)
@@ -81,6 +91,11 @@ class CodeWorkUploadFileAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         user = request.user
+        if 'qrcode' in request.data.keys() and user.check_qrcode(request.data.get('qrcode')):
+            pass
+        else:
+            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
         codework = models.Code_Work.objects.filter(uuid=kwargs['pk']).get()
         if codework.user.id == user.id:
             return super(CodeWorkUploadFileAPI,self).update(request, *args, **kwargs)

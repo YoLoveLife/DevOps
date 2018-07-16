@@ -45,12 +45,7 @@ class UtilsFileListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     serializer_class = serializers.FileSerializer
     permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
     pagination_class = FilePagination
-
-    def get_queryset(self):
-        user = self.request.user
-        query_set = models.FILE.objects.filter(user=user,)
-        return query_set
-
+    queryset = models.FILE.objects.all().order_by('-create_time')
 
 
 class UtilsFileCreateAPI(WebTokenAuthentication, generics.CreateAPIView):

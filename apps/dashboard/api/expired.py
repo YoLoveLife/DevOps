@@ -17,6 +17,8 @@ __all__ = [
     "ExpiredPagination",
     "DashboardExpiredECSAPI",
     "DashboardExpiredRDSAPI",
+    "DashboardExpiredKVStoreAPI",
+    "DashboardExpiredMongoDBAPI",
 ]
 
 
@@ -27,7 +29,7 @@ class ExpiredPagination(PageNumberPagination):
 class DashboardExpiredECSAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExpiredAliyunECS
     permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
-    queryset = models.ExpiredAliyunECS.objects.all()
+    queryset = models.ExpiredAliyunECS.objects.all().order_by('expired')
     serializer_class = serializers.DashboardExpiredAliyunECSSerializer
     pagination_class = ExpiredPagination
 
@@ -35,14 +37,15 @@ class DashboardExpiredECSAPI(WebTokenAuthentication,generics.ListAPIView):
 class DashboardExpiredRDSAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.ExpiredAliyunRDS
     permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
-    queryset = models.ExpiredAliyunRDS.objects.all()
+    queryset = models.ExpiredAliyunRDS.objects.all().order_by('expired')
     serializer_class = serializers.DashboardExpiredAliyunRDSSerializer
     pagination_class = ExpiredPagination
+
 
 class DashboardExpiredKVStoreAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.ExpiredAliyunKVStore
     permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
-    queryset = models.ExpiredAliyunKVStore.objects.all()
+    queryset = models.ExpiredAliyunKVStore.objects.all().order_by('expired')
     serializer_class = serializers.DashboardExpiredAliyunKVStoreSerializer
     pagination_class = ExpiredPagination
 
@@ -50,6 +53,6 @@ class DashboardExpiredKVStoreAPI(WebTokenAuthentication, generics.ListAPIView):
 class DashboardExpiredMongoDBAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.ExpiredAliyunMongoDB
     permission_classes = [ExpirePermission.ExpiredListRequiredMixin, IsAuthenticated]
-    queryset = models.ExpiredAliyunMongoDB.objects.all()
+    queryset = models.ExpiredAliyunMongoDB.objects.all().order_by('expired')
     serializer_class = serializers.DashboardExpiredAliyunMongoDBSerializer
     pagination_class = ExpiredPagination

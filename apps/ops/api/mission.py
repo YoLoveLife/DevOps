@@ -107,7 +107,7 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMissionUpdateAPI, self).create(request, *args, **kwargs)
+            return super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -122,7 +122,7 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMissionDeleteAPI, self).create(request, *args, **kwargs)
+            return super(OpsMissionDeleteAPI, self).delete(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 

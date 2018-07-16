@@ -26,7 +26,7 @@ class DNSListAPI(WebTokenAuthentication, generics.ListAPIView):
 class DNSListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.DNS
     serializer_class = serializers.DNSSerializer
-    queryset = models.DNS.objects.all().exclude(father__isnull=True).exclude(father__father__isnull=True)
+    queryset = models.DNS.objects.all().exclude(father__isnull=True)
     permission_classes = [DNSPermission.DNSListRequiredMixin, IsAuthenticated]
     pagination_class = DNSPagination
     filter_class = filter.DNSFilter

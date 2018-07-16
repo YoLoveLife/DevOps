@@ -34,7 +34,7 @@ class FileCreateRequiredMixin(FileAPIRequiredMixin):
 
 
 class FileUpdateRequiredMixin(FileAPIRequiredMixin):
-    permission_required = u'utils.yo_update_file'
+    permission_required = u'utils.yo_create_file'
 
 
 class FileDeleteRequiredMixin(FileAPIRequiredMixin):

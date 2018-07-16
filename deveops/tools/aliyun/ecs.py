@@ -2,10 +2,10 @@
 # !/usr/bin/env python
 # Time 18-7-2
 # Author WZZ
-# import os
-# import django
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
-# django.setup()
+import os
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
+django.setup()
 
 import json
 import datetime
@@ -17,7 +17,7 @@ from django.conf import settings
 class AliyunECSTool(object):
     def __init__(self):
         self.clt = client.AcsClient(settings.ALIYUN_ACCESSKEY, settings.ALIYUN_ACCESSSECRET, 'cn-hangzhou')
-        self.pagecount = self.get_page_number()
+        self.pagecount = self.request_get_page_number()
 
     @staticmethod
     def request_to_json(request):
@@ -65,9 +65,10 @@ class AliyunECSTool(object):
         try:
             ipaddr = json_results.get('NetworkInterfaces').get('NetworkInterface')[0].get('PrimaryIpAddress')
         except AttributeError as e:
-            ipaddr = json_results.get('PublicIpAddress').get('IpAddress')[0]
-        if not ipaddr:
-            ipaddr = json_results.get('VpcAttributes').get('PrivateIpAddress').get('IpAddress')[0]
+            if len(json_results.get('PublicIpAddress').get('IpAddress')) != 0:
+                ipaddr = json_results.get('PublicIpAddress').get('IpAddress')[0]
+            else:
+                ipaddr = json_results.get('VpcAttributes').get('PrivateIpAddress').get('IpAddress')[0]
 
         tags_list = []
         if json_results.__contains__('Tags'):
@@ -84,16 +85,15 @@ class AliyunECSTool(object):
 
     @staticmethod
     def get_aliyun_instance_status(json_results):
-        status = json_results.get('InstanceFullStatusSet').get('InstanceFullStatusType')[0]
-        if status.get('HealthStatus').get('HealthStatus').get('Name') != 'Ok':
-            return None
-        else:
-            return AliyunECSTool.get_ecs_status(
-                status.get('Status').get('Name')
-            )
+        try:
+            status = json_results.get('InstanceFullStatusSet').get('InstanceFullStatusType')[0]
+        except IndexError as e:
+            return 'delete'
+
+        return AliyunECSTool.get_ecs_status(status.get('Status').get('Name'))
 
 
-    def get_page_number(self):
+    def request_get_page_number(self):
         request = DescribeInstanceStatusRequest.DescribeInstanceStatusRequest()
         request.add_query_param('PageNumber', 1)
         request.add_query_param('PageSize', 1)
@@ -105,7 +105,7 @@ class AliyunECSTool(object):
         return int(result['TotalCount']/settings.ALIYUN_PAGESIZE)+1
 
 
-    def get_instance_status(self, instance_id):
+    def request_get_instance_status(self, instance_id):
         request = DescribeInstancesFullStatusRequest.DescribeInstancesFullStatusRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
@@ -118,7 +118,7 @@ class AliyunECSTool(object):
         return self.get_json_results(response)
 
 
-    def get_instance(self, instance_id):
+    def request_get_instance(self, instance_id):
         # request = DescribeInstancesRequest.DescribeInstancesRequest()
         request = DescribeInstanceAttributeRequest.DescribeInstanceAttributeRequest()
         self.request_to_json(request)
@@ -129,7 +129,7 @@ class AliyunECSTool(object):
             return {}
         return self.get_json_results(response)
 
-    def get_instances(self, page):
+    def request_get_instances(self, page):
         request = DescribeInstancesRequest.DescribeInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')

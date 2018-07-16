@@ -17,7 +17,7 @@ import datetime
 class AliyunKVStoreTool(object):
     def __init__(self):
         self.clt = client.AcsClient(settings.ALIYUN_ACCESSKEY, settings.ALIYUN_ACCESSSECRET, 'cn-hangzhou')
-        self.pagecount = self.get_page_number()
+        self.pagecount = self.request_get_page_number()
 
     @staticmethod
     def get_json_results(results):
@@ -27,7 +27,7 @@ class AliyunKVStoreTool(object):
     def request_to_json(request):
         return request.set_accept_format('json')
 
-    def get_page_number(self):
+    def request_get_page_number(self):
         request = DescribeInstancesRequest.DescribeInstancesRequest()
         request.add_query_param('PageNumber', 1)
         request.add_query_param('PageSize', 1)
@@ -38,7 +38,7 @@ class AliyunKVStoreTool(object):
         result = self.get_json_results(response)
         return int(result.get('TotalCount')/settings.ALIYUN_PAGESIZE)+1
 
-    def get_instance(self, instance_id):
+    def request_get_instance(self, instance_id):
         request = DescribeInstancesRequest.DescribeInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
@@ -49,7 +49,7 @@ class AliyunKVStoreTool(object):
             return {}
         return self.get_json_results(response).get('Instances').get('KVStoreInstance')[0]
 
-    def get_instances(self, page):
+    def request_get_instances(self, page):
         request = DescribeInstancesRequest.DescribeInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
@@ -74,7 +74,8 @@ class AliyunKVStoreTool(object):
             'instancename': json_results.get('InstanceName'),
             'version': json_results.get('EngineVersion'),
             'connect_domain': json_results.get('ConnectionDomain'),
-            'type': json_results.get('InstanceType')
+            'type': json_results.get('InstanceType'),
+            'status': 'Running'
         }
 
     # @staticmethod
