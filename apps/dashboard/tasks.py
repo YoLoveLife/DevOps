@@ -19,7 +19,7 @@ def expired_aliyun_ecs():
     from deveops.tools.aliyun import ecs
     API = ecs.AliyunECSTool()
     for page in range(1,API.pagecount+1):
-        results = API.get_instances(page)
+        results = API.request_get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_expired_models(result)
             if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
@@ -32,7 +32,7 @@ def expired_aliyun_rds():
     from deveops.tools.aliyun import rds
     API = rds.AliyunRDSTool()
     for page in range(1,API.pagecount+1):
-        results = API.get_instances(page)
+        results = API.request_get_instances(page)
         for result in results:
             if not API.is_readonly(result):
                 dict_models = API.get_aliyun_expired_models(result)
@@ -46,7 +46,7 @@ def expired_aliyun_kvstore():
     from deveops.tools.aliyun import kvstore
     API = kvstore.AliyunKVStoreTool()
     for page in range(1,API.pagecount+1):
-        results = API.get_instances(page)
+        results = API.request_get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_expired_models(result)
             if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
@@ -59,7 +59,7 @@ def expired_aliyun_mongodb():
     from deveops.tools.aliyun import mongodb
     API = mongodb.AliyunMongoDBTool()
     for page in range(1,API.pagecount+1):
-        results = API.get_instances(page)
+        results = API.request_get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_expired_models(result )
             if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:

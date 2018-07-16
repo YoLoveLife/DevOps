@@ -17,7 +17,7 @@ import datetime
 class AliyunRDSTool(object):
     def __init__(self):
         self.clt = client.AcsClient(settings.ALIYUN_ACCESSKEY, settings.ALIYUN_ACCESSSECRET, 'cn-hangzhou')
-        self.pagecount = self.get_page_number()
+        self.pagecount = self.request_get_page_number()
 
     @staticmethod
     def get_json_results(results):
@@ -34,7 +34,7 @@ class AliyunRDSTool(object):
     def request_to_json(request):
         return request.set_accept_format('json')
 
-    def get_page_number(self):
+    def request_get_page_number(self):
         request = DescribeDBInstancesRequest.DescribeDBInstancesRequest()
         request.add_query_param('PageNumber', 1)
         request.add_query_param('PageSize', 1)
@@ -45,7 +45,7 @@ class AliyunRDSTool(object):
         result = self.get_json_results(response)
         return int(result.get('TotalRecordCount')/settings.ALIYUN_PAGESIZE)+1
 
-    def get_instance(self, instance_id):
+    def request_get_instance(self, instance_id):
         request = DescribeDBInstancesRequest.DescribeDBInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')
@@ -56,7 +56,7 @@ class AliyunRDSTool(object):
             return {}
         return self.get_json_results(response).get('Items').get('DBInstance')[0]
 
-    def get_instances(self, page):
+    def request_get_instances(self, page):
         request = DescribeDBInstancesRequest.DescribeDBInstancesRequest()
         self.request_to_json(request)
         request.add_query_param('RegionId', 'cn-hangzhou')

@@ -56,7 +56,7 @@ def aliyun2cmdb():
     from deveops.tools.aliyun import ecs
     API = ecs.AliyunECSTool()
     for page in range(1,API.pagecount+1):
-        results = API.get_instances(page)
+        results = API.request_get_instances(page)
         for result in results:
             dict_models = API.get_aliyun_models(result)
             host_query = Host.objects.filter(detail__aliyun_id=dict_models['detail']['aliyun_id'], connect_ip=dict_models['connect_ip'])
@@ -73,15 +73,17 @@ def cmdb2aliyun():
     API = ecs.AliyunECSTool()
     queryset = Host.objects.filter(~Q(detail__aliyun_id=''))
     for host in queryset:
-        results = API.get_instance_status(host.detail.aliyun_id)
-        status = API.get_aliyun_instance_status(results)
-        if status is None:
-            # TODO: 提供一个逾期时间来延缓主机过期
+        status_results = API.request_get_instance_status(host.detail.aliyun_id)
+        status = API.get_aliyun_instance_status(status_results)
+        if status == 'delete':
             host.delete()
-        elif host.status == settings.STATUS_HOST_PAUSE:
-            continue
         else:
-            host.status = status
+            expired_results = API.request_get_instance(host.detail.aliyun_id)
+            expired = API.get_aliyun_expired_models(expired_results)
+            if expired.get('expired') < settings.ALIYUN_OVERDUETIME:
+                host.delete()
+            else:
+                host.status = status
 
 
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
