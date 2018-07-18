@@ -35,7 +35,15 @@ def host_maker(dict_models):
 
 def host_updater(obj, dict_models):
     dict_models.pop('detail')
-    dict_models['_status'] = dict_models.pop('status')
+    status = dict_models.pop('status')
+    if obj.get().status == settings.STATUS_HOST_PAUSE:
+        if status == settings.STATUS_HOST_CAN_BE_USE:
+            pass
+        else:
+            dict_models['_status'] = settings.STATUS_HOST_CLOSE
+    else:
+        dict_models['_status'] = status
+
     obj.update(**dict_models)
 
 
@@ -83,7 +91,14 @@ def cmdb2aliyun():
             if expired.get('expired') < settings.ALIYUN_OVERDUETIME:
                 host.delete()
             else:
-                host.status = status
+                if host.status == settings.STATUS_HOST_PAUSE:
+                    if status == settings.STATUS_HOST_CAN_BE_USE:
+                        pass
+                    else:
+                        host.status = settings.STATUS_HOST_CLOSE
+                else:
+                    host.status = status
+
 
 
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)

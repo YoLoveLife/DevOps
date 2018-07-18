@@ -234,6 +234,7 @@ if ENVIRONMENT != 'TRAVIS':
         "description": "description",
         "first_name":"sn",
         "phone":"mobile",
+        "groups": "",
     }
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
     # AUTH_LDAP_MIRROR_GROUPS = True

@@ -82,6 +82,8 @@ class AliyunCMSTool(object):
         time = []
         minimum = []
         maximum = []
+        if not results:
+            return {}
         for result in json.loads(results):
             d = datetime.datetime.fromtimestamp(result['timestamp']/1000)
             str1 = d.strftime("%Y/%m/%d %H:%M:%S") #"%Y/%m/%d %H:%M:%S"

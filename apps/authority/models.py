@@ -85,7 +85,7 @@ class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
-    qrcode = models.CharField(max_length=29,default=pyotp.random_base32(29),editable=False)
+    qrcode = models.CharField(max_length=29, default='')
     have_qrcode = models.BooleanField(default=False)
     groups = models.ManyToManyField(
         Group,
@@ -135,7 +135,7 @@ class ExtendUser(AbstractUser):
         elif self.groups.count() == 0:
             return "无权限"
         else:
-            str = "|"
+            str = "-"
             list = []
             groups = self.groups.all()
             for group in groups:

@@ -13,6 +13,7 @@ from django.conf import settings
 import pyotp
 import os
 from qrcode import QRCode,constants
+from urllib import parse
 __all__ = [
     "UserLoginAPI", "UserInfoAPI", "UserListAPI",
     "UserOpsListAPI", "UserUpdateAPI", "UserDeleteAPI",
@@ -103,10 +104,14 @@ class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
 
 
 def get_qrcode(user):
+    if not user.qrcode: # ''
+        user.qrcode = pyotp.random_base32(16)
+        user.save()
     file_name = str(aes.encrypt(user.qrcode),encoding='utf-8')
     file = settings.QCODE_ROOT+'/'+file_name+'.png'
     if not os.path.exists(file):
         data = pyotp.totp.TOTP(user.qrcode).provisioning_uri(user.username, issuer_name="devEops")
+        print('data',data)
         qr = QRCode(
             version=1,
             error_correction=constants.ERROR_CORRECT_L,
