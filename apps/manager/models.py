@@ -6,7 +6,6 @@ from authority.models import ExtendUser
 import uuid
 import paramiko
 import socket
-from deveops.utils.msg import Message
 from deveops.utils import sshkey,aes
 from utils.models import IMAGE
 from django.contrib.auth.models import Group as PerGroup

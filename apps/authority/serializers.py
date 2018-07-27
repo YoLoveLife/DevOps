@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
 from authority.models import ExtendUser,Group,Key,Jumper
-from deveops.utils.rsa import ssh_keygen
+from deveops.utils.sshkey import ssh_keygen
 
 __all__ = [
     'UserSerializer', 'GroupSerializer', 'PermissionSerializer',
@@ -59,7 +59,7 @@ class KeySerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        pri,pub = ssh_keygen()
+        pri, pub = ssh_keygen()
         validated_data['private_key'] = pri
         validated_data['public_key'] = pub
         return super(KeySerializer,self).create(validated_data)

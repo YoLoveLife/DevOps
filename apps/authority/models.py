@@ -24,6 +24,12 @@ def private_key_validator(key):
             params={'value': key},
         )
 
+def publick_key_validator(key):
+    if not sshkey.public_key_validator(key):
+        raise ValidationError(
+            _('%(value)s is not an even number'),
+            params={'value': key},
+        )
 
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
@@ -31,8 +37,8 @@ class Key(models.Model):
     name = models.CharField(max_length=100, default='')
 
     # 操作权限限定
-    _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator])
-    _public_key = models.TextField(max_length=4096, blank=True, null=True)
+    _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator,])
+    _public_key = models.TextField(max_length=4096, blank=True, null=True, validators=[publick_key_validator,])
     # 创建时间
     _fetch_time = models.DateTimeField(auto_now_add=True)
 
