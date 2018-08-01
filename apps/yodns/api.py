@@ -23,6 +23,7 @@ class DNSListAPI(WebTokenAuthentication, generics.ListAPIView):
     filter_class = filter.DNSFilter
 
 
+
 class DNSListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.DNS
     serializer_class = serializers.DNSSerializer

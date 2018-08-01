@@ -32,10 +32,6 @@ class System_Type(models.Model):
     def __unicode__(self):
         return self.name
 
-    @property
-    def sum_host(self):
-        return self.hosts.count()
-
 
 class Position(models.Model):
     id = models.AutoField(primary_key=True) #全局ID
@@ -54,11 +50,6 @@ class Position(models.Model):
 
 
 class Group(models.Model):
-    GROUP_STATUS=(
-        (settings.STATUS_GROUP_PAUSE, '暂停中'),
-        (settings.STATUS_GROUP_UNREACHABLE, '不可达'),
-        (settings.STATUS_GROUP_CAN_BE_USE, '正常'),
-    )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
 
@@ -67,7 +58,6 @@ class Group(models.Model):
     _framework = models.ForeignKey(IMAGE, related_name='groups', on_delete=models.SET_NULL, null=True)
     # 超级管理员
     users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
-    _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
 
     # 操作凭证
@@ -89,17 +79,21 @@ class Group(models.Model):
 
     @property
     def status(self):
-        return self._status
+        if self.jumper is None or self.key is None:
+            return settings.STATUS_GROUP_UNREACHABLE
+        elif self.jumper is not None and self.key is not None:
+            if self.jumper.status == settings.STATUS_JUMPER_CAN_BE_USE:
+                return settings.STATUS_GROUP_CAN_BE_USE
+            else:
+                return settings.STATUS_GROUP_PAUSE
+
 
     @status.setter
     def status(self, status):
-        if status == 1:
-            if self.key is not None and self.jumper is not None and self.jumper.status == 1:
-                self._status = 1
-            else:
-                self._status = 3
+        if self.jumper is not None:
+            self.jumper.check_status()
         else:
-            self._status = status
+            pass
 
     def framework_update(self):
         if not self._framework is None:
@@ -116,20 +110,16 @@ class Group(models.Model):
 
     @property
     def users_list_byconnectip(self):
-        if self._status != settings.STATUS_GROUP_CAN_BE_USE:
+        if self.status != settings.STATUS_GROUP_CAN_BE_USE:
             return []
         else:
             # Ansible 2.0.0.0
             # return list(self.hosts.values_list('connect_ip', flat=True)) Only Normal Host
-            return ','.join(list(self.hosts.filter(_status=1).values_list('connect_ip', flat=True)))
+            return ','.join(list(self.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
 
     @property
     def group_vars(self):
         return self.vars.all()
-
-    @property
-    def users_list_byhostname(self):
-        return list(self.hosts.values_list('hostname', flat=True))
 
 
 class HostDetail(models.Model):

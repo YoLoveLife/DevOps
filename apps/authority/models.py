@@ -159,8 +159,8 @@ class ExtendUser(AbstractUser):
 
 class Jumper(models.Model):
     JUMPER_STATUS = (
-        (0, '不可达'),
-        (1, '可达'),
+        (settings.STATUS_JUMPER_UNREACHABLE, '不可达'),
+        (settings.STATUS_JUMPER_CAN_BE_USE, '可达'),
     )
     # 全局ID
     id = models.AutoField(primary_key=True)
@@ -170,7 +170,7 @@ class Jumper(models.Model):
     sshport = models.IntegerField(default='52000')
     name = models.CharField(max_length=50, default="")
     info = models.CharField(max_length=200, default="", blank=True, null=True)
-    _status = models.IntegerField(choices=JUMPER_STATUS, default=0)
+    _status = models.IntegerField(choices=JUMPER_STATUS, default=-1)
 
     class Meta:
         permissions = (
@@ -190,7 +190,7 @@ class Jumper(models.Model):
 
     @status.setter
     def status(self,status):
-        self._status = self.check_status()
+        self.check_status()
 
     def check_status(self):
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -198,16 +198,13 @@ class Jumper(models.Model):
         try:
             s.connect((str(self.connect_ip), int(self.sshport)))
         except socket.timeout:
-            self._status = 0
+            self._status = settings.STATUS_JUMPER_UNREACHABLE
             self.save()
-            return 0
         except Exception as e:
-            self._status = 0
+            self._status = settings.STATUS_JUMPER_UNREACHABLE
             self.save()
-            return 0
-        self._status = 1
+        self._status = settings.STATUS_JUMPER_CAN_BE_USE
         self.save()
-        return 1
 
     @property
     def to_yaml(self):

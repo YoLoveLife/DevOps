@@ -17,10 +17,11 @@ class HostFilter(django_filters.FilterSet):
     systype = django_filters.CharFilter(method="systype_filter")
     position = django_filters.CharFilter(method="position_filter")
     hostname = django_filters.CharFilter(method="hostname_filter")
+    dbinstance = django_filters.CharFilter(method="dbinstance_filter")
 
     class Meta:
         model = models.Host
-        fields = ['groups', 'connect_ip', 'hostname', 'sshport', 'info', 'systype', 'position']
+        fields = ['groups', 'connect_ip', 'hostname', 'sshport', 'info', 'systype', 'position', 'dbinstance']
 
     @staticmethod
     def connect_ip_filter(queryset, first_name, value):
@@ -47,15 +48,20 @@ class HostFilter(django_filters.FilterSet):
     def hostname_filter(queryset, first_name, value):
         return queryset.filter(hostname__icontains=value)
 
+    @staticmethod
+    def dbinstance_filter(queryset, first_name, value):
+        return queryset.filter(dbinstance__isnull=True)
+
 
 class GroupFilter(django_filters.FilterSet):
     info = django_filters.CharFilter(method="info_filter")
     ops = django_filters.CharFilter(method="ops_filter")
     status = django_filters.CharFilter(method="status_filter")
+    instance_group = django_filters.CharFilter(method="instance_group_filter")
 
     class Meta:
         model = models.Group
-        fields = ['info', 'ops', 'status']
+        fields = ['info', 'ops', 'status', 'instance_group']
 
     @staticmethod
     def info_filter(queryset, first_name, value):
@@ -69,3 +75,7 @@ class GroupFilter(django_filters.FilterSet):
     @staticmethod
     def status_filter(queryset, first_name, value):
         return queryset.filter(_status=value)
+
+    @staticmethod
+    def instance_group_filter(queryset, first_name, value):
+        return queryset.filter(dbgroup__isnull=True)

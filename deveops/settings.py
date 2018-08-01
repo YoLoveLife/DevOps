@@ -47,8 +47,9 @@ INSTALLED_APPS = [
     'variable.apps.VariableConfig',
     'dashboard.apps.DashboardConfig',
     'yodns.apps.YoDnsConfig',
-    'db.apps.DBConfig',
+    'zdb.apps.ZDBConfig',
     'monitor.apps.MonitorConfig',
+    'console.apps.ConsoleConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
@@ -84,9 +85,9 @@ REST_FRAMEWORK = {
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

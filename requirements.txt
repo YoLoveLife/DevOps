@@ -65,7 +65,7 @@ pycryptodome==3.6.1
 pyecharts==0.5.5
 pyecharts-javascripthon==0.0.6
 pyecharts-jupyter-installer==0.0.3
-pyecharts-snapshot==0.1.6
+pyecharts-snapshot==0.1.7
 pyflakes==1.6.0
 Pygments==2.2.0
 PyJWT==1.6.1

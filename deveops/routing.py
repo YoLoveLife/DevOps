@@ -10,7 +10,6 @@ from console.urls.socket_urls import console_routing
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")    #这里填的是你的配置文件settings.py的位置
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
-from deveops.channel_auth import TokenAuthMiddlewareStack
 
 application = ProtocolTypeRouter({
     # '巍峨比赛噢参': AuthMiddlewareStack(
@@ -18,14 +17,9 @@ application = ProtocolTypeRouter({
     #         manager_routing
     #     )
     # ),
-    'websocket': TokenAuthMiddlewareStack(
+    'websocket': AuthMiddlewareStack(
         URLRouter(
             ops_routing,
-        )
-    ),
-    'websocket': TokenAuthMiddlewareStack(
-        URLRouter(
-            console_routing,
         )
     )
 })

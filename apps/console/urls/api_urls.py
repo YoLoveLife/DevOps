@@ -4,8 +4,8 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.urls import path
-from console.api import console as ConsoleAPI
+from console.api import truck as TruckAPI
 urlpatterns=[
     # Resource console api
-    path(r'v1/console/create/', ConsoleAPI.ConsoleCreateAPI.as_view()),
+    path(r'v1/truck/create/', TruckAPI.ConsoleTruckCreateAPI.as_view()),
 ]

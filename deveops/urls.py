@@ -31,18 +31,16 @@ urlpatterns = [
     path(r'api-work/', include('work.urls.api_urls')),
     path(r'api-var/', include('variable.urls.api_urls')),
     path(r'api-dns/', include('yodns.urls.api_urls')),
-    path(r'api-db/', include('db.urls.api_urls')),
+    path(r'api-zdb/', include('zdb.urls.api_urls')),
     # path(r'api-app/', include('application.urls.api_urls')),
     # url(r'^api-application/',include('application.urls.api_urls',namespace='api-application')),
     # url(r'^api-execute/',include('execute.urls.api_urls',namespace='api-execute')),
     # url(r'^api-softlib/',include('softlib.urls.api_urls',namespace='api-softlib')),
     path(r'api-dashboard/', include('dashboard.urls.api_urls')),
     path(r'api-monitor/', include('monitor.urls.api_urls')),
+    path(r'api-console/', include('console.urls.api_urls')),
     # path(r'api-timeline/', include('timeline.urls.api_urls')),
 
     re_path(r'media/(?P<path>.*)', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
 
-'''
-   
-'''

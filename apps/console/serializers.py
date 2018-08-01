@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from work import models
+from console import models
 from django.conf import settings
 from rest_framework import serializers
 
