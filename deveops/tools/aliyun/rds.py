@@ -84,6 +84,14 @@ class AliyunRDSTool(object):
             'status': 'Running'
         }
 
+    @staticmethod
+    def get_aliyun_models(json_results):
+        return {
+            'port': 3306,
+            'name': json_results.get('DBInstanceDescription'),
+
+        }
+
     # @staticmethod
     # def get_aliyun_models(json_results):
     #     return {

@@ -43,8 +43,7 @@ class DBInstanceFilter(django_filters.FilterSet):
 
     @staticmethod
     def group_filter(queryset, first_name, value):
-        group = Group.objects.filter(id=value)
-        return queryset.filter(group__in=group)
+        return queryset.filter(group=value)
 
     @staticmethod
     def name_filter(queryset, first_name, value):

@@ -49,6 +49,14 @@ class DBInstanceCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [AllowAny, ]
 
 
+class DBInstanceImportAPI(WebTokenAuthentication, generics.CreateAPIView):
+    module = models.Instance
+    serializer_class = serializers.DBInstanceSerializer
+    queryset = models.Instance.objects.all()
+    permission_classes = [AllowAny,]
+
+
+
 class DBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Instance
     serializer_class = serializers.DBInstanceSerializer

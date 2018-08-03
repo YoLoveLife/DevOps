@@ -12,6 +12,7 @@ urlpatterns=[
     # Resource DB Instance api
     path(r'v1/instance/', InstanceAPI.DBInstanceListAPI.as_view()),
     path(r'v1/instance/bypage/', InstanceAPI.DBInstanceListByPageAPI.as_view()),
+    path(r'v1/instance/import/', InstanceAPI.DBInstanceImportAPI.as_view()),
     path(r'v1/instance/create/', InstanceAPI.DBInstanceCreateAPI.as_view()),
     path(r'v1/instance/<uuid:pk>/update/', InstanceAPI.DBInstanceUpdateAPI.as_view()),
     # path(r'v1/instance/detail/<uuid:pk>/update/', InstanceAPI.DBInstanceDetailUpdateAPI.as_view()),

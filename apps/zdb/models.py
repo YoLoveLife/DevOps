@@ -17,6 +17,12 @@ class Instance(models.Model):
         (settings.STATUS_DB_INSTANCE_UNREACHABLE, '不可到达'),
         (settings.STATUS_DB_INSTANCE_CAN_BE_USE, '正常'),
     )
+
+    INSTANCE_TYPE = (
+        (settings.TYPE_DB_INSTANCE_MASTER, '主节点'),
+        (settings.TYPE_DB_INSTANCE_SLAVE, '子节点'),
+        (settings.TYPE_DB_INSTANCE_MGR, 'MGR集群')
+    )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200, default='')
@@ -33,7 +39,10 @@ class Instance(models.Model):
     admin_user = models.CharField(default='root',max_length=100)
     # position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='instances')
     _admin_passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
-    _status = models.IntegerField(default=-1, choices=INSTANCE_STATUS)
+    _status = models.IntegerField(default=settings.STATUS_DB_INSTANCE_UNREACHABLE, choices=INSTANCE_STATUS)
+
+    type = models.IntegerField(default=settings.TYPE_DB_INSTANCE_MASTER, choices=INSTANCE_TYPE)
+
 
     class Meta:
         permissions = (
@@ -55,6 +64,10 @@ class Instance(models.Model):
     @status.setter
     def status(self,status):
         self.check_status()
+
+    @property
+    def group_name(self):
+        return self.group.get().name
 
     @property
     def password(self):
@@ -103,7 +116,7 @@ class InstanceGroup(models.Model):
 
     name = models.CharField(max_length=200, default='')
     group = models.OneToOneField(Group, related_name='dbgroup', on_delete=models.SET_NULL, null=True, blank=True)
-    instances = models.ManyToManyField(Instance, blank=True, related_name='groups', verbose_name=_("instances"))
+    instances = models.ManyToManyField(Instance, blank=True, related_name='group', verbose_name=_("instances"))
 
     class Meta:
         permissions = (
