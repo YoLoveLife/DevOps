@@ -27,7 +27,7 @@ class Instance(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200, default='')
 
-    connect_ip = models.CharField(max_length=300, default='', blank=True, null=True)
+    _connect_ip = models.CharField(max_length=300, default='', blank=True, null=True)
     port = models.IntegerField(default=3306)
 
     # 阿里云RDS
@@ -64,6 +64,18 @@ class Instance(models.Model):
     @status.setter
     def status(self,status):
         self.check_status()
+
+    @property
+    def connect_ip(self):
+        if self._connect_ip != '':
+            return self._connect_ip
+        else:
+            return self.host.connect_ip
+
+    @connect_ip.setter
+    def connect_ip(self,connect_ip):
+        print(connect_ip)
+        self._connect_ip = connect_ip
 
     @property
     def group_name(self):

@@ -55,6 +55,7 @@ def vmware2cmdb():
     for child in childrens:
         dict_models = API.get_vm_models(child)
         host_query = Host.objects.filter(detail__vmware_id=dict_models['detail']['vmware_id'], connect_ip=dict_models['connect_ip'])
+        print(host_query.exists())
         if not host_query.exists():
             host_maker(dict_models)
 

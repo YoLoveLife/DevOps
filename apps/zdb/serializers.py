@@ -34,11 +34,12 @@ class DBInstanceSerializer(serializers.HyperlinkedModelSerializer):
     _status = serializers.IntegerField(required=False, source='status',)
     passwd = serializers.CharField(required=False, allow_null=True, source='password', write_only=True)
 
+    _connect_ip = serializers.CharField(required=False, allow_null=True, source='connect_ip',)
     groupname = serializers.CharField(source="group_name", read_only=True)
     class Meta:
         model = models.Instance
         fields = (
-            'id', 'uuid', 'name', 'connect_ip', 'port', 'aliyun_id', 'host', 'admin_user', '_status', 'passwd', 'type', 'groupname'
+            'id', 'uuid', 'name', '_connect_ip', 'port', 'aliyun_id', 'host', 'admin_user', '_status', 'passwd', 'type', 'groupname'
         )
         read_only_fields = (
             'id', 'uuid', 'groupname'
