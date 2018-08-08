@@ -20,11 +20,11 @@ class DBInstanceAPIRequiredMixin(BasePermission):
 
 
 class DBInstanceListRequiredMixin(DBInstanceAPIRequiredMixin):
-    permission_required = u'db.yo_list_db'
+    permission_required = u'zdb.yo_list_db'
 
 
 class DBInstanceCreateRequiredMixin(DBInstanceAPIRequiredMixin):
-    permission_required = u'db.yo_create_db'
+    permission_required = u'zdb.yo_create_db'
 
     @decorator_api(settings.TIMELINE_DB_INSTANCE_CREATE)
     def has_permission(self, request, view):
@@ -32,7 +32,7 @@ class DBInstanceCreateRequiredMixin(DBInstanceAPIRequiredMixin):
 
 
 class DBInstanceUpdateRequiredMixin(DBInstanceAPIRequiredMixin):
-    permission_required = u'db.yo_update_db'
+    permission_required = u'zdb.yo_update_db'
 
     @decorator_api(settings.TIMELINE_DB_INSTANCE_UPDATE)
     def has_permission(self, request, view):
@@ -40,7 +40,7 @@ class DBInstanceUpdateRequiredMixin(DBInstanceAPIRequiredMixin):
 
 
 class DBInstanceDeleteRequiredMixin(DBInstanceAPIRequiredMixin):
-    permission_required = u'db.yo_delete_db'
+    permission_required = u'zdb.yo_delete_db'
 
     @decorator_api(settings.TIMELINE_DB_INSTANCE_DELETE)
     def has_permission(self, request, view):

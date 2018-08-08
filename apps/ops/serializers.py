@@ -3,10 +3,9 @@ from ops import models
 from rest_framework import serializers
 
 __all__ = [
-    "MetaSerializer", "MetaContentSerializer",
-
+    "MetaSerializer", "MetaContentSerializer", "MissionNeedFileSerializer",
+    "MissionSerializer",
 ]
-
 
 class MetaContentSerializer(serializers.ModelSerializer):
     class Meta:

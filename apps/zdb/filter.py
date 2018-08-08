@@ -5,11 +5,9 @@
 # Email YoLoveLife@outlook.com
 import django_filters
 from zdb import models
-from manager.models import Group
-from django.db.models import Q
 
 __all__ = [
-    'DBInstanceFilter',
+   "ZDBInstanceGroupFilter",
 ]
 
 

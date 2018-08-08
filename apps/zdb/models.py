@@ -9,11 +9,14 @@ from django.conf import settings
 from zdb.tasks import status_flush
 
 __all__ = [
-    'Instance', 'InstanceGroup'
+    'Instance', 'InstanceGroup', "Database",
+    "User"
 ]
 
 class Instance(models.Model):
     INSTANCE_STATUS = (
+        (settings.STATUS_DB_INSTANCE_PASSWORD_WRONG, '密码错误'),
+        (settings.STATUS_DB_INSTANCE_CONNECT_REFUSE, '连接拒绝'),
         (settings.STATUS_DB_INSTANCE_UNREACHABLE, '不可到达'),
         (settings.STATUS_DB_INSTANCE_CAN_BE_USE, '正常'),
     )
@@ -34,7 +37,7 @@ class Instance(models.Model):
     aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
 
     # 私有云RDS
-    host = models.OneToOneField(Host, related_name='dbinstance', on_delete=models.SET_NULL, null=True, blank=True)
+    host = models.ForeignKey(Host, related_name='dbinstance', on_delete=models.SET_NULL, null=True, blank=True)
 
     admin_user = models.CharField(default='root',max_length=100)
     # position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='instances')
@@ -74,7 +77,6 @@ class Instance(models.Model):
 
     @connect_ip.setter
     def connect_ip(self,connect_ip):
-        print(connect_ip)
         self._connect_ip = connect_ip
 
     @property

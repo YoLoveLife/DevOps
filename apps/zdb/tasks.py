@@ -9,6 +9,7 @@ from celery.task import periodic_task
 from celery.schedules import crontab
 from django.db.models import Q
 import celery
+import MySQLdb
 from django.conf import settings
 import socket
 from celery import Task,task
@@ -23,13 +24,38 @@ def status_flush(instance):
     s.settimeout(settings.SSH_TIMEOUT)
     try:
         s.connect((str(instance.connect_ip), int(instance.port)))
-    except socket.timeout:
+    except socket.timeout as e:
         instance._status = settings.STATUS_DB_INSTANCE_UNREACHABLE
         instance.save()
+        return
+    except ConnectionRefusedError as e:
+        instance._status = settings.STATUS_DB_INSTANCE_CONNECT_REFUSE
+        instance.save()
+        return
     except Exception as e:
         instance._status = settings.STATUS_DB_INSTANCE_UNREACHABLE
         instance.save()
+        return
+
+    try:
+        db = MySQLdb.connect(host=instance.connect_ip,port=instance.port,user=instance.admin_user,passwd=instance.password)
+    except MySQLdb.connections.OperationalError as e:
+        instance._status = settings.STATUS_DB_INSTANCE_PASSWORD_WRONG
+        instance.save()
+
     instance._status = settings.STATUS_DB_INSTANCE_CAN_BE_USE
     instance.save()
 
 
+@task(base=ZDBTask)
+def instance_create(instance, detail):
+    import string, random
+    all_choice = string.ascii_letters + string.digits + string.punctuation
+    passwd = ''
+    for i in range(16):
+        passwd += random.choice(all_choice)
+
+    print(passwd)
+    print(instance, detail)
+
+    hosts_list = detail['group'].users_list_byconnectip

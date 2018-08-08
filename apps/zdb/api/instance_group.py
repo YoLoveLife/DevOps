@@ -22,7 +22,7 @@ class ZDBInstancePagination(PageNumberPagination):
 
 class ZDBInstanceGroupListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.InstanceGroup
-    serializer_class = serializers.DBInstanceGroupSerializer
+    serializer_class = serializers.ZDBInstanceGroupSerializer
     queryset = models.InstanceGroup.objects.all()
     # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]
@@ -31,7 +31,7 @@ class ZDBInstanceGroupListAPI(WebTokenAuthentication, generics.ListAPIView):
 
 class ZDBInstanceGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.InstanceGroup
-    serializer_class = serializers.DBInstanceGroupSerializer
+    serializer_class = serializers.ZDBInstanceGroupSerializer
     queryset = models.InstanceGroup.objects.all()
     # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]
@@ -41,7 +41,7 @@ class ZDBInstanceGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView
 
 class ZDBInstanceGroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.InstanceGroup
-    serializer_class = serializers.DBInstanceGroupSerializer
+    serializer_class = serializers.ZDBInstanceGroupSerializer
     queryset = models.InstanceGroup.objects.all()
     # permission_classes = [InstancePermission.DBInstanceCreateRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]
@@ -49,7 +49,7 @@ class ZDBInstanceGroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
 
 class ZDBInstanceGroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.InstanceGroup
-    serializer_class = serializers.DBInstanceGroupSerializer
+    serializer_class = serializers.ZDBInstanceGroupSerializer
     queryset = models.InstanceGroup.objects.all()
     # permission_classes = [InstancePermission.DBInstanceUpdateRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]
@@ -59,7 +59,7 @@ class ZDBInstanceGroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
 class ZDBInstanceGroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.InstanceGroup
-    serializer_class = serializers.DBInstanceGroupSerializer
+    serializer_class = serializers.ZDBInstanceGroupSerializer
     queryset = models.InstanceGroup.objects.all()
     # permission_classes = [InstancePermission.DBInstanceDeleteRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]

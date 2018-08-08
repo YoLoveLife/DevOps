@@ -24,7 +24,7 @@ class DBInstancePagination(PageNumberPagination):
 
 class DBInstanceListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceSerializer
+    serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]
@@ -33,7 +33,7 @@ class DBInstanceListAPI(WebTokenAuthentication, generics.ListAPIView):
 
 class DBInstanceListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceSerializer
+    serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny, ]
@@ -43,15 +43,22 @@ class DBInstanceListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
 
 class DBInstanceCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceSerializer
+    serializer_class = serializers.DBInstanceCreateSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceCreateRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny, ]
 
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        if models.Instance.objects.filter(port=data['detail']['port'],host_id=data['host']).exists():
+            return Response({'detail': '该主机上已经存在该实例信息'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return super(DBInstanceCreateAPI,self).create(request, *args, **kwargs)
+
 
 class DBInstanceImportAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceSerializer
+    serializer_class = serializers.DBInstanceImportSerializer
     queryset = models.Instance.objects.all()
     permission_classes = [AllowAny,]
 
@@ -59,7 +66,7 @@ class DBInstanceImportAPI(WebTokenAuthentication, generics.CreateAPIView):
 
 class DBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceSerializer
+    serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceUpdateRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny, ]
@@ -69,7 +76,7 @@ class DBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
 class DBInstanceDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceSerializer
+    serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceDeleteRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny, ]
