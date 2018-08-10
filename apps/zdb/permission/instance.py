@@ -7,7 +7,7 @@ __all__ = [
 ]
 
 
-class DBInstanceAPIRequiredMixin(BasePermission):
+class ZDBInstanceAPIRequiredMixin(BasePermission):
     def has_permission(self, request, view):
         perms = self.permission_required
         perm_list=list(request.user.get_all_permissions())
@@ -19,30 +19,30 @@ class DBInstanceAPIRequiredMixin(BasePermission):
             return False
 
 
-class DBInstanceListRequiredMixin(DBInstanceAPIRequiredMixin):
+class ZDBInstanceListRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_list_db'
 
 
-class DBInstanceCreateRequiredMixin(DBInstanceAPIRequiredMixin):
+class ZDBInstanceCreateRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_create_db'
 
     @decorator_api(settings.TIMELINE_DB_INSTANCE_CREATE)
     def has_permission(self, request, view):
-        return request, super(DBInstanceCreateRequiredMixin, self).has_permission(request, view)
+        return request, super(ZDBInstanceCreateRequiredMixin, self).has_permission(request, view)
 
 
-class DBInstanceUpdateRequiredMixin(DBInstanceAPIRequiredMixin):
+class ZDBInstanceUpdateRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_update_db'
 
     @decorator_api(settings.TIMELINE_DB_INSTANCE_UPDATE)
     def has_permission(self, request, view):
-        return request, super(DBInstanceUpdateRequiredMixin, self).has_permission(request, view)
+        return request, super(ZDBInstanceUpdateRequiredMixin, self).has_permission(request, view)
 
 
-class DBInstanceDeleteRequiredMixin(DBInstanceAPIRequiredMixin):
+class ZDBInstanceDeleteRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_delete_db'
 
     @decorator_api(settings.TIMELINE_DB_INSTANCE_DELETE)
     def has_permission(self, request, view):
-        return request, super(DBInstanceDeleteRequiredMixin, self).has_permission(request, view)
+        return request, super(ZDBInstanceDeleteRequiredMixin, self).has_permission(request, view)
 

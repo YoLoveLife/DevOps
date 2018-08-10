@@ -3,12 +3,13 @@
 # Time 18-3-29
 # Author Yo
 # Email YoLoveLife@outlook.com
+from __future__ import absolute_import,unicode_literals
 from django.conf import settings
-from deveops.ansible.callback import Callback
+from deveops.ansible import callback
 INDENT = 4
 
 
-class OpsCallback(Callback):
+class OpsCallback(callback.Callback):
     def __init__(self, consumer, push_mission):
         self.consumer = consumer
         self.push_mission = push_mission

@@ -17,7 +17,6 @@ class OpsPlaybook(Playbook):
         self.push_mission.status = settings.OPS_PUSH_MISSION_IMPORT_VAR
         try:
             super(OpsPlaybook, self).import_vars(vars_dict)
-            self.variable_manager.extra_vars = vars_dict
             self.push_mission.results_append('参数载入成功;')
             self.push_mission.results_append(vars_dict)
         except AnsibleUndefinedVariable as e:

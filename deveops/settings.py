@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'zdb.apps.ZDBConfig',
     'monitor.apps.MonitorConfig',
     'console.apps.ConsoleConfig',
+    'ezsetup.apps.EZSetupConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',

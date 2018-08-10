@@ -1,18 +1,18 @@
 # -*- coding:utf-8 -*-
-from collections import namedtuple
+from __future__ import absolute_import,unicode_literals
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from ansible.inventory.manager import InventoryManager
 from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
-from ansible.errors import AnsibleParserError,AnsibleUndefinedVariable
-from django.conf import settings
-from ops.ansible import callback
-from deveops.ansible.options import Options
-
 __all__ = [
     "Playbook"
 ]
+
+from collections import namedtuple
+
+Options = namedtuple('Options', ['connection', 'module_path', 'forks',
+                                 'become', 'become_method', 'become_user', 'check', 'private_key_file','diff'])
 
 
 class Playbook(object):
@@ -25,7 +25,7 @@ class Playbook(object):
         )
         self.key = key
         self.stdout_callback = callback
-        self.inventory = InventoryManager(loader=self.loader, sources=host_list+',')
+        self.inventory = InventoryManager(loader=self.loader, sources=host_list)#+',')
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.play = []
 
@@ -38,6 +38,7 @@ class Playbook(object):
 
     def import_vars(self, vars_dict):
         vars_dict['KEY'] = self.key
+        self.variable_manager.extra_vars = vars_dict
 
 
     def import_task(self, play_source):
@@ -63,7 +64,7 @@ class Playbook(object):
             )
             for p in self.play:
                 result = tqm.run(p)
-            self.delete_key()
+            # self.delete_key()
         finally:
             if tqm is not None:
                 tqm.cleanup()

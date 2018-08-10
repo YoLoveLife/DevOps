@@ -39,6 +39,7 @@ urlpatterns = [
     path(r'api-dashboard/', include('dashboard.urls.api_urls')),
     path(r'api-monitor/', include('monitor.urls.api_urls')),
     path(r'api-console/', include('console.urls.api_urls')),
+    path(r'api-ezsetup/', include('ezsetup.urls.api_urls')),
     # path(r'api-timeline/', include('timeline.urls.api_urls')),
 
     re_path(r'media/(?P<path>.*)', serve, {"document_root": settings.MEDIA_ROOT}),

@@ -24,7 +24,7 @@ class ZDBInstanceGroupFilter(django_filters.FilterSet):
 
 
 
-class DBInstanceFilter(django_filters.FilterSet):
+class ZDBInstanceFilter(django_filters.FilterSet):
     is_master = django_filters.CharFilter(method="is_master_filter")
     group = django_filters.CharFilter(method="group_filter")
     name = django_filters.CharFilter(method="name_filter")

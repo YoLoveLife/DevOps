@@ -9,7 +9,6 @@ import os,stat
 from channels.generic.websocket import WebsocketConsumer
 from work.models import Code_Work
 from django.conf import settings
-from ops.interactive import AnsibleRecvThread
 
 __all__ = [
     "ConsoleConsumer"

@@ -12,38 +12,38 @@ from rest_framework.views import Response, status
 from zdb.permission import instance as InstancePermission
 
 __all__ = [
-    "DBInstancePagination", "DBInstanceListAPI",
-    "DBInstanceListByPageAPI", "DBInstanceCreateAPI", "DBInstanceDeleteAPI",
-    "DBInstanceUpdateAPI",
+    "ZDBInstancePagination", "ZDBInstanceListAPI",
+    "ZDBInstanceListByPageAPI", "ZDBInstanceCreateAPI", "ZDBInstanceDeleteAPI",
+    "ZDBInstanceUpdateAPI",
 ]
 
 
-class DBInstancePagination(PageNumberPagination):
+class ZDBInstancePagination(PageNumberPagination):
     page_size = 10
 
 
-class DBInstanceListAPI(WebTokenAuthentication, generics.ListAPIView):
+class ZDBInstanceListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Instance
     serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny,]
-    filter_class = filter.DBInstanceFilter
+    filter_class = filter.ZDBInstanceFilter
 
 
-class DBInstanceListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
+class ZDBInstanceListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Instance
     serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny, ]
-    pagination_class = DBInstancePagination
-    filter_class = filter.DBInstanceFilter
+    pagination_class = ZDBInstancePagination
+    filter_class = filter.ZDBInstanceFilter
 
 
-class DBInstanceCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
+class ZDBInstanceCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceCreateSerializer
+    serializer_class = serializers.ZDBInstanceCreateSerializer
     queryset = models.Instance.objects.all()
     # permission_classes = [InstancePermission.DBInstanceCreateRequiredMixin, IsAuthenticated]
     permission_classes = [AllowAny, ]
@@ -53,18 +53,18 @@ class DBInstanceCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
         if models.Instance.objects.filter(port=data['detail']['port'],host_id=data['host']).exists():
             return Response({'detail': '该主机上已经存在该实例信息'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return super(DBInstanceCreateAPI,self).create(request, *args, **kwargs)
+            return super(ZDBInstanceCreateAPI,self).create(request, *args, **kwargs)
 
 
-class DBInstanceImportAPI(WebTokenAuthentication, generics.CreateAPIView):
+class ZDBInstanceImportAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Instance
-    serializer_class = serializers.DBInstanceImportSerializer
+    serializer_class = serializers.ZDBInstanceImportSerializer
     queryset = models.Instance.objects.all()
     permission_classes = [AllowAny,]
 
 
 
-class DBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
+class ZDBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Instance
     serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
@@ -74,7 +74,7 @@ class DBInstanceUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     lookup_field = 'uuid'
 
 
-class DBInstanceDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
+class ZDBInstanceDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Instance
     serializer_class = serializers.ZDBInstanceSerializer
     queryset = models.Instance.objects.all()
@@ -88,4 +88,4 @@ class DBInstanceDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
         if instance.roles.exists():
             return Response({'detail':'该实例下还存在角色'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return super(DBInstanceDeleteAPI,self).delete(request, *args, **kwargs)
+            return super(ZDBInstanceDeleteAPI,self).delete(request, *args, **kwargs)

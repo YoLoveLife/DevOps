@@ -4,8 +4,8 @@ from zdb import models
 from manager.models import Group,Host
 from zdb.tasks import instance_create
 __all__ = [
-    'ZDBInstanceGroupSerializer', "DBInstanceCreateSerializer",
-    "DBInstanceImportSerializer", "ZDBInstanceSerializer",
+    'ZDBInstanceGroupSerializer', "ZDBInstanceCreateSerializer",
+    "ZDBInstanceImportSerializer", "ZDBInstanceSerializer",
 ]
 
 
@@ -48,7 +48,7 @@ class ZDBInstanceSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class DBInstanceImportSerializer(ZDBInstanceSerializer):
+class ZDBInstanceImportSerializer(ZDBInstanceSerializer):
     class Meta:
         model = models.Instance
         fields = (
@@ -59,7 +59,7 @@ class DBInstanceImportSerializer(ZDBInstanceSerializer):
         )
 
     def create(self, validated_data):
-        return super(DBInstanceImportSerializer, self).create(validated_data)
+        return super(ZDBInstanceImportSerializer, self).create(validated_data)
 
 class DetailSerializer(serializers.Serializer):
     memory = serializers.IntegerField()
@@ -74,7 +74,7 @@ class DetailSerializer(serializers.Serializer):
         )
 
 
-class DBInstanceCreateSerializer(ZDBInstanceSerializer):
+class ZDBInstanceCreateSerializer(ZDBInstanceSerializer):
     detail = DetailSerializer(write_only=True)
     class Meta:
         model = models.Instance
@@ -88,6 +88,6 @@ class DBInstanceCreateSerializer(ZDBInstanceSerializer):
 
     def create(self, validated_data):
         detail = validated_data.pop('detail')
-        obj = super(DBInstanceCreateSerializer, self).create(validated_data)
+        obj = super(ZDBInstanceCreateSerializer, self).create(validated_data)
         instance_create.delay(obj, detail)
         return object
