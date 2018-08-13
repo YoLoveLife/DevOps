@@ -1,0 +1,5 @@
+---
+- name: set_fact
+  set_fact: ansible_ssh_common_args='-o ProxyCommand="ssh -p{{JUMPER_PORT}} -i {{KEY}} -W %h:%p root@{{JUMPER_IP}}"'
+- name: test
+  shell: echo "wzz" > 1.txt

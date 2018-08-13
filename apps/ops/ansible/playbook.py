@@ -8,8 +8,8 @@ __all__ = [
 ]
 
 class OpsPlaybook(Playbook):
-    def __init__(self, host_list, key, callback, consumer, push_mission):
-        super(OpsPlaybook, self).__init__(host_list, key, callback)
+    def __init__(self, group, key, callback, consumer, push_mission):
+        super(OpsPlaybook, self).__init__(group, key, callback)
         self.consumer = consumer
         self.push_mission = push_mission
 
@@ -39,8 +39,10 @@ class OpsPlaybook(Playbook):
         self.consumer.send('OK')
 
     def run(self):
-        super(OpsPlaybook, self).run()
-        self.push_mission.status = settings.OPS_PUSH_MISSION_SUCCESS
-        self.consumer.send("SUCCESS")
+        try:
+            super(OpsPlaybook, self).run()
+        finally:
+            self.push_mission.status = settings.OPS_PUSH_MISSION_SUCCESS
+            self.consumer.send("SUCCESS")
 
 

@@ -11,13 +11,10 @@ class Callback(CallbackBase):
         super(Callback,self).__init__()
 
     def v2_runner_on_ok(self, result, **kwargs):
-        print('v2_runner_on_ok',result._result)
         return super(Callback, self).v2_runner_on_ok(result)
 
     def v2_runner_on_unreachable(self, result):
-        print('v2_runner_on_unreachable',result._result)
         return super(Callback, self).v2_runner_on_unreachable(result)
 
     def v2_runner_on_failed(self, result, ignore_errors=False):
-        print('v2_runner_on_failed',result._result)
         return super(Callback, self).v2_runner_on_failed(result, ignore_errors)

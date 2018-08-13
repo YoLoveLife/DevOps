@@ -8,20 +8,20 @@ __all__ = [
 ]
 
 class EZSetupPlaybook(Playbook):
-    def __init__(self, host_list, key, callback, setup):
+    def __init__(self, group, key, callback, setup):
         self.setup = setup
-        super(EZSetupPlaybook, self).__init__(host_list, key, callback)
+        super(EZSetupPlaybook, self).__init__(group, key, callback)
 
     def import_task(self, play_source):
-        # super(EZSetupPlaybook, self).import_task([play_source])
-        self.play.append(
-            Play().load(
-                play_source,
-                variable_manager=self.variable_manager,
-                loader=self.loader
-            )
-        )
-        print(self.play)
+        super(EZSetupPlaybook, self).import_task(play_source)
+        # self.play.append(
+        #     Play().load(
+        #         play_source,
+        #         variable_manager=self.variable_manager,
+        #         loader=self.loader
+        #     )
+        # )
+        # print(self.play)
 
     def import_vars(self, vars_dict):
         try:
@@ -30,6 +30,8 @@ class EZSetupPlaybook(Playbook):
             pass
 
     def run(self):
-        super(EZSetupPlaybook, self).run()
-
+        try:
+            super(EZSetupPlaybook, self).run()
+        finally:
+            self.setup.status = settings.STATUS_EZSETUP_DONE
 

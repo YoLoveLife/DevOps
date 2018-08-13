@@ -16,19 +16,26 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks',
 
 
 class Playbook(object):
-    def __init__(self, host_list, key, callback):
-        self.loader = DataLoader()
+    loader = None
+    inventory = None
+    def __init__(self, group, key, callback):
         self.options = Options(
             connection='smart', module_path='', forks=100, become=None,
             become_method=None, become_user=None, check=False,
             private_key_file=key, diff=False
         )
         self.key = key
+        self.make_inventory(group)
         self.stdout_callback = callback
-        self.inventory = InventoryManager(loader=self.loader, sources=host_list)#+',')
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.play = []
 
+    def make_inventory(self, group):
+        self.loader = DataLoader()
+        self.inventory = InventoryManager(loader=DataLoader(),)
+        self.inventory.add_group(str(group.uuid))
+        for host in group.hosts.all():
+            self.inventory.add_host(host.connect_ip, str(group.uuid), host.sshport)
 
     def delete_key(self):
         import os
@@ -63,6 +70,9 @@ class Playbook(object):
                 stdout_callback = self.stdout_callback
             )
             for p in self.play:
+                print(self.play)
+                print(p)
+                print('run in base')
                 result = tqm.run(p)
             # self.delete_key()
         finally:

@@ -16,13 +16,16 @@ import os,stat,time
 from ezsetup.ansible.callback import EZSetupCallback
 from ezsetup.ansible.playbook import EZSetupPlaybook
 from celery import Task,task
+
+# def install_exsist(instance, detail):
+#   if instance
+
 class EZSetupTask(Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         print('{0!r} failed: {1!r}'.format(task_id, exc))
 
 def write_key(key, file_path):
     try:
-        print('write_key')
         f = open(file_path, 'w')
         f.write(key.private_key)
         f.close()
@@ -35,14 +38,17 @@ def write_key(key, file_path):
 
 @task(base=EZSetupTask)
 def install_redis(instance, detail):
-    host_list = instance.group.users_list_byconnectip
     vars_dict = {}
     for var in instance.group.group_vars.all():
         vars_dict[var.key] = var.value
 
-    vars_dict['JUMPER'] = instance.group.jumper.connect_ip
-    #vars_dict['HOSTS'] = ':'.join(list(instance.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
-    vars_dict['ROLE'] = 'ddr'
+    if instance.group.jumper is not None and instance.group.key is not None:
+        vars_dict['JUMPER_IP'] = instance.group.jumper.connect_ip
+        vars_dict['JUMPER_PORT'] = instance.group.jumper.sshport
+        vars_dict['ROLE'] = 'redis'
+    else:
+        instance.status = settings.STATUS_EZSETUP_LACK_OF_KEY_OR_JUMPER
+        return
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(instance.uuid) + '/'
@@ -53,15 +59,15 @@ def install_redis(instance, detail):
     write_key(instance.group.key, KEY)
 
     callback = EZSetupCallback(instance)
-    ezsetup = EZSetupPlaybook(host_list, KEY, callback, instance)
+    ezsetup = EZSetupPlaybook(instance.group, KEY, callback, instance)
     ezsetup.import_vars(vars_dict)
     from ezsetup.ansible.play_source import PLAY_SOURCE
-    PLAY_SOURCE['hosts'] = list(instance.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True))
+    # print(list(instance.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
+    PLAY_SOURCE[0]['hosts'] = list(instance.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True))
     ezsetup.import_task(PLAY_SOURCE)
+    # print('plays',PLAY_SOURCE)
     instance.status = settings.STATUS_EZSETUP_INSTALLING
-    # ezsetup.run()
-
-
+    ezsetup.run()
 
 
 

@@ -33,6 +33,8 @@ class SETUP(models.Model):
 
     _status = models.IntegerField(choices=SETUP_STATUS, default=settings.STATUS_EZSETUP_INSTALLING)
 
+    results = models.TextField()
+
     class Meta:
         permissions = (
             ('yo_list_setup', u'罗列数据库实例'),
@@ -48,3 +50,7 @@ class SETUP(models.Model):
         if not self._status < 0:
             self._status = status
             self.save()
+
+    def results_append(self,results):
+        self.results = self.results + str(results)
+        self.save()

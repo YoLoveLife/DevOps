@@ -6,10 +6,12 @@
 from django.conf import settings
 enable_utc = False
 timezone = 'Asia/Shanghai'
-broker_url = "redis://:{PASSWORD}@{HOST}:{PORT}/{SPACE}".format(PASSWORD=settings.REDIS_PASSWD,
-                                                                 HOST=settings.REDIS_HOST,
-                                                                 PORT=settings.REDIS_PORT,
-                                                                 SPACE=settings.REDIS_SPACE)
+broker_url = "redis://:{PASSWORD}@{HOST}:{PORT}/{SPACE}".format(
+    PASSWORD=settings.REDIS_PASSWD,
+    HOST=settings.REDIS_HOST,
+    PORT=settings.REDIS_PORT,
+    SPACE=settings.REDIS_SPACE
+)
 task_serializer = 'pickle'
 result_serializer = 'pickle'
 accept_content = ['json', 'pickle']
