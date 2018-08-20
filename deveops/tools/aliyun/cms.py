@@ -45,12 +45,23 @@ class AliyunCMSTool(object):
         obj.request.add_query_param('StartTime', '{DATE} 00:00:00'.format(DATE=time[0]))
         obj.request.add_query_param('EndTime', '{DATE} 00:00:00'.format(DATE=time[1]))
 
+
     @staticmethod
-    def request_to_day(obj):
+    def request_to_hour(obj, hour):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        seven = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')
+        seven = (datetime.datetime.now() - datetime.timedelta(hours=hour)).strftime('%Y-%m-%d %H:%M:%S')
         obj.request.add_query_param('StartTime', seven)
         obj.request.add_query_param('EndTime', now)
+        obj.request_to_period(obj, '60')
+
+
+    @staticmethod
+    def request_to_day(obj, day):
+        now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        seven = (datetime.datetime.now() - datetime.timedelta(days=day)).strftime('%Y-%m-%d %H:%M:%S')
+        obj.request.add_query_param('StartTime', seven)
+        obj.request.add_query_param('EndTime', now)
+        obj.request_to_period(obj, '900')
 
     @staticmethod
     def request_to_period(obj, period):

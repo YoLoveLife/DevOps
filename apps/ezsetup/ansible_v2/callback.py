@@ -4,7 +4,7 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from django.conf import settings
-from deveops.ansible.callback import Callback
+from deveops.ansible_v2.callback import Callback
 INDENT = 4
 
 class EZSetupCallback(Callback):

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from ansible.errors import AnsibleParserError,AnsibleUndefinedVariable
 from django.conf import settings
-from deveops.ansible.playbook import Playbook
+from deveops.ansible_v2.playbook import Playbook
 from ansible.playbook.play import Play
 __all__ = [
     "EZSetupPlaybook"

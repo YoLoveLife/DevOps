@@ -1,7 +1,5 @@
 from django.urls import path
 from ..api import group as GroupAPI
-from ..api import systype as SystypeAPI
-from ..api import position as PositionAPI
 from ..api import host as HostAPI
 urlpatterns=[
     # Resource group api
@@ -13,20 +11,6 @@ urlpatterns=[
     path(r'v1/group/<uuid:pk>/delete/', GroupAPI.ManagerGroupDeleteAPI.as_view()),
     path(r'v1/group/<int:pk>/selecthost/', GroupAPI.ManagerGroupSelectHostAPI.as_view()),
     path(r'v1/group/byops/', GroupAPI.ManagerGroupListByOpsAPI.as_view()),
-    #
-    # Resource systype api
-    path(r'v1/systype/', SystypeAPI.ManagerSysTypeListAPI.as_view()),
-    path(r'v1/systype/create/', SystypeAPI.ManagerSysTypeCreateAPI.as_view()),
-    path(r'v1/systype/<uuid:pk>/detail/', SystypeAPI.ManagerSysTypeDetailAPI.as_view()),
-    path(r'v1/systype/<uuid:pk>/update/', SystypeAPI.ManagerSysTypeUpdateAPI.as_view()),
-    path(r'v1/systype/<uuid:pk>/delete/', SystypeAPI.ManagerSysTypeDeleteAPI.as_view()),
-    #
-    # Resource position api
-    path(r'v1/position/', PositionAPI.ManagerPositionListAPI.as_view()),
-    path(r'v1/position/create/', PositionAPI.ManagerPositionCreateAPI.as_view()),
-    path(r'v1/position/<uuid:pk>/detail/', PositionAPI.ManagerPositionDetailAPI.as_view()),
-    path(r'v1/position/<uuid:pk>/update/', PositionAPI.ManagerPositionUpdateAPI.as_view()),
-    path(r'v1/position/<uuid:pk>/delete/', PositionAPI.ManagerPositionDeleteAPI.as_view()),
     #
     # Resource host api
     path(r'v1/host/',HostAPI.ManagerHostListAPI.as_view()),

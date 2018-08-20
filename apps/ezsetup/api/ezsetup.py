@@ -27,14 +27,6 @@ class EZSetupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     pagination_class = EZSetupPagination
 
 
-class EZSetupCreateMySQLAPI(WebTokenAuthentication, generics.CreateAPIView):
-    module = models.SETUP
-    serializer_class = serializers.EZSetupMySQLSerializer
-    queryset = models.SETUP.objects.all()
-    # permission_classes = [InstancePermission.DBInstanceListRequiredMixin, IsAuthenticated]
-    permission_classes = [AllowAny,]
-
-
 class EZSetupCreateRedisAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.SETUP
     serializer_class = serializers.EZSetupRedisSerializer

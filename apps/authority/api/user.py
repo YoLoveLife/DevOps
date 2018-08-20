@@ -1,19 +1,19 @@
 # -*- coding:utf-8 -*-
-from .. import models,serializers,filter
+import pyotp, os
+from qrcode import QRCode,constants
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import Response,status
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_jwt.views import ObtainJSONWebToken
+from django.conf import settings
 from deveops.api import WebTokenAuthentication
 from authority.permission import user as UserPermission
 from deveops.utils import aes
-from django.conf import settings
-import pyotp
-import os
-from qrcode import QRCode,constants
-from urllib import parse
+from .. import models,serializers,filter
+
+
 __all__ = [
     "UserLoginAPI", "UserInfoAPI", "UserListAPI",
     "UserOpsListAPI", "UserUpdateAPI", "UserDeleteAPI",

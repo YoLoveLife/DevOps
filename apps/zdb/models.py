@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 import uuid, socket
-from manager.models import Group,Host,Position
+from manager.models import Group,Host
 from deveops.utils import aes
 from django.conf import settings
 from zdb.tasks import status_flush
@@ -40,7 +40,6 @@ class Instance(models.Model):
     host = models.ForeignKey(Host, related_name='dbinstance', on_delete=models.SET_NULL, null=True, blank=True)
 
     admin_user = models.CharField(default='root',max_length=100)
-    # position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='instances')
     _admin_passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
     _status = models.IntegerField(default=settings.STATUS_DB_INSTANCE_UNREACHABLE, choices=INSTANCE_STATUS)
 

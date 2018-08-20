@@ -17,11 +17,10 @@ class HostFilter(django_filters.FilterSet):
     systype = django_filters.CharFilter(method="systype_filter")
     position = django_filters.CharFilter(method="position_filter")
     hostname = django_filters.CharFilter(method="hostname_filter")
-    dbinstance = django_filters.CharFilter(method="dbinstance_filter")
 
     class Meta:
         model = models.Host
-        fields = ['groups', 'connect_ip', 'hostname', 'sshport', 'info', 'systype', 'position', 'dbinstance']
+        fields = ['groups', 'connect_ip', 'hostname', 'sshport', 'info', 'systype', 'position',]
 
     @staticmethod
     def connect_ip_filter(queryset, first_name, value):
@@ -29,28 +28,19 @@ class HostFilter(django_filters.FilterSet):
 
     @staticmethod
     def info_filter(queryset, first_name, value):
-        details = models.HostDetail.objects.filter(info__icontains=value)
-        return queryset.filter(detail__in=details)
+        return queryset.filter(info__icontains=value)
 
     @staticmethod
     def systype_filter(queryset, first_name, value):
-        systype = models.System_Type.objects.filter(name__icontains=value)
-        detail = models.HostDetail.objects.filter(systemtype__in=systype)
-        return queryset.filter(detail__in=detail)
+        return queryset.filter(systype__icontains=value)
 
     @staticmethod
     def position_filter(queryset, first_name, value):
-        position = models.Position.objects.filter(name__icontains=value)
-        details = models.HostDetail.objects.filter(position__in=position)
-        return queryset.filter(detail__in=details)
+        return queryset.filter(position__icontains=value)
 
     @staticmethod
     def hostname_filter(queryset, first_name, value):
         return queryset.filter(hostname__icontains=value)
-
-    @staticmethod
-    def dbinstance_filter(queryset, first_name, value):
-        return queryset.filter(dbinstance__isnull=True)
 
 
 class GroupFilter(django_filters.FilterSet):

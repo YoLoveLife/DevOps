@@ -11,6 +11,7 @@ from django.conf import settings
 import socket
 import uuid
 import pyotp
+from authority.tasks import jumper_status_flush
 
 __all__ = [
     "Key", "ExtendUser", "Jumper"
@@ -141,7 +142,6 @@ class ExtendUser(AbstractUser):
         elif self.groups.count() == 0:
             return "无权限"
         else:
-            str = "-"
             list = []
             groups = self.groups.all()
             for group in groups:
@@ -149,7 +149,7 @@ class ExtendUser(AbstractUser):
             if len(list) == 0:
                 return ''
             else:
-                return str.join(list)
+                return "-".join(list)
 
     def check_qrcode(self, verifycode):
         t = pyotp.TOTP(self.qrcode)
@@ -193,18 +193,7 @@ class Jumper(models.Model):
         self.check_status()
 
     def check_status(self):
-        s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        s.settimeout(settings.SSH_TIMEOUT)
-        try:
-            s.connect((str(self.connect_ip), int(self.sshport)))
-        except socket.timeout:
-            self._status = settings.STATUS_JUMPER_UNREACHABLE
-            self.save()
-        except Exception as e:
-            self._status = settings.STATUS_JUMPER_UNREACHABLE
-            self.save()
-        self._status = settings.STATUS_JUMPER_CAN_BE_USE
-        self.save()
+        jumper_status_flush.delay(self)
 
     @property
     def to_yaml(self):
@@ -212,9 +201,9 @@ class Jumper(models.Model):
             u'set_fact':
                 {
                     'ansible_ssh_common_args':
-                        '-o ProxyCommand="ssh -p{PORT} -i {KEY} -W %h:%p root@{IP}"'.format(
-                            PORT=self.sshport,
-                            IP=self.connect_ip,
+                        '-o ProxyCommand="ssh -p{JUMPER_PORT} -i {KEY} -W %h:%p root@{JUMPER_IP}"'.format(
+                            JUMPER_PORT=self.sshport,
+                            JUMPER_IP=self.connect_ip,
                             KEY='{{KEY}}'
                         )
                 }

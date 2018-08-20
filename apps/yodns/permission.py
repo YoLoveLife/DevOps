@@ -47,6 +47,3 @@ class DNSDeleteRequiredMixin(DNSAPIRequiredMixin):
     @decorator_api(settings.TIMELINE_DNS_DELETE)
     def has_permission(self, request, view):
         return request, super(DNSDeleteRequiredMixin, self).has_permission(request, view)
-
-
-

@@ -1,6 +1,7 @@
 from rest_framework.permissions import BasePermission
-from timeline.decorator import decorator_api
 from django.conf import settings
+from timeline.decorator import decorator_api
+
 __all__ = [
     "UserAPIRequiredMixin", "UserOpsListRequiredMixin", "UserCreateRequiredMixin",
     "UserListRequiredMixin", "UserDeleteRequiredMixin", "UserUpdateRequiredMixin",

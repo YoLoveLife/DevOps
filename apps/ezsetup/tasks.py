@@ -13,8 +13,8 @@ import MySQLdb
 from django.conf import settings
 import socket
 import os,stat,time
-from ezsetup.ansible.callback import EZSetupCallback
-from ezsetup.ansible.playbook import EZSetupPlaybook
+from ezsetup.ansible_v2.callback import EZSetupCallback
+from ezsetup.ansible_v2.playbook import EZSetupPlaybook
 from celery import Task,task
 
 # def install_exsist(instance, detail):
@@ -38,7 +38,12 @@ def write_key(key, file_path):
 
 @task(base=EZSetupTask)
 def install_redis(instance, detail):
+
+    # 准备变量
     vars_dict = {}
+    for key, value in detail.items():
+        vars_dict[key.upper()] = value
+
     for var in instance.group.group_vars.all():
         vars_dict[var.key] = var.value
 
@@ -58,6 +63,7 @@ def install_redis(instance, detail):
     KEY = TMP + str(time.time()) + '.key'
     write_key(instance.group.key, KEY)
 
+    # Playbook实例
     callback = EZSetupCallback(instance)
     ezsetup = EZSetupPlaybook(instance.group, KEY, callback, instance)
     ezsetup.import_vars(vars_dict)
@@ -70,8 +76,3 @@ def install_redis(instance, detail):
     ezsetup.run()
 
 
-
-@task(base=EZSetupTask)
-def install_mysql(instance, detail):
-    print('456')
-    pass

@@ -10,7 +10,7 @@ django.setup()
 import json
 import datetime
 from aliyunsdkcore import client
-from aliyunsdkecs.request.v20140526 import DescribeInstancesFullStatusRequest,DescribeInstanceStatusRequest,DescribeInstancesRequest,DescribeInstanceAttributeRequest
+from aliyunsdkecs.request.v20140526 import DescribeInstancesFullStatusRequest,DescribeInstanceStatusRequest,DescribeInstancesRequest,DescribeInstanceAttributeRequest,DescribePriceRequest
 from django.conf import settings
 
 
@@ -53,11 +53,9 @@ class AliyunECSTool(object):
             'connect_ip': ipaddr,
             'sshport': 22,
             'status': AliyunECSTool.get_ecs_status(json_results.get('Status')),
-            'detail':{
-                'systemtype': json_results.get('OSName'),
-                'position': '阿里云',
-                'aliyun_id': json_results.get('InstanceId'),
-            },
+            'systemtype': json_results.get('OSName'),
+            'position': '阿里云',
+            'aliyun_id': json_results.get('InstanceId'),
         }
 
     @staticmethod

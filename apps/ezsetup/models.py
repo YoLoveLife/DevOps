@@ -20,6 +20,8 @@ class SETUP(models.Model):
         (settings.STATUS_EZSETUP_DONE, '完成'),
         (settings.STATUS_EZSETUP_ERROR, '错误'),
         (settings.STATUS_EZSETUP_INSTALLING, '安装中'),
+        (settings.STATUS_EZSETUP_UNREACHABLE, '机器不可达'),
+        (settings.STATUS_EZSETUP_LACK_OF_KEY_OR_JUMPER, '缺少跳板机或密钥'),
     )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)

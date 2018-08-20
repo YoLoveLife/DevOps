@@ -4,10 +4,16 @@ from rest_framework import serializers
 from authority.models import ExtendUser
 
 __all__ = [
-    "GroupSerializer", "SystemTypeSerializer", 'PositionSerializer',
-    "HostDetailSerializer", "HostSerializer", "HostPasswordSerializer",
+    "GroupSerializer", "HostSerializer", "HostPasswordSerializer",
+    'GroupSampleSerializer', 'HostSampleSerializer', 'GroupSelectHostSerializer', 'HostSelectGroupSerializer'
 ]
 
+class GroupSampleSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Group
+        fields = (
+            'id', 'uuid', 'name'
+        )
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=ExtendUser.objects.all())
@@ -56,67 +62,23 @@ class GroupSelectHostSerializer(GroupSerializer):
 
 
 
-# class GroupSelectHostSerializer(serializers.Serializer):
-#     hosts = serializers.ListField()
-#     class Meta:
-#         model = models.Group
-#         # fields = (
-#         #     'id', 'hosts'
-#         # )
-#
-#     def update(self, instance, validated_data):
-#         hosts = validated_data.pop('hosts')
-#         print(validated_data)
-#         id_list = []
-#         for host in hosts:
-#             id_list.append(host['id'])
-#         hosts = models.Host.objects.filter(id__in=id_list)
-#
-#         for host in hosts:
-#             print(type(host))
-#             instance.hosts.add(host)
-#         instance.save()
-#
-#         return super(GroupSelectHostSerializer,self).update(instance,validated_data)
-
-
-class SystemTypeSerializer(serializers.ModelSerializer):
+class HostSampleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.System_Type
+        model = models.Host
         fields = (
-            'id', 'name'
-        )
-
-
-class PositionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Position
-        fields = (
-            'id', 'name'
-        )
-
-
-class HostDetailSerializer(serializers.ModelSerializer):
-    systemtype = serializers.PrimaryKeyRelatedField(queryset=models.System_Type.objects.all())
-    position = serializers.PrimaryKeyRelatedField(queryset=models.Position.objects.all())
-
-    class Meta:
-        model = models.HostDetail
-        fields = (
-            'position', 'systemtype', 'info', 'aliyun_id', 'vmware_id'
+            'id', 'uuid', 'hostname'
         )
 
 
 class HostSerializer(serializers.ModelSerializer):
-    detail = HostDetailSerializer(required=True)
     passwd = serializers.CharField(required=False, allow_null=True, source='password',write_only=True)
     _status = serializers.IntegerField(required=True, source='status',)
     groups = serializers.PrimaryKeyRelatedField(read_only=True ,many=True,)
     class Meta:
         model = models.Host
         fields = (
-            'id', 'detail', 'connect_ip', 'hostname', 'sshport', '_status', 'groups',
-            'passwd', 'uuid'
+            'id', 'connect_ip', 'hostname', 'sshport', '_status', 'groups',
+            'passwd', 'uuid', 'position', 'systemtype', 'info', 'aliyun_id', 'vmware_id'
         )
         read_only_fields = (
             'id', 'uuid', 'groups'
@@ -124,19 +86,6 @@ class HostSerializer(serializers.ModelSerializer):
         write_only_fields = (
             'passwd',
         )
-
-    def create(self, validated_data):
-        detail = validated_data.pop('detail')
-        detail_instance = models.HostDetail.objects.create(**detail)
-        return models.Host.objects.create(detail=detail_instance, **validated_data)
-
-    def update(self, instance, validated_data):
-        detail = validated_data.pop('detail')
-        for v in detail:
-            if hasattr(instance.detail, v):
-                setattr(instance.detail, v, detail.get(v))
-        instance.detail.save()
-        return super(HostSerializer,self).update(instance,validated_data)
 
 
 
