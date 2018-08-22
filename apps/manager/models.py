@@ -90,14 +90,10 @@ class Group(models.Model):
 
 
 class Host(models.Model):
-    SYSTEM_STATUS = (
-        (settings.STATUS_HOST_CAN_BE_USE, '正常'),
-        (settings.STATUS_HOST_CLOSE, '关机'),
-        (settings.STATUS_HOST_PAUSE, '暂停'),
-    )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+
     # 资产结构
     groups = models.ManyToManyField(Group, blank=True, related_name='hosts', verbose_name=_("Host"))
 
@@ -116,7 +112,7 @@ class Host(models.Model):
     systemtype = models.CharField(max_length=50, default="")
 
     # 服务器状态
-    _status = models.IntegerField(default=1, choices=SYSTEM_STATUS)
+    _status = models.IntegerField(default=1,)
 
     class Meta:
         permissions = (
@@ -131,11 +127,17 @@ class Host(models.Model):
 
     @property
     def status(self):
+        if not self.groups.exists():
+            return settings.STATUS_HOST_NOT_SELECT
         return self._status
 
     @status.setter
-    def status(self,status):
-        self._status = status
+    def status(self, status):
+        if self._status == settings.STATUS_HOST_PAUSE or self._status == settings.STATUS_HOST_CAN_BE_USE:
+            self._status = status
+        if status == settings.STATUS_HOST_PAUSE:
+            self._status = status
+        return
 
     @property
     def password(self):

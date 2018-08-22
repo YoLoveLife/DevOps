@@ -24,25 +24,30 @@ def status_flush(instance):
     s.settimeout(settings.SSH_TIMEOUT)
     try:
         s.connect((str(instance.connect_ip), int(instance.port)))
+        print(instance.connect_ip, instance.port)
     except socket.timeout as e:
+        print('timeout')
         instance._status = settings.STATUS_DB_INSTANCE_UNREACHABLE
         instance.save()
         return
     except ConnectionRefusedError as e:
+        print('refuse')
         instance._status = settings.STATUS_DB_INSTANCE_CONNECT_REFUSE
         instance.save()
         return
     except Exception as e:
+        print('exception')
         instance._status = settings.STATUS_DB_INSTANCE_UNREACHABLE
         instance.save()
         return
 
-    try:
-        db = MySQLdb.connect(host=instance.connect_ip,port=instance.port,user=instance.admin_user,passwd=instance.password)
-    except MySQLdb.connections.OperationalError as e:
-        instance._status = settings.STATUS_DB_INSTANCE_PASSWORD_WRONG
-        instance.save()
-
+    # try:
+    #     db = MySQLdb.connect(host=instance.connect_ip,port=instance.port,user=instance.admin_user,passwd=instance.password)
+    # except MySQLdb.connections.OperationalError as e:
+    #     instance._status = settings.STATUS_DB_INSTANCE_PASSWORD_WRONG
+    #     instance.save()
+    #     return
+    #
     instance._status = settings.STATUS_DB_INSTANCE_CAN_BE_USE
     instance.save()
 

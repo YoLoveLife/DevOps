@@ -83,9 +83,9 @@ class ZDBInstanceDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
     lookup_field = 'uuid'
 
-    def delete(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if instance.roles.exists():
-            return Response({'detail':'该实例下还存在角色'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        else:
-            return super(ZDBInstanceDeleteAPI,self).delete(request, *args, **kwargs)
+    # def delete(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     if instance.roles.exists():
+    #         return Response({'detail':'该实例下还存在角色'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    #     else:
+    #         return super(ZDBInstanceDeleteAPI,self).delete(request, *args, **kwargs)

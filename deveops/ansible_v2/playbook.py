@@ -70,9 +70,6 @@ class Playbook(object):
                 stdout_callback = self.stdout_callback
             )
             for p in self.play:
-                print(self.play)
-                print(p)
-                print('run in base')
                 result = tqm.run(p)
             # self.delete_key()
         finally:
