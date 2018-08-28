@@ -41,13 +41,20 @@ def status_flush(instance):
         instance.save()
         return
 
-    # try:
-    #     db = MySQLdb.connect(host=instance.connect_ip,port=instance.port,user=instance.admin_user,passwd=instance.password)
-    # except MySQLdb.connections.OperationalError as e:
-    #     instance._status = settings.STATUS_DB_INSTANCE_PASSWORD_WRONG
-    #     instance.save()
-    #     return
-    #
+    try:
+        print(instance.connect_ip, instance.port, instance.admin_user, instance.password)
+        db = MySQLdb.connect(
+            host=instance.connect_ip,
+            port=instance.port,
+            user=instance.admin_user,
+            password=instance.password
+        )
+    except MySQLdb.connections.OperationalError as e:
+        print('password wrong',e)
+        instance._status = settings.STATUS_DB_INSTANCE_PASSWORD_WRONG
+        instance.save()
+        return
+
     instance._status = settings.STATUS_DB_INSTANCE_CAN_BE_USE
     instance.save()
 

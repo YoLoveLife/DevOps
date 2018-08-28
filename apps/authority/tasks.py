@@ -14,6 +14,10 @@ class JumperTask(Task):
 
 @task(base=JumperTask)
 def jumper_status_flush(obj):
+    import time
+    print('waiting')
+    time.sleep(5)
+    print('done')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(settings.SSH_TIMEOUT)
     try:

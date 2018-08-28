@@ -39,6 +39,7 @@ def time_pick(obj, time):
     else:
         obj.request_to_hour(obj, 1)
 
+
 class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
     permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
 
@@ -52,8 +53,7 @@ class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
         time_pick(API, time)
         API.request_to_instance(API,self.get_object().aliyun_id)
         API.get_cpu_results()
-        results = API.get_line_opts(API.get_results(), 'CPU使用率')
-        return Response(results, status.HTTP_200_OK)
+        return Response({'title':'CPU利用率', 'dataset': API.change_timestamp(API.get_results())})
 
 
 class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
@@ -69,8 +69,7 @@ class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
         time_pick(API, time)
         API.request_to_instance(API,self.get_object().aliyun_id)
         API.get_mem_results()
-        results = API.get_line_opts(API.get_results(), '内存使用率')
-        return Response(results, status.HTTP_200_OK)
+        return Response({'title':'内存使用率', 'dataset': API.change_timestamp(API.get_results())})
 
 
 class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
@@ -86,8 +85,7 @@ class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
         time_pick(API, time)
         API.request_to_instance(API, self.get_object().aliyun_id)
         API.get_read_iops_results()
-        results = API.get_line_opts(API.get_results(), '磁盘读取Count/Second')
-        return Response(results, status.HTTP_200_OK)
+        return Response({'title': '磁盘读取Count/Second', 'dataset': API.change_timestamp(API.get_results())})
 
 
 class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
@@ -103,5 +101,4 @@ class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
         time_pick(API, time)
         API.request_to_instance(API, self.get_object().aliyun_id)
         API.get_in_net_results()
-        results = API.get_line_opts(API.get_results(), '网络流入流量bits/s')
-        return Response(results, status.HTTP_200_OK)
+        return Response({'title': '网络流入流量bits/s', 'dataset': API.change_timestamp(API.get_results())})

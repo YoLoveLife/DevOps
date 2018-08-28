@@ -189,7 +189,7 @@ class Jumper(models.Model):
         return self._status
 
     @status.setter
-    def status(self,status):
+    def status(self, status):
         self.check_status()
 
     def check_status(self):
@@ -208,3 +208,5 @@ class Jumper(models.Model):
                         )
                 }
         }
+
+

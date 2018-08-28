@@ -13,6 +13,51 @@ __all__ = [
     "User"
 ]
 
+class InstanceGroup(models.Model):
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+
+    name = models.CharField(max_length=200, default='')
+    group = models.OneToOneField(Group, related_name='dbgroup', on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        permissions = (
+            ('yo_list_db_group', u'罗列数据库实例组'),
+            ('yo_create_db_group', u'新增数据库实例组'),
+            ('yo_update_db_group', u'修改数据库实例组'),
+            ('yo_delete_db_group', u'删除数据库实例组'),
+        )
+
+    @property
+    def status(self):
+        status = settings.STATUS_DB_INSTANCE_CAN_BE_USE
+        if self.instances.count() != 0:
+            for instance in self.instances.all():
+                status = instance.status and status
+            return status
+        else:
+            return settings.STATUS_DB_INSTANCE_UNREACHABLE
+
+
+    @property
+    def group_name(self):
+        if self.group is not None:
+            return self.group.name
+        else:
+            return ""
+
+    @property
+    def instance_count(self):
+        return self.instances.count()
+
+    @property
+    def database_count(self):
+        count = 0
+        for instance in self.instances.all():
+            count = count + instance.databases.count()
+        return count
+
+
 class Instance(models.Model):
     INSTANCE_STATUS = (
         (settings.STATUS_DB_INSTANCE_PASSWORD_WRONG, '密码错误'),
@@ -32,6 +77,8 @@ class Instance(models.Model):
 
     _connect_ip = models.CharField(max_length=300, default='', blank=True, null=True)
     port = models.IntegerField(default=3306)
+
+    group = models.ForeignKey(InstanceGroup, related_name="instances", on_delete=models.SET_NULL, null=True, blank=True)
 
     # 阿里云RDS
     aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
@@ -80,14 +127,14 @@ class Instance(models.Model):
 
     @property
     def group_name(self):
-        return self.group.get().name
+        return self.group.name
 
     @property
     def password(self):
         if self._admin_passwd:
             return aes.decrypt(self._admin_passwd)
         else:
-            return 'nopassword'
+            return ''
 
     @password.setter
     def password(self, password):
@@ -120,51 +167,4 @@ class User(models.Model):
     @password.setter
     def password(self, password):
         self._passwd = aes.encrypt(password).decode()
-
-
-
-class InstanceGroup(models.Model):
-    id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
-
-    name = models.CharField(max_length=200, default='')
-    group = models.OneToOneField(Group, related_name='dbgroup', on_delete=models.SET_NULL, null=True, blank=True)
-    instances = models.ManyToManyField(Instance, blank=True, related_name='group', verbose_name=_("instances"))
-
-    class Meta:
-        permissions = (
-            ('yo_list_db_group', u'罗列数据库实例组'),
-            ('yo_create_db_group', u'新增数据库实例组'),
-            ('yo_update_db_group', u'修改数据库实例组'),
-            ('yo_delete_db_group', u'删除数据库实例组'),
-        )
-
-    @property
-    def status(self):
-        status = settings.STATUS_DB_INSTANCE_CAN_BE_USE
-        if self.instances.count() != 0:
-            for instance in self.instances.all():
-                status = instance.status and status
-            return status
-        else:
-            return settings.STATUS_DB_INSTANCE_UNREACHABLE
-
-
-    @property
-    def group_name(self):
-        if self.group is not None:
-            return self.group.name
-        else:
-            return ""
-
-    @property
-    def instance_count(self):
-        return self.instances.count()
-
-    @property
-    def database_count(self):
-        count = 0
-        for instance in self.instances.all():
-            count = count + instance.databases.count()
-        return count
 

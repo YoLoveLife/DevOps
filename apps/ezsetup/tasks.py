@@ -5,13 +5,7 @@
 # Email YoLoveLife@outlook.com
 
 from __future__ import absolute_import, unicode_literals
-from celery.task import periodic_task
-from celery.schedules import crontab
-from django.db.models import Q
-import celery
-import MySQLdb
 from django.conf import settings
-import socket
 import os,stat,time
 from ezsetup.ansible_v2.callback import EZSetupCallback
 from ezsetup.ansible_v2.playbook import EZSetupPlaybook
@@ -67,7 +61,7 @@ def install_redis(instance, detail):
     callback = EZSetupCallback(instance)
     ezsetup = EZSetupPlaybook(instance.group, KEY, callback, instance)
     ezsetup.import_vars(vars_dict)
-    from ezsetup.ansible.play_source import PLAY_SOURCE
+    from ezsetup.ansible_v2.play_source import PLAY_SOURCE
     # print(list(instance.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
     PLAY_SOURCE[0]['hosts'] = list(instance.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True))
     ezsetup.import_task(PLAY_SOURCE)

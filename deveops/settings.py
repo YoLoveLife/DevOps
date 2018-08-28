@@ -233,7 +233,6 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
     AUTH_LDAP_USER_ATTR_MAP = {
         "full_name": "cn",
-        "description": "description",
         "first_name":"sn",
         "phone":"mobile",
         "groups": "",

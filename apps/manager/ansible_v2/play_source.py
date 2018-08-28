@@ -29,6 +29,8 @@ DISK_PLAY_SOURCE = [{
                 },
                 {
                         'shell': 'df -hP|grep \/$ |awk \'{print $5}\''
+                },{
+                        'shell': 'df -hiP|grep \/$ |awk \'{print $5}\''
                 }
         ]
 },]

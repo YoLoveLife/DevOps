@@ -88,6 +88,18 @@ class AliyunCMSTool(object):
         pass
 
     @staticmethod
+    def change_timestamp(dataset):
+        json_dataset = []
+        for data in json.loads(dataset):
+            d = datetime.datetime.fromtimestamp(data['timestamp'] / 1000)
+            str1 = d.strftime("%Y/%m/%d %H:%M:%S")  # "%Y/%m/%d %H:%M:%S"
+            data['timestamp'] = str1
+            json_dataset.append(data)
+        return json_dataset
+
+
+    # :TODO Removed Function
+    @staticmethod
     def get_line_opts(results, title):
         import datetime
         time = []
@@ -96,11 +108,12 @@ class AliyunCMSTool(object):
         if not results:
             return {}
         for result in json.loads(results):
-            d = datetime.datetime.fromtimestamp(result['timestamp']/1000)
-            str1 = d.strftime("%Y/%m/%d %H:%M:%S") #"%Y/%m/%d %H:%M:%S"
+            d = datetime.datetime.fromtimestamp(result['timestamp'] / 1000)
+            str1 = d.strftime("%Y/%m/%d %H:%M:%S")  # "%Y/%m/%d %H:%M:%S"
             time.append(str1)
             minimum.append(round(result['Minimum'],2))
             maximum.append(round(result['Maximum'],2))
+
             # average.append(result['Average'])
         from pyecharts import Line
         from pyecharts.base import TRANSLATOR
