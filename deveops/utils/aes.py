@@ -8,13 +8,13 @@ KEY = SECRET_KEY
 KEY_LENGTH = 16
 from itsdangerous import JSONWebSignatureSerializer, BadSignature, SignatureExpired
 
+s = JSONWebSignatureSerializer(SECRET_KEY, salt='deveops')
+
 def encrypt(text):
-    s = JSONWebSignatureSerializer(SECRET_KEY)
     return s.dumps(text)
 
 
 def decrypt(text):
-    s = JSONWebSignatureSerializer(SECRET_KEY)
     try:
         return s.loads(text)
     except BadSignature:

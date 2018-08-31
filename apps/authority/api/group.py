@@ -1,12 +1,10 @@
 # -*- coding:utf-8 -*-
-from .. import models,serializers,filter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.views import Response,status
-from rest_framework_jwt.views import ObtainJSONWebToken
 from deveops.api import WebTokenAuthentication
 from authority.permission import group as GroupPermission
+from .. import models,serializers,filter
 
 __all__ = [
     "GroupListAPI", "GroupCreateAPI", "GroupUpdateAPI",

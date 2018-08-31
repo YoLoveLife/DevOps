@@ -20,7 +20,7 @@ class HostFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Host
-        fields = ['groups', 'connect_ip', 'hostname', 'sshport', 'info', 'systype', 'position']
+        fields = ['groups', 'connect_ip', 'hostname', 'sshport', 'info', 'systype', 'position',]
 
     @staticmethod
     def connect_ip_filter(queryset, first_name, value):
@@ -28,20 +28,15 @@ class HostFilter(django_filters.FilterSet):
 
     @staticmethod
     def info_filter(queryset, first_name, value):
-        details = models.HostDetail.objects.filter(info__icontains=value)
-        return queryset.filter(detail__in=details)
+        return queryset.filter(info__icontains=value)
 
     @staticmethod
     def systype_filter(queryset, first_name, value):
-        systype = models.System_Type.objects.filter(name__icontains=value)
-        detail = models.HostDetail.objects.filter(systemtype__in=systype)
-        return queryset.filter(detail__in=detail)
+        return queryset.filter(systype__icontains=value)
 
     @staticmethod
     def position_filter(queryset, first_name, value):
-        position = models.Position.objects.filter(name__icontains=value)
-        details = models.HostDetail.objects.filter(position__in=position)
-        return queryset.filter(detail__in=details)
+        return queryset.filter(position__icontains=value)
 
     @staticmethod
     def hostname_filter(queryset, first_name, value):
@@ -52,10 +47,11 @@ class GroupFilter(django_filters.FilterSet):
     info = django_filters.CharFilter(method="info_filter")
     ops = django_filters.CharFilter(method="ops_filter")
     status = django_filters.CharFilter(method="status_filter")
+    instance_group = django_filters.CharFilter(method="instance_group_filter")
 
     class Meta:
         model = models.Group
-        fields = ['info', 'ops', 'status']
+        fields = ['info', 'ops', 'status', 'instance_group']
 
     @staticmethod
     def info_filter(queryset, first_name, value):
@@ -69,3 +65,7 @@ class GroupFilter(django_filters.FilterSet):
     @staticmethod
     def status_filter(queryset, first_name, value):
         return queryset.filter(_status=value)
+
+    @staticmethod
+    def instance_group_filter(queryset, first_name, value):
+        return queryset.filter(dbgroup__isnull=True)

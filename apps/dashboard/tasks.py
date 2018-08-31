@@ -3,10 +3,14 @@
 # Time 17-10-25
 # Author Yo
 # Email YoLoveLife@outlook.com
+import os
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
+django.setup()
 
 from celery.task import periodic_task
 from django.conf import settings
-from dashboard.models import ExpiredAliyunECS,ExpiredAliyunRDS,ExpiredAliyunKVStore,ExpiredAliyunMongoDB
+from dashboard.models import ExpiredAliyunECS,ExpiredAliyunRDS,ExpiredAliyunKVStore,ExpiredAliyunMongoDB,DiskOverFlow
 
 
 def obj_maker(MODELS, dict_models):
@@ -64,4 +68,3 @@ def expired_aliyun_mongodb():
             dict_models = API.get_aliyun_expired_models(result )
             if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
                 obj_maker(ExpiredAliyunMongoDB, dict_models)
-

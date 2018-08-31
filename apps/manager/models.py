@@ -6,7 +6,6 @@ from authority.models import ExtendUser
 import uuid
 import paramiko
 import socket
-from deveops.utils.msg import Message
 from deveops.utils import sshkey,aes
 from utils.models import IMAGE
 from django.contrib.auth.models import Group as PerGroup
@@ -14,52 +13,10 @@ from authority.models import Key,Jumper
 from django.conf import settings
 
 __all__ = [
-    "System_Type", "Group", "Host",
-    "Position", "HostDetail"
+    "Group", "Host"
 ]
 
-
-class System_Type(models.Model):
-    id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, default="")
-    class Meta:
-        permissions = (('yo_list_systype', u'罗列系统类型'),
-                       ('yo_create_systype', u'新增系统类型'),
-                       ('yo_update_systype', u'修改系统类型'),
-                       ('yo_detail_systype', u'详细系统类型'),
-                       ('yo_delete_systype', u'删除系统类型'))
-
-    def __unicode__(self):
-        return self.name
-
-    @property
-    def sum_host(self):
-        return self.hosts.count()
-
-
-class Position(models.Model):
-    id = models.AutoField(primary_key=True) #全局ID
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, default="") #字符长度
-
-    class Meta:
-        permissions = (('yo_list_position', u'罗列位置'),
-                       ('yo_create_position', u'新增位置'),
-                       ('yo_update_position', u'修改位置'),
-                       ('yo_detail_position', u'详细位置'),
-                       ('yo_delete_position', u'删除位置'))
-
-    def __unicode__(self):
-        return self.name
-
-
 class Group(models.Model):
-    GROUP_STATUS=(
-        (settings.STATUS_GROUP_PAUSE, '暂停中'),
-        (settings.STATUS_GROUP_UNREACHABLE, '不可达'),
-        (settings.STATUS_GROUP_CAN_BE_USE, '正常'),
-    )
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
 
@@ -68,7 +25,6 @@ class Group(models.Model):
     _framework = models.ForeignKey(IMAGE, related_name='groups', on_delete=models.SET_NULL, null=True)
     # 超级管理员
     users = models.ManyToManyField(ExtendUser, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
-    _status = models.IntegerField(choices=GROUP_STATUS, default=0)
     pmn_groups = models.ManyToManyField(PerGroup, blank=True, related_name='assetgroups', verbose_name=_("assetgroups"))
 
     # 操作凭证
@@ -90,17 +46,21 @@ class Group(models.Model):
 
     @property
     def status(self):
-        return self._status
+        if self.jumper is None or self.key is None:
+            return settings.STATUS_GROUP_UNREACHABLE
+        elif self.jumper is not None and self.key is not None:
+            if self.jumper.status == settings.STATUS_JUMPER_CAN_BE_USE:
+                return settings.STATUS_GROUP_CAN_BE_USE
+            else:
+                return settings.STATUS_GROUP_PAUSE
+
 
     @status.setter
     def status(self, status):
-        if status == 1:
-            if self.key is not None and self.jumper is not None and self.jumper.status == 1:
-                self._status = 1
-            else:
-                self._status = 3
+        if self.jumper is not None:
+            self.jumper.check_status()
         else:
-            self._status = status
+            pass
 
     def framework_update(self):
         if not self._framework is None:
@@ -117,58 +77,42 @@ class Group(models.Model):
 
     @property
     def users_list_byconnectip(self):
-        if self._status != settings.STATUS_GROUP_CAN_BE_USE:
+        if self.status != settings.STATUS_GROUP_CAN_BE_USE:
             return []
         else:
             # Ansible 2.0.0.0
             # return list(self.hosts.values_list('connect_ip', flat=True)) Only Normal Host
-            return ','.join(list(self.hosts.filter(_status=1).values_list('connect_ip', flat=True)))
+            return ','.join(list(self.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
 
     @property
     def group_vars(self):
         return self.vars.all()
 
-    @property
-    def users_list_byhostname(self):
-        return list(self.hosts.values_list('hostname', flat=True))
-
-
-class HostDetail(models.Model):
-    id=models.AutoField(primary_key=True) #全局ID
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
-    systemtype = models.ForeignKey(System_Type, on_delete=models.SET_NULL, null=True, related_name='hosts_detail')
-    info = models.CharField(max_length=200, default="", null=True, blank=True)
-    aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
-    vmware_id = models.CharField(max_length=36, default='', blank=True, null=True)
-
 
 class Host(models.Model):
-    SYSTEM_STATUS = (
-        (settings.STATUS_HOST_CAN_BE_USE, '正常'),
-        (settings.STATUS_HOST_CLOSE, '关机'),
-        (settings.STATUS_HOST_PAUSE, '暂停'),
-    )
     # 主机标识
     id = models.AutoField(primary_key=True) #全局ID
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+
     # 资产结构
     groups = models.ManyToManyField(Group, blank=True, related_name='hosts', verbose_name=_("Host"))
 
-    # 相关信息
-    # connect_ip = models.GenericIPAddressField(default='', null=False)
+    # 连接信息
     connect_ip = models.CharField(max_length=15, default='', null=False)
-    # service_ip = models.GenericIPAddressField(default='0.0.0.0', null=True)
-
-    # 主机名称
-    hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)
-
-    # 用户端口
     sshport = models.IntegerField(default='22')
-    detail = models.ForeignKey(HostDetail, related_name='host', on_delete=models.CASCADE, null=True)
     _passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
 
+
+    # 主机信息
+    hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)
+    aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
+    vmware_id = models.CharField(max_length=36, default='', blank=True, null=True)
+    info = models.CharField(max_length=200, default="", null=True, blank=True)
+    position = models.CharField(max_length=50, default="")
+    systemtype = models.CharField(max_length=50, default="")
+
     # 服务器状态
-    _status = models.IntegerField(default=1, choices=SYSTEM_STATUS)
+    _status = models.IntegerField(default=1,)
 
     class Meta:
         permissions = (
@@ -183,11 +127,17 @@ class Host(models.Model):
 
     @property
     def status(self):
+        if not self.groups.exists():
+            return settings.STATUS_HOST_NOT_SELECT
         return self._status
 
     @status.setter
-    def status(self,status):
-        self._status = status
+    def status(self, status):
+        if self._status == settings.STATUS_HOST_PAUSE or self._status == settings.STATUS_HOST_CAN_BE_USE:
+            self._status = status
+        if status == settings.STATUS_HOST_PAUSE:
+            self._status = status
+        return
 
     @property
     def password(self):

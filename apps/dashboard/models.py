@@ -54,3 +54,15 @@ class ExpiredAliyunMongoDB(ExpiredAliyun):
     instancename = models.CharField(max_length=100, default='noname')
     version = models.CharField(max_length=100, default='4.0')
     type = models.CharField(max_length=100, default='MongoDB')
+
+
+class DiskOverFlow(models.Model):
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+    connect_ip = models.CharField(max_length=15, default='', null=True)
+    recognition_id = models.CharField(max_length=100,default='')
+    instancename = models.CharField(max_length=100,default='noname')
+    percentage = models.CharField(max_length=20, default='100%')
+
+    class Meta:
+        ordering = ['percentage', 'id']

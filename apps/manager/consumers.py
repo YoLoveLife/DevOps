@@ -7,11 +7,10 @@ from __future__ import absolute_import, unicode_literals
 from channels.generic.websocket import WebsocketConsumer
 import paramiko
 import redis
-from manager.interactive import YoShellSendThread, YoShellRecvThread
 from manager.models import Host, Group
 
 __all__ = [
-    "YoShellConsumer", "YoShellRecvThread", "YoShellSendThread"
+    "YoShellConsumer",
 ]
 
 class YoShellConsumer(WebsocketConsumer):

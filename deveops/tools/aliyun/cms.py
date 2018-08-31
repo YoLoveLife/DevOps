@@ -45,12 +45,23 @@ class AliyunCMSTool(object):
         obj.request.add_query_param('StartTime', '{DATE} 00:00:00'.format(DATE=time[0]))
         obj.request.add_query_param('EndTime', '{DATE} 00:00:00'.format(DATE=time[1]))
 
+
     @staticmethod
-    def request_to_day(obj):
+    def request_to_hour(obj, hour):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        seven = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')
+        seven = (datetime.datetime.now() - datetime.timedelta(hours=hour)).strftime('%Y-%m-%d %H:%M:%S')
         obj.request.add_query_param('StartTime', seven)
         obj.request.add_query_param('EndTime', now)
+        obj.request_to_period(obj, '60')
+
+
+    @staticmethod
+    def request_to_day(obj, day):
+        now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        seven = (datetime.datetime.now() - datetime.timedelta(days=day)).strftime('%Y-%m-%d %H:%M:%S')
+        obj.request.add_query_param('StartTime', seven)
+        obj.request.add_query_param('EndTime', now)
+        obj.request_to_period(obj, '900')
 
     @staticmethod
     def request_to_period(obj, period):
@@ -77,17 +88,32 @@ class AliyunCMSTool(object):
         pass
 
     @staticmethod
+    def change_timestamp(dataset):
+        json_dataset = []
+        for data in json.loads(dataset):
+            d = datetime.datetime.fromtimestamp(data['timestamp'] / 1000)
+            str1 = d.strftime("%Y/%m/%d %H:%M:%S")  # "%Y/%m/%d %H:%M:%S"
+            data['timestamp'] = str1
+            json_dataset.append(data)
+        return json_dataset
+
+
+    # :TODO Removed Function
+    @staticmethod
     def get_line_opts(results, title):
         import datetime
         time = []
         minimum = []
         maximum = []
+        if not results:
+            return {}
         for result in json.loads(results):
-            d = datetime.datetime.fromtimestamp(result['timestamp']/1000)
-            str1 = d.strftime("%Y/%m/%d %H:%M:%S") #"%Y/%m/%d %H:%M:%S"
+            d = datetime.datetime.fromtimestamp(result['timestamp'] / 1000)
+            str1 = d.strftime("%Y/%m/%d %H:%M:%S")  # "%Y/%m/%d %H:%M:%S"
             time.append(str1)
             minimum.append(round(result['Minimum'],2))
             maximum.append(round(result['Maximum'],2))
+
             # average.append(result['Average'])
         from pyecharts import Line
         from pyecharts.base import TRANSLATOR
@@ -147,3 +173,9 @@ class AliyunRDSCMSTool(AliyunCMSTool):
 
     def get_delay_results(self):
         AliyunCMSTool.request_to_metric(self, 'DataDelay')
+
+API = AliyunRDSCMSTool()
+API.request_to_instance(API, 'rm-bp165g6lz575k4zep')
+API.get_iops_results()
+API.request_to_day(API, 3)
+print(API.change_timestamp(API.get_results()))

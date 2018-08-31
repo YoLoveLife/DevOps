@@ -180,7 +180,7 @@ class Push_Mission(models.Model):
     # 任務結束時間
     finish_time = models.DateTimeField(auto_now=True)
     # 執行內容
-    results = models.CharField(default='', max_length=5000)
+    results = models.TextField()
     # 关联文件
     files = models.ManyToManyField(FILE, related_name='pushmission', blank=True)
 

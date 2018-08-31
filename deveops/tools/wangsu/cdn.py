@@ -1,0 +1,4 @@
+
+
+class WangsuCDNTool(object):
+    pass

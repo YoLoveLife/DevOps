@@ -3,10 +3,9 @@ from ops import models
 from rest_framework import serializers
 
 __all__ = [
-    "MetaSerializer", "MetaContentSerializer",
-
+    "MetaSerializer", "MetaContentSerializer", "MissionNeedFileSerializer",
+    "MissionSerializer",
 ]
-
 
 class MetaContentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,7 +19,7 @@ class MetaContentSerializer(serializers.ModelSerializer):
 
 
 class MetaSerializer(serializers.ModelSerializer):
-    hosts = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Host.objects.all())
+    hosts = serializers.PrimaryKeyRelatedField(required=False,many=True, queryset=models.Host.objects.all(),allow_null=True)
     need_files = serializers.ListField(source="file_list", read_only=True)
     contents = MetaContentSerializer(required=True, many=True, allow_null=True)
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
@@ -40,16 +39,20 @@ class MetaSerializer(serializers.ModelSerializer):
         contents = validated_data.pop('contents')
         validated_data.pop('qrcode')
         id_list = []
+        hosts = None
         for content in contents:
             content_instance = models.META_CONTENT.objects.create(**content)
             id_list.append(content_instance.id)
-        hosts = validated_data.pop('hosts')
+
+        if 'hosts' in validated_data.keys():
+            hosts = validated_data.pop('hosts')
 
         contests_list = models.META_CONTENT.objects.filter(id__in=id_list)
 
         obj = models.META.objects.create(**validated_data)
         obj.contents.add(*contests_list)
-        obj.hosts.set(hosts)
+        if hosts is not None:
+            obj.hosts.set(hosts)
         obj.save()
 
         return obj

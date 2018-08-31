@@ -3,13 +3,13 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models, serializers, filter
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
-from manager.permission import group as GroupPermission
 from deveops.api import WebTokenAuthentication
+from manager.permission import group as GroupPermission
+from .. import models, serializers, filter
 
 __all__ = [
     'ManagerGroupListAPI', 'ManagerGroupCreateAPI', 'ManagerGroupDetailAPI',
@@ -20,7 +20,7 @@ __all__ = [
 
 class ManagerGroupListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Group
-    serializer_class = serializers.GroupSerializer
+    serializer_class = serializers.GroupSampleSerializer
     queryset = models.Group.objects.all()
     permission_classes = [GroupPermission.GroupListRequiredMixin, IsAuthenticated]
     filter_class = filter.GroupFilter

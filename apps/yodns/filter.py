@@ -11,31 +11,32 @@ __all__ = ['DNSFilter',
             ]
 
 
+from django_filters import filters
+
+
+
 class DNSFilter(django_filters.FilterSet):
-    dns_name = django_filters.CharFilter(method="dnsname_filter")
-    level = django_filters.CharFilter(method="level_filter")
-    inner_dig = django_filters.CharFilter(method="inner_dig_filter")
-    dig = django_filters.CharFilter(method="dig_filter")
+
+    url = django_filters.CharFilter(method="url_filter")
+    internal_dig = django_filters.CharFilter(method="internal_dig_filter")
+    external_dig = django_filters.CharFilter(method="external_dig_filter")
+
     class Meta:
         model = models.DNS
-        fields = ['group', 'dns_name', 'inner_dig', 'dig',]
+        fields = ['url', 'internal_dig', 'external_dig']
 
 
     @staticmethod
-    def dnsname_filter(queryset, first_name, value):
-        return queryset.filter(Q(father__name=value)|Q(father__father__name=value)|Q(name=value))
-
-    @staticmethod
-    def level_filter(queryset, first_name, value):
-        if value == '1':
-            return queryset.filter(father__isnull=True)
-        elif value == '2':
-            return queryset.filter(Q(father__father__isnull=True) & ~Q(father__isnull=True))
-        else:
-            return queryset.exclude(Q(father__isnull=True) | Q(father__father__isnull=True))
+    def internal_dig_filter(queryset, first_name, value):
+        return queryset.filter(internal_dig__icontains=value)
 
 
     @staticmethod
-    def inner_dig_filter(queryset, first_name, value):
-        return queryset.filter(inner_dig__icontains=value)
+    def external_dig_filter(queryset, first_name, value):
+        return queryset.filter(external_dig__icontains=value)
+
+
+    @staticmethod
+    def url_filter(queryset, first_name, value):
+        return queryset.filter(url__icontains=value)
 

@@ -47,8 +47,11 @@ INSTALLED_APPS = [
     'variable.apps.VariableConfig',
     'dashboard.apps.DashboardConfig',
     'yodns.apps.YoDnsConfig',
-    'db.apps.DBConfig',
+    'zdb.apps.ZDBConfig',
     'monitor.apps.MonitorConfig',
+    'console.apps.ConsoleConfig',
+    'ezsetup.apps.EZSetupConfig',
+    'yocdn.apps.YoCDNConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
@@ -84,9 +87,9 @@ REST_FRAMEWORK = {
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -231,26 +234,37 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_USER_SEARCH = LDAPSearch(OU,ldap.SCOPE_SUBTREE,"(&(objectClass=*)(sAMAccountName=%(user)s))")
     AUTH_LDAP_USER_ATTR_MAP = {
         "full_name": "cn",
-        "description": "description",
         "first_name":"sn",
         "phone":"mobile",
+        "groups": "",
     }
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
     # AUTH_LDAP_MIRROR_GROUPS = True
 else:
     pass
 
-#VMARE
+# VMWARE
 VMWARE_USERNAME = DEVEOPS_CONF.VMWARE_USERNAME
 VMWARE_PASSWD = DEVEOPS_CONF.VMWARE_PASSWD
 VMWARE_SERVER = DEVEOPS_CONF.VMWARE_SERVER
 
-#ALIYUN
+# ALIYUN
 ALIYUN_ACCESSKEY = DEVEOPS_CONF.ALIYUN_ACCESSKEY
 ALIYUN_ACCESSSECRET = DEVEOPS_CONF.ALIYUN_ACCESSSECRET
 ALIYUN_PAGESIZE = DEVEOPS_CONF.ALIYUN_PAGESIZE
 ALIYUN_EXPIREDTIME = DEVEOPS_CONF.ALIYUN_EXPIREDTIME
 ALIYUN_OVERDUETIME = DEVEOPS_CONF.ALIYUN_OVERDUETIME
+
+# QINIU
+QINIU_ACCESSKEY = DEVEOPS_CONF.QINIU_ACCESSKEY
+QINIU_ACCESSSECRET = DEVEOPS_CONF.QINIU_ACCESSSECRET
+
+
+# DISK
+DISK_LIMIT = DEVEOPS_CONF.DISK_LIMIT
+
+# UPTIME
+UPTIME_LIMIT = DEVEOPS_CONF.UPTIME_LIMIT
 
 # DNS
 INNER_DNS = DEVEOPS_CONF.INNER_DNS
@@ -260,6 +274,7 @@ OUTER_DNS = DEVEOPS_CONF.OUTER_DNS
 #CRONTAB
 DASHBOARD_TIME = DEVEOPS_CONF.DASHBOARD_TIME
 EXPIRED_TIME = DEVEOPS_CONF.EXPIRED_TIME
+CHECK_TIME = DEVEOPS_CONF.CHECK_TIME
 MANAGER_TIME = DEVEOPS_CONF.MANAGER_TIME
 DNS_TIME = DEVEOPS_CONF.DNS_TIME
 

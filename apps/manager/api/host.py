@@ -21,17 +21,19 @@ __all__ = [
 
 class HostPagination(PageNumberPagination):
     page_size = 10
+    max_page_size = 60
+    page_size_query_param = 'page_size'
 
 
 class ManagerHostListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Host
     queryset = models.Host.objects.all()
-    serializer_class = serializers.HostSerializer
+    serializer_class = serializers.HostSampleSerializer
     permission_classes = [HostPermission.HostListRequiredMixin, IsAuthenticated]
     filter_class = filter.HostFilter
 
 
-class ManagerHostListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
+class ManagerHostListByPageAPI(ManagerHostListAPI):
     module = models.Host
     serializer_class = serializers.HostSerializer
     queryset = models.Host.objects.all()

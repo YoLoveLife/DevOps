@@ -56,11 +56,9 @@ class VmwareTool(object):
             'connect_ip': vm.summary.guest.ipAddress or '127.0.0.1',
             'sshport': 52000,
             'status': VmwareTool.get_vm_status(vm.summary.runtime.powerState),
-            'detail':{
-                'systemtype': vm.config.guestFullName,
-                'position': 'Center{IP}'.format(IP=DJANGO_SETTINGS.VMWARE_SERVER),
-                'vmware_id': vm.config.uuid,
-            },
+            'systemtype': vm.config.guestFullName,
+            'position': 'Center{IP}'.format(IP=DJANGO_SETTINGS.VMWARE_SERVER),
+            'vmware_id': vm.config.uuid,
         }
 
     @staticmethod
