@@ -173,3 +173,9 @@ class AliyunRDSCMSTool(AliyunCMSTool):
 
     def get_delay_results(self):
         AliyunCMSTool.request_to_metric(self, 'DataDelay')
+
+API = AliyunRDSCMSTool()
+API.request_to_instance(API, 'rm-bp165g6lz575k4zep')
+API.get_iops_results()
+API.request_to_day(API, 3)
+print(API.change_timestamp(API.get_results()))

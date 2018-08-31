@@ -32,6 +32,7 @@ urlpatterns = [
     path(r'api-work/', include('work.urls.api_urls')),
     path(r'api-var/', include('variable.urls.api_urls')),
     path(r'api-dns/', include('yodns.urls.api_urls')),
+    path(r'api-cdn/', include('yocdn.urls.api_urls')),
     path(r'api-zdb/', include('zdb.urls.api_urls')),
     path(r'api-dashboard/', include('dashboard.urls.api_urls')),
     path(r'api-monitor/', include('monitor.urls.api_urls')),
