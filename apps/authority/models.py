@@ -92,7 +92,7 @@ class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
-    qrcode = models.CharField(max_length=29, default='')
+    qrcode = models.CharField(max_length=16, default='')
     have_qrcode = models.BooleanField(default=False)
     groups = models.ManyToManyField(
         Group,

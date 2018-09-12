@@ -4,7 +4,7 @@ devEops :laughing: 开发自运维平台 :no_mouth: 后端
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/YoLoveLife/devEops/releases)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) :yum: </br>
 
-Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand:  汪子哲 :fist: 徐晨亮 :facepunch: 张雨萍</br>
+Author: [YoLoveLife.com](http://www.yolovelife.com) :ok_hand:  汪子哲 :fist: 徐晨亮 :facepunch: 张宇萍</br>
 :heart: 感谢所有 :star: 我的人 你们是我前行的动力</br>
 该项目为devEops的后端部分 前端部分请关注 :heart: [devEops-Web](https://github.com/YoLoveLife/devEopsWeb)</br>
 

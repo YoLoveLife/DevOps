@@ -32,7 +32,9 @@ class YoCDNListSerializer(serializers.Serializer):
             'cdns'
         )
     def create(self, validated_data):
+        user = self.context['request'].user
         for obj in validated_data['cdns']:
+            obj.user = user
             ser = YoCDNSerializer(data=obj)
             if ser.is_valid():
                 print(ser.save())

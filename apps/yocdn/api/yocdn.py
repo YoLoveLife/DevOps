@@ -3,7 +3,7 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from yocdn import models,serializers
+from yocdn import models,serializers,filter
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.pagination import PageNumberPagination
@@ -26,6 +26,7 @@ class YoCDNListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     queryset = models.CDN.objects.all()
     permission_classes = [AllowAny,]
     pagination_class = YoCDNPagination
+    filter_class = filter.CDNFilter
 
 
 class YoCDNCreateAPI(WebTokenAuthentication, generics.CreateAPIView):

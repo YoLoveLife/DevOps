@@ -105,7 +105,7 @@ class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
 
 def get_qrcode(user):
     if not user.qrcode: # ''
-        user.qrcode = pyotp.random_base32(16)
+        user.qrcode = pyotp.random_base32()
         user.save()
     file_name = str(aes.encrypt(user.qrcode),encoding='utf-8')
     file = settings.QCODE_ROOT+'/'+file_name+'.png'

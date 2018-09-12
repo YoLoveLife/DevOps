@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'console.apps.ConsoleConfig',
     'ezsetup.apps.EZSetupConfig',
     'yocdn.apps.YoCDNConfig',
+    'pool.apps.PoolConfig',
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',

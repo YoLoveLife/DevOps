@@ -19,7 +19,6 @@ class AliyunCDNTool(object):
         self.request = CommonRequest()
         AliyunCDNTool.request_to_json(self)
 
-
     def check(self, url):
         if 'http' in url:
             index = url.find('//')
@@ -34,7 +33,6 @@ class AliyunCDNTool(object):
                 return 'FILE'
             else:
                 return 'DIR'
-
 
     @staticmethod
     def get_json_results(results):
@@ -58,11 +56,10 @@ class AliyunCDNTool(object):
 
         try:
             response = self.clt.do_action_with_exception(self.request)
-        except:
+        except Exception as e:
+            print(e)
             return {}
         return self.get_json_results(response)
-
-
 
     @staticmethod
     def request_to_result(result):
