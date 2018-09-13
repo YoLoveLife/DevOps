@@ -11,10 +11,10 @@ ENVIRONMENT = 'DEVEL'
 RUN_USER = 'root'
 
 # 数据库配置内容
-DB_NAME = ''
-DB_USER = ''
+DB_NAME = 'deveops'
+DB_USER = 'root'
 DB_PASSWD = ''
-DB_HOST = ''
+DB_HOST = '127.0.0.1'
 DB_PORT = '3306'
 
 # Session配置
@@ -24,7 +24,7 @@ SESSION_COOKIE_AGE = 30*60
 SSH_TIMEOUT = 2
 
 # Redis配置
-REDIS_HOST = ''
+REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_SPACE = 3
 REDIS_PASSWD = ''
@@ -50,12 +50,22 @@ VMWARE_SERVER = ""
 # ALiyun配置
 ALIYUN_ACCESSKEY = ""
 ALIYUN_ACCESSSECRET = ""
-ALIYUN_PAGESIZE = 10
-EXPIREDTIME = 10
+ALIYUN_PAGESIZE = 30
+ALIYUN_EXPIREDTIME = 13
+ALIYUN_OVERDUETIME = -13
+
+# QiNiu配置
+QINIU_ACCESSKEY = ""
+QINIU_ACCESSSECRET = ""
+
+# 巡检界限
+DISK_LIMIT = 10 # %
+UPTIME_LIMIT = 70 # %
+
 
 # SMTP配置
 SMTP_HOST = ''
-SMTP_PORT = 29
+SMTP_PORT = 25
 SMTP_USER = ''
 SMTP_PASSWD = ''
 
@@ -66,6 +76,7 @@ OUTER_DNS = ''
 # Crontab 配置
 from celery.schedules import crontab
 DASHBOARD_TIME = crontab(minute=30,hour=1,day_of_week="sunday")
-EXPIRED_TIME = crontab(minute=30,hour=1)
-MANAGER_TIME = crontab(minute=50,hour=7)
-DNS_TIME = crontab(minute='*')
+EXPIRED_TIME = crontab(minute=30,hour=1,day_of_week="sunday")
+CHECK_TIME = crontab(minute='*')#,day_of_week="sunday")
+MANAGER_TIME = crontab(minute=16,hour=10)#,day_of_week="sunday")
+DNS_TIME = crontab(minute='*')#,day_of_week="sunday")
