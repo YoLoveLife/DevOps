@@ -52,7 +52,7 @@ class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
         API = AliyunECSCMSTool()
         time_pick(API, time)
         API.request_to_instance(API,self.get_object().aliyun_id)
-        API.get_cpu_results()
+        API.request_get_cpu_results()
         return Response({'title':'CPU利用率', 'dataset': API.change_timestamp(API.get_results())})
 
 
@@ -68,7 +68,7 @@ class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
         API = AliyunECSCMSTool()
         time_pick(API, time)
         API.request_to_instance(API,self.get_object().aliyun_id)
-        API.get_mem_results()
+        API.request_get_mem_results()
         return Response({'title':'内存使用率', 'dataset': API.change_timestamp(API.get_results())})
 
 
@@ -84,7 +84,7 @@ class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
         API = AliyunECSCMSTool()
         time_pick(API, time)
         API.request_to_instance(API, self.get_object().aliyun_id)
-        API.get_read_iops_results()
+        API.request_get_read_iops_results()
         return Response({'title': '磁盘读取Count/Second', 'dataset': API.change_timestamp(API.get_results())})
 
 
@@ -100,5 +100,5 @@ class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
         API = AliyunECSCMSTool()
         time_pick(API, time)
         API.request_to_instance(API, self.get_object().aliyun_id)
-        API.get_in_net_results()
+        API.request_get_in_net_results()
         return Response({'title': '网络流入流量bits/s', 'dataset': API.change_timestamp(API.get_results())})

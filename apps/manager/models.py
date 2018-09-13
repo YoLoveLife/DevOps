@@ -150,6 +150,13 @@ class Host(models.Model):
     def password(self, password):
         self._passwd = aes.encrypt(password).decode()
 
+    @property
+    def group(self):
+        group_list = []
+        for group in self.groups.all():
+            group_list.append(group.name)
+        return ';'.join(group_list)
+
     # :TODO 详细页面 管理用户
     def manage_user_get(self):
         dist = {}

@@ -11,6 +11,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from manager.permission import host as HostPermission
 from deveops.api import WebTokenAuthentication
+from timeline.decorator import decorator_create
+from django.conf import settings
 
 __all__ = [
     'ManagerHostListAPI', 'ManagerHostCreateAPI',
@@ -48,6 +50,7 @@ class ManagerHostCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostCreateRequiredMixin, IsAuthenticated]
 
+    @decorator_create(timeline_type = settings.TIMELINE_KEY_VALUE['Host_HOST_CREATE'])
     def create(self, request, *args, **kwargs):
         return super(ManagerHostCreateAPI, self).create(request, *args, **kwargs)
 

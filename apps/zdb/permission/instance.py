@@ -26,7 +26,6 @@ class ZDBInstanceListRequiredMixin(ZDBInstanceAPIRequiredMixin):
 class ZDBInstanceCreateRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_create_db'
 
-    @decorator_api(settings.TIMELINE_DB_INSTANCE_CREATE)
     def has_permission(self, request, view):
         return request, super(ZDBInstanceCreateRequiredMixin, self).has_permission(request, view)
 
@@ -34,7 +33,6 @@ class ZDBInstanceCreateRequiredMixin(ZDBInstanceAPIRequiredMixin):
 class ZDBInstanceUpdateRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_update_db'
 
-    @decorator_api(settings.TIMELINE_DB_INSTANCE_UPDATE)
     def has_permission(self, request, view):
         return request, super(ZDBInstanceUpdateRequiredMixin, self).has_permission(request, view)
 
@@ -42,7 +40,6 @@ class ZDBInstanceUpdateRequiredMixin(ZDBInstanceAPIRequiredMixin):
 class ZDBInstanceDeleteRequiredMixin(ZDBInstanceAPIRequiredMixin):
     permission_required = u'zdb.yo_delete_db'
 
-    @decorator_api(settings.TIMELINE_DB_INSTANCE_DELETE)
     def has_permission(self, request, view):
         return request, super(ZDBInstanceDeleteRequiredMixin, self).has_permission(request, view)
 

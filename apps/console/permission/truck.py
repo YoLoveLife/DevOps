@@ -25,7 +25,6 @@ class TruckAPIRequiredMixin(BasePermission):
 class TruckCreateRequiredMixin(TruckAPIRequiredMixin):
     permission_required = u'console.yo_create_truck'
 
-    @decorator_api(settings.TIMELINE_CONSOLE_TRUCK_CREATE)
     def has_permission(self, request, view):
         return request, super(TruckCreateRequiredMixin, self).has_permission(request, view)
 

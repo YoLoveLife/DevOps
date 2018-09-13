@@ -28,7 +28,6 @@ class GroupListRequiredMixin(GroupAPIRequiredMixin):
 class GroupCreateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'manager.yo_create_group'
 
-    @decorator_api(settings.TIMELINE_GROUP_CREATE)
     def has_permission(self, request, view):
         return request, super(GroupCreateRequiredMixin, self).has_permission(request, view)
 
@@ -36,7 +35,6 @@ class GroupCreateRequiredMixin(GroupAPIRequiredMixin):
 class GroupUpdateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'manager.yo_update_group'
 
-    @decorator_api(settings.TIMELINE_GROUP_UPDATE)
     def has_permission(self, request, view):
         return request, super(GroupUpdateRequiredMixin, self).has_permission(request, view)
 
@@ -48,7 +46,6 @@ class GroupDetailRequiredMixin(GroupAPIRequiredMixin):
 class GroupDeleteRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'manager.yo_delete_group'
 
-    @decorator_api(settings.TIMELINE_GROUP_DELETE)
     def has_permission(self, request, view):
         return request, super(GroupDeleteRequiredMixin, self).has_permission(request, view)
 
@@ -56,6 +53,5 @@ class GroupDeleteRequiredMixin(GroupAPIRequiredMixin):
 class GroupSelectHostRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'manager.yo_group_sort_host'
 
-    @decorator_api(settings.TIMELINE_GROUP_SORT)
     def has_permission(self, request, view):
         return request, super(GroupSelectHostRequiredMixin, self).has_permission(request, view)

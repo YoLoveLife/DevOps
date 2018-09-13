@@ -32,7 +32,6 @@ class IPFilter(django_filters.FilterSet):
         '''
         # Split ''
         address_list = [address for address in address_list if address!='']
-        print(address_list)
         if len(address_list) == 4:
             return queryset.filter(
                 A_address__icontains=address_list[0],

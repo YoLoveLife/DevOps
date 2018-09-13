@@ -28,7 +28,6 @@ class GroupListRequiredMixin(GroupAPIRequiredMixin):
 class GroupCreateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_create_pmngroup'
 
-    @decorator_api(settings.TIMELIME_PMNGROUP_CREATE)
     def has_permission(self, request, view):
         return request, super(GroupCreateRequiredMixin, self).has_permission(request, view)
 
@@ -36,7 +35,6 @@ class GroupCreateRequiredMixin(GroupAPIRequiredMixin):
 class GroupUpdateRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_update_pmngroup'
 
-    @decorator_api(settings.TIMELINE_PMNGROUP_UPDATE)
     def has_permission(self, request, view):
         return request, super(GroupUpdateRequiredMixin, self).has_permission(request, view)
 
@@ -44,6 +42,5 @@ class GroupUpdateRequiredMixin(GroupAPIRequiredMixin):
 class GroupDeleteRequiredMixin(GroupAPIRequiredMixin):
     permission_required = u'authority.yo_delete_pmngroup'
 
-    @decorator_api(settings.TIMELINE_PMNGROUP_DELETE)
     def has_permission(self, request, view):
         return request, super(GroupDeleteRequiredMixin, self).has_permission(request, view)
