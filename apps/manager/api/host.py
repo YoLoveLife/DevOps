@@ -33,6 +33,7 @@ class ManagerHostListAPI(WebTokenAuthentication, generics.ListAPIView):
     filter_class = filter.HostFilter
 
 
+
 class ManagerHostListByPageAPI(ManagerHostListAPI):
     module = models.Host
     serializer_class = serializers.HostSerializer
@@ -46,6 +47,9 @@ class ManagerHostCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostCreateRequiredMixin, IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        return super(ManagerHostCreateAPI, self).create(request, *args, **kwargs)
 
 
 class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):

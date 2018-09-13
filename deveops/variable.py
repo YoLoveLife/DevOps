@@ -94,6 +94,17 @@ TYPE_DB_INSTANCE_MGR = 3
 
 
 # TIMELINE
+# TIMELINE_KEY_VALUE = {
+#     'Host_HOST_CREATE':10,
+#     'Host_HOST_UPDATE':11,
+#     'Host_HOST_DELETE':12,
+#     'Host_HOST_SORT':13,
+#
+#     'Group_GROUP_CREATE':20,
+#     'Group_GROUP_UPDATE':21,
+#     'Group_GROUP_DELETE':22,
+#     'Group_GROUP_SORT':23
+# }
 # HOST
 TIMELINE_HOST_CREATE = 10
 TIMELINE_HOST_UPDATE = 11
