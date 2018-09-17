@@ -16,6 +16,22 @@ from pool.models import IP_Pool
 def ipool_maker(dict_models):
     IP_Pool.objects.create(**dict_models)
 
+
+
+def vpcs_list():
+    from deveops.tools.aliyun import vpc
+    VPCAPI = vpc.AliyunVPCTool()
+    for page in range(1, VPCAPI.pagecount+1):
+        vpc_results = VPCAPI.request_get_vpcs(page)
+        for vpc_result in vpc_results:
+            yield vpc_result
+
+
+def gws_list(vpc):
+    pass
+
+
+
 # @periodic_task(run_every=settings.MANAGER_TIME)
 @periodic_task(run_every=crontab(minute='*/5'))
 def aliyun_slb_ipoll():
@@ -37,7 +53,8 @@ def aliyun_slb_ipoll():
                 if not ipool_query.exists():
                     ipool_maker(dict_models)
 
-# @periodic_task(run_every=crontab(minute='*/5'))
+
+@periodic_task(run_every=crontab(minute='*/5'))
 def aliyun_gw_ipoll():
     from deveops.tools.aliyun import vpc,nat
     VPCAPI = vpc.AliyunVPCTool()
@@ -86,7 +103,20 @@ def aliyun_gw_ipoll():
                         if not ipool_query.exists():
                             ipool_maker(dict_models)
 
-aliyun_gw_ipoll()
+
+def aliyun_security_pool():
+    from deveops.tools.aliyun import vpc,securitygroup
+    VPCAPI = vpc.AliyunVPCTool()
+    for vpc_page in range(1, VPCAPI.pagecount+1):
+        vpc_results = VPCAPI.request_get_vpcs(vpc_page)
+        for vpc_result in vpc_results:
+            vpc_id = vpc_result['VpcId']
+            SECURITYAPI = securitygroup.AliyunSecurityGroupTool(vpc_id)
+            for sg_page in range(1, SECURITYAPI.pagecount+1):
+                sg_results = SECURITYAPI.request_get_securitygroups(vpc_id, sg_page)
+                for sg_result in sg_results:
+                    pass
+
 
 @periodic_task(run_every=crontab(minute='*/5'))
 def host_ipoll():

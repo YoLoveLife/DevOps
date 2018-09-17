@@ -69,8 +69,3 @@ class AliyunCDNTool(object):
     @staticmethod
     def request_to_result(result):
         print(result)
-
-
-package = __import__('apps')
-temp_class = getattr(package ,'Host')
-print(temp_class.objects.all())

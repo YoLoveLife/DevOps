@@ -108,3 +108,9 @@ class AliyunNATTool(object):
             print(e)
             return {}
         return self.get_json_results(response).get('SnatTableEntries').get('SnatTableEntry')
+
+
+
+
+API = AliyunNATTool()
+print(API.request_get_gateway('vpc-bp1hqvm6iacurg4sjn5ki'))

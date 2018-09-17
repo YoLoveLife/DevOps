@@ -23,7 +23,7 @@ class YoCDNPagination(PageNumberPagination):
 class YoCDNListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.CDN
     serializer_class = serializers.YoCDNSerializer
-    queryset = models.CDN.objects.all()
+    queryset = models.CDN.objects.all().order_by('-id')
     permission_classes = [AllowAny,]
     pagination_class = YoCDNPagination
     filter_class = filter.CDNFilter

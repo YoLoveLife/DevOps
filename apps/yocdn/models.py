@@ -10,7 +10,6 @@ __all__ = [
     "CDN"
 ]
 
-
 class CDN(models.Model):
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -18,6 +17,7 @@ class CDN(models.Model):
     url = models.CharField(max_length=1000, default='')
     user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
     status = models.IntegerField(default=settings.STATUS_CDN_RUN)
+    process = models.IntegerField(default=0)
     create_time = models.DateTimeField(auto_now_add=True)
     type = models.IntegerField(default=settings.TYPE_CDN_ALIYUN)
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from yocdn import models
-from yocdn.tasks import clean_cdn
+from yocdn.tasks import refresh_cdn
 from django.conf import settings
 from rest_framework import serializers
 
@@ -13,15 +13,15 @@ class YoCDNSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CDN
         fields = (
-            'id', 'uuid', 'url', 'type', 'create_time', 'status'
+            'id', 'uuid', 'url', 'type', 'create_time', 'status', 'process'
         )
         read_only_fields = (
-            'id', 'uuid', 'create_time','status'
+            'id', 'uuid', 'create_time', 'status'
         )
 
     def create(self, validated_data):
         obj = super(YoCDNSerializer, self).create(validated_data)
-        clean_cdn.delay(obj)
+        refresh_cdn.delay(obj)
         return obj
 
 

@@ -49,34 +49,29 @@ def vmware2cmdb():
 
 @periodic_task(run_every=settings.MANAGER_TIME)
 def aliyun2cmdb():
-    from deveops.tools.aliyun import ecs
+    from deveops.tools.aliyun_v2.request import ecs
     API = ecs.AliyunECSTool()
-    for page in range(1, API.pagecount+1):
-        results = API.request_get_instances(page)
-        for result in results:
-            dict_models = API.get_aliyun_models(result)
-            host_query = Host.objects.filter(aliyun_id=dict_models['aliyun_id'], connect_ip=dict_models['connect_ip'])
-            if not host_query.exists():
-                host_maker(dict_models)
-            else:
-                host_updater(host_query, dict_models)
+    for dict_models in API.tool_get_instances_models():
+        host_query = Host.objects.filter(aliyun_id=dict_models['aliyun_id'], connect_ip=dict_models['connect_ip'])
+        if not host_query.exists():
+            host_maker(dict_models)
+        else:
+            host_updater(host_query, dict_models)
 
 
 @periodic_task(run_every=settings.MANAGER_TIME)
 def cmdb2aliyun():
-    from deveops.tools.aliyun import ecs
+    from deveops.tools.aliyun_v2.request import ecs
     from django.db.models import Q
     API = ecs.AliyunECSTool()
     queryset = Host.objects.filter(~Q(aliyun_id=''))
     for host in queryset:
-        status_results = API.request_get_instance_status(host.aliyun_id)
-        status = API.get_aliyun_instance_status(status_results)
+        status = API.tool_get_instance_models(host.aliyun_id).__next__()
         if status == 'delete':
             host.delete()
         else:
-            expired_results = API.request_get_instance(host.aliyun_id)
-            expired = API.get_aliyun_expired_models(expired_results)
-            if expired.get('expired') < settings.ALIYUN_OVERDUETIME:
+            expired_models = API.tool_get_instance_expired_models(host.aliyun_id).__next__()
+            if expired_models.get('expired') < settings.ALIYUN_OVERDUETIME:
                 host.delete()
             else:
                 if host.status == settings.STATUS_HOST_PAUSE:
@@ -86,8 +81,6 @@ def cmdb2aliyun():
                         host.status = settings.STATUS_HOST_CLOSE
                 else:
                     host.status = status
-
-
 
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
 

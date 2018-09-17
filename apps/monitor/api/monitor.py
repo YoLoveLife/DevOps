@@ -47,13 +47,12 @@ class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
         return Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
-        from deveops.tools.aliyun.cms import AliyunECSCMSTool
-        time = kwargs['time']
-        API = AliyunECSCMSTool()
-        time_pick(API, time)
-        API.request_to_instance(API,self.get_object().aliyun_id)
-        API.request_get_cpu_results()
-        return Response({'title':'CPU利用率', 'dataset': API.change_timestamp(API.get_results())})
+        from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
+        API = AliyunCMSECSTool()
+        return Response({
+            'title': 'CPU利用率',
+            'dataset': API.tool_get_metric_cpu(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
+        })
 
 
 class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
@@ -63,13 +62,12 @@ class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
         return Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
-        from deveops.tools.aliyun.cms import AliyunECSCMSTool
-        time = kwargs['time']
-        API = AliyunECSCMSTool()
-        time_pick(API, time)
-        API.request_to_instance(API,self.get_object().aliyun_id)
-        API.request_get_mem_results()
-        return Response({'title':'内存使用率', 'dataset': API.change_timestamp(API.get_results())})
+        from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
+        API = AliyunCMSECSTool()
+        return Response({
+            'title': '内存使用率',
+            'dataset': API.tool_get_metric_mem(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
+        })
 
 
 class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
@@ -79,13 +77,12 @@ class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
         return Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
-        from deveops.tools.aliyun.cms import AliyunECSCMSTool
-        time = kwargs['time']
-        API = AliyunECSCMSTool()
-        time_pick(API, time)
-        API.request_to_instance(API, self.get_object().aliyun_id)
-        API.request_get_read_iops_results()
-        return Response({'title': '磁盘读取Count/Second', 'dataset': API.change_timestamp(API.get_results())})
+        from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
+        API = AliyunCMSECSTool()
+        return Response({
+            'title': '磁盘读取Count/Second',
+            'dataset': API.tool_get_metric_read_iops(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
+        })
 
 
 class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
@@ -95,10 +92,9 @@ class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
         return Host.objects.filter(uuid=self.kwargs['pk']).get()
 
     def get(self, request, *args, **kwargs):
-        from deveops.tools.aliyun.cms import AliyunECSCMSTool
-        time = kwargs['time']
-        API = AliyunECSCMSTool()
-        time_pick(API, time)
-        API.request_to_instance(API, self.get_object().aliyun_id)
-        API.request_get_in_net_results()
-        return Response({'title': '网络流入流量bits/s', 'dataset': API.change_timestamp(API.get_results())})
+        from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
+        API = AliyunCMSECSTool()
+        return Response({
+            'title': '网络流入流量bits/s',
+            'dataset': API.tool_get_metric_net_in(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
+        })
