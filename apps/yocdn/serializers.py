@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from yocdn import models
 from yocdn.tasks import refresh_cdn
+from authority.models import ExtendUser
 from django.conf import settings
 from rest_framework import serializers
 
@@ -10,13 +11,14 @@ __all__ = [
 
 
 class YoCDNSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.full_name', required=False, read_only=True)
     class Meta:
         model = models.CDN
         fields = (
-            'id', 'uuid', 'url', 'type', 'create_time', 'status', 'process'
+            'id', 'uuid', 'url', 'type', 'create_time', 'status', 'process', 'username'
         )
         read_only_fields = (
-            'id', 'uuid', 'create_time', 'status'
+            'id', 'uuid', 'create_time', 'status', 'username'
         )
 
     def create(self, validated_data):
@@ -34,10 +36,12 @@ class YoCDNListSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = self.context['request'].user
         for obj in validated_data['cdns']:
-            obj.user = user
             ser = YoCDNSerializer(data=obj)
             if ser.is_valid():
-                print(ser.save())
+                cdn = ser.save()
+                models.CDN.objects.filter(uuid=cdn.uuid, id=cdn.id).update(
+                    user=user
+                )
         return {'cdns':{}}
 
 

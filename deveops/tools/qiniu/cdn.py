@@ -8,8 +8,9 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
 django.setup()
 
 
-from qiniu import CdnManager, Auth
+from qiniu import CdnManager, Auth, http
 from django.conf import settings
+import json
 
 class QiNiuTool(object):
     pass
@@ -19,6 +20,21 @@ class QiNiuCDNTool(QiNiuTool):
     def __init__(self):
         self.manager = CdnManager(Auth(access_key=settings.QINIU_ACCESSKEY,
                                                  secret_key=settings.QINIU_ACCESSSECRET))
+    @staticmethod
+    def get_status(status):
+        if status == 'success':
+            return settings.STATUS_CDN_DONE
+        elif status == 'processing':
+            return settings.STATUS_CDN_RUN
+        elif status == 'failure':
+            return settings.STATUS_CDN_ERROR
+
+    @staticmethod
+    def get_models(result):
+        return {
+            'process': result['progress'],
+            'status': QiNiuCDNTool.get_status(result['state']),
+        }
 
     def get_log_data(self):
         pass
@@ -63,7 +79,7 @@ class QiNiuCDNTool(QiNiuTool):
             ret, info =self.manager.refresh_urls(file_urls)
             print(ret, 'BBB',info)
 
-    def refresh(self, url):
+    def tool_flush_cdn(self, url):
         ret = None
         info = None
         if self.check(url) == 'FILE':
@@ -71,7 +87,19 @@ class QiNiuCDNTool(QiNiuTool):
         else:
             ret, info = self.manager.refresh_dirs([url])
 
-        if ret['code'] == 200:
-            return True
-        else:
-            return False
+        return {
+            'RefreshTaskId': ret['requestId'],
+            'urlSurplusDay': ret['urlSurplusDay'],
+            'dirQuotaDay': ret['dirQuotaDay'],
+            'dirSurplusDay': ret['dirSurplusDay'],
+            'urlQuotaDay': ret['urlQuotaDay'],
+        }
+
+    def tool_get_task(self, request_id):
+        req = {}
+        req['requestId'] = request_id
+        body = json.dumps(req)
+        url = '{0}/v2/tune/refresh/list'.format(self.manager.server)
+        headers = {'Content-Type': 'application/json'}
+        ret, info = http._post_with_auth_and_headers(url, body, self.manager.auth, headers)
+        yield QiNiuCDNTool.get_models(ret['items'][0])

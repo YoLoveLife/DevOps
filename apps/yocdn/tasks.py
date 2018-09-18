@@ -10,9 +10,8 @@ from dns import resolver
 import time
 from django.conf import settings
 from yocdn.models import CDN
-from deveops.tools.qiniu.cdn import QiNiuCDNTool
 from deveops.tools.aliyun_v2.request.cdn import AliyunCDNTool
-from deveops.tools.wangsu.cdn import WangsuCDNTool
+from deveops.tools.qiniu.cdn import QiNiuCDNTool
 
 class CDNTask(Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
@@ -51,39 +50,32 @@ def choose_type(domain):
     elif 'wangs' in CNAME:
         return settings.TYPE_CDN_WS
 
+def process(API, obj):
+    task_id = API.tool_flush_cdn(obj.url)['RefreshTaskId']
+    while True:
+        dict_models = API.tool_get_task(task_id).__next__()
+        CDN.objects.filter(
+            uuid=obj.uuid, id=obj.id
+        ).update(
+            process=dict_models['process'],
+            status=dict_models['status'],
+        )
+        if dict_models['status'] == settings.STATUS_CDN_DONE or dict_models['status'] == settings.STATUS_CDN_ERROR:
+            return
+        time.sleep(1)
+
 
 @task(base=CDNTask)
 def refresh_cdn(obj):
     type = choose_type(pick_domain(obj.url))
-    obj.type = type
-    obj.save()
+    CDN.objects.filter(
+        uuid=obj.uuid,
+        id=obj.id,
+    ).update(type=type)
+
     if obj.type == settings.TYPE_CDN_ALIYUN:
         API = AliyunCDNTool()
-        task_id = API.tool_flush_cdn(obj.url)['RefreshTaskId']
-        while True:
-            dict_models = API.tool_get_task(task_id).__next__()
-            CDN.objects.filter(
-                uuid=obj.uuid, id=obj.id
-            ).update(
-                process = dict_models['process'],
-                status = dict_models['status'],
-            )
-            if dict_models['status'] == settings.STATUS_CDN_DONE or dict_models['status'] == settings.STATUS_CDN_ERROR:
-                break
-            time.sleep(1)
-
-    # elif obj.type == settings.TYPE_CDN_QN:
-    #     API = QiNiuCDNTool()
-    #     status = API.refresh(obj.url)
-    #     if status:
-    #         obj.status = settings.STATUS_CDN_DONE
-    #     else:
-    #         obj.status = settings.STATUS_CDN_ERROR
-    #
-    # elif obj.type == settings.TYPE_CDN_WS:
-    #     API = WangsuCDNTool()
-    #     pass
-    #     if True:
-    #         obj.status = settings.STATUS_CDN_DONE
-    #     else:
-    #         obj.status = settings.STATUS_CDN_ERROR
+        process(API, obj)
+    elif obj.type == settings.TYPE_CDN_QN:
+        API = QiNiuCDNTool()
+        process(API, obj)

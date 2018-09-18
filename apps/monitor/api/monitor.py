@@ -98,3 +98,17 @@ class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
             'title': '网络流入流量bits/s',
             'dataset': API.tool_get_metric_net_in(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
         })
+
+class MonitorHostAliyunDetailDiskUse(WebTokenAuthentication, APIView):
+    permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
+
+    def get_object(self):
+        return Host.objects.filter(uuid=self.kwargs['pk']).get()
+
+    def get(self, request, *args, **kwargs):
+        from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
+        API = AliyunCMSECSTool()
+        return Response({
+            'title': '根磁盘情况',
+            'dataset': API.tool_get_metric_disk_use(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
+        })
