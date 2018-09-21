@@ -40,7 +40,7 @@ urlpatterns = [
     path(r'api-ezsetup/', include('ezsetup.urls.api_urls')),
     path(r'api-ipool/', include('pool.urls.api_urls')),
     # path(r'api-timeline/', include('timeline.urls.api_urls')),
-    path('docs/', include_docs_urls(title=u'接口说明文档', authentication_classes=[], permission_classes=[])),
+    path(r'api-docs/', include_docs_urls(title=u'接口说明文档', authentication_classes=[], permission_classes=[])),
     re_path(r'media/(?P<path>.*)', serve, {"document_root": settings.MEDIA_ROOT}),
 ]
 

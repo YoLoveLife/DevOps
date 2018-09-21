@@ -20,6 +20,7 @@ class MetaConsumer(WebsocketConsumer):
 
     def websocket_connect(self, message):
         # 接受
+        print('websocket')
         self.accept()
-        uuid = self.scope['url_route']['kwargs']['work']
-        ops_runner.delay(uuid, self)
+        # uuid = self.scope['url_route']['kwargs']['work']
+        # ops_runner.delay(uuid, self)

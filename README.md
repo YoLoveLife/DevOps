@@ -94,16 +94,24 @@ devEops依赖于python3.5、诸多python第三方模块、mysql数据库、redis
 ```bash
 $ cd path/to/project/folder/
 
+#安装部分依赖
+yum install openssl-devel python3-devel openldap-devel
+
 #安装python第三方库
 $ pip install -r requirements.txt
 
+#修改SSH的连接属性
+$ vim /etc/ssh/ssh_config **注意是ssh_config而非sshd_config**
+$ StrictHostKeyChecking no # 关闭指纹识别
+$ :wq
+
 #连接本地资源并创建数据表结构
-$ vim deveops/conf.py #里面包含了所有连接数据以及定时任务
-$ python apps/manage.py makemigrations
-$ python apps/manage.py migrate
+$ vim deveops/conf.py #里面包含了所有连接数据以及定时任务 请填写您需要的数据内容
+$ python manage.py makemigrations
+$ python manage.py migrate
 
 #启动服务
-$ python apps/manage.py runserver &
+$ python manage.py runserver &
 #默认启动在8000端口 你可能需要一个nginx做Web服务器
 请务必配置一下Nginx代理来限制project/media下的访问权限 否则重要信息泄露的问题
 ```

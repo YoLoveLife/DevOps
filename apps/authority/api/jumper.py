@@ -46,7 +46,7 @@ class JumperStatusAPI(WebTokenAuthentication, APIView):
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
         obj.check_status()
-        return Response({'detail': '刷新成功'}, status=status.HTTP_200_OK)
+        return Response({'detail': '已进入刷新列表'}, status=status.HTTP_200_OK)
 
 
 class JumperCreateAPI(WebTokenAuthentication, generics.CreateAPIView):

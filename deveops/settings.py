@@ -100,7 +100,12 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ()
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8000',
+    'localhost:8080',
+    '10.100.100.246:8888',
+    '192.168.122.222:8000',
+)
 
 ROOT_URLCONF = 'deveops.urls'
 
@@ -300,7 +305,6 @@ CHANNEL_LAYERS = {
                     SPACE=REDIS_SPACE)
             )],
         },
-        # "ROUTING": "deveops.routing.routing",
     },
 }
 

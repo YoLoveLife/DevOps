@@ -103,3 +103,6 @@ class QiNiuCDNTool(QiNiuTool):
         headers = {'Content-Type': 'application/json'}
         ret, info = http._post_with_auth_and_headers(url, body, self.manager.auth, headers)
         yield QiNiuCDNTool.get_models(ret['items'][0])
+
+
+

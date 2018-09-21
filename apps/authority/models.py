@@ -158,10 +158,6 @@ class ExtendUser(AbstractUser):
 
 
 class Jumper(models.Model):
-    JUMPER_STATUS = (
-        (settings.STATUS_JUMPER_UNREACHABLE, '不可达'),
-        (settings.STATUS_JUMPER_CAN_BE_USE, '可达'),
-    )
     # 全局ID
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -170,7 +166,7 @@ class Jumper(models.Model):
     sshport = models.IntegerField(default='52000')
     name = models.CharField(max_length=50, default="")
     info = models.CharField(max_length=200, default="", blank=True, null=True)
-    _status = models.IntegerField(choices=JUMPER_STATUS, default=-1)
+    _status = models.IntegerField(default=settings.STATUS_JUMPER_NO_KEY)
 
     class Meta:
         permissions = (

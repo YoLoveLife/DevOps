@@ -199,9 +199,10 @@ def run_disk_overflow(group):
     dof.import_vars(vars_dict)
     from manager.ansible_v2.play_source import DISK_PLAY_SOURCE
 
-    DISK_PLAY_SOURCE[0]['hosts'] = list(group.hosts.exclude(
-        Q(_status=settings.STATUS_HOST_PAUSE) or Q(_status=settings.STATUS_HOST_CLOSE)
+    DISK_PLAY_SOURCE[0]['hosts'] = list(group.hosts.filter(
+        _status=settings.STATUS_HOST_CAN_BE_USE
     ).values_list('connect_ip', flat=True))
+
     dof.import_task(DISK_PLAY_SOURCE)
     dof.run()
 
@@ -239,8 +240,8 @@ def run_uptime(group):
     uptime_playbook.import_vars(vars_dict)
     from manager.ansible_v2.play_source import UPTIME_PLAY_SOURCE
 
-    UPTIME_PLAY_SOURCE[0]['hosts'] = list(group.hosts.exclude(
-        Q(_status=settings.STATUS_HOST_PAUSE) or Q(_status=settings.STATUS_HOST_CLOSE)
+    UPTIME_PLAY_SOURCE[0]['hosts'] = list(group.hosts.filter(
+        _status=settings.STATUS_HOST_CAN_BE_USE
     ).values_list('connect_ip', flat=True))
 
     uptime_playbook.import_task(UPTIME_PLAY_SOURCE)
