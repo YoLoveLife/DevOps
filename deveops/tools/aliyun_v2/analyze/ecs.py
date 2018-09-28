@@ -26,6 +26,7 @@ class AnalyzeECSTool(AnalyzeTool):
             ipaddr = json_results.get('NetworkInterfaces').get('NetworkInterface')[0].get('PrimaryIpAddress')
         except AttributeError as e:
             ipaddr = json_results.get('PublicIpAddress').get('IpAddress')[0]
+
         if not ipaddr:
             ipaddr = json_results.get('VpcAttributes').get('PrivateIpAddress').get('IpAddress')[0]
 

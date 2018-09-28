@@ -15,12 +15,12 @@ __all__ = [
 ]
 
 class TimeLinePagination(PageNumberPagination):
-    page_size = 10
+    page_size = 6
 
 
 class TimeLineListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.History
     serializer_class = serializers.HistorySerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [AllowAny, ]
     pagination_class = TimeLinePagination
-    queryset = models.History.objects.all()
+    queryset = models.History.objects.all().order_by('-time')

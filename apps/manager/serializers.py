@@ -44,7 +44,6 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class GroupSelectHostSerializer(GroupSerializer):
     hosts = serializers.PrimaryKeyRelatedField(required=True, queryset=models.Host.objects.all(), many=True)
-
     class Meta:
         model = models.Group
         fields = (

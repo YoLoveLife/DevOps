@@ -11,6 +11,7 @@ from django.conf import settings
 from deveops.api import WebTokenAuthentication
 from authority.permission import user as UserPermission
 from deveops.utils import aes
+from timeline.decorator import decorator_api
 from .. import models,serializers,filter
 
 
@@ -23,13 +24,14 @@ __all__ = [
 
 
 class UserLoginAPI(ObtainJSONWebToken):
-    def __init__(self):
-        super(UserLoginAPI, self).__init__()
+    msg = settings.LANGUAGE.UserLoginAPI
 
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['None_LOGIN'])
     def post(self, request, *args, **kwargs):
-        response = super(UserLoginAPI,self).post(request,*args,**kwargs)
-        return response
-
+        response = super(UserLoginAPI, self).post(request, *args, **kwargs)
+        return self.msg.format(
+            USERNAME = request.data['username']
+        ), response
 
 class UserInfoAPI(WebTokenAuthentication, APIView):
     permission_classes = [IsAuthenticated]
@@ -87,6 +89,16 @@ class UserCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
     permission_classes = [UserPermission.UserCreateRequiredMixin, IsAuthenticated]
+    msg = settings.LANGUAGE.UserCreateAPI
+
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_CREATE'])
+    def create(self, request, *args, **kwargs):
+        response = super(UserCreateAPI, self).create(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            USERNAME = response.data['username'],
+            FULLNAME = response.data['full_name'],
+        ), response
 
 
 class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
@@ -94,6 +106,17 @@ class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
     permission_classes = [UserPermission.UserUpdateRequiredMixin, IsAuthenticated]
+    msg = settings.LANGUAGE.UserUpdateAPI
+
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_UPDATE'])
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        response = super(UserUpdateAPI, self).update(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            USERNAME = user.username,
+            FULLNAME = user.full_name,
+        ), response
 
 
 class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
@@ -101,6 +124,17 @@ class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
     permission_classes = [UserPermission.UserDeleteRequiredMixin,IsAuthenticated]
+    msg = settings.LANGUAGE.UserDeleteAPI
+
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_DELETE'])
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()
+        response = super(UserDeleteAPI, self).delete(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            USERNAME = user.username,
+            FULLNAME = user.full_name,
+        ), response
 
 
 def get_qrcode(user):
@@ -131,13 +165,18 @@ def get_qrcode(user):
 
 class UserQRCodeAPI(WebTokenAuthentication, APIView):
     permission_classes = [IsAuthenticated,]
+    msg = settings.LANGUAGE.UserQRCodeAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_QRCODE'])
     def get(self, request, *args, **kwargs):
         user = request.user
         if user.have_qrcode is False:
             dist = {"url":get_qrcode(request.user)}
             user.have_qrcode = True
             user.save()
-            return Response(dist, status=status.HTTP_201_CREATED)
+            response = Response(dist, status=status.HTTP_201_CREATED)
+            return self.msg.format(
+                USER = request.user.full_name,
+            ), response
         else:
-            return Response({'detail': '当前用户已经扫描过QRCode 如有需要请联系管理员'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', Response({'detail': '当前用户已经扫描过QRCode 如有需要请联系管理员'}, status=status.HTTP_406_NOT_ACCEPTABLE)

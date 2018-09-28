@@ -11,6 +11,7 @@ from rest_framework.views import Response, status
 from django.conf import settings
 from rest_framework import generics
 from deveops.api import WebTokenAuthentication
+from timeline.decorator import decorator_api
 __all__ = [
 
 ]
@@ -33,3 +34,11 @@ class YoCDNCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.CDN
     serializer_class = serializers.YoCDNListSerializer
     permission_classes = [AllowAny,]
+    msg = settings.LANGUAGE.YoCDNCreateAPI
+
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['CDN_CDN_CREATE'])
+    def create(self, request, *args, **kwargs):
+        response = super(YoCDNCreateAPI, self).create(request, *args, *kwargs)
+        return self.msg.format(
+            USER = request.user.full_name
+        ), response

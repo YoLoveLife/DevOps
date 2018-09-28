@@ -15,7 +15,7 @@ from celery.schedules import crontab
 from django.conf import settings
 from django.db.models import Q
 from manager.models import Host, Group
-from manager.ansible_v2.callback import SSHCallback, DiskOverFlowCallback, UptimeCallback
+from manager.ansible_v2.callback import SSHCallback, DiskInodeCallback, DiskSpaceCallback, UptimeCallback
 from deveops.ansible_v2.playbook import Playbook
 
 def host_maker(dict_models):
@@ -167,14 +167,24 @@ def run_ssh_check(group):
 
 
 @periodic_task(run_every=settings.CHECK_TIME)
-def disk_overflow():
+def disk_space():
+    from manager.ansible_v2.play_source import DISK_SPACE_PLAY_SOURCE
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
-            run_disk_overflow(group)
-            # break
+            callback = DiskSpaceCallback(group)
+            run_disk_overflow(group, DISK_SPACE_PLAY_SOURCE, callback)
 
 
-def run_disk_overflow(group):
+@periodic_task(run_every=settings.CHECK_TIME)
+def disk_inode():
+    from manager.ansible_v2.play_source import DISK_INODE_PLAY_SOURCE
+    for group in Group.objects.all():
+        if group.key is not None and group.jumper is not None:
+            callback = DiskInodeCallback(group)
+            run_disk_overflow(group, DISK_INODE_PLAY_SOURCE, callback)
+
+
+def run_disk_overflow(group, RESOURCE, callback):
     # 准备变量
     vars_dict = {}
 
@@ -193,17 +203,16 @@ def run_disk_overflow(group):
     KEY = TMP + str(time.time()) + '.key'
     write_key(group.key, KEY)
 
-    # Playbook实例
-    callback = DiskOverFlowCallback(group)
     dof = Playbook(group, KEY, callback)
     dof.import_vars(vars_dict)
-    from manager.ansible_v2.play_source import DISK_PLAY_SOURCE
 
-    DISK_PLAY_SOURCE[0]['hosts'] = list(group.hosts.filter(
-        _status=settings.STATUS_HOST_CAN_BE_USE
+    RESOURCE[0]['hosts'] = list(group.hosts.filter(
+        Q(_status=settings.STATUS_HOST_CAN_BE_USE) or
+        Q(_status=settings.STATUS_HOST_DISK_SPACE_FULL) or
+        Q(_status=settings.STATUS_HOST_DISK_INODE_FULL)
     ).values_list('connect_ip', flat=True))
 
-    dof.import_task(DISK_PLAY_SOURCE)
+    dof.import_task(RESOURCE)
     dof.run()
 
 
@@ -241,7 +250,7 @@ def run_uptime(group):
     from manager.ansible_v2.play_source import UPTIME_PLAY_SOURCE
 
     UPTIME_PLAY_SOURCE[0]['hosts'] = list(group.hosts.filter(
-        _status=settings.STATUS_HOST_CAN_BE_USE
+        Q(_status=settings.STATUS_HOST_CAN_BE_USE) or Q(_status=settings.STATUS_HOST_UPTIME_ERROR)
     ).values_list('connect_ip', flat=True))
 
     uptime_playbook.import_task(UPTIME_PLAY_SOURCE)

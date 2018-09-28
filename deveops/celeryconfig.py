@@ -14,7 +14,7 @@ broker_url = "redis://:{PASSWORD}@{HOST}:{PORT}/{SPACE}".format(
 )
 task_serializer = 'pickle'
 result_serializer = 'pickle'
-accept_content = ['json', 'pickle']
+accept_content = ['json', 'pickle',]
 # worker_log_format = '%(message)s'
 # worker_task_log_format = '%(message)s'
 # task_eager_propagates = True

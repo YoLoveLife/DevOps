@@ -6,9 +6,11 @@
 from ezsetup import models,serializers
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from django.conf import settings
 from deveops.api import WebTokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
+from timeline.decorator import decorator_api
 
 __all__ = [
 
@@ -32,3 +34,12 @@ class EZSetupCreateRedisAPI(WebTokenAuthentication, generics.CreateAPIView):
     serializer_class = serializers.EZSetupRedisSerializer
     queryset = models.SETUP.objects.all()
     permission_classes = [AllowAny,]
+    msg = settings.LANGUAGE.EZSetupCreateRedisAPI
+
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['SETUP_REDIS_CREATE'])
+    def create(self, request, *args, **kwargs):
+        response = super(EZSetupCreateRedisAPI, self).create(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            UUID = response.data['uuid'],
+        ), response

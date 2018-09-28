@@ -11,7 +11,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from manager.permission import host as HostPermission
 from deveops.api import WebTokenAuthentication
-from timeline.decorator import decorator_create
+from timeline.decorator import decorator_api
 from django.conf import settings
 
 __all__ = [
@@ -49,10 +49,17 @@ class ManagerHostCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Host
     serializer_class = serializers.HostSerializer
     permission_classes = [HostPermission.HostCreateRequiredMixin, IsAuthenticated]
+    msg = settings.LANGUAGE.ManagerHostCreateAPI
 
-    @decorator_create(timeline_type = settings.TIMELINE_KEY_VALUE['Host_HOST_CREATE'])
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Host_HOST_CREATE'])
     def create(self, request, *args, **kwargs):
-        return super(ManagerHostCreateAPI, self).create(request, *args, **kwargs)
+        response = super(ManagerHostCreateAPI, self).create(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            HOSTNAME = response.data['hostname'],
+            CONNECT_IP = response.data['connect_ip'],
+            UUID = response.data['uuid'],
+        ), response
 
 
 class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -62,7 +69,18 @@ class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     permission_classes = [HostPermission.HostUpdateRequiredMixin, IsAuthenticated]
     lookup_field = "uuid"
     lookup_url_kwarg = "pk"
+    msg = settings.LANGUAGE.ManagerHostUpdateAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_UPDATE'])
+    def update(self, request, *args, **kwargs):
+        host = self.get_object()
+        response = super(ManagerHostUpdateAPI, self).update(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            HOSTNAME = host.hostname,
+            CONNECT_IP = host.connect_ip,
+            UUID = host.uuid,
+        ), response
 
 class ManagerHostDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Host
@@ -71,15 +89,18 @@ class ManagerHostDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     permission_classes = [HostPermission.HostDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
-    # def delete(self, request, *args, **kwargs):
-    #     host = models.Host.objects.get(id=int(kwargs['pk']))
-    #     if host.storages.count() != 0:
-    #         return Response({'detail': '该主机下存在存储无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-    #     elif len(host.application_get()) !=0:
-    #         return Response({'detail': '该主机下存在应用无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-    #     else:
-    #         apps.manager.models.Host.objects.get(id=int(kwargs['pk'])).delete()
-    #         return Response({'detail': '删除成功'}, status=status.HTTP_201_CREATED)
+    msg = settings.LANGUAGE.ManagerHostDeleteAPI
+
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_DELETE'])
+    def delete(self, request, *args, **kwargs):
+        host = self.get_object()
+        response = super(ManagerHostDeleteAPI, self).delete(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            HOSTNAME = host.hostname,
+            CONNECT_IP = host.connect_ip,
+            UUID = host.uuid,
+        ), response
 
 
 class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
@@ -105,4 +126,15 @@ class ManagerHostSelectGroupAPI(WebTokenAuthentication, generics.UpdateAPIView):
     queryset = models.Host.objects.all()
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.ManagerHostSelectGroupAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_SORT'])
+    def update(self, request, *args, **kwargs):
+        host = self.get_object()
+        response = super(ManagerHostSelectGroupAPI, self).update(request, *args, **kwargs)
+        return self.msg.format(
+            USER = request.user.full_name,
+            HOSTNAME = host.hostname,
+            CONNECT_IP = host.connect_ip,
+            UUID = host.uuid,
+        ), response

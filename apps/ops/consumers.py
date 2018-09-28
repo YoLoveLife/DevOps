@@ -4,23 +4,37 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 from __future__ import absolute_import, unicode_literals
-from channels.generic.websocket import WebsocketConsumer
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
 from ops.tasks import ops_runner
 
 __all__ = [
     "MetaConsumer"
 ]
 
-class MetaConsumer(WebsocketConsumer):
-    def websocket_receive(self, message):
-        pass
+class MetaConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.work = str(self.scope['url_route']['kwargs']['work'])
 
-    def websocket_disconnect(self, message):
-        self.close()
+        await self.channel_layer.group_add(str(self.work), self.channel_name)
 
-    def websocket_connect(self, message):
-        # 接受
-        print('websocket')
-        self.accept()
-        # uuid = self.scope['url_route']['kwargs']['work']
-        # ops_runner.delay(uuid, self)
+        await self.accept()
+
+        ops_runner.delay(self.work)
+
+
+    async def receive(self, text_data):
+        await self.channel_layer.group_send(
+            self.work,
+            ''
+        )
+
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard(
+            self.work,
+            self.channel_name
+        )
+
+    async def chat_message(self, event):
+        message = event['message']
+        await self.send(text_data=message)

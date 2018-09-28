@@ -4,8 +4,10 @@ from .. import serializers
 from rest_framework.views import Response,status
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from django.conf import settings
 from ..permission import mission as MissionPermission
 from deveops.api import WebTokenAuthentication
+from timeline.decorator import decorator_api
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 
@@ -86,14 +88,20 @@ class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     permission_classes = [MissionPermission.MissionCreateRequiredMixin, IsAuthenticated]
+    msg = settings.LANGUAGE.OpsMissionCreateAPI
 
-    # 校验用户QR-Code
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_CREATE'])
     def create(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             request.data.pop('qrcode')
-            return super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
+            response = super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
+            return self.msg.format(
+                USER = request.user.full_name,
+                INFO = response.data['info'],
+                UUID = response.data['uuid']
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 
@@ -104,12 +112,21 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     permission_classes = [MissionPermission.MissionUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.OpsMissionUpdateAPI
 
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_UPDATE'])
     def update(self, request, *args, **kwargs):
+        mission = self.get_object()
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
+            response = super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
+            return self.msg.format(
+                USER = request.user.full_name,
+                INFO = mission.info,
+                UUID = mission.uuid
+            ), response
+
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -119,14 +136,23 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     permission_classes = [MissionPermission.MissionDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.OpsMissionDeleteAPI
 
+    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_DELETE'])
     def delete(self, request, *args, **kwargs):
+        mission = self.get_object()
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMissionDeleteAPI, self).delete(request, *args, **kwargs)
+            response = super(OpsMissionDeleteAPI, self).delete(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                INFO=mission.info,
+                UUID=mission.uuid
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-# :TODO 执行任务的文件列表传入
+
+
 class OpsMissionNeedFileCheckAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionNeedFileSerializer

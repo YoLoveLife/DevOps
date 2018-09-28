@@ -21,8 +21,8 @@ class DNS(models.Model):
                               null=True, on_delete=models.SET_NULL,
                               help_text="所属应用组")
 
-    internal_dig = models.CharField(max_length=100, default='', verbose_name='内网解析地址',help_text="内网解析地址")
-    external_dig = models.CharField(max_length=100, default='', verbose_name='外网解析地址',help_text="外网解析地址")
+    internal_dig = models.CharField(max_length=100, default='', verbose_name='内网解析地址',help_text="内网解析地址", null=True, blank=True)
+    external_dig = models.CharField(max_length=100, default='', verbose_name='外网解析地址',help_text="外网解析地址", null=True, blank=True)
     url = models.CharField(max_length=100, verbose_name="域名", help_text="域名", default='', )
 
     class Meta:
