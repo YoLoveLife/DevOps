@@ -3,7 +3,8 @@ from ..api import expired as ExpiredAPI
 from ..api import dashboard as DashboardAPI
 urlpatterns=[
     # Resource dashboard api
-    path(r'v1/systype/', DashboardAPI.DashboardSystypeAPI.as_view()),
+    path(r'v1/count/', DashboardAPI.DashboardCountAPI.as_view()),
+    path(r'v1/work/', DashboardAPI.DashboardWorkAPI.as_view()),
     path(r'v1/group/', DashboardAPI.DashboardGroupAPI.as_view()),
     #
     # Resource expire api

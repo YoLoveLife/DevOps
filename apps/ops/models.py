@@ -198,3 +198,14 @@ class Push_Mission(models.Model):
     def results_append(self,results):
         self.results = self.results + str(results)
         self.save()
+
+
+
+class Quick(models.Model):
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+
+    class Meta:
+        permissions = (
+            ('yo_create_quick', u'快速配置任务'),
+        )

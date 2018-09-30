@@ -49,3 +49,62 @@ class DashboardGroupAPI(WebTokenAuthentication, APIView):
               legend_orient='vertical', )
         snippet = TRANSLATOR.translate(p.options)
         return Response(json.loads((snippet.as_snippet())), status.HTTP_200_OK)
+
+
+class DashboardCountAPI(WebTokenAuthentication, APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request, *args, **kwargs):
+        connect = redis.StrictRedis(
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
+            db=settings.REDIS_SPACE,
+            password=settings.REDIS_PASSWD
+        )
+        TEMP = connect.hgetall('COUNT',)
+        COUNT = {}
+        for key in TEMP:
+            COUNT[str(key, encoding='utf-8')] = TEMP[key]
+        return Response(
+            COUNT or {}, status.HTTP_200_OK
+        )
+
+class DashboardWorkAPI(WebTokenAuthentication, APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request, *args, **kwargs):
+        connect = redis.StrictRedis(
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
+            db=settings.REDIS_SPACE,
+            password=settings.REDIS_PASSWD
+        )
+        TEMP = connect.hgetall('WORK',)
+        WORK = []
+        for key in TEMP:
+            WORK.append({
+                'time': str(key, encoding='utf-8'),
+                '执行次数': TEMP[key]
+            })
+        return Response(
+            {'title': '一周内工单执行','dataset': WORK} or {}, status.HTTP_200_OK
+        )
+
+
+class DashboardGroupAPI(WebTokenAuthentication, APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request, *args, **kwargs):
+        connect = redis.StrictRedis(
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
+            db=settings.REDIS_SPACE,
+            password=settings.REDIS_PASSWD
+        )
+        TEMP = connect.hgetall('GROUP',)
+        GROUP = [['主机数目','count'],]
+        for key in TEMP:
+            GROUP.append([str(key, encoding='utf-8'),int(TEMP[key])])
+        return Response(
+            {'title': '主机统计','dataset': GROUP} or {}, status.HTTP_200_OK
+        )

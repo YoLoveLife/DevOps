@@ -1,6 +1,7 @@
 from django.urls import path
 from ..api import meta as MetaAPI
 from ..api import mission as MissionAPI
+from ..api import quick as QuickAPI
 urlpatterns=[
     # Resource meta api
     path(r'v1/meta/', MetaAPI.OpsMetaListAPI.as_view()),
@@ -17,4 +18,7 @@ urlpatterns=[
     path(r'v1/mission/create/', MissionAPI.OpsMissionCreateAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/update/', MissionAPI.OpsMissionUpdateAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/delete/', MissionAPI.OpsMissionDeleteAPI.as_view()),
+
+    # Quick
+    path(r'v1/quick/create/', QuickAPI.OpsQuickCreateAPI.as_view()),
 ]

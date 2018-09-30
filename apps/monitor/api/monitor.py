@@ -23,23 +23,6 @@ class MonitorPagination(PageNumberPagination):
     page_size = 10
 
 
-def time_pick(obj, time):
-    if time == settings.TYPE_MONITOR_ONE_HOUR:
-        obj.request_to_hour(obj,1)
-    elif time == settings.TYPE_MONITOR_SIX_HOUR:
-        obj.request_to_hour(obj, 6)
-    elif time == settings.TYPE_MONITOR_HALF_DAY:
-        obj.request_to_hour(obj, 12)
-    elif time == settings.TYPE_MONITOR_DAY:
-        obj.request_to_day(obj, 1)
-    elif time == settings.TYPE_MONITOR_3_DAY:
-        obj.request_to_day(obj, 3)
-    elif time == settings.TYPE_MONITOR_7_DAY:
-        obj.request_to_day(obj, 7)
-    else:
-        obj.request_to_hour(obj, 1)
-
-
 class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
     permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
 
@@ -110,5 +93,7 @@ class MonitorHostAliyunDetailDiskUse(WebTokenAuthentication, APIView):
         API = AliyunCMSECSTool()
         return Response({
             'title': '根磁盘情况',
-            'dataset': API.tool_get_metric_disk_use(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
+            'dataset': API.tool_get_metric_disk_use(
+                self.get_object().aliyun_id,
+                int(kwargs['time'])).__next__()
         })

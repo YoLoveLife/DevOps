@@ -8,10 +8,9 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
 django.setup()
 
-import redis
+
 import time, os, stat
 from celery.task import periodic_task
-from celery.schedules import crontab
 from django.conf import settings
 from django.db.models import Q
 from manager.models import Host, Group
@@ -38,13 +37,16 @@ def host_updater(obj, dict_models):
 @periodic_task(run_every=settings.MANAGER_TIME)
 def vmware2cmdb():
     from deveops.tools import vmware
-    API = vmware.VmwareTool()
-    childrens = API.get_all_vms()
-    for child in childrens:
-        dict_models = API.get_vm_models(child)
-        host_query = Host.objects.filter(vmware_id=dict_models['vmware_id'], connect_ip=dict_models['connect_ip'])
-        if not host_query.exists():
-            host_maker(dict_models)
+    for conf in settings.VMWARE_CONF:
+        API = vmware.VmwareTool(**conf)
+        childrens = API.get_all_vms()
+        for child in childrens:
+            print(child)
+            dict_models = API.get_vm_models(child, conf['VMWARE_SERVER'])
+            host_query = Host.objects.filter(vmware_id=dict_models['vmware_id'], connect_ip=dict_models['connect_ip'])
+            if not host_query.exists():
+                host_maker(dict_models)
+
 
 
 @periodic_task(run_every=settings.MANAGER_TIME)
@@ -81,30 +83,6 @@ def cmdb2aliyun():
                         host.status = settings.STATUS_HOST_CLOSE
                 else:
                     host.status = status
-
-connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
-
-
-@periodic_task(run_every=crontab(minute='*/5'))
-def statistics_group():
-    connect.delete('GROUP_STATUS')
-
-    groups = Group.objects.all()
-    group_name = []
-    group_value = []
-    for group in groups:
-        group_name.append(group.name)
-        group_value.append(group.hosts.count())
-    connect.set('GROUP_STATUS', {'name':group_name,'value':group_value})
-
-
-@periodic_task(run_every=crontab(minute='*/5'))
-def statistics_manager():
-    host_count = Host.objects.count()
-    group_count = Group.objects.count()
-
-    connect.set('HOST_COUNT', host_count)
-    connect.set('GROUP_COUNT', group_count)
 
 
 

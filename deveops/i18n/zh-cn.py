@@ -45,6 +45,9 @@ OpsMissionCreateAPI = '%1{USER}%2 新建了任务 新建信息 %1名称:{INFO}%2
 OpsMissionUpdateAPI = '%1{USER}%2 更新了任务 更新后信息 %1名称:{INFO}%2 UUID:{UUID}'
 OpsMissionDeleteAPI = '%1{USER}%2 删除了任务 删除原信息 %1名称:{INFO}%2 UUID:{UUID}'
 
+## Quick
+OpsQuickCreateAPI = '%1{USER}%2 进行了快速创建任务 任务名称:%1{NAME}%2'
+
 # Work
 ## Code_Work
 CodeWorkCreateAPI = '%1{USER}%2 新建了工单 工单信息 %1任务名称:{MISSION} 执行缘由:{REASON}%2 UUID:{UUID}'
@@ -54,6 +57,16 @@ CodeWorkUploadFileAPI = '%1{USER}%2 为工单上传文件 工单信息 %1任务�
 
 # YoCDN
 YoCDNCreateAPI = '%1{USER}%2 刷新了若干CDN信息'
+
+# Utils
+
+## FILE
+UtilsFileCreateAPI = '%1{USER}%2 在分发中心上传了文件 文件名:%1{FILENAME}%2 UUID:{UUID}'
+UtilsFileUpdateAPI = '%1{USER}%2 在分发中心上传了文件 文件名:%1{FILENAME}%2 UUID:{UUID}'
+UtilsFileDeleteAPI = '%1{USER}%2 在分发中心删除了未使用的文件 文件名:%1{FILENAME}%2 UUID:{UUID}'
+
+## IMAGE
+UtilsImageCreateAPI = '%1{USER}%2 上传了架构图 UUID:{UUID}'
 
 # EZSetup
 EZSetupCreateRedisAPI = '%1{USER}%2 通过平台易装了%1Redis应用%2 安装信息 UUID:{UUID}'

@@ -100,3 +100,60 @@ class MissionSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id', 'uuid', 'group_name', 'counts'
         )
+
+
+class QuickGitMeta(serializers.ModelSerializer):
+    src_git = serializers.CharField(write_only=True, required=False)
+    src_branch = serializers.CharField(write_only=True, required=False)
+    src_path = serializers.CharField(write_only=True, required=False)
+    dest_path = serializers.CharField(write_only=True, required=False)
+
+    class Meta:
+        models = models.META
+
+    def create(self, validated_data):
+        checkout_model = models.META_CONTENT.create(
+            name='检出代码Checkout',
+            module='git',
+            args='repo={SRC} dest={{BASE}}/code version={BRANCH}'.format(
+                SRC=validated_data['src_git'],
+                BRANCH=validated_data['src_branch'],
+            ),
+            sort=1
+        )
+        sync_model = models.META_CONTENT.create(
+            name='同步代码Sync',
+            module='synchronize',
+            args='src={{BASE}}/code{SRC} dest={DEST} compress=yes use_ssh_args=yes'.format(
+                SRC=validated_data['src_path'],
+                DEST=validated_data['dest_path'],
+            ),
+            sort=2
+        )
+        models.META
+
+
+
+class QuickSerializer(serializers.ModelSerializer):
+    gitmeta = QuickGitMeta(required=False, write_only=True)
+
+    src_file = serializers.CharField(write_only=True, required=False)
+    dest_file = serializers.CharField(write_only=True, required=False)
+    class Meta:
+        model = models.Quick
+        fields = (
+            'id', 'uuid', 'src_git', 'src_file', 'src_path', 'dest_path',
+        )
+
+    def create(self, validated_data):
+        if validated_data['src_git']:# 如果是git创建
+            pass
+        elif validated_data['src_file']:
+            upload_modle = models.META_CONTENT.create(
+                name = '上传文件Upload',
+                module = 'copy',
+                args = 'src=file:{{{FILE}}} dest={DEST}'.format(
+                    FILE = validated_data['src_file'],
+                    DEST = validated_data['dest_file'],
+                )
+            )
