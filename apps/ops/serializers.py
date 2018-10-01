@@ -102,58 +102,132 @@ class MissionSerializer(serializers.ModelSerializer):
         )
 
 
-class QuickGitMeta(serializers.ModelSerializer):
-    src_git = serializers.CharField(write_only=True, required=False)
-    src_branch = serializers.CharField(write_only=True, required=False)
-    src_path = serializers.CharField(write_only=True, required=False)
-    dest_path = serializers.CharField(write_only=True, required=False)
+class QuickGitMissionSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(write_only=True, required=True)
+    src_git = serializers.CharField(write_only=True, required=True)
+    src_branch = serializers.CharField(write_only=True, required=True)
+    src_path = serializers.CharField(write_only=True, required=True)
+    dest_path = serializers.CharField(write_only=True, required=True)
+
+    hosts = serializers.PrimaryKeyRelatedField(required=True, many=True, queryset=models.Host.objects.all(), allow_null=True)
+    group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all(), required=True)
+    need_validate = serializers.BooleanField(default=False)
 
     class Meta:
-        models = models.META
+        model = models.Mission
+        fields = (
+            'name', 'src_git', 'src_branch', 'src_path', 'dest_path', 'hosts', 'group', 'need_validate'
+        )
 
     def create(self, validated_data):
-        checkout_model = models.META_CONTENT.create(
+        # Checkout
+        checkout_content = models.META_CONTENT.objects.create(
             name='检出代码Checkout',
             module='git',
             args='repo={SRC} dest={{BASE}}/code version={BRANCH}'.format(
                 SRC=validated_data['src_git'],
                 BRANCH=validated_data['src_branch'],
             ),
-            sort=1
         )
-        sync_model = models.META_CONTENT.create(
+
+        contents_list = models.META_CONTENT.objects.filter(id=checkout_content.id, uuid=checkout_content.uuid)
+
+        checkout_meta = models.META.objects.create(
+            group = validated_data['group'],
+            info = validated_data['name']+'检出代码Checkout',
+        )
+        checkout_meta.contents.add(*contents_list)
+
+
+        # Sync
+        sync_content = models.META_CONTENT.objects.create(
             name='同步代码Sync',
             module='synchronize',
             args='src={{BASE}}/code{SRC} dest={DEST} compress=yes use_ssh_args=yes'.format(
                 SRC=validated_data['src_path'],
                 DEST=validated_data['dest_path'],
             ),
-            sort=2
         )
-        models.META
+        contents_list = models.META_CONTENT.objects.filter(id=sync_content.id, uuid=sync_content.uuid)
+
+        sync_meta = models.META.objects.create(
+            group = validated_data['group'],
+            info = validated_data['name']+'同步代码Sync',
+        )
+        sync_meta.contents.add(*contents_list)
+        sync_meta.hosts.set(validated_data['hosts'])
 
 
+        mission = models.Mission.objects.create(
+            group = validated_data['group'],
+            info = validated_data['name'],
+            need_validate = validated_data['need_validate'],
+        )
+        mission.metas.set([checkout_meta,sync_meta,])
+        return mission
 
-class QuickSerializer(serializers.ModelSerializer):
-    gitmeta = QuickGitMeta(required=False, write_only=True)
+class QuickFileMissionSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(write_only=True, required=True)
+    filename = serializers.CharField(write_only=True, required=True)
+    dest_file = serializers.CharField(write_only=True, required=True)
 
-    src_file = serializers.CharField(write_only=True, required=False)
-    dest_file = serializers.CharField(write_only=True, required=False)
+    hosts = serializers.PrimaryKeyRelatedField(required=True, many=True, queryset=models.Host.objects.all(), allow_null=True)
+    group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all(), required=True)
+    need_validate = serializers.BooleanField(default=False)
+
     class Meta:
-        model = models.Quick
+        model = models.Mission
         fields = (
-            'id', 'uuid', 'src_git', 'src_file', 'src_path', 'dest_path',
+            'name', 'filename', 'dest_file', 'hosts', 'group', 'need_validate'
         )
 
     def create(self, validated_data):
-        if validated_data['src_git']:# 如果是git创建
-            pass
-        elif validated_data['src_file']:
-            upload_modle = models.META_CONTENT.create(
-                name = '上传文件Upload',
-                module = 'copy',
-                args = 'src=file:{{{FILE}}} dest={DEST}'.format(
-                    FILE = validated_data['src_file'],
-                    DEST = validated_data['dest_file'],
-                )
-            )
+        # Copy
+        copy_content = models.META_CONTENT.objects.create(
+            name='拷贝文件Copy',
+            module='copy',
+            args='src=file:{{{{FILENAME}}}} dest={DEST}'.format(
+                FILENAME=validated_data['filename'],
+                DEST=validated_data['dest_file'],
+            ),
+        )
+        contents_list = models.META_CONTENT.objects.filter(id=copy_content.id, uuid=copy_content.uuid)
+
+        copy_meta = models.META.objects.create(
+            group=validated_data['group'],
+            info=validated_data['name'] + '拷贝文件Copy',
+        )
+        copy_meta.contents.add(*contents_list)
+        copy_meta.hosts.set(validated_data['hosts'])
+
+        mission = models.Mission.objects.create(
+            group=validated_data['group'],
+            info=validated_data['name'],
+            need_validate=validated_data['need_validate'],
+        )
+        mission.metas.set([copy_meta, ])
+        return mission
+
+
+class QuickSerializer(serializers.Serializer):
+    gitmeta = serializers.JSONField(required=False,)
+    filemeta = serializers.JSONField(required=False,)
+
+    class Meta:
+        model = models.Quick
+        fields = (
+            'id', 'uuid', 'gitmeta', 'filemeta',
+        )
+
+    def create(self, validated_data):
+        if 'gitmeta' in validated_data.keys():
+            gitmeta = validated_data.pop('gitmeta')
+            ser = QuickGitMissionSerializer(data=gitmeta)
+            if ser.is_valid():
+                ser.save()
+        elif 'filemeta' in validated_data.keys():
+            filemeta = validated_data.pop('filemeta')
+            ser = QuickFileMissionSerializer(data=filemeta)
+            if ser.is_valid():
+                ser.save()
+        return {}
