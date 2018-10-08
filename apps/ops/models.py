@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 from manager.models import Group,Host
+from authority.models import ExtendUser
 from utils.models import FILE
 from django.conf import settings
 import os
@@ -204,6 +205,9 @@ class Push_Mission(models.Model):
 class Quick(models.Model):
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+    data = models.CharField(default="", max_length=200)
+    metatype = models.CharField(default="", max_length=200)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         permissions = (

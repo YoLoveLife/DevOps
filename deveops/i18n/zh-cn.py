@@ -46,7 +46,7 @@ OpsMissionUpdateAPI = '%1{USER}%2 更新了任务 更新后信息 %1名称:{INFO
 OpsMissionDeleteAPI = '%1{USER}%2 删除了任务 删除原信息 %1名称:{INFO}%2 UUID:{UUID}'
 
 ## Quick
-OpsQuickCreateAPI = '%1{USER}%2 进行了快速创建任务 任务名称:%1{NAME}%2'
+OpsQuickCreateAPI = '%1{USER}%2 进行了快速创建任务 任务名称:%1{NAME}%2 任务类型:%1{TYPE}%2'
 
 # Work
 ## Code_Work

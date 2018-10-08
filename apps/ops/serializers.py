@@ -166,6 +166,7 @@ class QuickGitMissionSerializer(serializers.ModelSerializer):
         mission.metas.set([checkout_meta,sync_meta,])
         return mission
 
+
 class QuickFileMissionSerializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True, required=True)
     filename = serializers.CharField(write_only=True, required=True)
@@ -210,24 +211,30 @@ class QuickFileMissionSerializer(serializers.ModelSerializer):
 
 
 class QuickSerializer(serializers.Serializer):
-    gitmeta = serializers.JSONField(required=False,)
-    filemeta = serializers.JSONField(required=False,)
+    metatype = serializers.CharField(required=True,)
+    data = serializers.JSONField(required=True,)
 
     class Meta:
         model = models.Quick
         fields = (
-            'id', 'uuid', 'gitmeta', 'filemeta',
+            'id', 'uuid', 'data', 'metatype'
         )
 
+    #:TODO Maybe create wrong?
     def create(self, validated_data):
-        if 'gitmeta' in validated_data.keys():
-            gitmeta = validated_data.pop('gitmeta')
-            ser = QuickGitMissionSerializer(data=gitmeta)
+        data = validated_data.pop('data')
+        if validated_data['metatype'] == 'git':
+            ser = QuickGitMissionSerializer(data=data)
             if ser.is_valid():
                 ser.save()
-        elif 'filemeta' in validated_data.keys():
-            filemeta = validated_data.pop('filemeta')
-            ser = QuickFileMissionSerializer(data=filemeta)
+        elif validated_data['metatype'] == 'file':
+            ser = QuickFileMissionSerializer(data=data)
             if ser.is_valid():
                 ser.save()
-        return {}
+        else:
+            pass
+        validated_data['data'] = data['name']
+        validated_data['user'] = self.context['request'].user
+
+        obj = models.Quick.objects.create(**validated_data)
+        return obj

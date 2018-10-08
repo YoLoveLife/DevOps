@@ -45,7 +45,7 @@ class UserInfoAPI(WebTokenAuthentication, APIView):
         else:
             dist['isadmin'] = 'None'
 
-        return Response(dist, status=status.HTTP_201_CREATED)
+        return Response(dist, status=status.HTTP_200_OK)
 
 
 class UserPagination(PageNumberPagination):
