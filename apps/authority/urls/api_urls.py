@@ -44,5 +44,4 @@ urlpatterns=[
     #
     # Resource permission api
     path(r'v1/permission/',permission.PermissionListAPI.as_view()),
-    # path(r'^v1/permission/(?P<pk>[0-9]+)/add/(?P<pk>[0-9]+)/$', api.PermissionAddForGroup.as_view()),
 ]
