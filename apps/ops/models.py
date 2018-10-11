@@ -7,54 +7,14 @@ from manager.models import Group,Host
 from authority.models import ExtendUser
 from utils.models import FILE
 from django.conf import settings
+from deveops.fields import JSONField
 import os
 import uuid
 
 __all__ = [
-    'META', 'META_CONTENT',
+    'META',
     'Mission', 'Push_Mission'
 ]
-
-
-class META_CONTENT(models.Model):
-    id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, default='')
-    module = models.CharField(default='',max_length=20)
-    args = models.CharField(default='', max_length=200)
-    sort = models.IntegerField(default=0)
-
-    class Meta:
-        permissions = (('yo_list_metacontent', u'罗列元操作内容'),
-                       ('yo_create_metacontent', u'创建元操作内容'),
-                       ('yo_update_metacontent', u'更新元操作内容'),
-                       ('yo_delete_metacontent', u'删除元操作内容'))
-
-    @property
-    def args_clean(self):
-        FIND_LABLE="file:"
-        if self.args.find(FIND_LABLE)!=-1:
-            args_list = self.args.split('file:')
-            return args_list[0]+args_list[1]
-        else:
-            return self.args
-
-    @property
-    def to_yaml(self):
-        return {
-            self.module: self.args_clean, 'name': self.name
-        }
-
-    @property
-    def file_name(self):
-        FIND_LABLE="file:"
-        if self.args.find(FIND_LABLE)!=-1:
-            args_list = self.args.split(FIND_LABLE)
-            file_name = args_list[1].split(' ')
-            return file_name[0][2:-2]
-        else:
-            return ''
-
 
 class META(models.Model):
     # 指定某幾台主機進行操作的元操作
@@ -64,7 +24,8 @@ class META(models.Model):
     # 當hosts為空 則說明該meta任務為本地執行
     hosts = models.ManyToManyField(Host, blank=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
-    contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
+    # contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
+    contents = JSONField()
 
     class Meta:
         permissions = (('yo_list_meta', u'罗列元操作'),
@@ -72,9 +33,9 @@ class META(models.Model):
                        ('yo_update_meta', u'更新元操作'),
                        ('yo_delete_meta', u'删除元操作'))
 
-
     @property
     def file_list(self):
+
         files = []
         for content in self.contents.all():
             if content.file_name != "":
@@ -91,11 +52,8 @@ class META(models.Model):
         if self.group.jumper is not None:
             tasks.append(self.group.jumper.to_yaml)
 
-        for content in self.contents.all().order_by('sort'):
-            tasks.append(content.to_yaml)
-
         return  {
-            'tasks': tasks,
+            'tasks': self.contents,
             'gather_facts': 'no',
             'hosts': hosts_list or 'localhost',
         }
