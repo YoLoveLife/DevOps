@@ -2,7 +2,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from manager.models import Group, Host
-from ops.models import META_CONTENT
 from authority.models import ExtendUser
 import uuid
 __all__ = [

@@ -7,14 +7,50 @@ from manager.models import Group,Host
 from authority.models import ExtendUser
 from utils.models import FILE
 from django.conf import settings
-from deveops.fields import JSONField
-import os
-import uuid
+from django_mysql.models import JSONField
+import uuid, yaml
 
 __all__ = [
     'META',
     'Mission', 'Push_Mission'
 ]
+
+
+def null_tasks():
+    return {
+        'tasks': [],
+    }
+
+
+class CONTENTS(models.Model):
+    id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+    _tasks = JSONField(default=null_tasks)
+
+    @property
+    def tasks(self):
+        return yaml.dump(self._tasks, default_flow_style=False)
+
+    @tasks.getter
+    def tasks(self, tasks):
+        self._tasks = yaml.load(tasks)
+
+    def to_yaml(self, proxy):
+        tasks = self._tasks
+        tasks.insert(proxy, 0)
+        return tasks
+
+    @property
+    def file_list(self):
+        FIND_LABEL = 'file:'
+        files = []
+        for task in self._tasks.get('tasks'):
+            if task.get('copy') is not None:
+                if "file:" in task.get('copy'):
+                    copy_list = task.get('copy').split(FIND_LABEL)
+                    file_name = copy_list[1].split(' ')
+                    files.append(file_name[0][2:-2])
+        return files
 
 class META(models.Model):
     # 指定某幾台主機進行操作的元操作
@@ -24,8 +60,7 @@ class META(models.Model):
     # 當hosts為空 則說明該meta任務為本地執行
     hosts = models.ManyToManyField(Host, blank=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
-    # contents = models.ManyToManyField(META_CONTENT, blank=True, related_name='contents', verbose_name=_("contents"))
-    contents = JSONField()
+    contents = models.OneToOneField(CONTENTS, on_delete=models.CASCADE)
 
     class Meta:
         permissions = (('yo_list_meta', u'罗列元操作'),
@@ -35,28 +70,23 @@ class META(models.Model):
 
     @property
     def file_list(self):
-
-        files = []
-        for content in self.contents.all():
-            if content.file_name != "":
-                files.append(content.file_name)
-        return files
+        return self.contents.file_list
 
     @property
     def to_yaml(self):
-        tasks = []
+        proxy = {}
         hosts_list = []
         for host in self.hosts.all():
             if host.status == settings.STATUS_HOST_CAN_BE_USE:
                 hosts_list.append(host.connect_ip)
-        if self.group.jumper is not None:
-            tasks.append(self.group.jumper.to_yaml)
 
-        return  {
-            'tasks': self.contents,
+        if self.group.jumper is not None:
+            proxy = self.group.jumper.to_yaml
+
+        return {
             'gather_facts': 'no',
             'hosts': hosts_list or 'localhost',
-        }
+        }.update(self.contents.to_yaml(proxy))
 
 
 class Mission(models.Model):
@@ -74,11 +104,11 @@ class Mission(models.Model):
 
     @property
     def file_list(self):
-        list = []
+        files = []
         for meta in self.metas.all():
             if len(meta.file_list) !=0 :
-                list = list + meta.file_list
-        return list
+                files = files + meta.file_list
+        return files
 
     @property
     def vars_dict(self):
@@ -90,10 +120,10 @@ class Mission(models.Model):
 
     @property
     def to_yaml(self):
-        list = []
+        tasks_list = []
         for meta in self.metas.all():
-            list.append(meta.to_yaml)
-        return list
+            tasks_list.append(meta.to_yaml)
+        return tasks_list
 
     @property
     def count(self):
@@ -101,8 +131,7 @@ class Mission(models.Model):
 
     @property
     def playbook(self):
-        import yaml
-        return yaml.safe_dump_all(self.to_yaml)
+        return yaml.dump(self.to_yaml, default_flow_style=False)
 
     def model_to_dict(self):
         from django.forms.models import model_to_dict

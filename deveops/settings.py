@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'yodns.apps.YoDnsConfig',
     'zdb.apps.ZDBConfig',
     'monitor.apps.MonitorConfig',
-    'console.apps.ConsoleConfig',
+    # 'console.apps.ConsoleConfig',
     'ezsetup.apps.EZSetupConfig',
     'yocdn.apps.YoCDNConfig',
     'pool.apps.PoolConfig',
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_celery_beat',
     'channels',
+    'django_mysql',
     # 'django.contrib.messages',
     # 'bootstrap3',
     # 'djcelery', #celery
@@ -140,6 +141,9 @@ DATABASES={
         'PASSWORD':DEVEOPS_CONF.DB_PASSWD,
         'HOST':DEVEOPS_CONF.DB_HOST,
         'PORT':DEVEOPS_CONF.DB_PORT,
+        'OPTIONS':{
+            'charset': 'utf8mb4'
+        },
     },
 }
 

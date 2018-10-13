@@ -20,5 +20,5 @@ urlpatterns=[
     path(r'v1/mission/<uuid:pk>/delete/', MissionAPI.OpsMissionDeleteAPI.as_view()),
 
     # Quick
-    path(r'v1/quick/create/', QuickAPI.OpsQuickCreateAPI.as_view()),
+    # path(r'v1/quick/create/', QuickAPI.OpsQuickCreateAPI.as_view()),
 ]
