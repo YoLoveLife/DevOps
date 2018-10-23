@@ -25,12 +25,14 @@ def private_key_validator(key):
             params={'value': key},
         )
 
+
 def publick_key_validator(key):
     if not sshkey.public_key_validator(key):
         raise ValidationError(
             _('%(value)s is not an even number'),
             params={'value': key},
         )
+
 
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
@@ -105,6 +107,8 @@ class ExtendUser(AbstractUser):
         related_name="user_set",
         related_query_name="user",
     )
+    info = models.CharField(default='', max_length=150)
+
     class Meta:
         permissions = (
             ('yo_list_user', u'罗列用户'),

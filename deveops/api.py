@@ -16,3 +16,4 @@ class WebTokenAuthentication():
     # renderer_classes = (JSONRenderer ,)
     ddr = 1
     permission_classes = [AllowAny]
+

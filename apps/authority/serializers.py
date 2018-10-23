@@ -9,15 +9,16 @@ __all__ = [
     'KeySerializer'
 ]
 
+
 class UserSerializer(serializers.ModelSerializer):
     group_name = serializers.StringRelatedField(source="get_group_name", read_only=True)
     email8531 = serializers.StringRelatedField(source="get_8531email", read_only=True)
-    groups = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=Group.objects.all(),)
+    groups = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=Group.objects.all())
 
     class Meta:
         model = ExtendUser
         fields = (
-            'id', 'is_active', 'phone', 'username', 'full_name', 'group_name', 'email8531', 'groups', 'email'
+            'id', 'is_active', 'phone', 'username', 'full_name', 'group_name', 'email8531', 'groups', 'email', 'info'
         )
         read_only_fields = (
             'id',
@@ -28,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
         obj.set_password('deveops')
         obj.save()
         return obj
+
 
 class GroupSerializer(serializers.ModelSerializer):
     permissions = serializers.PrimaryKeyRelatedField(required=False, many=True,queryset=Permission.objects.all())
@@ -49,20 +51,21 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 class KeySerializer(serializers.ModelSerializer):
     pub_key = serializers.CharField(max_length=4096, required=False, source='public_key')
+
     class Meta:
         model = Key
         fields = (
-            'id', 'uuid', 'pub_key','name', 'group_name', 'fetch_time'
+            'id', 'uuid', 'pub_key', 'name', 'group_name', 'fetch_time'
         )
         read_only_fields = (
-            'id', 'uuid', 'pub_key','group_name', 'fetch_time'
+            'id', 'uuid', 'pub_key', 'group_name', 'fetch_time'
         )
 
     def create(self, validated_data):
         pri, pub = ssh_keygen()
         validated_data['private_key'] = pri
         validated_data['public_key'] = pub
-        return super(KeySerializer,self).create(validated_data)
+        return super(KeySerializer, self).create(validated_data)
 
 
 class JumperSerializer(serializers.ModelSerializer):

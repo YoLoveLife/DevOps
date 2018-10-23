@@ -134,7 +134,7 @@ def run_ssh_check(group):
     callback = SSHCallback(group)
     ssh_playbook = Playbook(group, KEY, callback)
     ssh_playbook.import_vars(vars_dict)
-    from manager.ansible_v2.play_source import PING_PLAY_SOURCE
+    from manager.ansible_v2.playsource import PING_PLAY_SOURCE
 
     PING_PLAY_SOURCE[0]['hosts'] = list(group.hosts.exclude(
         Q(_status=settings.STATUS_HOST_PAUSE) or Q(_status=settings.STATUS_HOST_CLOSE)
@@ -146,7 +146,7 @@ def run_ssh_check(group):
 
 @periodic_task(run_every=settings.CHECK_TIME)
 def disk_space():
-    from manager.ansible_v2.play_source import DISK_SPACE_PLAY_SOURCE
+    from manager.ansible_v2.playsource import DISK_SPACE_PLAY_SOURCE
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
             callback = DiskSpaceCallback(group)
@@ -155,7 +155,7 @@ def disk_space():
 
 @periodic_task(run_every=settings.CHECK_TIME)
 def disk_inode():
-    from manager.ansible_v2.play_source import DISK_INODE_PLAY_SOURCE
+    from manager.ansible_v2.playsource import DISK_INODE_PLAY_SOURCE
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
             callback = DiskInodeCallback(group)
@@ -225,7 +225,7 @@ def run_uptime(group):
     callback = UptimeCallback(group)
     uptime_playbook = Playbook(group, KEY, callback)
     uptime_playbook.import_vars(vars_dict)
-    from manager.ansible_v2.play_source import UPTIME_PLAY_SOURCE
+    from manager.ansible_v2.playsource import UPTIME_PLAY_SOURCE
 
     UPTIME_PLAY_SOURCE[0]['hosts'] = list(group.hosts.filter(
         Q(_status=settings.STATUS_HOST_CAN_BE_USE) or Q(_status=settings.STATUS_HOST_UPTIME_ERROR)

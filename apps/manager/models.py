@@ -16,6 +16,7 @@ __all__ = [
     "Group", "Host"
 ]
 
+
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -53,7 +54,6 @@ class Group(models.Model):
                 return settings.STATUS_GROUP_CAN_BE_USE
             else:
                 return settings.STATUS_GROUP_PAUSE
-
 
     @status.setter
     def status(self, status):

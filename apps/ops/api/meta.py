@@ -59,7 +59,6 @@ class OpsMetaCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     # 校验用户QR-Code
     @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['META_META_CREATE'])
     def create(self, request, *args, **kwargs):
-
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             response = super(OpsMetaCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
@@ -83,13 +82,13 @@ class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['META_META_UPDATE'])
     def update(self, request, *args, **kwargs):
-        meta = self.get_object()
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             response = super(OpsMetaUpdateAPI, self).update(request, *args, **kwargs)
+            meta = self.get_object()
             return self.msg.format(
-                USER = request.user.full_name,
-                UUID = meta.uuid,
-                INFO = meta.info,
+                USER=request.user.full_name,
+                UUID=meta.uuid,
+                INFO=meta.info,
             ), response
         else:
             response = Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)

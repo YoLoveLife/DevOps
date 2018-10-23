@@ -40,7 +40,8 @@ class UserInfoAPI(WebTokenAuthentication, APIView):
         dist = {}
         dist['username'] = request.user.username
         dist['name'] = request.user.full_name
-        if request.user.is_superuser == True:
+        dist['info'] = request.user.info
+        if request.user.is_superuser is True:
             dist['isadmin'] = True
         else:
             dist['isadmin'] = 'None'
@@ -110,8 +111,8 @@ class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_UPDATE'])
     def update(self, request, *args, **kwargs):
-        user = self.get_object()
         response = super(UserUpdateAPI, self).update(request, *args, **kwargs)
+        user = self.get_object()
         return self.msg.format(
             USER = request.user.full_name,
             USERNAME = user.username,

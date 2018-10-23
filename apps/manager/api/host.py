@@ -73,14 +73,15 @@ class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_UPDATE'])
     def update(self, request, *args, **kwargs):
-        host = self.get_object()
         response = super(ManagerHostUpdateAPI, self).update(request, *args, **kwargs)
+        host = self.get_object()
         return self.msg.format(
-            USER = request.user.full_name,
-            HOSTNAME = host.hostname,
-            CONNECT_IP = host.connect_ip,
-            UUID = host.uuid,
+            USER=request.user.full_name,
+            HOSTNAME=host.hostname,
+            CONNECT_IP=host.connect_ip,
+            UUID=host.uuid,
         ), response
+
 
 class ManagerHostDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     module = models.Host

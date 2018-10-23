@@ -13,12 +13,11 @@ urlpatterns=[
     path(r'v1/mission/', MissionAPI.OpsMissionListAPI.as_view()),
     path(r'v1/mission/byuser/', MissionAPI.OpsMissionListByUserAPI.as_view()),
     path(r'v1/mission/bypage/', MissionAPI.OpsMissionListByPageAPI.as_view()),
-    path(r'v1/mission/<uuid:pk>/playbook/', MissionAPI.OpsMissionPlaybookAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/checkfile/', MissionAPI.OpsMissionNeedFileCheckAPI.as_view()),
     path(r'v1/mission/create/', MissionAPI.OpsMissionCreateAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/update/', MissionAPI.OpsMissionUpdateAPI.as_view()),
     path(r'v1/mission/<uuid:pk>/delete/', MissionAPI.OpsMissionDeleteAPI.as_view()),
 
     # Quick
-    # path(r'v1/quick/create/', QuickAPI.OpsQuickCreateAPI.as_view()),
+    path(r'v1/quick/create/', QuickAPI.OpsQuickCreateAPI.as_view()),
 ]

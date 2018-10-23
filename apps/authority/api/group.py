@@ -59,8 +59,8 @@ class GroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_UPDATE'])
     def update(self, request, *args, **kwargs):
-        pmngroup = self.get_object()
         response = super(GroupUpdateAPI, self).update(request, *args, **kwargs)
+        pmngroup = self.get_object()
         return self.msg.format(
             USER = request.user.full_name,
             NAME = pmngroup.name,

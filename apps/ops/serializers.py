@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import yaml
 from ops import models
 from rest_framework import serializers
 
@@ -9,17 +10,19 @@ __all__ = [
 
 
 class MetaSerializer(serializers.ModelSerializer):
-    hosts = serializers.PrimaryKeyRelatedField(required=False,many=True, queryset=models.Host.objects.all(),allow_null=True)
+    hosts = serializers.PrimaryKeyRelatedField(required=False, many=True,
+                                               queryset=models.Host.objects.all(),
+                                               allow_null=True)
     need_files = serializers.ListField(source="file_list", read_only=True)
-    contents = serializers.JSONField()
+    _tasks = serializers.CharField(required=True, source="tasks")
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
-    group_name = serializers.CharField(source="group.name",read_only=True)
+    group_name = serializers.CharField(source="group.name", read_only=True)
     qrcode = serializers.CharField(required=True, write_only=True,)
 
     class Meta:
         model = models.META
         fields = (
-            'id', 'uuid', 'hosts', 'contents', 'group', 'group_name', 'info', 'qrcode', 'need_files'
+            'id', 'uuid', 'hosts', '_tasks', 'group', 'group_name', 'info', 'qrcode', 'need_files'
         )
         read_only_fields = (
             'id', 'uuid', 'group_name'
@@ -29,13 +32,13 @@ class MetaSerializer(serializers.ModelSerializer):
         validated_data.pop('qrcode')
         hosts = None
 
-        if 'hosts' in validated_data.keys():
-            hosts = validated_data.pop('hosts')
+        # if 'hosts' in validated_data.keys():
+        #     hosts = validated_data.pop('hosts')
 
-        obj = models.META.objects.create(**validated_data)
+        obj = super(MetaSerializer, self).create(validated_data)
 
-        if hosts is not None:
-            obj.hosts.set(hosts)
+        # if hosts is not None:
+        #     obj.hosts.set(hosts)
         obj.save()
 
         return obj
@@ -49,7 +52,6 @@ class MetaSerializer(serializers.ModelSerializer):
 
 class MissionNeedFileSerializer(serializers.ModelSerializer):
     filelist = serializers.ListField(source='file_list', read_only=True)
-
     class Meta:
         model = models.Mission
         fields = (
@@ -60,16 +62,17 @@ class MissionNeedFileSerializer(serializers.ModelSerializer):
 class MissionSerializer(serializers.ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
     metas = serializers.PrimaryKeyRelatedField(many=True, queryset=models.META.objects.all())
-    group_name = serializers.CharField(source="group.name",read_only=True)
-    counts = serializers.IntegerField(source="count",read_only=True)
+    group_name = serializers.CharField(source="group.name", read_only=True)
+    counts = serializers.IntegerField(source="count", read_only=True)
+    playbook = serializers.CharField(source="_playbook", read_only=True)
 
     class Meta:
         model = models.Mission
         fields = (
-            'id', 'uuid', 'group', 'metas', 'info', 'need_validate', 'group_name', 'counts'
+            'id', 'uuid', 'group', 'metas', 'info', 'need_validate', 'group_name', 'counts', 'playbook'
         )
         read_only_fields = (
-            'id', 'uuid', 'group_name', 'counts'
+            'id', 'uuid', 'group_name', 'counts', 'playbook'
         )
 
 
@@ -91,50 +94,53 @@ class QuickGitMissionSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        # Checkout
-        checkout_content = models.META_CONTENT.objects.create(
-            name='检出代码Checkout',
-            module='git',
-            args='repo={SRC} dest={{BASE}}/code version={BRANCH}'.format(
-                SRC=validated_data['src_git'],
-                BRANCH=validated_data['src_branch'],
-            ),
-        )
-
-        contents_list = models.META_CONTENT.objects.filter(id=checkout_content.id, uuid=checkout_content.uuid)
+        # Check out
+        checkout_task_obj = {
+            'tasks': [
+                {
+                    'name': 'Checkout',
+                    'git': 'repo={SRC} dest={{BASE}}/code version={BRANCH}'.format(
+                        SRC=validated_data['src_git'],
+                        BRANCH=validated_data['src_branch'],
+                    ),
+                }
+            ]
+        }
 
         checkout_meta = models.META.objects.create(
-            group = validated_data['group'],
-            info = validated_data['name']+'检出代码Checkout',
+            group=validated_data['group'],
+            info=validated_data['name']+'检出代码Checkout',
+            _tasks=checkout_task_obj,
         )
-        checkout_meta.contents.add(*contents_list)
-
 
         # Sync
-        sync_content = models.META_CONTENT.objects.create(
-            name='同步代码Sync',
-            module='synchronize',
-            args='src={{BASE}}/code{SRC} dest={DEST} compress=yes use_ssh_args=yes'.format(
-                SRC=validated_data['src_path'],
-                DEST=validated_data['dest_path'],
-            ),
-        )
-        contents_list = models.META_CONTENT.objects.filter(id=sync_content.id, uuid=sync_content.uuid)
+        sync_task_obj = {
+            'tasks': [
+                {
+                    'name': 'Sync',
+                    'synchronize': 'src={{BASE}}/code{SRC} dest={DEST} compress=yes use_ssh_args=yes'.format(
+                        SRC=validated_data['src_path'],
+                        DEST=validated_data['dest_path'],
+                    ),
+                }
+            ]
+        }
 
         sync_meta = models.META.objects.create(
-            group = validated_data['group'],
-            info = validated_data['name']+'同步代码Sync',
+            group=validated_data['group'],
+            info=validated_data['name'] + '检出代码Sync',
+            _tasks=sync_task_obj,
         )
-        sync_meta.contents.add(*contents_list)
+
         sync_meta.hosts.set(validated_data['hosts'])
 
-
+        # Mission
         mission = models.Mission.objects.create(
-            group = validated_data['group'],
-            info = validated_data['name'],
-            need_validate = validated_data['need_validate'],
+            group=validated_data['group'],
+            info=validated_data['name'],
+            need_validate=validated_data['need_validate'],
         )
-        mission.metas.set([checkout_meta,sync_meta,])
+        mission.metas.set([checkout_meta, sync_meta])
         return mission
 
 
@@ -155,23 +161,26 @@ class QuickFileMissionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Copy
-        copy_content = models.META_CONTENT.objects.create(
-            name='拷贝文件Copy',
-            module='copy',
-            args='src=file:{{{{FILENAME}}}} dest={DEST}'.format(
-                FILENAME=validated_data['filename'],
-                DEST=validated_data['dest_file'],
-            ),
-        )
-        contents_list = models.META_CONTENT.objects.filter(id=copy_content.id, uuid=copy_content.uuid)
-
+        copy_task_obj = {
+            'tasks': [
+                {
+                    'name': 'Copy',
+                    'copy': 'src=file:{{{{FILENAME}}}} dest={DEST}'.format(
+                        FILENAME=validated_data['filename'],
+                        DEST=validated_data['dest_file'],
+                    ),
+                }
+            ]
+        }
         copy_meta = models.META.objects.create(
             group=validated_data['group'],
             info=validated_data['name'] + '拷贝文件Copy',
+            _tasks=copy_task_obj,
         )
-        copy_meta.contents.add(*contents_list)
+
         copy_meta.hosts.set(validated_data['hosts'])
 
+        # Mission
         mission = models.Mission.objects.create(
             group=validated_data['group'],
             info=validated_data['name'],

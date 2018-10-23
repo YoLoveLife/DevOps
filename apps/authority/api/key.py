@@ -47,9 +47,9 @@ class KeyCreateAPI(WebTokenAuthentication,generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super(KeyCreateAPI, self).create(request, *args, **kwargs)
         return self.msg.format(
-            USER = request.user.full_name,
-            NAME = response.data['name'],
-            UUID = response.data['uuid'],
+            USER=request.user.full_name,
+            NAME=response.data['name'],
+            UUID=response.data['uuid'],
         ), response
 
 
@@ -64,8 +64,8 @@ class KeyUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Key_KEY_UPDATE'])
     def update(self, request, *args, **kwargs):
-        key = self.get_object()
         response = super(KeyUpdateAPI, self).update(request, *args, **kwargs)
+        key = self.get_object()
         return self.msg.format(
             USER = request.user.full_name,
             NAME = key.name,

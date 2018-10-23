@@ -142,7 +142,8 @@ DATABASES={
         'HOST':DEVEOPS_CONF.DB_HOST,
         'PORT':DEVEOPS_CONF.DB_PORT,
         'OPTIONS':{
-            'charset': 'utf8mb4'
+            'charset': 'utf8mb4',
+            "init_command": "SET foreign_key_checks = 0;",
         },
     },
 }

@@ -6,13 +6,13 @@
 from timeline import models, serializers
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.views import Response, status
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from deveops.api import WebTokenAuthentication
 
 __all__ = [
-    'TimeLineListByPageAPI',
+    'TimeLineListByPageAPI', 'TimeLinePagination',
 ]
+
 
 class TimeLinePagination(PageNumberPagination):
     page_size = 6
@@ -21,6 +21,6 @@ class TimeLinePagination(PageNumberPagination):
 class TimeLineListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.History
     serializer_class = serializers.HistorySerializer
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     pagination_class = TimeLinePagination
     queryset = models.History.objects.all().order_by('-time')

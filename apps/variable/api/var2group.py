@@ -11,7 +11,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from variable.permission import var2group as Var2GroupPermission
 from deveops.api import WebTokenAuthentication
-
+from django.conf import settings
 
 
 class VariablePagination(PageNumberPagination):
@@ -37,3 +37,6 @@ class Variable2GroupDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     serializer_class = serializers.Var2GroupSerializer
     queryset = models.Var2Group.objects.all()
     permission_classes = [Var2GroupPermission.Var2GroupDeleteRequiredMixin, IsAuthenticated]
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.ManagerGroupDeleteAPI

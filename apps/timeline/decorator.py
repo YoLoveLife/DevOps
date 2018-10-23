@@ -6,6 +6,7 @@
 from timeline.models import History
 from django.conf import settings
 
+
 def decorator_api(timeline_type,):
     def wrapper(func):
         def inner_wrapper(*args, **kwargs):

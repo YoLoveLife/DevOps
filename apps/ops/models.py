@@ -22,25 +22,25 @@ def null_tasks():
     }
 
 
-class CONTENTS(models.Model):
-    id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
+class TASKS(models.Model):
     _tasks = JSONField(default=null_tasks)
+
+    class Meta:
+        abstract = True
 
     @property
     def tasks(self):
         return yaml.dump(self._tasks, default_flow_style=False)
 
-    @tasks.getter
+    @tasks.setter
     def tasks(self, tasks):
         self._tasks = yaml.load(tasks)
 
     def to_yaml(self, proxy):
         tasks = self._tasks
-        tasks.insert(proxy, 0)
+        tasks['tasks'].insert(0, proxy)
         return tasks
 
-    @property
     def file_list(self):
         FIND_LABEL = 'file:'
         files = []
@@ -52,7 +52,8 @@ class CONTENTS(models.Model):
                     files.append(file_name[0][2:-2])
         return files
 
-class META(models.Model):
+
+class META(TASKS):
     # 指定某幾台主機進行操作的元操作
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -60,7 +61,6 @@ class META(models.Model):
     # 當hosts為空 則說明該meta任務為本地執行
     hosts = models.ManyToManyField(Host, blank=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
-    contents = models.OneToOneField(CONTENTS, on_delete=models.CASCADE)
 
     class Meta:
         permissions = (('yo_list_meta', u'罗列元操作'),
@@ -68,11 +68,9 @@ class META(models.Model):
                        ('yo_update_meta', u'更新元操作'),
                        ('yo_delete_meta', u'删除元操作'))
 
-    @property
     def file_list(self):
-        return self.contents.file_list
+        return super(META, self).file_list()
 
-    @property
     def to_yaml(self):
         proxy = {}
         hosts_list = []
@@ -86,7 +84,8 @@ class META(models.Model):
         return {
             'gather_facts': 'no',
             'hosts': hosts_list or 'localhost',
-        }.update(self.contents.to_yaml(proxy))
+            'tasks': super(META, self).to_yaml(proxy)['tasks']
+        }
 
 
 class Mission(models.Model):
@@ -106,8 +105,8 @@ class Mission(models.Model):
     def file_list(self):
         files = []
         for meta in self.metas.all():
-            if len(meta.file_list) !=0 :
-                files = files + meta.file_list
+            if len(meta.file_list()) != 0:
+                files = files + meta.file_list()
         return files
 
     @property
@@ -118,20 +117,19 @@ class Mission(models.Model):
             dict[var.key] = var.value
         return dict
 
-    @property
     def to_yaml(self):
         tasks_list = []
         for meta in self.metas.all():
-            tasks_list.append(meta.to_yaml)
+            tasks_list.append(meta.to_yaml())
         return tasks_list
 
     @property
     def count(self):
         return self.push_missions.count()
 
-    @property
-    def playbook(self):
-        return yaml.dump(self.to_yaml, default_flow_style=False)
+    # @property
+    def _playbook(self):
+        return yaml.dump(self.to_yaml(), default_flow_style=False)
 
     def model_to_dict(self):
         from django.forms.models import model_to_dict
@@ -186,7 +184,6 @@ class Push_Mission(models.Model):
     def results_append(self,results):
         self.results = self.results + str(results)
         self.save()
-
 
 
 class Quick(models.Model):

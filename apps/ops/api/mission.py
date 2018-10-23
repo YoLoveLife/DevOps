@@ -26,7 +26,7 @@ class MissionPagination(PageNumberPagination):
 class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
-    permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    permission_classes = [MissionPermission.MissionListRequiredMixin, IsAuthenticated]
     filter_class = filter.MissionFilter
 
     def get_queryset(self):
@@ -39,7 +39,8 @@ class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
 class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
-    permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    # permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
     pagination_class = MissionPagination
     filter_class = filter.MissionFilter
 
@@ -48,9 +49,10 @@ class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     # 2、可以增删改自己所管理的应用组的所有Mission操作
 
     def get_queryset(self):
-        user = self.request.user
-        groups = models.Group.objects.filter(users=user)
-        queryset = models.Mission.objects.filter(group_id__in=groups)
+        # user = self.request.user
+        # groups = models.Group.objects.filter(users=user)
+        # queryset = models.Mission.objects.filter(group_id__in=groups)
+        queryset = models.Mission.objects.all()
         return queryset
 
 
@@ -68,41 +70,24 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
         return queryset
 
 
-# :TODO 剧本展现
-class OpsMissionPlaybookAPI(WebTokenAuthentication, APIView):
-    module = models.Mission
-    permission_classes = [IsAuthenticated,]
-    lookup_field = 'uuid'
-    lookup_url_kwarg = 'pk'
-
-    def get_object(self):
-        return models.Mission.objects.filter(uuid=self.kwargs['pk']).get()
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        data = {'id':obj.id,'playbook':obj.playbook}
-        return Response(data, status=status.HTTP_200_OK)
-
-
 class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     permission_classes = [MissionPermission.MissionCreateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.OpsMissionCreateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_CREATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_CREATE'])
     def create(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             request.data.pop('qrcode')
             response = super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
-                USER = request.user.full_name,
-                INFO = response.data['info'],
-                UUID = response.data['uuid']
+                USER=request.user.full_name,
+                INFO=response.data['info'],
+                UUID=response.data['uuid']
             ), response
         else:
             return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-
 
 
 class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -116,13 +101,13 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_UPDATE'])
     def update(self, request, *args, **kwargs):
-        mission = self.get_object()
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             response = super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
+            mission = self.get_object()
             return self.msg.format(
-                USER = request.user.full_name,
-                INFO = mission.info,
-                UUID = mission.uuid
+                USER=request.user.full_name,
+                INFO=mission.info,
+                UUID=mission.uuid
             ), response
 
         else:

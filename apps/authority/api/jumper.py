@@ -67,6 +67,7 @@ class JumperCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
             CONNECT_IP = response.data['connect_ip']
         ), response
 
+
 class JumperUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Jumper
     serializer_class = serializers.JumperSerializer
@@ -76,16 +77,17 @@ class JumperUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.JumperUpdateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_UPDATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_UPDATE'])
     def update(self, request, *args, **kwargs):
-        jumper = self.get_object()
         response = super(JumperUpdateAPI, self).update(request, *args, **kwargs)
+        jumper = self.get_object()
         return self.msg.format(
-            USER = request.user.full_name,
-            NAME = jumper.name,
-            UUID = jumper.uuid,
-            CONNECT_IP = jumper.connect_ip
+            USER=request.user.full_name,
+            NAME=jumper.name,
+            UUID=jumper.uuid,
+            CONNECT_IP=jumper.connect_ip
         ), response
+
 
 class JumperDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     module = models.Jumper
@@ -96,7 +98,7 @@ class JumperDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.JumperDeleteAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_DELETE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_DELETE'])
     def delete(self, request, *args, **kwargs):
         jumper = self.get_object()
         try:
@@ -105,8 +107,8 @@ class JumperDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
         except ObjectDoesNotExist:
             response = super(JumperDeleteAPI,self).delete(request, *args, **kwargs)
             return self.msg.format(
-                USER = request.user.full_name,
-                NAME = jumper.name,
-                UUID = jumper.uuid,
-                CONNECT_IP = jumper.connect_ip
+                USER=request.user.full_name,
+                NAME=jumper.name,
+                UUID=jumper.uuid,
+                CONNECT_IP=jumper.connect_ip
             ), response

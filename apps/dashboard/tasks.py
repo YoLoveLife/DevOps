@@ -20,6 +20,7 @@ from utils.models import FILE
 from yodns.models import DNS
 from authority.models import ExtendUser
 
+
 def obj_maker(MODELS, dict_models):
     MODELS.objects.create(**dict_models)
 
@@ -66,10 +67,10 @@ def expired_aliyun_mongodb():
             obj_maker(ExpiredAliyunMongoDB, dict_models)
 
 
-
 connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
 
-@periodic_task(run_every=crontab(minute='*/5'))
+
+@periodic_task(run_every=crontab(minute='*/30'))
 def statistics_count():
     connect.delete('COUNT')
     count_dist = {}
@@ -87,14 +88,15 @@ def statistics_count():
 
 
 from django.utils import timezone as datetime
-week_list = ['Won','Tue','Wed','Thur','Fri','Sat','Sun']
+week_list = ['Won', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
+
 
 @periodic_task(run_every=crontab(minute='*/5'))
 def statistics_work():
     connect.delete('WORK')
     work_dist = {}
     now = django.utils.timezone.now().date()
-    for i in range(0,7):
+    for i in range(0, 7):
         start_day = now - datetime.timedelta(days=i)
         end_day = now - datetime.timedelta(days=i-1)
 
@@ -106,7 +108,7 @@ def statistics_work():
     for key,value in work_dist.items():
         connect.hset('WORK', key, value)
 
-# statistics_work()
+
 @periodic_task(run_every=crontab(minute='*/5'))
 def statistics_group():
     connect.delete('GROUP')

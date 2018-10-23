@@ -88,8 +88,8 @@ class ManagerGroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Group_GROUP_UPDATE'])
     def update(self, request, *args, **kwargs):
-        group = self.get_object()
         response = super(ManagerGroupUpdateAPI, self).update(request, *args, **kwargs)
+        group = self.get_object()
         return self.msg.format(
             USER = request.user.full_name,
             NAME = group.name,
