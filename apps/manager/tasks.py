@@ -113,14 +113,7 @@ def write_key(key, file_path):
 
 def run_ssh_check(group):
     # 准备变量
-    vars_dict = {}
-
-    for var in group.group_vars.all():
-        vars_dict[var.key] = var.value
-
-    if group.jumper is not None and group.key is not None:
-        vars_dict['JUMPER_IP'] = group.jumper.connect_ip
-        vars_dict['JUMPER_PORT'] = group.jumper.sshport
+    vars_dict = group.vars_dict
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(time.time()) + '/'
@@ -164,14 +157,7 @@ def disk_inode():
 
 def run_disk_overflow(group, RESOURCE, callback):
     # 准备变量
-    vars_dict = {}
-
-    for var in group.group_vars.all():
-        vars_dict[var.key] = var.value
-
-    if group.jumper is not None and group.key is not None:
-        vars_dict['JUMPER_IP'] = group.jumper.connect_ip
-        vars_dict['JUMPER_PORT'] = group.jumper.sshport
+    vars_dict = group.vars_dict
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(time.time()) + '/'
@@ -204,14 +190,7 @@ def uptime():
 
 def run_uptime(group):
     # 准备变量
-    vars_dict = {}
-
-    for var in group.group_vars.all():
-        vars_dict[var.key] = var.value
-
-    if group.jumper is not None and group.key is not None:
-        vars_dict['JUMPER_IP'] = group.jumper.connect_ip
-        vars_dict['JUMPER_PORT'] = group.jumper.sshport
+    vars_dict = group.vars_dict
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(time.time()) + '/'

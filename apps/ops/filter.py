@@ -3,7 +3,6 @@
 # Time 18-6-7
 # Author Yo
 # Email YoLoveLife@outlook.com
-import datetime
 import django_filters
 from ops import models
 from manager.models import Host
@@ -22,7 +21,6 @@ class MetaFilter(django_filters.FilterSet):
     class Meta:
         model = models.META
         fields = ['group', 'host', 'info', 'uuid']
-
 
     @staticmethod
     def host_filter(queryset, first_name, value):

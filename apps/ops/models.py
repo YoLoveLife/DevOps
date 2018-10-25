@@ -61,8 +61,13 @@ class META(TASKS):
     # 當hosts為空 則說明該meta任務為本地執行
     hosts = models.ManyToManyField(Host, blank=True, related_name='user_metas', verbose_name=_("metas"))
     info = models.CharField(default='', max_length=5000)
+    facts = models.BooleanField(default=False)
+    level = models.IntegerField(default=1)
 
     class Meta:
+        ordering = [
+            '-level', 'id'
+        ]
         permissions = (('yo_list_meta', u'罗列元操作'),
                        ('yo_create_meta', u'创建元操作'),
                        ('yo_update_meta', u'更新元操作'),
@@ -70,6 +75,12 @@ class META(TASKS):
 
     def file_list(self):
         return super(META, self).file_list()
+
+    def gather_facts(self):
+        if self.facts is True:
+            return 'yes'
+        else:
+            return 'no'
 
     def to_yaml(self):
         proxy = {}
@@ -82,7 +93,7 @@ class META(TASKS):
             proxy = self.group.jumper.to_yaml
 
         return {
-            'gather_facts': 'no',
+            'gather_facts': self.gather_facts(),
             'hosts': hosts_list or 'localhost',
             'tasks': super(META, self).to_yaml(proxy)['tasks']
         }
@@ -97,7 +108,7 @@ class Mission(models.Model):
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='group_missions')
-    metas = models.ManyToManyField(META,blank=True, related_name='missions', verbose_name=_("Mission"))
+    metas = models.ManyToManyField(META, blank=True, related_name='missions', verbose_name=_("Mission"))
     info = models.CharField(default='', max_length=5000)
     need_validate = models.BooleanField(default=True)
 
@@ -111,11 +122,7 @@ class Mission(models.Model):
 
     @property
     def vars_dict(self):
-        dict = {}
-        vars = self.group.group_vars
-        for var in vars:
-            dict[var.key] = var.value
-        return dict
+        return self.group.vars_dict
 
     def to_yaml(self):
         tasks_list = []
@@ -134,15 +141,6 @@ class Mission(models.Model):
     def model_to_dict(self):
         from django.forms.models import model_to_dict
         return model_to_dict(self)
-
-
-class META_SORT(models.Model):
-    # 针对meta的排序
-    id = models.AutoField(primary_key=True)
-    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
-    mission = models.ForeignKey(Mission, on_delete=models.SET_NULL, null=True, related_name='sort')
-    meta = models.ForeignKey(META, on_delete=models.SET_NULL, null=True, related_name='sort')
-    sort = models.IntegerField(default=1)
 
 
 class Push_Mission(models.Model):

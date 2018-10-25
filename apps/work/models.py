@@ -67,7 +67,7 @@ class Code_Work(Work):
         dict = self.mission.vars_dict
         dict['BASE'] = settings.OPS_ROOT + '/' + str(self.uuid) + '/'
         dict['TOOL'] = settings.TOOL_ROOT + '/'
-        if self.push_mission.files.count() !=0:
+        if self.push_mission.files.count() != 0:
             for file in self.push_mission.files.all():
                 dict[file.var_name] = settings.MEDIA_ROOT+'/'+file.file.name
         return dict

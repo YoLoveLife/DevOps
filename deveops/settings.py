@@ -14,7 +14,7 @@ import sys
 import django.db.backends.mysql
 from deveops.variable import *
 from deveops import conf as DEVEOPS_CONF
-ENVIRONMENT=DEVEOPS_CONF.ENVIRONMENT
+ENVIRONMENT = DEVEOPS_CONF.ENVIRONMENT
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -133,7 +133,7 @@ WSGI_APPLICATION = 'deveops.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-DATABASES={
+DATABASES = {
     'default':{
         'ENGINE':'django.db.backends.mysql',
         'NAME':DEVEOPS_CONF.DB_NAME,
@@ -217,16 +217,16 @@ STATICFILES_DIRS = (
 )
 
 #LOGIN
-LOGIN_URL='/validate/login'
-AUTH_USER_MODEL='authority.ExtendUser'
+LOGIN_URL = '/validate/login'
+AUTH_USER_MODEL = 'authority.ExtendUser'
 
 #SESSION
-SESSION_SAVE_EVERY_REQUEST=True
-SESSION_EXPIRE_AT_BROWSER_CLOSE=True
-SESSION_COOKIE_AGE=DEVEOPS_CONF.SESSION_COOKIE_AGE
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = DEVEOPS_CONF.SESSION_COOKIE_AGE
 
 #SSH
-SSH_TIMEOUT=DEVEOPS_CONF.SSH_TIMEOUT
+SSH_TIMEOUT = DEVEOPS_CONF.SSH_TIMEOUT
 
 # LDAP
 if ENVIRONMENT != 'TRAVIS':

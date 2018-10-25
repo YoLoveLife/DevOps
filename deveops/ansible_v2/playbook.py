@@ -42,11 +42,9 @@ class Playbook(object):
         if os.path.exists(self.key):
             os.remove(self.key)
 
-
     def import_vars(self, vars_dict):
         vars_dict['KEY'] = self.key
         self.variable_manager.extra_vars = vars_dict
-
 
     def import_task(self, play_source):
         for source in play_source:
@@ -71,7 +69,7 @@ class Playbook(object):
             )
             for p in self.play:
                 result = tqm.run(p)
-            # self.delete_key()
+            self.delete_key()
         finally:
             if tqm is not None:
                 tqm.cleanup()

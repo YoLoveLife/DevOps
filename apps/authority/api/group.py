@@ -50,6 +50,7 @@ class GroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
             NAME = response.data['name'],
         ), response
 
+
 class GroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer

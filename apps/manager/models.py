@@ -82,16 +82,21 @@ class Group(models.Model):
         else:
             # Ansible 2.0.0.0
             # return list(self.hosts.values_list('connect_ip', flat=True)) Only Normal Host
-            return ','.join(list(self.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
+            return ','.join(list(self.hosts.filter(_status__gte=0).values_list('connect_ip', flat=True)))
 
     @property
-    def group_vars(self):
-        return self.vars.all()
+    def vars_dict(self):
+        var_dict = {}
+        for var in self.vars.all():
+            var_dict[var.key] = var.value
+        var_dict['JUMPER_IP'] = self.jumper.connect_ip
+        var_dict['JUMPER_PORT'] = self.jumper.sshport
+        return var_dict
 
 
 class Host(models.Model):
     # 主机标识
-    id = models.AutoField(primary_key=True) #全局ID
+    id = models.AutoField(primary_key=True) # 全局ID
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
 
     # 资产结构

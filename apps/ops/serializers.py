@@ -22,7 +22,8 @@ class MetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.META
         fields = (
-            'id', 'uuid', 'hosts', '_tasks', 'group', 'group_name', 'info', 'qrcode', 'need_files'
+            'id', 'uuid', 'hosts', '_tasks', 'group', 'group_name', 'info', 'qrcode', 'need_files',
+            'level', 'facts'
         )
         read_only_fields = (
             'id', 'uuid', 'group_name'
@@ -52,6 +53,7 @@ class MetaSerializer(serializers.ModelSerializer):
 
 class MissionNeedFileSerializer(serializers.ModelSerializer):
     filelist = serializers.ListField(source='file_list', read_only=True)
+
     class Meta:
         model = models.Mission
         fields = (
@@ -111,6 +113,8 @@ class QuickGitMissionSerializer(serializers.ModelSerializer):
             group=validated_data['group'],
             info=validated_data['name']+'检出代码Checkout',
             _tasks=checkout_task_obj,
+            level=1,
+            facts=False,
         )
 
         # Sync
@@ -130,6 +134,8 @@ class QuickGitMissionSerializer(serializers.ModelSerializer):
             group=validated_data['group'],
             info=validated_data['name'] + '检出代码Sync',
             _tasks=sync_task_obj,
+            level=2,
+            facts=False,
         )
 
         sync_meta.hosts.set(validated_data['hosts'])
@@ -176,6 +182,7 @@ class QuickFileMissionSerializer(serializers.ModelSerializer):
             group=validated_data['group'],
             info=validated_data['name'] + '拷贝文件Copy',
             _tasks=copy_task_obj,
+            level=1,
         )
 
         copy_meta.hosts.set(validated_data['hosts'])
@@ -200,7 +207,7 @@ class QuickSerializer(serializers.Serializer):
             'id', 'uuid', 'data', 'metatype'
         )
 
-    #:TODO Maybe create wrong?
+    # TODO: Maybe create wrong?
     def create(self, validated_data):
         data = validated_data.pop('data')
         if validated_data['metatype'] == 'git':
