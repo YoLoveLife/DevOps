@@ -5,7 +5,7 @@ from ..api import group
 from ..api import permission
 from ..api import key
 from ..api import jumper
-urlpatterns=[
+urlpatterns = [
     # Resource login api
     path(r'login/', user.UserLoginAPI.as_view()),
     path(r'userinfo/', user.UserInfoAPI.as_view()),

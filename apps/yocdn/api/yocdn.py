@@ -36,7 +36,7 @@ class YoCDNCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [AllowAny,]
     msg = settings.LANGUAGE.YoCDNCreateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['CDN_CDN_CREATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['CDN_CDN_CREATE'])
     def create(self, request, *args, **kwargs):
         response = super(YoCDNCreateAPI, self).create(request, *args, **kwargs)
         return self.msg.format(

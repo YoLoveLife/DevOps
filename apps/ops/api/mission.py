@@ -99,7 +99,7 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.OpsMissionUpdateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_UPDATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_UPDATE'])
     def update(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             response = super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
@@ -123,7 +123,7 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.OpsMissionDeleteAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Mission_MISSION_DELETE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_DELETE'])
     def delete(self, request, *args, **kwargs):
         mission = self.get_object()
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):

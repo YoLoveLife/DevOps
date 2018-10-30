@@ -35,7 +35,6 @@ class ManagerHostListAPI(WebTokenAuthentication, generics.ListAPIView):
     filter_class = filter.HostFilter
 
 
-
 class ManagerHostListByPageAPI(ManagerHostListAPI):
     module = models.Host
     serializer_class = serializers.HostSerializer
@@ -51,15 +50,18 @@ class ManagerHostCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [HostPermission.HostCreateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.ManagerHostCreateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Host_HOST_CREATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_CREATE'])
     def create(self, request, *args, **kwargs):
-        response = super(ManagerHostCreateAPI, self).create(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            HOSTNAME = response.data['hostname'],
-            CONNECT_IP = response.data['connect_ip'],
-            UUID = response.data['uuid'],
-        ), response
+        if self.qrcode_check(request):
+            response = super(ManagerHostCreateAPI, self).create(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                HOSTNAME=response.data['hostname'],
+                CONNECT_IP=response.data['connect_ip'],
+                UUID=response.data['uuid'],
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -73,14 +75,17 @@ class ManagerHostUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_UPDATE'])
     def update(self, request, *args, **kwargs):
-        response = super(ManagerHostUpdateAPI, self).update(request, *args, **kwargs)
-        host = self.get_object()
-        return self.msg.format(
-            USER=request.user.full_name,
-            HOSTNAME=host.hostname,
-            CONNECT_IP=host.connect_ip,
-            UUID=host.uuid,
-        ), response
+        if self.qrcode_check(request):
+            response = super(ManagerHostUpdateAPI, self).update(request, *args, **kwargs)
+            host = self.get_object()
+            return self.msg.format(
+                USER=request.user.full_name,
+                HOSTNAME=host.hostname,
+                CONNECT_IP=host.connect_ip,
+                UUID=host.uuid,
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class ManagerHostDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -94,14 +99,17 @@ class ManagerHostDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_DELETE'])
     def delete(self, request, *args, **kwargs):
-        host = self.get_object()
-        response = super(ManagerHostDeleteAPI, self).delete(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            HOSTNAME = host.hostname,
-            CONNECT_IP = host.connect_ip,
-            UUID = host.uuid,
-        ), response
+        if self.qrcode_check(request):
+            host = self.get_object()
+            response = super(ManagerHostDeleteAPI, self).delete(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                HOSTNAME=host.hostname,
+                CONNECT_IP=host.connect_ip,
+                UUID=host.uuid,
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
@@ -116,7 +124,7 @@ class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.check_qrcode(kwargs['qrcode']):
-            return super(ManagerHostPasswordAPI,self).get(request, *args, **kwargs)
+            return super(ManagerHostPasswordAPI, self).get(request, *args, **kwargs)
         else:
             return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -131,11 +139,15 @@ class ManagerHostSelectGroupAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Host_HOST_SORT'])
     def update(self, request, *args, **kwargs):
-        host = self.get_object()
-        response = super(ManagerHostSelectGroupAPI, self).update(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            HOSTNAME = host.hostname,
-            CONNECT_IP = host.connect_ip,
-            UUID = host.uuid,
-        ), response
+        if self.qrcode_check(request):
+            host = self.get_object()
+            response = super(ManagerHostSelectGroupAPI, self).update(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                HOSTNAME=host.hostname,
+                CONNECT_IP=host.connect_ip,
+                UUID=host.uuid,
+            ), response
+        else:
+            return '', self.qrcode_response
+

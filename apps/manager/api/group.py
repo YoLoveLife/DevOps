@@ -58,7 +58,7 @@ class ManagerGroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
     msg = settings.LANGUAGE.ManagerGroupCreateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Group_GROUP_CREATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Group_GROUP_CREATE'])
     def create(self, request, *args, **kwargs):
         response = super(ManagerGroupCreateAPI, self).create(request, *args, **kwargs)
         return self.msg.format(

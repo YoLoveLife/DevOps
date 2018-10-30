@@ -10,6 +10,7 @@ from itsdangerous import JSONWebSignatureSerializer, BadSignature, SignatureExpi
 
 s = JSONWebSignatureSerializer(SECRET_KEY,)# salt='deveops')
 
+
 def encrypt(text):
     return s.dumps(text)
 

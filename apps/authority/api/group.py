@@ -1,17 +1,21 @@
 # -*- coding:utf-8 -*-
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from django.conf import settings
 from deveops.api import WebTokenAuthentication
 from authority.permission import group as GroupPermission
 from timeline.decorator import decorator_api
-from .. import models,serializers,filter
+from .. import models, serializers, filter
 
 __all__ = [
     "GroupListAPI", "GroupCreateAPI", "GroupUpdateAPI",
-    "GroupDeleteAPI", 'GroupListByPageAPI',
-    "GroupPagination"
+    "GroupDeleteAPI", "GroupListByPageAPI",
+    "GroupPagination",
 ]
 
 
@@ -42,13 +46,17 @@ class GroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [GroupPermission.GroupCreateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.GroupCreateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_CREATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_CREATE'])
     def create(self, request, *args, **kwargs):
-        response = super(GroupCreateAPI, self).create(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            NAME = response.data['name'],
-        ), response
+        if self.qrcode_check(request):
+            request.data.pop('qrcode')
+            response = super(GroupCreateAPI, self).create(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                NAME=response.data['name'],
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class GroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -58,14 +66,18 @@ class GroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     permission_classes = [GroupPermission.GroupUpdateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.GroupUpdateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_UPDATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_UPDATE'])
     def update(self, request, *args, **kwargs):
-        response = super(GroupUpdateAPI, self).update(request, *args, **kwargs)
-        pmngroup = self.get_object()
-        return self.msg.format(
-            USER = request.user.full_name,
-            NAME = pmngroup.name,
-        ), response
+        if self.qrcode_check(request):
+            request.data.pop('qrcode')
+            response = super(GroupUpdateAPI, self).update(request, *args, **kwargs)
+            pmngroup = self.get_object()
+            return self.msg.format(
+                USER=request.user.full_name,
+                NAME=pmngroup.name,
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class GroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -75,12 +87,16 @@ class GroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     permission_classes = [GroupPermission.GroupDeleteRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.GroupDeleteAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_DELETE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_DELETE'])
     def delete(self, request, *args, **kwargs):
-        pmngroup = self.get_object()
-        response = super(GroupDeleteAPI, self).delete(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            NAME = pmngroup.name,
-        ), response
+        if self.qrcode_check(request):
+            request.data.pop('qrcode')
+            pmngroup = self.get_object()
+            response = super(GroupDeleteAPI, self).delete(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                NAME=pmngroup.name,
+            ), response
+        else:
+            return '', self.qrcode_response
 

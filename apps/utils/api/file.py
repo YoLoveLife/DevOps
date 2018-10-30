@@ -27,7 +27,7 @@ class FilePagination(PageNumberPagination):
     page_size = 10
 
 
-class UtilsFileListAPI(WebTokenAuthentication,generics.ListAPIView):
+class UtilsFileListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.FILE
     serializer_class = serializers.FileSerializer
     permission_classes = [FilePermission.FileListRequiredMixin, IsAuthenticated]
@@ -56,7 +56,7 @@ class UtilsFileCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [FilePermission.FileCreateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.UtilsFileCreateAPI
 
-    # @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['FILE_UTILS_FILE_CREATE'])
+    # @decorator_api(timeline_type=settingsFILE_UTILS_FILE_CREATE)
     def create(self, request, *args, **kwargs):
         response = super(UtilsFileCreateAPI, self).create(request, *args, **kwargs)
         # return self.msg.format(
@@ -72,12 +72,13 @@ class UtilsFileUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.UtilsFileUpdateAPI
+
     def get_queryset(self):
         user = self.request.user
         query_set = models.FILE.objects.filter(user=user,)
         return query_set
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['FILE_UTILS_FILE_UPDATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['FILE_UTILS_FILE_UPDATE'])
     def update(self, request, *args, **kwargs):
         response = super(UtilsFileUpdateAPI, self).update(request, *args, **kwargs)
         obj = self.get_object()
@@ -97,7 +98,7 @@ class UtilsFileDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.UtilsFileDeleteAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['FILE_UTILS_FILE_DELETE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['FILE_UTILS_FILE_DELETE'])
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         if not obj.pushmission.exists():

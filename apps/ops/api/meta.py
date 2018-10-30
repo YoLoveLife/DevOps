@@ -8,7 +8,6 @@ from django.conf import settings
 from deveops.api import WebTokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from timeline.decorator import decorator_api
-
 __all__ = [
     'MetaPagination', 'OpsMetaListAPI', 'OpsMetaListByPageAPI',
     'OpsMetaCreateAPI', 'OpsMetaDeleteAPI',
@@ -56,19 +55,17 @@ class OpsMetaCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     permission_classes = [MetaPermission.MetaCreateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.OpsMetaCreateAPI
 
-    # 校验用户QR-Code
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['META_META_CREATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_CREATE'])
     def create(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+        if self.qrcode_check(request):
+            request.data.pop('qrcode')
             response = super(OpsMetaCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
-                USER = request.user.full_name,
-                UUID = response.data['uuid'],
+                USER=request.user.full_name,
+                UUID=response.data['uuid'],
             ), response
-
         else:
-            response = Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-            return '', response
+            return '', self.qrcode_response
 
 
 class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -80,7 +77,7 @@ class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.OpsMetaUpdateAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['META_META_UPDATE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_UPDATE'])
     def update(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
             response = super(OpsMetaUpdateAPI, self).update(request, *args, **kwargs)
@@ -104,7 +101,7 @@ class OpsMetaDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     lookup_url_kwarg = 'pk'
     msg = settings.LANGUAGE.OpsMetaDeleteAPI
 
-    @decorator_api(timeline_type = settings.TIMELINE_KEY_VALUE['META_META_DELETE'])
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_DELETE'])
     def delete(self, request, *args, **kwargs):
         meta = self.get_object()
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):

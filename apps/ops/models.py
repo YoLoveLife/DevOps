@@ -38,15 +38,18 @@ class TASKS(models.Model):
 
     def to_yaml(self, proxy):
         tasks = self._tasks
+        for t in tasks['tasks']:
+            for key, value in t.items():
+                t[key] = value.replace('<file>', '')
         tasks['tasks'].insert(0, proxy)
         return tasks
 
     def file_list(self):
-        FIND_LABEL = 'file:'
+        FIND_LABEL = '<file>'
         files = []
         for task in self._tasks.get('tasks'):
             if task.get('copy') is not None:
-                if "file:" in task.get('copy'):
+                if "<file>" in task.get('copy'):
                     copy_list = task.get('copy').split(FIND_LABEL)
                     file_name = copy_list[1].split(' ')
                     files.append(file_name[0][2:-2])
@@ -90,7 +93,7 @@ class META(TASKS):
                 hosts_list.append(host.connect_ip)
 
         if self.group.jumper is not None:
-            proxy = self.group.jumper.to_yaml
+            proxy = self.group.jumper.to_yaml()
 
         return {
             'gather_facts': self.gather_facts(),

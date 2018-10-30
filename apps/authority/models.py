@@ -1,21 +1,30 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
+import uuid
+import pyotp
+import redis
 from django.db import models
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from deveops.utils import sshkey,aes
 import django.utils.timezone as timezone
+from deveops.utils import sshkey, aes
 from django.conf import settings
-import socket
-import uuid
-import pyotp
 from authority.tasks import jumper_status_flush
 
 __all__ = [
-    "Key", "ExtendUser", "Jumper"
+    "Key", "ExtendUser", "Jumper",
 ]
+
+connect = redis.StrictRedis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=settings.REDIS_SPACE,
+    password=settings.REDIS_PASSWD,
+)
 
 
 def private_key_validator(key):
@@ -26,7 +35,7 @@ def private_key_validator(key):
         )
 
 
-def publick_key_validator(key):
+def public_key_validator(key):
     if not sshkey.public_key_validator(key):
         raise ValidationError(
             _('%(value)s is not an even number'),
@@ -40,8 +49,10 @@ class Key(models.Model):
     name = models.CharField(max_length=100, default='')
 
     # 操作权限限定
-    _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator,])
-    _public_key = models.TextField(max_length=4096, blank=True, null=True, validators=[publick_key_validator,])
+    _private_key = models.TextField(max_length=4096, blank=True, null=True,
+                                    validators=[private_key_validator, ])
+    _public_key = models.TextField(max_length=4096, blank=True, null=True,
+                                   validators=[public_key_validator, ])
     # 创建时间
     _fetch_time = models.DateTimeField(auto_now_add=True)
 
@@ -96,6 +107,7 @@ class ExtendUser(AbstractUser):
     full_name = models.CharField(max_length=11, default='未获取')
     qrcode = models.CharField(max_length=16, default='')
     have_qrcode = models.BooleanField(default=False)
+    expire = models.IntegerField(default=300)
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -160,6 +172,14 @@ class ExtendUser(AbstractUser):
         result = t.verify(verifycode)
         return result
 
+    @property
+    def is_expire(self):
+        return connect.exists(self.username)
+
+    @is_expire.setter
+    def is_expire(self, qrcode):
+        connect.set(self.username, qrcode, self.expire)
+
 
 class Jumper(models.Model):
     # 全局ID
@@ -195,17 +215,12 @@ class Jumper(models.Model):
     def check_status(self):
         jumper_status_flush.delay(self)
 
-    @property
     def to_yaml(self):
         return {
             u'set_fact':
                 {
                     'ansible_ssh_common_args':
-                        '-o ProxyCommand="ssh -p{JUMPER_PORT} -i {KEY} -W %h:%p root@{JUMPER_IP}"'.format(
-                            JUMPER_PORT=self.sshport,
-                            JUMPER_IP=self.connect_ip,
-                            KEY='{{KEY}}'
-                        )
+                        '-o ProxyCommand="ssh -p{{JUMPER_PORT}} -i {{KEY}} -W %h:%p root@{{JUMPER_IP}}"'
                 }
         }
 

@@ -40,7 +40,7 @@ class ConsoleConsumer(WebsocketConsumer):
 
         # 查询必要数据
         work = Code_Work.objects.filter(uuid=uuid).get()
-        play_source = work.mission.to_yaml
+        play_source = work.mission.to_yaml()
         vars_dict = work.vars_dict
         inventory = work.mission.group.users_list_byconnectip
 

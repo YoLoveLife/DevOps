@@ -171,9 +171,9 @@ class QuickFileMissionSerializer(serializers.ModelSerializer):
             'tasks': [
                 {
                     'name': 'Copy',
-                    'copy': 'src=file:{{{{FILENAME}}}} dest={DEST}'.format(
-                        FILENAME=validated_data['filename'],
-                        DEST=validated_data['dest_file'],
+                    'copy': 'src=<file>{FILENAME} dest={DEST}'.format(
+                            FILENAME='{{'+validated_data['filename']+'}}',
+                            DEST=validated_data['dest_file'],
                     ),
                 }
             ]

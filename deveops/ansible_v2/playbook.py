@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from __future__ import absolute_import,unicode_literals
+from __future__ import absolute_import, unicode_literals
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from ansible.inventory.manager import InventoryManager
@@ -18,10 +18,11 @@ Options = namedtuple('Options', ['connection', 'module_path', 'forks',
 class Playbook(object):
     loader = None
     inventory = None
+
     def __init__(self, group, key, callback):
         self.options = Options(
             connection='smart', module_path='', forks=100, become=None,
-            become_method=None, become_user=None, check=False,
+            become_method=None, become_user='root', check=False,
             private_key_file=key, diff=False
         )
         self.key = key

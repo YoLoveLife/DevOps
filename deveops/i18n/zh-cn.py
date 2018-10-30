@@ -5,6 +5,7 @@ UserCreateAPI = '%1{USER}%2 新建了新的平台用户 用户信息 %1用户名
 UserUpdateAPI = '%1{USER}%2 更新了平台用户信息 更新后用户信息 %1用户名:{USERNAME}%2 名称:{FULLNAME}'
 UserDeleteAPI = '%1{USER}%2 删除了平台用户 删除原用户信息 %1用户名:{USERNAME}%2 名称:{FULLNAME}'
 UserQRCodeAPI = '%1{USER}%2 获取了QR-CODE'
+UserQRCodeAPIHaveQRCode = '当前用户已经扫描过QRCode 如有需要请联系管理员'
 
 ## PmnGroup
 GroupCreateAPI = '%1{USER}%2 新建了权限组 新权限组信息 %1名称:{NAME}%2'
@@ -15,11 +16,14 @@ GroupDeleteAPI = '%1{USER}%2 删除了权限组 删除原信息 %1名称:{NAME}%
 KeyCreateAPI = '%1{USER}%2 新建的密钥 密钥信息 %1名称:{NAME}%2 UUID:{UUID}'
 KeyUpdateAPI = '%1{USER}%2 更新了密钥 更新后密钥信息 %1名称:{NAME}%2 UUID:{UUID}'
 KeyDeleteAPI = '%1{USER}%2 删除了密钥 删除原密钥信息 %1名称:{NAME}%2 UUID:{UUID}'
+KeyDeleteAPICanNotDelete = '该密钥属于应用组{GROUP}无法删除'
 
 ## Jumper
 JumperCreateAPI = '%1{USER}%2 新建了跳板机 跳板机信息 名称:{NAME} UUID:{UUID} %1连接地址:{CONNECT_IP}%2'
 JumperUpdateAPI = '%1{USER}%2 更新了跳板机 更新了跳板机信息 名称:{NAME} UUID:{UUID} %1连接地址:{CONNECT_IP}%2'
 JumperDeleteAPI = '%1{USER}%2 删除了跳板机 删除原跳板机信息 名称:{NAME} UUID:{UUID} %1连接地址:{CONNECT_IP}%2'
+JumperDeleteAPICanNotDelete = '该跳板机属于应用组{GROUP}无法删除'
+JumperStatusAPI = '已进入刷新列表'
 
 # Manager
 ## Group
@@ -70,3 +74,5 @@ UtilsImageCreateAPI = '%1{USER}%2 上传了架构图 UUID:{UUID}'
 
 # EZSetup
 EZSetupCreateRedisAPI = '%1{USER}%2 通过平台易装了%1Redis应用%2 安装信息 UUID:{UUID}'
+
+#

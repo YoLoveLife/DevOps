@@ -7,7 +7,6 @@ import os
 import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
 django.setup()
-
 import redis
 from celery.task import periodic_task
 from celery.schedules import crontab
@@ -54,7 +53,7 @@ def expired_aliyun_kvstore():
     API = kvstore.AliyunKVStoreTool()
     for dict_models in API.tool_get_instances_expired_models():
         if settings.ALIYUN_OVERDUETIME < dict_models.get('expired')< settings.ALIYUN_EXPIREDTIME:
-            obj_maker(ExpiredAliyunKVStore,dict_models)
+            obj_maker(ExpiredAliyunKVStore, dict_models)
 
 
 @periodic_task(run_every=settings.EXPIRED_TIME)
@@ -90,22 +89,19 @@ def statistics_count():
 from django.utils import timezone as datetime
 week_list = ['Won', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
 
-
-@periodic_task(run_every=crontab(minute='*/5'))
+@periodic_task(run_every=crontab(minute='*'))
 def statistics_work():
     connect.delete('WORK')
     work_dist = {}
     now = django.utils.timezone.now().date()
-    for i in range(0, 7):
+    for i in range(7, 0, -1):
         start_day = now - datetime.timedelta(days=i)
         end_day = now - datetime.timedelta(days=i-1)
-
-        weekday = start_day.weekday()
+        weekday = end_day.weekday()
         work_dist[week_list[int(weekday)]] = Push_Mission.objects.filter(
             create_time__gt = start_day, create_time__lt = end_day
         ).count()
-
-    for key,value in work_dist.items():
+    for key, value in work_dist.items():
         connect.hset('WORK', key, value)
 
 
