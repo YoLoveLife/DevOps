@@ -3,10 +3,15 @@
 # Time 17-10-25
 # Author Yo
 # Email YoLoveLife@outlook.com
-from __future__ import absolute_import, unicode_literals
-from celery import Task,task
-import socket, paramiko, os, stat, time
+import socket
+import paramiko
+import os
+import stat
+import time
 from django.conf import settings
+from celery import Task, task
+
+
 class JumperTask(Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         print('{0!r} failed: {1!r}'.format(task_id, exc))

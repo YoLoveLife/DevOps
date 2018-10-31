@@ -66,7 +66,6 @@ class JumperCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_CREATE'])
     def create(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(JumperCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,
@@ -90,7 +89,6 @@ class JumperUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_UPDATE'])
     def update(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(JumperUpdateAPI, self).update(request, *args, **kwargs)
             jumper = self.get_object()
             return self.msg.format(
@@ -115,7 +113,6 @@ class JumperDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Jumper_JUMPER_DELETE'])
     def delete(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             jumper = self.get_object()
             try:
                 group = jumper.group

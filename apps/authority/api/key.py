@@ -50,7 +50,6 @@ class KeyCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Key_KEY_CREATE'])
     def create(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(KeyCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,
@@ -73,7 +72,6 @@ class KeyUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Key_KEY_UPDATE'])
     def update(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(KeyUpdateAPI, self).update(request, *args, **kwargs)
             key = self.get_object()
             return self.msg.format(
@@ -97,7 +95,6 @@ class KeyDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Key_KEY_DELETE'])
     def delete(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             key = self.get_object()
             try:
                 group = key.group

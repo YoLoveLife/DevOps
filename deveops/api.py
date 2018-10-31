@@ -21,7 +21,10 @@ class WebTokenAuthentication():
 
     def qrcode_check(self, request):
         if 'qrcode' in request.data.keys() and request.user.check_qrcode(request.data.get('qrcode')):
-            request.user.is_expire(request.data.get('qrcode'))
+            request.user.is_expire = request.data.get('qrcode')
+            request.data.pop('qrcode')
+            return True
+        elif 'qrcode' not in request.data.keys():
             return True
         else:
             return False

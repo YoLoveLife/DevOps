@@ -107,7 +107,7 @@ class ExtendUser(AbstractUser):
     full_name = models.CharField(max_length=11, default='未获取')
     qrcode = models.CharField(max_length=16, default='')
     have_qrcode = models.BooleanField(default=False)
-    expire = models.IntegerField(default=300)
+    expire = models.IntegerField(default=100)
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -136,19 +136,6 @@ class ExtendUser(AbstractUser):
             ('yo_list_permission', u'罗列所有权限')
         )
 
-    def __unicode__(self):
-        list = []
-        if self.is_superuser:
-            list.append(u'超级管理员')
-        elif self.groups.count() == 0:
-            list.append(u'无权限')
-        else:
-            for group in self.groups.all():
-                list.append(group.name)
-        return self.username + ' - ' + "|".join(list)
-
-    __str__ = __unicode__
-
     def get_8531email(self):
         return self.username + '@8531.cn'
 
@@ -158,14 +145,14 @@ class ExtendUser(AbstractUser):
         elif self.groups.count() == 0:
             return "无权限"
         else:
-            list = []
+            gourp_list = []
             groups = self.groups.all()
             for group in groups:
-                list.append(group.name)
-            if len(list) == 0:
+                gourp_list.append(group.name)
+            if len(gourp_list) == 0:
                 return ''
             else:
-                return "-".join(list)
+                return "-".join(gourp_list)
 
     def check_qrcode(self, verifycode):
         t = pyotp.TOTP(self.qrcode)
@@ -174,11 +161,11 @@ class ExtendUser(AbstractUser):
 
     @property
     def is_expire(self):
-        return connect.exists(self.username)
+        return not connect.exists(self.username)
 
     @is_expire.setter
     def is_expire(self, qrcode):
-        connect.set(self.username, qrcode, self.expire)
+        connect.set(self.username, qrcode, self.expire or 1)
 
 
 class Jumper(models.Model):
@@ -200,9 +187,6 @@ class Jumper(models.Model):
             ('yo_status_jumper', u'刷新跳板机器'),
             ('yo_delete_jumper', u'删除跳板机'),
         )
-
-    def __unicode__(self):
-        return self.connect_ip + ' - ' + self.name
 
     @property
     def status(self):

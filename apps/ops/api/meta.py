@@ -58,7 +58,6 @@ class OpsMetaCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_CREATE'])
     def create(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(OpsMetaCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,

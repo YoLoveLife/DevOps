@@ -40,11 +40,6 @@ class Group(models.Model):
                        ('yo_delete_group', u'删除应用组'),
                        ('yo_group_sort_host', u'批量归类主机'))
 
-    def __unicode__(self):
-        return self.name
-
-    __str__ = __unicode__
-
     @property
     def status(self):
         if self.jumper is None or self.key is None:

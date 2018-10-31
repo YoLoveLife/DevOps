@@ -34,8 +34,3 @@ class DNS(models.Model):
             ('yo_delete_dns', u'删除域名'),
         )
 
-
-    def __str__(self):
-        return self.url
-
-

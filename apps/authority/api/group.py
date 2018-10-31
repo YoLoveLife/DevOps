@@ -49,7 +49,6 @@ class GroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_CREATE'])
     def create(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(GroupCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,
@@ -69,7 +68,6 @@ class GroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_UPDATE'])
     def update(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(GroupUpdateAPI, self).update(request, *args, **kwargs)
             pmngroup = self.get_object()
             return self.msg.format(
@@ -90,7 +88,6 @@ class GroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Permission_PMNGROUP_DELETE'])
     def delete(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             pmngroup = self.get_object()
             response = super(GroupDeleteAPI, self).delete(request, *args, **kwargs)
             return self.msg.format(

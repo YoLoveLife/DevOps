@@ -79,7 +79,6 @@ class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_CREATE'])
     def create(self, request, *args, **kwargs):
         if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            request.data.pop('qrcode')
             response = super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,

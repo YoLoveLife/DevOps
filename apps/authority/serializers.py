@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
-from authority.models import ExtendUser,Group,Key,Jumper
+from authority.models import ExtendUser, Group, Key, Jumper
 from deveops.utils.sshkey import ssh_keygen
 
 __all__ = [

@@ -1,4 +1,8 @@
 # -*- coding:utf-8 -*-
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
 import pyotp
 import os
 from qrcode import QRCode, constants
@@ -13,13 +17,13 @@ from deveops.api import WebTokenAuthentication
 from deveops.utils import aes
 from authority.permission import user as UserPermission
 from timeline.decorator import decorator_api
-from .. import models,serializers,filter
+from .. import models, serializers, filter
 
 __all__ = [
     "UserLoginAPI", "UserInfoAPI", "UserListAPI",
     "UserOpsListAPI", "UserUpdateAPI", "UserDeleteAPI",
     "UserListByPageAPI", 'UserPagination', 'UserOpsListByPageAPI',
-    'UserQRCodeAPI', 'UserCreateAPI',
+    'UserQRCodeAPI', 'UserCreateAPI', 'UserExpireAPI'
 ]
 
 
@@ -96,18 +100,17 @@ class UserCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_CREATE'])
     def create(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(UserCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
-                USER = request.user.full_name,
-                USERNAME = response.data['username'],
-                FULLNAME = response.data['full_name'],
+                USER=request.user.full_name,
+                USERNAME=response.data['username'],
+                FULLNAME=response.data['full_name'],
             ), response
         else:
             return '', self.qrcode_response
 
 
-class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
+class UserUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     module = models.ExtendUser
     serializer_class = serializers.UserSerializer
     queryset = models.ExtendUser.objects.all()
@@ -117,7 +120,6 @@ class UserUpdateAPI(WebTokenAuthentication,generics.UpdateAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_UPDATE'])
     def update(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             response = super(UserUpdateAPI, self).update(request, *args, **kwargs)
             user = self.get_object()
             return self.msg.format(
@@ -139,7 +141,6 @@ class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['ExtendUser_USER_DELETE'])
     def delete(self, request, *args, **kwargs):
         if self.qrcode_check(request):
-            request.data.pop('qrcode')
             user = self.get_object()
             response = super(UserDeleteAPI, self).delete(request, *args, **kwargs)
             return self.msg.format(
@@ -152,14 +153,13 @@ class UserDeleteAPI(WebTokenAuthentication,generics.DestroyAPIView):
 
 
 def get_qrcode(user):
-    if not user.qrcode: # ''
+    if not user.qrcode:
         user.qrcode = pyotp.random_base32()
         user.save()
-    file_name = str(aes.encrypt(user.qrcode),encoding='utf-8')
+    file_name = str(aes.encrypt(user.qrcode), encoding='utf-8')
     file = settings.QCODE_ROOT+'/'+file_name+'.png'
     if not os.path.exists(file):
         data = pyotp.totp.TOTP(user.qrcode).provisioning_uri(user.username, issuer_name="devEops")
-        print('data',data)
         qr = QRCode(
             version=1,
             error_correction=constants.ERROR_CORRECT_L,
@@ -170,9 +170,9 @@ def get_qrcode(user):
             qr.make(fit=True)
             img = qr.make_image()
             img.save(file)
-            return '/media/qrcode/'+ file_name +'.png'
+            return '/media/qrcode/' + file_name + '.png'
         except Exception as e:
-            return '/media/qrcode/'+ file_name +'.png'
+            return '/media/qrcode/' + file_name + '.png'
     else:
         return '/media/qrcode/' + file_name + '.png'
 
@@ -198,3 +198,12 @@ class UserQRCodeAPI(WebTokenAuthentication, APIView):
             return '', Response({
                 'detail': settings.LANGUAGE.UserQRCodeAPIHaveQRCode
             }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class UserExpireAPI(WebTokenAuthentication, APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'isexpire': request.user.is_expire
+        }, status=status.HTTP_200_OK)

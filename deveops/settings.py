@@ -229,8 +229,6 @@ if ENVIRONMENT != 'TRAVIS':
     AUTH_LDAP_USER_ATTR_MAP = {
         "full_name": "cn",
         "first_name": "sn",
-        "phone": "mobile",
-        "groups": "",
     }
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
     # AUTH_LDAP_MIRROR_GROUPS = True

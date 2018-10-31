@@ -3,10 +3,10 @@
 # Time 18-6-7
 # Author Yo
 # Email YoLoveLife@outlook.com
-import django_filters
-from manager import models
 from django.contrib.auth.models import Permission,Group
 from django.db.models import Q
+import django_filters
+from manager import models
 
 __all__ = [
     'UserFilter', 'GroupFilter', 'KeyFilter', 'JumperFilter'
@@ -18,6 +18,7 @@ class UserFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(method="name_filter")
     username = django_filters.CharFilter(method="username_filter")
     is_active = django_filters.CharFilter(method="is_active_filter")
+
     class Meta:
         model = models.ExtendUser
         fields = ['phone', 'name', 'username', 'email', 'is_active']
@@ -42,6 +43,7 @@ class UserFilter(django_filters.FilterSet):
 class GroupFilter(django_filters.FilterSet):
     permission = django_filters.CharFilter(method="permission_filter")
     name = django_filters.CharFilter(method="name_filter")
+
     class Meta:
         model = Group
         fields = ['permission', 'name']
@@ -59,9 +61,10 @@ class GroupFilter(django_filters.FilterSet):
 class KeyFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(method="name_filter")
     group_name = django_filters.CharFilter(method="group_name_filter")
+
     class Meta:
         model = models.Key
-        fields = ['name',]
+        fields = ['name', ]
 
     @staticmethod
     def name_filter(queryset, first_name, value):
@@ -76,6 +79,7 @@ class KeyFilter(django_filters.FilterSet):
 class JumperFilter(django_filters.FilterSet):
     info = django_filters.CharFilter(method="info_filter")
     group_name = django_filters.CharFilter(method="group_name_filter")
+
     class Meta:
         model = models.Jumper
         fields = ['info', 'group_name']
