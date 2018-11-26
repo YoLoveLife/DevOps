@@ -3,19 +3,16 @@
 # Time 17-10-25
 # Author Yo
 # Email YoLoveLife@outlook.com
+import time
 import os
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
-django.setup()
-
-
-import time, os, stat
+import stat
 from celery.task import periodic_task
-from django.conf import settings
 from django.db.models import Q
+from django.conf import settings
 from manager.models import Host, Group
 from manager.ansible_v2.callback import SSHCallback, DiskInodeCallback, DiskSpaceCallback, UptimeCallback
 from deveops.ansible_v2.playbook import Playbook
+
 
 def host_maker(dict_models):
     Host.objects.create(**dict_models)
@@ -34,22 +31,20 @@ def host_updater(obj, dict_models):
     obj.update(**dict_models)
 
 
-@periodic_task(run_every=settings.MANAGER_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_TIME)
 def vmware2cmdb():
     from deveops.tools import vmware
     for conf in settings.VMWARE_CONF:
         API = vmware.VmwareTool(**conf)
         childrens = API.get_all_vms()
         for child in childrens:
-            print(child)
             dict_models = API.get_vm_models(child, conf['VMWARE_SERVER'])
             host_query = Host.objects.filter(vmware_id=dict_models['vmware_id'], connect_ip=dict_models['connect_ip'])
             if not host_query.exists():
                 host_maker(dict_models)
 
 
-
-@periodic_task(run_every=settings.MANAGER_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_TIME)
 def aliyun2cmdb():
     from deveops.tools.aliyun_v2.request import ecs
     API = ecs.AliyunECSTool()
@@ -61,7 +56,7 @@ def aliyun2cmdb():
             host_updater(host_query, dict_models)
 
 
-@periodic_task(run_every=settings.MANAGER_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_TIME)
 def cmdb2aliyun():
     from deveops.tools.aliyun_v2.request import ecs
     from django.db.models import Q
@@ -85,13 +80,12 @@ def cmdb2aliyun():
                     host.status = status
 
 
-
 """
-    资产巡检
+资产巡检
 """
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_SSH_CHECK)
 def ssh_check():
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
@@ -137,7 +131,7 @@ def run_ssh_check(group):
     ssh_playbook.run()
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_DISK_CHECK)
 def disk_space():
     from manager.ansible_v2.playsource import DISK_SPACE_PLAY_SOURCE
     for group in Group.objects.all():
@@ -146,7 +140,7 @@ def disk_space():
             run_disk_overflow(group, DISK_SPACE_PLAY_SOURCE, callback)
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_DISK_CHECK)
 def disk_inode():
     from manager.ansible_v2.playsource import DISK_INODE_PLAY_SOURCE
     for group in Group.objects.all():
@@ -180,7 +174,7 @@ def run_disk_overflow(group, RESOURCE, callback):
     dof.run()
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_LOAD_CHECK)
 def uptime():
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:

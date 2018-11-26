@@ -83,9 +83,9 @@ class UtilsFileUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
         response = super(UtilsFileUpdateAPI, self).update(request, *args, **kwargs)
         obj = self.get_object()
         return self.msg.format(
-            USER = request.user.full_name,
-            UUID = obj.uuid,
-            FILENAME = obj.name,
+            USER=request.user.full_name,
+            UUID=obj.uuid,
+            FILENAME=obj.name,
         ), response
 
 
@@ -104,9 +104,9 @@ class UtilsFileDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
         if not obj.pushmission.exists():
             response = super(UtilsFileDeleteAPI, self).delete(request, *args, **kwargs)
             return self.msg.format(
-                USER = request.user.full_name,
-                UUID = obj.uuid,
-                FILENAME = obj.name,
+                USER=request.user.full_name,
+                UUID=obj.uuid,
+                FILENAME=obj.name,
             ), response
         else:
             return '', Response({'detail': '该文件已经属于某个任务无法被删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)

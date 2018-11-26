@@ -13,14 +13,15 @@ from pyVmomi import vmodl
 from pyVmomi import vim
 from django.conf import settings as DJANGO_SETTINGS
 
+
 class VmwareTool(object):
     def __init__(self, VMWARE_SERVER, VMWARE_USERNAME, VMWARE_PASSWD):
         self.server = VMWARE_SERVER
         self.service_instance = connect.SmartConnectNoSSL(
-            host = VMWARE_SERVER,
-            user = VMWARE_USERNAME,
-            pwd = VMWARE_PASSWD,
-            port = 443
+            host=VMWARE_SERVER,
+            user=VMWARE_USERNAME,
+            pwd=VMWARE_PASSWD,
+            port=443
         )
 
         atexit.register(connect.Disconnect, self.service_instance)

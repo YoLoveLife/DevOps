@@ -30,6 +30,7 @@ JumperStatusAPI = '已进入刷新列表'
 ManagerGroupCreateAPI = '%1{USER}%2 新建了资产应用组 新建信息 %1名称:{NAME}%2 UUID:{UUID}'
 ManagerGroupUpdateAPI = '%1{USER}%2 更新了资产应用组 更新后信息 %1名称:{NAME}%2 UUID:{UUID}'
 ManagerGroupDeleteAPI = '%1{USER}%2 删除了资产应用组 删除原信息 %1名称:{NAME}%2 UUID:{UUID}'
+ManagerGroupDeleteAPIExsistHost = '该应用组下存在主机无法删除'
 ManagerGroupSelectHostAPI = '%1{USER}%2 归类部分主机进入资产应用组 %1名称:{NAME}%2 UUID:{UUID}'
 
 ## Host
@@ -75,4 +76,9 @@ UtilsImageCreateAPI = '%1{USER}%2 上传了架构图 UUID:{UUID}'
 # EZSetup
 EZSetupCreateRedisAPI = '%1{USER}%2 通过平台易装了%1Redis应用%2 安装信息 UUID:{UUID}'
 
-#
+# Monitor
+MonitorHostAliyunDetailCPUAPI = 'CPU利用率'
+MonitorHostAliyunDetailMemoryAPI = '内存使用率'
+MonitorHostAliyunDetailIReadIOPS = '磁盘读取Count/Second'
+MonitorHostAliyunDetailInternetInRate = '网络流入流量bits/s'
+MonitorHostAliyunDetailDiskUse = '根磁盘情况'

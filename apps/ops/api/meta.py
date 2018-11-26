@@ -1,13 +1,18 @@
 # -*- coding:utf-8 -*-
-from .. import models, serializers, filter
-from rest_framework.views import Response,status
+# !/usr/bin/env python
+# Time 18-3-29
+# Author Yo
+# Email YoLoveLife@outlook.com
+from rest_framework.views import Response, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from ..permission import meta as MetaPermission
 from django.conf import settings
 from deveops.api import WebTokenAuthentication
-from rest_framework.pagination import PageNumberPagination
+from .. import models, serializers, filter
 from timeline.decorator import decorator_api
+
 __all__ = [
     'MetaPagination', 'OpsMetaListAPI', 'OpsMetaListByPageAPI',
     'OpsMetaCreateAPI', 'OpsMetaDeleteAPI',
@@ -78,7 +83,7 @@ class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_UPDATE'])
     def update(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+        if self.qrcode_check(request):
             response = super(OpsMetaUpdateAPI, self).update(request, *args, **kwargs)
             meta = self.get_object()
             return self.msg.format(
@@ -87,8 +92,7 @@ class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
                 INFO=meta.info,
             ), response
         else:
-            response = Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-            return '', response
+            return '', self.qrcode_response
 
 
 class OpsMetaDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -103,16 +107,15 @@ class OpsMetaDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_DELETE'])
     def delete(self, request, *args, **kwargs):
         meta = self.get_object()
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+        if self.qrcode_check(request):
             response = super(OpsMetaDeleteAPI, self).delete(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,
                 UUID=meta.uuid,
                 INFO=meta.info,
-            ),response
+            ), response
         else:
-            response = Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-            return '', response
+            return '', self.qrcode_response
 
 
 

@@ -6,6 +6,7 @@ import datetime
 from deveops.tools.aliyun_v2.request.base import AliyunTool
 from django.conf import settings
 
+
 class AliyunCMSTool(AliyunTool):
     def init_action(self):
         self.request.set_domain('metrics.cn-hangzhou.aliyuncs.com')

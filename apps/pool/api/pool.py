@@ -23,6 +23,6 @@ class PoolListAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.IP_Pool
     queryset = models.IP_Pool.objects.all()
     serializer_class = serializers.PoolSerializer
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, ]
     filter_class = filter.IPFilter
     pagination_class = PoolPagination

@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
 from rest_framework import serializers
 from django.contrib.auth.models import Permission
 from authority.models import ExtendUser, Group, Key, Jumper

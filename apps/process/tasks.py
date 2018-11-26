@@ -41,6 +41,7 @@ def pick_domain(url):
         header = url.find('/')
         return url[:header]
 
+
 def choose_type(domain):
     CNAME = reflush(domain, settings.OUTER_DNS)
     if 'alikunlun' in CNAME:
@@ -49,6 +50,7 @@ def choose_type(domain):
         return settings.TYPE_CDN_QN
     elif 'wangs' in CNAME:
         return settings.TYPE_CDN_WS
+
 
 def process(API, obj):
     task_id = API.tool_flush_cdn(obj.url)['RefreshTaskId']

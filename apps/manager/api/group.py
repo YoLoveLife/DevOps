@@ -55,17 +55,20 @@ class ManagerGroupListByPageAPI(WebTokenAuthentication, generics.ListAPIView):
 class ManagerGroupCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Group
     serializer_class = serializers.GroupSerializer
-    permission_classes = [GroupPermission.GroupCreateRequiredMixin,IsAuthenticated]
+    permission_classes = [GroupPermission.GroupCreateRequiredMixin, IsAuthenticated]
     msg = settings.LANGUAGE.ManagerGroupCreateAPI
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Group_GROUP_CREATE'])
     def create(self, request, *args, **kwargs):
-        response = super(ManagerGroupCreateAPI, self).create(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            NAME = response.data['name'],
-            UUID = response.data['uuid'],
-        ), response
+        if self.qrcode_check(request):
+            response = super(ManagerGroupCreateAPI, self).create(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                NAME=response.data['name'],
+                UUID=response.data['uuid'],
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class ManagerGroupDetailAPI(WebTokenAuthentication, generics.ListAPIView):
@@ -88,13 +91,16 @@ class ManagerGroupUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Group_GROUP_UPDATE'])
     def update(self, request, *args, **kwargs):
-        response = super(ManagerGroupUpdateAPI, self).update(request, *args, **kwargs)
-        group = self.get_object()
-        return self.msg.format(
-            USER = request.user.full_name,
-            NAME = group.name,
-            UUID = group.uuid
-        ), response
+        if self.qrcode_check(request):
+            response = super(ManagerGroupUpdateAPI, self).update(request, *args, **kwargs)
+            group = self.get_object()
+            return self.msg.format(
+                USER=request.user.full_name,
+                NAME=group.name,
+                UUID=group.uuid
+            ), response
+        else:
+            return '', self.qrcode_response
 
 
 class ManagerGroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -108,19 +114,24 @@ class ManagerGroupDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Group_GROUP_DELETE'])
     def delete(self, request, *args, **kwargs):
-        group = self.get_object()
-        if group.hosts.count() != 0:
-            return self.msg.format(
-                USER = request.user.full_name,
-                NAME = group.name,
-                UUID = group.uuid
-            ), Response({'detail': '该应用组下存在主机无法删除'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        if self.qrcode_check(request):
+            group = self.get_object()
+            if group.hosts.count() != 0:
+                return self.msg.format(
+                    USER=request.user.full_name,
+                    NAME=group.name,
+                    UUID=group.uuid
+                ), Response({
+                    'detail': settings.LANGUAGE.ManagerGroupDeleteAPIExsistHost
+                }, status=status.HTTP_406_NOT_ACCEPTABLE)
+            else:
+                return self.msg.format(
+                    USER=request.user.full_name,
+                    NAME=group.name,
+                    UUID=group.uuid
+                ), super(ManagerGroupDeleteAPI, self).delete(request, *args, **kwargs)
         else:
-            return self.msg.format(
-                USER = request.user.full_name,
-                NAME = group.name,
-                UUID = group.uuid
-            ), super(ManagerGroupDeleteAPI,self).delete(request,*args,**kwargs)
+            return '', self.qrcode_response
 
 
 class ManagerGroupSelectHostAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -132,10 +143,14 @@ class ManagerGroupSelectHostAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Group_GROUP_SORT'])
     def update(self, request, *args, **kwargs):
-        group = self.get_object()
-        response = super(ManagerGroupSelectHostAPI, self).update(request, *args, **kwargs)
-        return self.msg.format(
-            USER = request.user.full_name,
-            NAME = group.name,
-            UUID = group.uuid
-        ), response
+        if self.qrcode_check(request):
+            group = self.get_object()
+            response = super(ManagerGroupSelectHostAPI, self).update(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                NAME=group.name,
+                UUID=group.uuid
+            ), response
+        else:
+            return '', self.qrcode_response
+

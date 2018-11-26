@@ -3,17 +3,15 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models
-from manager.models import Host
-import json
-from rest_framework import generics
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from django.conf import settings
+from manager.models import Host
 from deveops.api import WebTokenAuthentication
 from monitor.permission import monitor as MonitorPermission
+
 __all__ = [
     'MonitorPagination', 'MonitorHostAliyunDetailCPUAPI', 'MonitorHostAliyunDetailMemoryAPI',
 ]
@@ -33,7 +31,7 @@ class MonitorHostAliyunDetailCPUAPI(WebTokenAuthentication, APIView):
         from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
         API = AliyunCMSECSTool()
         return Response({
-            'title': 'CPU利用率',
+            'title': settings.LANGUAGE.MonitorHostAliyunDetailCPUAPI,
             'dataset': API.tool_get_metric_cpu(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
         })
 
@@ -48,7 +46,7 @@ class MonitorHostAliyunDetailMemoryAPI(WebTokenAuthentication, APIView):
         from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
         API = AliyunCMSECSTool()
         return Response({
-            'title': '内存使用率',
+            'title': settings.LANGUAGE.MonitorHostAliyunDetailMemoryAPI,
             'dataset': API.tool_get_metric_mem(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
         })
 
@@ -63,7 +61,7 @@ class MonitorHostAliyunDetailIReadIOPS(WebTokenAuthentication, APIView):
         from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
         API = AliyunCMSECSTool()
         return Response({
-            'title': '磁盘读取Count/Second',
+            'title': settings.LANGUAGE.MonitorHostAliyunDetailIReadIOPS,
             'dataset': API.tool_get_metric_read_iops(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
         })
 
@@ -78,9 +76,10 @@ class MonitorHostAliyunDetailInternetInRate(WebTokenAuthentication, APIView):
         from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
         API = AliyunCMSECSTool()
         return Response({
-            'title': '网络流入流量bits/s',
+            'title': settings.LANGUAGE.MonitorHostAliyunDetailInternetInRate,
             'dataset': API.tool_get_metric_net_in(self.get_object().aliyun_id, int(kwargs['time'])).__next__()
         })
+
 
 class MonitorHostAliyunDetailDiskUse(WebTokenAuthentication, APIView):
     permission_classes = [MonitorPermission.MonitorAliyunAPIRequiredMixin, IsAuthenticated]
@@ -92,7 +91,7 @@ class MonitorHostAliyunDetailDiskUse(WebTokenAuthentication, APIView):
         from deveops.tools.aliyun_v2.request.cms.ecs import AliyunCMSECSTool
         API = AliyunCMSECSTool()
         return Response({
-            'title': '根磁盘情况',
+            'title': settings.LANGUAGE.MonitorHostAliyunDetailDiskUse,
             'dataset': API.tool_get_metric_disk_use(
                 self.get_object().aliyun_id,
                 int(kwargs['time'])).__next__()

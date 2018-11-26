@@ -1,12 +1,17 @@
 # -*- coding:utf-8 -*-
-from manager import models
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
 from rest_framework import serializers
+from manager import models
 from authority.models import ExtendUser
 
 __all__ = [
     "GroupSerializer", "HostSerializer", "HostPasswordSerializer",
     'GroupSampleSerializer', 'HostSampleSerializer', 'GroupSelectHostSerializer', 'HostSelectGroupSerializer'
 ]
+
 
 class GroupSampleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -15,19 +20,22 @@ class GroupSampleSerializer(serializers.HyperlinkedModelSerializer):
             'id', 'uuid', 'name'
         )
 
+
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=ExtendUser.objects.all())
     pmn_groups = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.PerGroup.objects.all())
     key = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Key.objects.all(), allow_null=True)
     jumper = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Jumper.objects.all(), allow_null=True)
     _status = serializers.IntegerField(required=True, source='status',)
-    _framework = serializers.PrimaryKeyRelatedField(required=False, queryset=models.IMAGE.objects.all(), allow_null=True, write_only=True)
+    _framework = serializers.PrimaryKeyRelatedField(required=False, queryset=models.IMAGE.objects.all(),
+                                                    allow_null=True, write_only=True)
     framework = serializers.ImageField(source="_framework.image", read_only=True)
 
     class Meta:
         model = models.Group
         fields = (
-            'id', 'uuid', 'name', 'info', '_status', 'users', '_framework', 'pmn_groups', 'key', 'jumper', 'framework',
+            'id', 'uuid', 'name', 'info', '_status', 'users', '_framework', 'pmn_groups', 'key',
+            'jumper', 'framework',
         )
         read_only_fields = (
             'id', 'uuid', 'framework'
@@ -39,11 +47,12 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         # instance.framework_update()
         # 刪除原有的外鍵以及相關的文件
-        return super(GroupSerializer,self).update(instance,validated_data)
+        return super(GroupSerializer, self).update(instance,validated_data)
 
 
 class GroupSelectHostSerializer(GroupSerializer):
     hosts = serializers.PrimaryKeyRelatedField(required=True, queryset=models.Host.objects.all(), many=True)
+
     class Meta:
         model = models.Group
         fields = (
@@ -59,8 +68,6 @@ class GroupSelectHostSerializer(GroupSerializer):
         # return super(GroupSelectHostSerializer,self).update(instance,validated_data)
 
 
-
-
 class HostSampleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Host
@@ -70,9 +77,10 @@ class HostSampleSerializer(serializers.ModelSerializer):
 
 
 class HostSerializer(serializers.ModelSerializer):
-    passwd = serializers.CharField(required=False, allow_null=True, source='password',write_only=True)
+    passwd = serializers.CharField(required=False, allow_null=True, source='password', write_only=True)
     _status = serializers.IntegerField(required=True, source='status',)
-    groups = serializers.PrimaryKeyRelatedField(read_only=True ,many=True,)
+    groups = serializers.PrimaryKeyRelatedField(read_only=True, many=True,)
+
     class Meta:
         model = models.Host
         fields = (
@@ -85,7 +93,6 @@ class HostSerializer(serializers.ModelSerializer):
         write_only_fields = (
             'passwd',
         )
-
 
 
 class HostPasswordSerializer(serializers.ModelSerializer):

@@ -14,8 +14,7 @@ from rest_framework.pagination import PageNumberPagination
 __all__ = [
     'MissionPagination', 'OpsMissionListAPI', 'OpsMissionListByPageAPI',
     'OpsMissionNeedFileCheckAPI', 'OpsMissionCreateAPI', 'OpsMissionDeleteAPI',
-    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionPlaybookAPI',
-    'OpsMissionNeedFileCheckAPI',
+    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionNeedFileCheckAPI'
 ]
 
 
@@ -78,7 +77,7 @@ class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_CREATE'])
     def create(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+        if self.qrcode_check(request):
             response = super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,
@@ -86,7 +85,7 @@ class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
                 UUID=response.data['uuid']
             ), response
         else:
-            return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
 
 
 class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -100,7 +99,7 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
 
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_UPDATE'])
     def update(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+        if self.qrcode_check(request):
             response = super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
             mission = self.get_object()
             return self.msg.format(
@@ -110,7 +109,7 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
             ), response
 
         else:
-            return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
 
 
 class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -125,7 +124,7 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_DELETE'])
     def delete(self, request, *args, **kwargs):
         mission = self.get_object()
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
+        if self.qrcode_check(request):
             response = super(OpsMissionDeleteAPI, self).delete(request, *args, **kwargs)
             return self.msg.format(
                 USER=request.user.full_name,
@@ -133,8 +132,7 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
                 UUID=mission.uuid
             ), response
         else:
-            return '', Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-
+            return '', self.qrcode_response
 
 
 class OpsMissionNeedFileCheckAPI(WebTokenAuthentication, generics.ListAPIView):

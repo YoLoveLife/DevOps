@@ -16,7 +16,7 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'cpu_total')#'CPUUtilization')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id}))
         results = self.post()
         yield AnalyzeCMSTool.change_timestamp(results.get('Datapoints'))
 
@@ -24,7 +24,7 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'memory_usedutilization')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id}))
         results = self.post()
         yield AnalyzeCMSTool.change_timestamp(results.get('Datapoints'))
 
@@ -32,7 +32,7 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'DiskReadIOPS')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id}))
         results = self.post()
         yield AnalyzeCMSTool.change_timestamp(results.get('Datapoints'))
 
@@ -40,7 +40,7 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'DiskWriteIOS')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id}))
         results = self.post()
         yield AnalyzeCMSTool.change_timestamp(results.get('Datapoints'))
 
@@ -48,7 +48,7 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'IntranetInRate')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id}))
         results = self.post()
         yield AnalyzeCMSTool.change_timestamp(results.get('Datapoints'))
 
@@ -56,7 +56,7 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'IntranetOutRate')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id}))
         results = self.post()
         yield AnalyzeCMSTool.change_timestamp(results.get('Datapoints'))
 
@@ -65,4 +65,4 @@ class AliyunCMSECSTool(AliyunCMSTool):
         self.action_get_metric()
         self.time_select(time)
         self.request.add_query_param('Metric', 'diskusage_used')
-        self.request.add_query_param('Dimensions', str({'instanceId':instance_id,'device':'/dev/vda1'}))
+        self.request.add_query_param('Dimensions', str({'instanceId': instance_id,'device':'/dev/vda1'}))

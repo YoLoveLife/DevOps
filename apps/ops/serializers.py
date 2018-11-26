@@ -17,12 +17,11 @@ class MetaSerializer(serializers.ModelSerializer):
     _tasks = serializers.CharField(required=True, source="tasks")
     group = serializers.PrimaryKeyRelatedField(queryset=models.Group.objects.all())
     group_name = serializers.CharField(source="group.name", read_only=True)
-    qrcode = serializers.CharField(required=True, write_only=True,)
 
     class Meta:
         model = models.META
         fields = (
-            'id', 'uuid', 'hosts', '_tasks', 'group', 'group_name', 'info', 'qrcode', 'need_files',
+            'id', 'uuid', 'hosts', '_tasks', 'group', 'group_name', 'info', 'need_files',
             'level', 'facts'
         )
         read_only_fields = (
@@ -30,7 +29,6 @@ class MetaSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        validated_data.pop('qrcode')
         hosts = None
 
         # if 'hosts' in validated_data.keys():
@@ -45,7 +43,6 @@ class MetaSerializer(serializers.ModelSerializer):
         return obj
 
     def update(self, instance, validated_data):
-        validated_data.pop('qrcode')
         obj = super(MetaSerializer, self).update(instance, validated_data)
         obj.save()
         return obj

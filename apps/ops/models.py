@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
-from manager.models import Group,Host
+from manager.models import Group, Host
 from authority.models import ExtendUser
 from utils.models import FILE
 from django.conf import settings
@@ -38,9 +38,11 @@ class TASKS(models.Model):
 
     def to_yaml(self, proxy):
         tasks = self._tasks
+        print('AAA', tasks)
         for t in tasks['tasks']:
             for key, value in t.items():
-                t[key] = value.replace('<file>', '')
+                if key == 'copy':
+                    t[key] = value.replace('<file>', '')
         tasks['tasks'].insert(0, proxy)
         return tasks
 
@@ -69,7 +71,7 @@ class META(TASKS):
 
     class Meta:
         ordering = [
-            '-level', 'id'
+            'level', 'id'
         ]
         permissions = (('yo_list_meta', u'罗列元操作'),
                        ('yo_create_meta', u'创建元操作'),

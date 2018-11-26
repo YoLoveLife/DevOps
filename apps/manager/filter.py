@@ -4,8 +4,8 @@
 # Author Yo
 # Email YoLoveLife@outlook.com
 import django_filters
-from manager import models
 from django.db.models import Q
+from manager import models
 
 __all__ = [
     'HostFilter', 'GroupFilter'
@@ -70,7 +70,7 @@ class GroupFilter(django_filters.FilterSet):
 
     @staticmethod
     def ops_filter(queryset, first_name, value):
-        users = models.ExtendUser.objects.filter(Q(full_name__icontains=value)|Q(username__icontains=value))
+        users = models.ExtendUser.objects.filter(Q(full_name__icontains=value) | Q(username__icontains=value))
         return queryset.filter(users__in=users)
 
     @staticmethod

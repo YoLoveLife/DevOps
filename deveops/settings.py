@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'yodns.apps.YoDnsConfig',
     'zdb.apps.ZDBConfig',
     'monitor.apps.MonitorConfig',
-    # 'console.apps.ConsoleConfig',
     'ezsetup.apps.EZSetupConfig',
     'yocdn.apps.YoCDNConfig',
     'pool.apps.PoolConfig',

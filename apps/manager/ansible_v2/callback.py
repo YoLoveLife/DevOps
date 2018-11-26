@@ -3,16 +3,21 @@
 # Time 18-3-29
 # Author Yo
 # Email YoLoveLife@outlook.com
-from django.conf import settings
 from deveops.ansible_v2.callback import Callback
-from manager.models import Host
+from django.conf import settings
+
+__all__ = [
+    'SSHCallback', 'DiskInodeCallback', 'DiskSpaceCallback',
+    'UptimeCallback',
+]
+
 INDENT = 4
+
 
 class SSHCallback(Callback):
     def __init__(self, group):
         self.group = group
         super(SSHCallback, self).__init__()
-
 
     def v2_runner_on_ok(self, result, **kwargs):
         connect_ip = result._host.address
@@ -22,7 +27,6 @@ class SSHCallback(Callback):
             host.save()
         return super(SSHCallback, self).v2_runner_on_ok(result, **kwargs)
 
-
     def v2_runner_on_unreachable(self, result):
         connect_ip = result._host.address
         host = self.group.hosts.filter(connect_ip=connect_ip).get()
@@ -30,8 +34,6 @@ class SSHCallback(Callback):
             host._status = settings.STATUS_HOST_DENY_OR_REFUSE
             host.save()
         return super(SSHCallback, self).v2_runner_on_unreachable(result)
-
-
 
 
 class DiskSpaceCallback(Callback):

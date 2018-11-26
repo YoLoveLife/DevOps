@@ -3,20 +3,20 @@
 # Time 17-10-25
 # Author Yo
 # Email YoLoveLife@outlook.com
-
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import
 from django.conf import settings
-import os,stat,time
+import os
+import stat
+import time
 from ezsetup.ansible_v2.callback import EZSetupCallback
 from ezsetup.ansible_v2.playbook import EZSetupPlaybook
-from celery import Task,task
+from celery import Task, task
 
-# def install_exsist(instance, detail):
-#   if instance
 
 class EZSetupTask(Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         print('{0!r} failed: {1!r}'.format(task_id, exc))
+
 
 def write_key(key, file_path):
     try:

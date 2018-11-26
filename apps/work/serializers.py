@@ -10,11 +10,11 @@ __all__ = [
 
 
 class CodeWorkStatusSerializer(serializers.ModelSerializer):
-    qrcode = serializers.CharField(required=True, write_only=True,)
+
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'status', 'qrcode'
+            'id', 'status',
         )
         read_only_fields = (
             'id',
@@ -80,21 +80,23 @@ class CodeWorkSerializer(serializers.HyperlinkedModelSerializer):
 
 class CodeWorkUploadFileSerializer(serializers.ModelSerializer):
     files = serializers.ListField(source="file_list")
-    qrcode = serializers.CharField(required=True, write_only=True,)
 
     class Meta:
         model = models.Code_Work
         fields = (
-            'id', 'files', 'qrcode',
+            'id', 'files',
         )
 
 
 class SafeWorkSerializer(serializers.HyperlinkedModelSerializer):
-    src_group = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Group.objects.all(), allow_null=True)
+    src_group = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Group.objects.all(),
+                                                   allow_null=True)
     src_hosts = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.Group.objects.all(),
                                                    allow_null=True)
 
-    dest_group = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Group.objects.all(), allow_null=True)
+    dest_group = serializers.PrimaryKeyRelatedField(required=False, queryset=models.Group.objects.all(),
+                                                    allow_null=True)
+
     dest_hosts = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=models.Group.objects.all(),
                                                    allow_null=True)
 

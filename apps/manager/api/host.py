@@ -3,20 +3,20 @@
 # Time 18-3-19
 # Author Yo
 # Email YoLoveLife@outlook.com
-from .. import models, serializers, filter
 from rest_framework import generics
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import Response, status
 from manager.permission import host as HostPermission
+from .. import models, serializers, filter
 from deveops.api import WebTokenAuthentication
 from timeline.decorator import decorator_api
 from django.conf import settings
 
 __all__ = [
     'ManagerHostListAPI', 'ManagerHostCreateAPI',
-    'ManagerHostUpdateAPI','ManagerHostDeleteAPI',
+    'ManagerHostUpdateAPI', 'ManagerHostDeleteAPI',
     'HostPagination', 'ManagerHostListByPageAPI'
 ]
 
@@ -118,7 +118,7 @@ class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
 
-    def get_queryset(self):# 此处时由于RestFramework的permission会被调用两次 只能在这里使用装饰器
+    def get_queryset(self):
         host = models.Host.objects.filter(uuid=self.kwargs['pk'])
         return host
 
@@ -126,12 +126,12 @@ class ManagerHostPasswordAPI(WebTokenAuthentication, generics.ListAPIView):
         if self.request.user.check_qrcode(kwargs['qrcode']):
             return super(ManagerHostPasswordAPI, self).get(request, *args, **kwargs)
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return self.qrcode_response
 
 
 class ManagerHostSelectGroupAPI(WebTokenAuthentication, generics.UpdateAPIView):
     serializer_class = serializers.HostSelectGroupSerializer
-    permission_classes = [HostPermission.HostSelectGroupRequiredMixin , IsAuthenticated]
+    permission_classes = [HostPermission.HostSelectGroupRequiredMixin, IsAuthenticated]
     queryset = models.Host.objects.all()
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'

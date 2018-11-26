@@ -6,6 +6,7 @@ import datetime
 from deveops.tools.aliyun_v2.analyze.base import AnalyzeTool
 from django.conf import settings
 
+
 class AnalyzeECSTool(AnalyzeTool):
 
     @staticmethod
@@ -61,4 +62,12 @@ class AnalyzeECSTool(AnalyzeTool):
             'instancename': json_results.get('InstanceName'),
             'tags': ':'.join(tags_list),
             'status': json_results.get('Status')
+        }
+
+    @staticmethod
+    def get_security_models(json_results):
+        return {
+            'security_id': json_results.get('SecurityGroupId'),
+            'security_name': json_results.get('SecurityGroupName'),
+            'vpc_id': json_results.get('VpcId')
         }

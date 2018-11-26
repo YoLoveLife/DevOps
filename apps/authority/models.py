@@ -156,6 +156,7 @@ class ExtendUser(AbstractUser):
 
     def check_qrcode(self, verifycode):
         t = pyotp.TOTP(self.qrcode)
+        print('验证器内存地址',t)
         result = t.verify(verifycode)
         return result
 

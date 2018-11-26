@@ -1,15 +1,16 @@
 # -*- coding:utf-8 -*-
-from __future__ import unicode_literals
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from authority.models import ExtendUser
 import uuid
-import paramiko
-import socket
-from deveops.utils import sshkey,aes
+from authority.models import ExtendUser
+from deveops.utils import sshkey, aes
 from utils.models import IMAGE
 from django.contrib.auth.models import Group as PerGroup
-from authority.models import Key,Jumper
+from authority.models import Key, Jumper
 from django.conf import settings
 
 __all__ = [
@@ -102,7 +103,6 @@ class Host(models.Model):
     sshport = models.IntegerField(default='22')
     _passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
 
-
     # 主机信息
     hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)
     aliyun_id = models.CharField(max_length=30, default='', blank=True, null=True)
@@ -159,11 +159,4 @@ class Host(models.Model):
 
     # :TODO 详细页面 管理用户
     def manage_user_get(self):
-        dist = {}
-        for group in self.groups.all():
-            for user in group.users.all():
-                dist[user.email]=user
-        list = []
-        for key in dist:
-            list.append(dist[key])
-        return list
+        pass

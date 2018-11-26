@@ -24,7 +24,7 @@ class WebTokenAuthentication():
             request.user.is_expire = request.data.get('qrcode')
             request.data.pop('qrcode')
             return True
-        elif 'qrcode' not in request.data.keys():
+        elif 'qrcode' not in request.data.keys() and not request.user.is_expire:
             return True
         else:
             return False

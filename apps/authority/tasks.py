@@ -22,7 +22,7 @@ def write_key(key, file_path):
         f = open(file_path, 'w')
         f.write(key.private_key)
         f.close()
-    except Exception:
+    except Exception as e:
         return '~/.ssh/id_rsa'
     os.chmod(file_path, stat.S_IWUSR | stat.S_IRUSR)
 

@@ -31,9 +31,7 @@ def gws_list(vpc):
     pass
 
 
-
-# @periodic_task(run_every=settings.MANAGER_TIME)
-@periodic_task(run_every=crontab(minute='*/5'))
+@periodic_task(run_every=settings.POOL_SLB)
 def aliyun_slb_ipoll():
     from deveops.tools.aliyun import slb
     API = slb.AliyunSLBTool()
@@ -54,7 +52,7 @@ def aliyun_slb_ipoll():
                     ipool_maker(dict_models)
 
 
-@periodic_task(run_every=crontab(minute='*/5'))
+@periodic_task(run_every=settings.POOL_GATEWAY)
 def aliyun_gw_ipoll():
     from deveops.tools.aliyun import vpc,nat
     VPCAPI = vpc.AliyunVPCTool()
@@ -118,7 +116,7 @@ def aliyun_security_pool():
                     pass
 
 
-@periodic_task(run_every=crontab(minute='*/5'))
+@periodic_task(run_every=settings.POOL_HOST)
 def host_ipoll():
     from manager.models import Host
     for host in Host.objects.all():
