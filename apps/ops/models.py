@@ -38,7 +38,6 @@ class TASKS(models.Model):
 
     def to_yaml(self, proxy):
         tasks = self._tasks
-        print('AAA', tasks)
         for t in tasks['tasks']:
             for key, value in t.items():
                 if key == 'copy':

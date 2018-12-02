@@ -32,6 +32,7 @@ djangorestframework-jwt==1.11.0
 dnspython==1.15.0
 docopt==0.6.2
 ecdsa==0.13
+future==0.17.1
 hiredis==0.2.0
 hyperlink==18.0.0
 idna==2.7
@@ -61,6 +62,7 @@ pytz==2018.5
 pyvim==2.0.22
 pyvmomi==6.7.0.2018.9
 PyYAML==3.13
+qingcloud-sdk==1.2
 qiniu==7.2.2
 qrcode==6.0
 redis==2.10.6

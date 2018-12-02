@@ -41,7 +41,7 @@ Code_Work
 """
 class Code_Work(Work):
     # 关联推出的任务
-    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, nulld=True, on_delete=models.SET_NULL)
     mission = models.ForeignKey(Mission, related_name='works', null=True, blank=True, on_delete=models.SET_NULL)
     push_mission = models.ForeignKey(Push_Mission, related_name='works', on_delete=models.SET_NULL, null=True, blank=True)
 

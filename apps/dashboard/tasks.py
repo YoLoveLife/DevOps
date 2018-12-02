@@ -94,10 +94,10 @@ def statistics_work():
     work_dist = dict()
     import django
     now = django.utils.timezone.now().date()
-    for i in range(7, 0, -1):
+    for i in range(6, -1, -1):
         start_day = now - datetime.timedelta(days=i)
         end_day = now - datetime.timedelta(days=i-1)
-        weekday = end_day.weekday()
+        weekday = start_day.weekday()
         work_dist[week_list[int(weekday)]] = Push_Mission.objects.filter(
             create_time__gt=start_day, create_time__lt=end_day
         ).count()

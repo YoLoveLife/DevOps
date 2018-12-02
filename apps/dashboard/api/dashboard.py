@@ -44,9 +44,10 @@ class DashboardWorkAPI(WebTokenAuthentication, APIView):
             db=settings.REDIS_SPACE,
             password=settings.REDIS_PASSWD
         )
+        week_list = ['Won', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
         TEMP = connect.hgetall('WORK',)
         WORK = []
-        for key in TEMP:
+        for key in week_list:
             WORK.append({
                 'time': str(key, encoding='utf-8'),
                 '执行次数': TEMP[key]

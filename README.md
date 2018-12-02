@@ -106,9 +106,11 @@ $ StrictHostKeyChecking no # 关闭指纹识别
 $ :wq
 
 #连接本地资源并创建数据表结构
-$ vim deveops/conf.py #里面包含了所有连接数据以及定时任务 请填写您需要的数据内容
+$ vim deveops/conf.py # 里面包含了所有连接数据以及定时任务 请填写您需要的数据内容
 $ python manage.py makemigrations
 $ python manage.py migrate
+$ # 删除表结构中的外键 减少运行过程中的锁争用问题、减少死锁概率、数据解耦
+$ select concat("alter table ",table_schema,".",table_name, " drop foreign key ",CONSTRAINT_NAME,";") from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where table_schema='deveops_v3' and REFERENCED_TABLE_NAME is not null into outfile '/tmp/fk_1.sql';
 
 #启动服务
 $ python manage.py runserver &
