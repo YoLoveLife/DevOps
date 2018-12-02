@@ -5,18 +5,10 @@
 # Email YoLoveLife@outlook.com
 from __future__ import absolute_import,unicode_literals
 from ops.urls.socket_urls import ops_routing
-from console.urls.socket_urls import console_routing
-
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")    #这里填的是你的配置文件settings.py的位置
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 
 application = ProtocolTypeRouter({
-    # '巍峨比赛噢参': AuthMiddlewareStack(
-    #     URLRouter(
-    #         manager_routing
-    #     )
-    # ),
     'websocket': AuthMiddlewareStack(
         URLRouter(
             ops_routing,

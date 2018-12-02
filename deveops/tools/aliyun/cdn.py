@@ -16,11 +16,9 @@ from django.conf import settings
 class AliyunCDNTool(object):
     def __init__(self):
         self.clt = client.AcsClient(settings.ALIYUN_ACCESSKEY, settings.ALIYUN_ACCESSSECRET, 'cn-hangzhou')
-        self.request = CommonRequest()
-        AliyunCDNTool.request_to_json(self)
 
-
-    def check(self, url):
+    @staticmethod
+    def check(url):
         if 'http' in url:
             index = url.find('//')
             header = url.find('/', index + 2)
@@ -35,7 +33,6 @@ class AliyunCDNTool(object):
             else:
                 return 'DIR'
 
-
     @staticmethod
     def get_json_results(results):
         return json.loads(results.decode('utf-8'))
@@ -44,25 +41,30 @@ class AliyunCDNTool(object):
     def request_to_json(obj):
         return obj.request.set_accept_format('json')
 
-    def request_to_cdn(self, domain):
-        self.request.set_domain('cdn.aliyuncs.com')
-        self.request.set_method('POST')
-        self.request.set_version('2014-11-11')
-        self.request.set_action_name('RefreshObjectCaches')
-        self.request.add_query_param('ObjectPath', domain)
+    @staticmethod
+    def request_to_cdn(request, domain):
+        request.set_domain('cdn.aliyuncs.com')
+        request.set_method('POST')
+        request.set_version('2014-11-11')
+        request.set_action_name('RefreshObjectCaches')
+        request.add_query_param('ObjectPath', domain)
 
-        if self.check(domain) == 'FILE':
-            self.request.add_query_param('ObjectType', 'File')
+        if AliyunCDNTool.check(domain) == 'FILE':
+            request.add_query_param('ObjectType', 'File')
         else:
-            self.request.add_query_param('ObjectType', 'Directory')
+            request.add_query_param('ObjectType', 'Directory')
+        return request
+
+    def request_get_cdn(self, domain):
+        request = CommonRequest()
+        AliyunCDNTool.request_to_cdn(request, domain)
 
         try:
-            response = self.clt.do_action_with_exception(self.request)
-        except:
+            response = self.clt.do_action_with_exception(request)
+        except Exception as e:
+            print(e)
             return {}
         return self.get_json_results(response)
-
-
 
     @staticmethod
     def request_to_result(result):

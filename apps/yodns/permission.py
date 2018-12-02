@@ -28,7 +28,6 @@ class DNSListRequiredMixin(DNSAPIRequiredMixin):
 class DNSCreateRequiredMixin(DNSAPIRequiredMixin):
     permission_required = u'yodns.yo_create_dns'
 
-    @decorator_api(settings.TIMELINE_DNS_CREATE)
     def has_permission(self, request, view):
         return request, super(DNSCreateRequiredMixin, self).has_permission(request, view)
 
@@ -36,7 +35,6 @@ class DNSCreateRequiredMixin(DNSAPIRequiredMixin):
 class DNSUpdateRequiredMixin(DNSAPIRequiredMixin):
     permission_required = u'yodns.yo_update_dns'
 
-    @decorator_api(settings.TIMELINE_DNS_UPDATE)
     def has_permission(self, request, view):
         return request, super(DNSUpdateRequiredMixin, self).has_permission(request, view)
 
@@ -44,6 +42,5 @@ class DNSUpdateRequiredMixin(DNSAPIRequiredMixin):
 class DNSDeleteRequiredMixin(DNSAPIRequiredMixin):
     permission_required = u'yodns.yo_delete_dns'
 
-    @decorator_api(settings.TIMELINE_DNS_DELETE)
     def has_permission(self, request, view):
         return request, super(DNSDeleteRequiredMixin, self).has_permission(request, view)

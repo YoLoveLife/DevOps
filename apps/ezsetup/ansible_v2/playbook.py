@@ -1,11 +1,17 @@
 # -*- coding:utf-8 -*-
+# !/usr/bin/env python
+# Time 18-7-3
+# Author Yo
+# Email YoLoveLife@outlook.com
 from ansible.errors import AnsibleParserError,AnsibleUndefinedVariable
 from django.conf import settings
 from deveops.ansible_v2.playbook import Playbook
 from ansible.playbook.play import Play
+
 __all__ = [
     "EZSetupPlaybook"
 ]
+
 
 class EZSetupPlaybook(Playbook):
     def __init__(self, group, key, callback, setup):

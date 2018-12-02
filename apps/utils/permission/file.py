@@ -28,7 +28,6 @@ class FileListRequiredMixin(FileAPIRequiredMixin):
 class FileCreateRequiredMixin(FileAPIRequiredMixin):
     permission_required = u'utils.yo_create_file'
 
-    @decorator_api(settings.TIMELINE_UTILS_FILE_CREATE)
     def has_permission(self, request, view):
         return request, super(FileCreateRequiredMixin, self).has_permission(request, view)
 
@@ -40,6 +39,5 @@ class FileUpdateRequiredMixin(FileAPIRequiredMixin):
 class FileDeleteRequiredMixin(FileAPIRequiredMixin):
     permission_required = u'utils.yo_delete_file'
 
-    @decorator_api(settings.TIMELINE_UTILS_FILE_DELETE)
     def has_permission(self, request, view):
         return request, super(FileDeleteRequiredMixin, self).has_permission(request, view)

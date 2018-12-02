@@ -31,7 +31,6 @@ class SafeWorkListRequiredMixin(SafeWorkAPIRequiredMixin):
 class SafeWorkCreateRequiredMixin(SafeWorkAPIRequiredMixin):
     permission_required = u'work.yo_create_safework'
 
-    @decorator_api(settings.TIMELINE_SAFEWORK_CREATE)
     def has_permission(self, request, view):
         perms = self.permission_required
         perm_list = list(request.user.get_all_permissions())
@@ -45,7 +44,6 @@ class SafeWorkCreateRequiredMixin(SafeWorkAPIRequiredMixin):
 class SafeWorkStatusRequiredMixin(SafeWorkAPIRequiredMixin):
     permission_required = u'work.yo_status_safework'
 
-    @decorator_api(settings.TIMELINE_SAFEWORK_STATUS)
     def has_permission(self, request, view):
         return request, super(SafeWorkStatusRequiredMixin, self).has_permission(request, view)
 

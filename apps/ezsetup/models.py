@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
-from __future__ import unicode_literals
+# !/usr/bin/env python
+# Time 18-7-3
+# Author Yo
+# Email YoLoveLife@outlook.com
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 import uuid

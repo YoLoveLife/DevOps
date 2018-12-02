@@ -1,21 +1,30 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
+import uuid
+import pyotp
+import redis
 from django.db import models
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from deveops.utils import sshkey,aes
 import django.utils.timezone as timezone
+from deveops.utils import sshkey, aes
 from django.conf import settings
-import socket
-import uuid
-import pyotp
 from authority.tasks import jumper_status_flush
 
 __all__ = [
-    "Key", "ExtendUser", "Jumper"
+    "Key", "ExtendUser", "Jumper",
 ]
+
+connect = redis.StrictRedis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=settings.REDIS_SPACE,
+    password=settings.REDIS_PASSWD,
+)
 
 
 def private_key_validator(key):
@@ -25,12 +34,14 @@ def private_key_validator(key):
             params={'value': key},
         )
 
-def publick_key_validator(key):
+
+def public_key_validator(key):
     if not sshkey.public_key_validator(key):
         raise ValidationError(
             _('%(value)s is not an even number'),
             params={'value': key},
         )
+
 
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
@@ -38,8 +49,10 @@ class Key(models.Model):
     name = models.CharField(max_length=100, default='')
 
     # 操作权限限定
-    _private_key = models.TextField(max_length=4096, blank=True, null=True, validators=[private_key_validator,])
-    _public_key = models.TextField(max_length=4096, blank=True, null=True, validators=[publick_key_validator,])
+    _private_key = models.TextField(max_length=4096, blank=True, null=True,
+                                    validators=[private_key_validator, ])
+    _public_key = models.TextField(max_length=4096, blank=True, null=True,
+                                   validators=[public_key_validator, ])
     # 创建时间
     _fetch_time = models.DateTimeField(auto_now_add=True)
 
@@ -92,8 +105,9 @@ class ExtendUser(AbstractUser):
     img = models.CharField(max_length=10, default='user.jpg')
     phone = models.CharField(max_length=11, default='None',)
     full_name = models.CharField(max_length=11, default='未获取')
-    qrcode = models.CharField(max_length=29, default='')
+    qrcode = models.CharField(max_length=16, default='')
     have_qrcode = models.BooleanField(default=False)
+    expire = models.IntegerField(default=100)
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -105,6 +119,8 @@ class ExtendUser(AbstractUser):
         related_name="user_set",
         related_query_name="user",
     )
+    info = models.CharField(default='', max_length=150)
+
     class Meta:
         permissions = (
             ('yo_list_user', u'罗列用户'),
@@ -120,19 +136,6 @@ class ExtendUser(AbstractUser):
             ('yo_list_permission', u'罗列所有权限')
         )
 
-    def __unicode__(self):
-        list = []
-        if self.is_superuser:
-            list.append(u'超级管理员')
-        elif self.groups.count() == 0:
-            list.append(u'无权限')
-        else:
-            for group in self.groups.all():
-                list.append(group.name)
-        return self.username + ' - ' + "|".join(list)
-
-    __str__ = __unicode__
-
     def get_8531email(self):
         return self.username + '@8531.cn'
 
@@ -142,26 +145,31 @@ class ExtendUser(AbstractUser):
         elif self.groups.count() == 0:
             return "无权限"
         else:
-            list = []
+            gourp_list = []
             groups = self.groups.all()
             for group in groups:
-                list.append(group.name)
-            if len(list) == 0:
+                gourp_list.append(group.name)
+            if len(gourp_list) == 0:
                 return ''
             else:
-                return "-".join(list)
+                return "-".join(gourp_list)
 
     def check_qrcode(self, verifycode):
         t = pyotp.TOTP(self.qrcode)
+        print('验证器内存地址',t)
         result = t.verify(verifycode)
         return result
 
+    @property
+    def is_expire(self):
+        return not connect.exists(self.username)
+
+    @is_expire.setter
+    def is_expire(self, qrcode):
+        connect.set(self.username, qrcode, self.expire or 1)
+
 
 class Jumper(models.Model):
-    JUMPER_STATUS = (
-        (settings.STATUS_JUMPER_UNREACHABLE, '不可达'),
-        (settings.STATUS_JUMPER_CAN_BE_USE, '可达'),
-    )
     # 全局ID
     id = models.AutoField(primary_key=True)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
@@ -170,7 +178,7 @@ class Jumper(models.Model):
     sshport = models.IntegerField(default='52000')
     name = models.CharField(max_length=50, default="")
     info = models.CharField(max_length=200, default="", blank=True, null=True)
-    _status = models.IntegerField(choices=JUMPER_STATUS, default=-1)
+    _status = models.IntegerField(default=settings.STATUS_JUMPER_NO_KEY)
 
     class Meta:
         permissions = (
@@ -180,9 +188,6 @@ class Jumper(models.Model):
             ('yo_status_jumper', u'刷新跳板机器'),
             ('yo_delete_jumper', u'删除跳板机'),
         )
-
-    def __unicode__(self):
-        return self.connect_ip + ' - ' + self.name
 
     @property
     def status(self):
@@ -195,17 +200,12 @@ class Jumper(models.Model):
     def check_status(self):
         jumper_status_flush.delay(self)
 
-    @property
     def to_yaml(self):
         return {
             u'set_fact':
                 {
                     'ansible_ssh_common_args':
-                        '-o ProxyCommand="ssh -p{JUMPER_PORT} -i {KEY} -W %h:%p root@{JUMPER_IP}"'.format(
-                            JUMPER_PORT=self.sshport,
-                            JUMPER_IP=self.connect_ip,
-                            KEY='{{KEY}}'
-                        )
+                        '-o ProxyCommand="ssh -p{{JUMPER_PORT}} -i {{KEY}} -W %h:%p root@{{JUMPER_IP}}"'
                 }
         }
 

@@ -3,20 +3,16 @@
 # Time 17-10-25
 # Author Yo
 # Email YoLoveLife@outlook.com
+import time
 import os
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "deveops.settings")
-django.setup()
-
-import redis
-import time, os, stat
+import stat
 from celery.task import periodic_task
-from celery.schedules import crontab
-from django.conf import settings
 from django.db.models import Q
+from django.conf import settings
 from manager.models import Host, Group
-from manager.ansible_v2.callback import SSHCallback, DiskOverFlowCallback, UptimeCallback
+from manager.ansible_v2.callback import SSHCallback, DiskInodeCallback, DiskSpaceCallback, UptimeCallback
 from deveops.ansible_v2.playbook import Playbook
+
 
 def host_maker(dict_models):
     Host.objects.create(**dict_models)
@@ -35,48 +31,44 @@ def host_updater(obj, dict_models):
     obj.update(**dict_models)
 
 
-@periodic_task(run_every=settings.MANAGER_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_TIME)
 def vmware2cmdb():
     from deveops.tools import vmware
-    API = vmware.VmwareTool()
-    childrens = API.get_all_vms()
-    for child in childrens:
-        dict_models = API.get_vm_models(child)
-        host_query = Host.objects.filter(vmware_id=dict_models['vmware_id'], connect_ip=dict_models['connect_ip'])
-        if not host_query.exists():
-            host_maker(dict_models)
-
-
-@periodic_task(run_every=settings.MANAGER_TIME)
-def aliyun2cmdb():
-    from deveops.tools.aliyun import ecs
-    API = ecs.AliyunECSTool()
-    for page in range(1, API.pagecount+1):
-        results = API.request_get_instances(page)
-        for result in results:
-            dict_models = API.get_aliyun_models(result)
-            host_query = Host.objects.filter(aliyun_id=dict_models['aliyun_id'], connect_ip=dict_models['connect_ip'])
+    for conf in settings.VMWARE_CONF:
+        API = vmware.VmwareTool(**conf)
+        childrens = API.get_all_vms()
+        for child in childrens:
+            dict_models = API.get_vm_models(child, conf['VMWARE_SERVER'])
+            host_query = Host.objects.filter(vmware_id=dict_models['vmware_id'], connect_ip=dict_models['connect_ip'])
             if not host_query.exists():
                 host_maker(dict_models)
-            else:
-                host_updater(host_query, dict_models)
 
 
-@periodic_task(run_every=settings.MANAGER_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_TIME)
+def aliyun2cmdb():
+    from deveops.tools.aliyun_v2.request import ecs
+    API = ecs.AliyunECSTool()
+    for dict_models in API.tool_get_instances_models():
+        host_query = Host.objects.filter(aliyun_id=dict_models['aliyun_id'], connect_ip=dict_models['connect_ip'])
+        if not host_query.exists():
+            host_maker(dict_models)
+        else:
+            host_updater(host_query, dict_models)
+
+
+@periodic_task(run_every=settings.MANAGER_HOST_TIME)
 def cmdb2aliyun():
-    from deveops.tools.aliyun import ecs
+    from deveops.tools.aliyun_v2.request import ecs
     from django.db.models import Q
     API = ecs.AliyunECSTool()
     queryset = Host.objects.filter(~Q(aliyun_id=''))
     for host in queryset:
-        status_results = API.request_get_instance_status(host.aliyun_id)
-        status = API.get_aliyun_instance_status(status_results)
+        status = API.tool_get_instance_models(host.aliyun_id).__next__()
         if status == 'delete':
             host.delete()
         else:
-            expired_results = API.request_get_instance(host.aliyun_id)
-            expired = API.get_aliyun_expired_models(expired_results)
-            if expired.get('expired') < settings.ALIYUN_OVERDUETIME:
+            expired_models = API.tool_get_instance_expired_models(host.aliyun_id).__next__()
+            if expired_models.get('expired') < settings.ALIYUN_OVERDUETIME:
                 host.delete()
             else:
                 if host.status == settings.STATUS_HOST_PAUSE:
@@ -88,39 +80,12 @@ def cmdb2aliyun():
                     host.status = status
 
 
-
-connect = redis.StrictRedis(host=settings.REDIS_HOST,port=settings.REDIS_PORT,db=settings.REDIS_SPACE,password=settings.REDIS_PASSWD)
-
-
-@periodic_task(run_every=crontab(minute='*/5'))
-def statistics_group():
-    connect.delete('GROUP_STATUS')
-
-    groups = Group.objects.all()
-    group_name = []
-    group_value = []
-    for group in groups:
-        group_name.append(group.name)
-        group_value.append(group.hosts.count())
-    connect.set('GROUP_STATUS', {'name':group_name,'value':group_value})
-
-
-@periodic_task(run_every=crontab(minute='*/5'))
-def statistics_manager():
-    host_count = Host.objects.count()
-    group_count = Group.objects.count()
-
-    connect.set('HOST_COUNT', host_count)
-    connect.set('GROUP_COUNT', group_count)
-
-
-
 """
-    资产巡检
+资产巡检
 """
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_SSH_CHECK)
 def ssh_check():
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
@@ -142,14 +107,7 @@ def write_key(key, file_path):
 
 def run_ssh_check(group):
     # 准备变量
-    vars_dict = {}
-
-    for var in group.group_vars.all():
-        vars_dict[var.key] = var.value
-
-    if group.jumper is not None and group.key is not None:
-        vars_dict['JUMPER_IP'] = group.jumper.connect_ip
-        vars_dict['JUMPER_PORT'] = group.jumper.sshport
+    vars_dict = group.vars_dict
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(time.time()) + '/'
@@ -163,7 +121,7 @@ def run_ssh_check(group):
     callback = SSHCallback(group)
     ssh_playbook = Playbook(group, KEY, callback)
     ssh_playbook.import_vars(vars_dict)
-    from manager.ansible_v2.play_source import PING_PLAY_SOURCE
+    from manager.ansible_v2.playsource import PING_PLAY_SOURCE
 
     PING_PLAY_SOURCE[0]['hosts'] = list(group.hosts.exclude(
         Q(_status=settings.STATUS_HOST_PAUSE) or Q(_status=settings.STATUS_HOST_CLOSE)
@@ -173,24 +131,27 @@ def run_ssh_check(group):
     ssh_playbook.run()
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
-def disk_overflow():
+@periodic_task(run_every=settings.MANAGER_HOST_DISK_CHECK)
+def disk_space():
+    from manager.ansible_v2.playsource import DISK_SPACE_PLAY_SOURCE
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
-            run_disk_overflow(group)
-            # break
+            callback = DiskSpaceCallback(group)
+            run_disk_overflow(group, DISK_SPACE_PLAY_SOURCE, callback)
 
 
-def run_disk_overflow(group):
+@periodic_task(run_every=settings.MANAGER_HOST_DISK_CHECK)
+def disk_inode():
+    from manager.ansible_v2.playsource import DISK_INODE_PLAY_SOURCE
+    for group in Group.objects.all():
+        if group.key is not None and group.jumper is not None:
+            callback = DiskInodeCallback(group)
+            run_disk_overflow(group, DISK_INODE_PLAY_SOURCE, callback)
+
+
+def run_disk_overflow(group, RESOURCE, callback):
     # 准备变量
-    vars_dict = {}
-
-    for var in group.group_vars.all():
-        vars_dict[var.key] = var.value
-
-    if group.jumper is not None and group.key is not None:
-        vars_dict['JUMPER_IP'] = group.jumper.connect_ip
-        vars_dict['JUMPER_PORT'] = group.jumper.sshport
+    vars_dict = group.vars_dict
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(time.time()) + '/'
@@ -200,20 +161,20 @@ def run_disk_overflow(group):
     KEY = TMP + str(time.time()) + '.key'
     write_key(group.key, KEY)
 
-    # Playbook实例
-    callback = DiskOverFlowCallback(group)
     dof = Playbook(group, KEY, callback)
     dof.import_vars(vars_dict)
-    from manager.ansible_v2.play_source import DISK_PLAY_SOURCE
 
-    DISK_PLAY_SOURCE[0]['hosts'] = list(group.hosts.exclude(
-        Q(_status=settings.STATUS_HOST_PAUSE) or Q(_status=settings.STATUS_HOST_CLOSE)
+    RESOURCE[0]['hosts'] = list(group.hosts.filter(
+        Q(_status=settings.STATUS_HOST_CAN_BE_USE) or
+        Q(_status=settings.STATUS_HOST_DISK_SPACE_FULL) or
+        Q(_status=settings.STATUS_HOST_DISK_INODE_FULL)
     ).values_list('connect_ip', flat=True))
-    dof.import_task(DISK_PLAY_SOURCE)
+
+    dof.import_task(RESOURCE)
     dof.run()
 
 
-@periodic_task(run_every=settings.CHECK_TIME)
+@periodic_task(run_every=settings.MANAGER_HOST_LOAD_CHECK)
 def uptime():
     for group in Group.objects.all():
         if group.key is not None and group.jumper is not None:
@@ -223,14 +184,7 @@ def uptime():
 
 def run_uptime(group):
     # 准备变量
-    vars_dict = {}
-
-    for var in group.group_vars.all():
-        vars_dict[var.key] = var.value
-
-    if group.jumper is not None and group.key is not None:
-        vars_dict['JUMPER_IP'] = group.jumper.connect_ip
-        vars_dict['JUMPER_PORT'] = group.jumper.sshport
+    vars_dict = group.vars_dict
 
     # 创建临时目录
     TMP = settings.OPS_ROOT + '/' + str(time.time()) + '/'
@@ -244,10 +198,10 @@ def run_uptime(group):
     callback = UptimeCallback(group)
     uptime_playbook = Playbook(group, KEY, callback)
     uptime_playbook.import_vars(vars_dict)
-    from manager.ansible_v2.play_source import UPTIME_PLAY_SOURCE
+    from manager.ansible_v2.playsource import UPTIME_PLAY_SOURCE
 
-    UPTIME_PLAY_SOURCE[0]['hosts'] = list(group.hosts.exclude(
-        Q(_status=settings.STATUS_HOST_PAUSE) or Q(_status=settings.STATUS_HOST_CLOSE)
+    UPTIME_PLAY_SOURCE[0]['hosts'] = list(group.hosts.filter(
+        Q(_status=settings.STATUS_HOST_CAN_BE_USE) or Q(_status=settings.STATUS_HOST_UPTIME_ERROR)
     ).values_list('connect_ip', flat=True))
 
     uptime_playbook.import_task(UPTIME_PLAY_SOURCE)

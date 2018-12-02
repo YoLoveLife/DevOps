@@ -1,20 +1,22 @@
 # -*- coding:utf-8 -*-
-from __future__ import unicode_literals
+# !/usr/bin/env python
+# Time 17-10-25
+# Author Yo
+# Email YoLoveLife@outlook.com
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from authority.models import ExtendUser
 import uuid
-import paramiko
-import socket
-from deveops.utils import sshkey,aes
+from authority.models import ExtendUser
+from deveops.utils import sshkey, aes
 from utils.models import IMAGE
 from django.contrib.auth.models import Group as PerGroup
-from authority.models import Key,Jumper
+from authority.models import Key, Jumper
 from django.conf import settings
 
 __all__ = [
     "Group", "Host"
 ]
+
 
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
@@ -39,11 +41,6 @@ class Group(models.Model):
                        ('yo_delete_group', u'删除应用组'),
                        ('yo_group_sort_host', u'批量归类主机'))
 
-    def __unicode__(self):
-        return self.name
-
-    __str__ = __unicode__
-
     @property
     def status(self):
         if self.jumper is None or self.key is None:
@@ -53,7 +50,6 @@ class Group(models.Model):
                 return settings.STATUS_GROUP_CAN_BE_USE
             else:
                 return settings.STATUS_GROUP_PAUSE
-
 
     @status.setter
     def status(self, status):
@@ -82,16 +78,21 @@ class Group(models.Model):
         else:
             # Ansible 2.0.0.0
             # return list(self.hosts.values_list('connect_ip', flat=True)) Only Normal Host
-            return ','.join(list(self.hosts.filter(_status=settings.STATUS_HOST_CAN_BE_USE).values_list('connect_ip', flat=True)))
+            return ','.join(list(self.hosts.filter(_status__gte=0).values_list('connect_ip', flat=True)))
 
     @property
-    def group_vars(self):
-        return self.vars.all()
+    def vars_dict(self):
+        var_dict = {}
+        for var in self.vars.all():
+            var_dict[var.key] = var.value
+        var_dict['JUMPER_IP'] = self.jumper.connect_ip
+        var_dict['JUMPER_PORT'] = self.jumper.sshport
+        return var_dict
 
 
 class Host(models.Model):
     # 主机标识
-    id = models.AutoField(primary_key=True) #全局ID
+    id = models.AutoField(primary_key=True) # 全局ID
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False)
 
     # 资产结构
@@ -101,7 +102,6 @@ class Host(models.Model):
     connect_ip = models.CharField(max_length=15, default='', null=False)
     sshport = models.IntegerField(default='22')
     _passwd = models.CharField(max_length=1000, default='', null=True, blank=True)
-
 
     # 主机信息
     hostname = models.CharField(max_length=50, default='localhost.localdomain', null=True, blank=True)
@@ -150,13 +150,13 @@ class Host(models.Model):
     def password(self, password):
         self._passwd = aes.encrypt(password).decode()
 
+    @property
+    def group(self):
+        group_list = []
+        for group in self.groups.all():
+            group_list.append(group.name)
+        return ';'.join(group_list)
+
     # :TODO 详细页面 管理用户
     def manage_user_get(self):
-        dist = {}
-        for group in self.groups.all():
-            for user in group.users.all():
-                dist[user.email]=user
-        list = []
-        for key in dist:
-            list.append(dist[key])
-        return list
+        pass

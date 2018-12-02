@@ -1,7 +1,13 @@
+# -*- coding:utf-8 -*-
+# !/usr/bin/env python
+# Time 18-3-19
+# Author Yo
+# Email YoLoveLife@outlook.com
 from django.urls import path
 from ..api import group as GroupAPI
 from ..api import host as HostAPI
-urlpatterns=[
+
+urlpatterns = [
     # Resource group api
     path(r'v1/group/', GroupAPI.ManagerGroupListAPI.as_view()),
     path(r'v1/group/bypage/', GroupAPI.ManagerGroupListByPageAPI.as_view()),

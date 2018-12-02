@@ -1,11 +1,17 @@
 # -*- coding:utf-8 -*-
-from .. import models, serializers, filter
-from rest_framework.views import Response,status
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated,AllowAny
-from ..permission import meta as MetaPermission
-from deveops.api import WebTokenAuthentication
+# !/usr/bin/env python
+# Time 18-3-29
+# Author Yo
+# Email YoLoveLife@outlook.com
+from rest_framework.views import Response, status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from ..permission import meta as MetaPermission
+from django.conf import settings
+from deveops.api import WebTokenAuthentication
+from .. import models, serializers, filter
+from timeline.decorator import decorator_api
 
 __all__ = [
     'MetaPagination', 'OpsMetaListAPI', 'OpsMetaListByPageAPI',
@@ -52,13 +58,18 @@ class OpsMetaCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.META
     serializer_class = serializers.MetaSerializer
     permission_classes = [MetaPermission.MetaCreateRequiredMixin, IsAuthenticated]
+    msg = settings.LANGUAGE.OpsMetaCreateAPI
 
-    # 校验用户QR-Code
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_CREATE'])
     def create(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMetaCreateAPI, self).create(request, *args, **kwargs)
+        if self.qrcode_check(request):
+            response = super(OpsMetaCreateAPI, self).create(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                UUID=response.data['uuid'],
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
 
 
 class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -68,12 +79,20 @@ class OpsMetaUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     permission_classes = [MetaPermission.MetaUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.OpsMetaUpdateAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_UPDATE'])
     def update(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMetaUpdateAPI, self).update(request, *args, **kwargs)
+        if self.qrcode_check(request):
+            response = super(OpsMetaUpdateAPI, self).update(request, *args, **kwargs)
+            meta = self.get_object()
+            return self.msg.format(
+                USER=request.user.full_name,
+                UUID=meta.uuid,
+                INFO=meta.info,
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
 
 
 class OpsMetaDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -83,9 +102,24 @@ class OpsMetaDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     permission_classes = [MetaPermission.MetaDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.OpsMetaDeleteAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['META_META_DELETE'])
     def delete(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMetaDeleteAPI, self).delete(request, *args, **kwargs)
+        meta = self.get_object()
+        if self.qrcode_check(request):
+            response = super(OpsMetaDeleteAPI, self).delete(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                UUID=meta.uuid,
+                INFO=meta.info,
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
+
+
+
+
+
+
+

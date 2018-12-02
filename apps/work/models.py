@@ -41,7 +41,7 @@ Code_Work
 """
 class Code_Work(Work):
     # 关联推出的任务
-    user = models.ForeignKey(ExtendUser, default=None, blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(ExtendUser, default=None, blank=True, nulld=True, on_delete=models.SET_NULL)
     mission = models.ForeignKey(Mission, related_name='works', null=True, blank=True, on_delete=models.SET_NULL)
     push_mission = models.ForeignKey(Push_Mission, related_name='works', on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -67,7 +67,7 @@ class Code_Work(Work):
         dict = self.mission.vars_dict
         dict['BASE'] = settings.OPS_ROOT + '/' + str(self.uuid) + '/'
         dict['TOOL'] = settings.TOOL_ROOT + '/'
-        if self.push_mission.files.count() !=0:
+        if self.push_mission.files.count() != 0:
             for file in self.push_mission.files.all():
                 dict[file.var_name] = settings.MEDIA_ROOT+'/'+file.file.name
         return dict

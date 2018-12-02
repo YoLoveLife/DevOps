@@ -12,16 +12,16 @@ from django.db.models import Q
 from dns import resolver
 
 
-def reflush(obj,nameserver):
+def reflush(obj, nameserver):
     r = resolver.Resolver()
     r.nameservers = [nameserver]
     try:
-        answers = r.query(obj.recursion_name(), 'CNAME')
+        answers = r.query(obj.url, 'CNAME')
         for rdata in answers:
             return rdata.to_text()[:-1]
     except resolver.NoAnswer as e:
         try:
-            answer = r.query(obj.recursion_name(), 'A')
+            answer = r.query(obj.url, 'A')
             for rr in answer:
                 return rr.address
         except Exception as e:
@@ -31,9 +31,9 @@ def reflush(obj,nameserver):
     return ''
 
 
-@periodic_task(run_every=settings.DNS_TIME)
+@periodic_task(run_every=settings.YODNS_REFLUSH)
 def dns_flush():
-    for dns in DNS.objects.all().exclude(Q(father__isnull=True)|Q(father__father__isnull=True)):
-        dns.inner_dig = reflush(dns,settings.INNER_DNS)
-        dns.dig = reflush(dns,settings.OUTER_DNS)
+    for dns in DNS.objects.all():
+        dns.internal_dig = reflush(dns, settings.INNER_DNS)
+        dns.external_dig = reflush(dns, settings.OUTER_DNS)
         dns.save()

@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 from rest_framework.permissions import BasePermission
-from timeline.decorator import decorator_api
 from django.conf import settings
 
 __all__ = [
@@ -30,7 +29,6 @@ class MetaListRequiredMixin(MetaAPIRequiredMixin):
 class MetaCreateRequiredMixin(MetaAPIRequiredMixin):
     permission_required = u'ops.yo_create_meta'
 
-    @decorator_api(settings.TIMELINE_META_CREATE)
     def has_permission(self, request, view):
         return request, super(MetaCreateRequiredMixin, self).has_permission(request, view)
 
@@ -38,7 +36,6 @@ class MetaCreateRequiredMixin(MetaAPIRequiredMixin):
 class MetaUpdateRequiredMixin(MetaAPIRequiredMixin):
     permission_required = u'ops.yo_update_meta'
 
-    @decorator_api(settings.TIMELINE_META_UPDATE)
     def has_permission(self, request, view):
         return request, super(MetaUpdateRequiredMixin, self).has_permission(request, view)
 
@@ -46,7 +43,6 @@ class MetaUpdateRequiredMixin(MetaAPIRequiredMixin):
 class MetaDeleteRequiredMixin(MetaAPIRequiredMixin):
     permission_required = u'ops.yo_delete_meta'
 
-    @decorator_api(settings.TIMELINE_META_DELETE)
     def has_permission(self, request, view):
         return request, super(MetaDeleteRequiredMixin, self).has_permission(request, view)
 

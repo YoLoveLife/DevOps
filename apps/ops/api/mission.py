@@ -4,16 +4,17 @@ from .. import serializers
 from rest_framework.views import Response,status
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from django.conf import settings
 from ..permission import mission as MissionPermission
 from deveops.api import WebTokenAuthentication
+from timeline.decorator import decorator_api
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
 
 __all__ = [
     'MissionPagination', 'OpsMissionListAPI', 'OpsMissionListByPageAPI',
     'OpsMissionNeedFileCheckAPI', 'OpsMissionCreateAPI', 'OpsMissionDeleteAPI',
-    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionPlaybookAPI',
-    'OpsMissionNeedFileCheckAPI',
+    'OpsMissionUpdateAPI', 'OpsMissionListByUserAPI', 'OpsMissionNeedFileCheckAPI'
 ]
 
 
@@ -24,7 +25,7 @@ class MissionPagination(PageNumberPagination):
 class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
-    permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    permission_classes = [MissionPermission.MissionListRequiredMixin, IsAuthenticated]
     filter_class = filter.MissionFilter
 
     def get_queryset(self):
@@ -37,7 +38,8 @@ class OpsMissionListAPI(WebTokenAuthentication,generics.ListAPIView):
 class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
-    permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    # permission_classes = [MissionPermission.MissionListRequiredMixin,IsAuthenticated]
+    permission_classes = [AllowAny,]
     pagination_class = MissionPagination
     filter_class = filter.MissionFilter
 
@@ -46,9 +48,10 @@ class OpsMissionListByPageAPI(WebTokenAuthentication,generics.ListAPIView):
     # 2、可以增删改自己所管理的应用组的所有Mission操作
 
     def get_queryset(self):
-        user = self.request.user
-        groups = models.Group.objects.filter(users=user)
-        queryset = models.Mission.objects.filter(group_id__in=groups)
+        # user = self.request.user
+        # groups = models.Group.objects.filter(users=user)
+        # queryset = models.Mission.objects.filter(group_id__in=groups)
+        queryset = models.Mission.objects.all()
         return queryset
 
 
@@ -66,35 +69,23 @@ class OpsMissionListByUserAPI(WebTokenAuthentication,generics.ListAPIView):
         return queryset
 
 
-# :TODO 剧本展现
-class OpsMissionPlaybookAPI(WebTokenAuthentication, APIView):
-    module = models.Mission
-    permission_classes = [IsAuthenticated,]
-    lookup_field = 'uuid'
-    lookup_url_kwarg = 'pk'
-
-    def get_object(self):
-        return models.Mission.objects.filter(uuid=self.kwargs['pk']).get()
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        data = {'id':obj.id,'playbook':obj.playbook}
-        return Response(data, status=status.HTTP_200_OK)
-
-
 class OpsMissionCreateAPI(WebTokenAuthentication, generics.CreateAPIView):
     module = models.Mission
     serializer_class = serializers.MissionSerializer
     permission_classes = [MissionPermission.MissionCreateRequiredMixin, IsAuthenticated]
+    msg = settings.LANGUAGE.OpsMissionCreateAPI
 
-    # 校验用户QR-Code
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_CREATE'])
     def create(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            request.data.pop('qrcode')
-            return super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
+        if self.qrcode_check(request):
+            response = super(OpsMissionCreateAPI, self).create(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                INFO=response.data['info'],
+                UUID=response.data['uuid']
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-
+            return '', self.qrcode_response
 
 
 class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
@@ -104,12 +95,21 @@ class OpsMissionUpdateAPI(WebTokenAuthentication, generics.UpdateAPIView):
     permission_classes = [MissionPermission.MissionUpdateRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.OpsMissionUpdateAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_UPDATE'])
     def update(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
+        if self.qrcode_check(request):
+            response = super(OpsMissionUpdateAPI, self).update(request, *args, **kwargs)
+            mission = self.get_object()
+            return self.msg.format(
+                USER=request.user.full_name,
+                INFO=mission.info,
+                UUID=mission.uuid
+            ), response
+
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
 
 
 class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
@@ -119,14 +119,22 @@ class OpsMissionDeleteAPI(WebTokenAuthentication, generics.DestroyAPIView):
     permission_classes = [MissionPermission.MissionDeleteRequiredMixin, IsAuthenticated]
     lookup_field = 'uuid'
     lookup_url_kwarg = 'pk'
+    msg = settings.LANGUAGE.OpsMissionDeleteAPI
 
+    @decorator_api(timeline_type=settings.TIMELINE_KEY_VALUE['Mission_MISSION_DELETE'])
     def delete(self, request, *args, **kwargs):
-        if 'qrcode' in request.data.keys() and self.request.user.check_qrcode(request.data.get('qrcode')):
-            return super(OpsMissionDeleteAPI, self).delete(request, *args, **kwargs)
+        mission = self.get_object()
+        if self.qrcode_check(request):
+            response = super(OpsMissionDeleteAPI, self).delete(request, *args, **kwargs)
+            return self.msg.format(
+                USER=request.user.full_name,
+                INFO=mission.info,
+                UUID=mission.uuid
+            ), response
         else:
-            return Response({'detail': '您的QR-Code有误'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return '', self.qrcode_response
 
-# :TODO 执行任务的文件列表传入
+
 class OpsMissionNeedFileCheckAPI(WebTokenAuthentication, generics.ListAPIView):
     module = models.Mission
     serializer_class = serializers.MissionNeedFileSerializer

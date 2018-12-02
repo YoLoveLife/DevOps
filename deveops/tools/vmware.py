@@ -13,12 +13,14 @@ from pyVmomi import vmodl
 from pyVmomi import vim
 from django.conf import settings as DJANGO_SETTINGS
 
+
 class VmwareTool(object):
-    def __init__(self):
+    def __init__(self, VMWARE_SERVER, VMWARE_USERNAME, VMWARE_PASSWD):
+        self.server = VMWARE_SERVER
         self.service_instance = connect.SmartConnectNoSSL(
-            host=DJANGO_SETTINGS.VMWARE_SERVER,
-            user=DJANGO_SETTINGS.VMWARE_USERNAME,
-            pwd=DJANGO_SETTINGS.VMWARE_PASSWD,
+            host=VMWARE_SERVER,
+            user=VMWARE_USERNAME,
+            pwd=VMWARE_PASSWD,
             port=443
         )
 
@@ -46,7 +48,7 @@ class VmwareTool(object):
             return DJANGO_SETTINGS.STATUS_HOST_CAN_BE_USE
 
     @staticmethod
-    def get_vm_models(vm):
+    def get_vm_models(vm, server):
         '''
         :param vm: VMware API 返回的vm對象
         :return: 返回一個可以直接被models存儲的字典對象
@@ -57,7 +59,7 @@ class VmwareTool(object):
             'sshport': 52000,
             'status': VmwareTool.get_vm_status(vm.summary.runtime.powerState),
             'systemtype': vm.config.guestFullName,
-            'position': 'Center{IP}'.format(IP=DJANGO_SETTINGS.VMWARE_SERVER),
+            'position': 'Center{IP}'.format(IP=server),
             'vmware_id': vm.config.uuid,
         }
 
