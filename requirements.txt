@@ -31,7 +31,7 @@ djangorestframework==3.8.2
 djangorestframework-jwt==1.11.0
 dnspython==1.15.0
 docopt==0.6.2
-ecdsa==0.13
+ecdsa==0.13.3
 future==0.17.1
 hiredis==0.2.0
 hyperlink==18.0.0
