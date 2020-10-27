@@ -19,7 +19,7 @@ chardet==3.0.4
 constantly==15.1.0
 coreapi==2.3.3
 coreschema==0.0.4
-cryptography==2.3.1
+cryptography==3.2
 daphne==2.1.1
 Django==2.0.5
 django-auth-ldap==1.7.0
