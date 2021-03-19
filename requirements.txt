@@ -27,7 +27,7 @@ django-celery-beat==1.1.1
 django-cors-headers==2.4.0
 django-filter==1.1.0
 django-mysql==2.4.1
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 djangorestframework-jwt==1.11.0
 dnspython==1.15.0
 docopt==0.6.2
