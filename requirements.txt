@@ -61,7 +61,7 @@ python-ldap==3.1.0
 pytz==2018.5
 pyvim==2.0.22
 pyvmomi==6.7.0.2018.9
-PyYAML==3.13
+PyYAML==5.4
 qingcloud-sdk==1.2
 qiniu==7.2.2
 qrcode==6.0
