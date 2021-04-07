@@ -1,7 +1,7 @@
 aioredis==1.1.0
 aliyun-python-sdk-core-v3==2.9.1
 amqp==2.3.2
-ansible==2.6.4
+ansible==2.10.0
 asgiref==2.3.2
 asn1crypto==0.24.0
 async-timeout==3.0.0
